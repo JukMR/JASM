@@ -2,7 +2,7 @@ import re
 
 
 def load_binary():
-    with open('ls_short.s', 'r', encoding='utf-8') as f:
+    with open('assembly/ls_head_10_simple.s', 'r', encoding='utf-8') as f:
         binary = f.read()
 
     binary = binary.replace('\t', '')
