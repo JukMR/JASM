@@ -1,22 +1,21 @@
 ---
-
 commands:
   - ret
-  - $any :
-    - include_list:
-      - nop
-      - int3
-    - min: 0
-    - max: 3
   - $any:
-    - exclude_list:
-      - ret
-    - min: 0
-    - max: 4
+      include_list:
+        - nop
+        - int3
+      min: 0
+      max: 3
+  - $any:
+      exclude_list:
+        - ret
+      min: 0
+      max: 4
   - call
   - $not:
-    - ret
+      - ret
   - mov:
-    - operands:
-      - esp
-      - $lit
+      operands:
+        - esp
+        - $lit
