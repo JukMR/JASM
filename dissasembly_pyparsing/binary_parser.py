@@ -1,10 +1,10 @@
-import pyparsing
-
 from pyparsing import QuotedString, Word, CaselessKeyword, Literal, Suppress, OneOrMore, Group
 from pyparsing import Forward, ZeroOrMore, SkipTo
 from pyparsing import nums, alphanums, Optional, alphas
 
 registry = '%' + Word(alphanums)
+
+header = SkipTo('.text:')
 
 store_in_registry = '(' + registry + ')'
 
