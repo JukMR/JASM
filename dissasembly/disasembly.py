@@ -1,6 +1,6 @@
 import subprocess
 
-class dessasembler:
+class disassembler:
     def write_to_disk(self, data: str):
         with open('dissasembled.s', 'w', encoding='utf-8') as file:
             file.write(data)
@@ -20,4 +20,4 @@ class dessasembler:
             return "Error: objdump command not found. Make sure you have 'objdump' installed and in your system PATH."
 
 if __name__ == "__main__":
-    dessasembler().objdump('/bin/ls')
+    disassembler().objdump(binary='/bin/ls')
