@@ -33,12 +33,11 @@ TEXT = Suppress(text_section_title)
 FINI = Suppress(fini_section_title)
 
 commentary = python_style_comment
-TAB = Suppress(White("\t "))
 
-instruction_addr = Group(HEX + COLON) + TAB
+instruction_addr = Group(HEX + COLON)
 
 
-hex_coding = Group(Word(hexnums, exact=2)[1, ...] + TAB) # TODO: fix hex_coding as its taking the first 2 digit of the command
+hex_coding = Group(Word(hexnums, exact=2)[1, ...] + SkipTo('\n')) # TODO: fix hex_coding as its taking the first 2 digit of the command
 
 command = Word(printables) # TODO: generate rules for this
 instruction_code = command[1, ...]
@@ -47,8 +46,8 @@ instruction_code = command[1, ...]
 inst = (
         instruction_addr ("index*")
         + hex_coding ("coding*")
-        + Optional(instruction_code) ("command*")
-        + Optional(commentary) ("comment*")
+        # + Optional(instruction_code) ("command*")
+        # + Optional(commentary) ("comment*")
         + many_line_end
         )
 
