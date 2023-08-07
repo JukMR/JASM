@@ -53,7 +53,23 @@ class InstructionProcessor:
             return output
 
         elif 'exclude_list' in any_com:
-            return 'exclude_list' # TODO: further develop
+            output = ''
+            for elem in any_com['exclude_list']:
+                output += f"{elem}|"
+            output = '(' + output.rstrip('|') + ')'
+
+            min_amount = any_com['min']
+            max_amount = any_com['max']
+
+            if min_amount > max_amount:
+                raise ValueError(f"Wrong min:{min_amount} or max:{max_amount} in yaml")
+
+            exclude_output = f"(?!.*{output})"
+
+            # TODO: add this implementation
+            # exclude_output += f"{{{min_amount},{max_amount}}}"
+
+            return exclude_output
 
     def process_not(self, not_com: Command) -> str:
         not_command = not_com[0]
