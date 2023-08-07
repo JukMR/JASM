@@ -56,7 +56,8 @@ class InstructionProcessor:
             return 'exclude_list' # TODO: further develop
 
     def process_not(self, not_com: Command) -> str:
-        return r'not' # TODO: further develop
+        not_command = not_com[0]
+        return f'(?!.*{not_command})'
 
     def process_mov(self, mov_com: Command) -> str:
         return r'mov[^\|]+'
