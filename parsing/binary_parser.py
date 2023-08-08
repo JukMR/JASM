@@ -72,7 +72,6 @@ parsed = (Start_of_file
           )
 
 class Parser:
-
     def __init__(self, file: Path | str) -> None:
         self.file = file
 
