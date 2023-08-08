@@ -4,6 +4,10 @@ from pyparsing import printables, hexnums, line_end, python_style_comment, Optio
 
 from pathlib import Path
 
+import sys
+sys.path.append('..')
+from logging_config import logger
+
 # Set default whitespace
 # This is done to be able to parse the end of line '\n'
 # By default pyparsing will ignore newlines and whitespaces
@@ -67,21 +71,33 @@ parsed = (Start_of_file
           + fini_section
           )
 
+class Parser:
 
-def parse(file: Path | str) -> ParseResults:
+    def __init__(self, file: Path | str) -> None:
+        self.file = file
 
-    # Read the binary file
-    with open(file, "r", encoding='utf-8') as f:
-        binary = f.read()
-        print(binary.encode('utf-8'))
+    def parse(self) -> ParseResults:
+        # Read the binary file
+        with open(self.file, "r", encoding='utf-8') as f:
+            binary = f.read()
+            logger.debug(binary.encode('utf-8'))
 
+        parsed.parse_with_tabs()
+        parsed_instructions = parsed.parseString(binary)
+        logger.debug(parsed_instructions.as_dict())
 
-    parsed.parse_with_tabs()
-    result = parsed.parseString(binary)
-    print(result.as_dict())
+        # Print the instructions with their arguments
+        for inst in parsed_instructions:
+            logger.debug(f"The parsed is: {inst}")
 
-    # Print the instructions with their arguments
-    for inst in result:
-        print(f"The parsed is: {inst}")
+        return parsed_instructions
 
-    return result
+    def generate_string_divided_by_bars(self) -> str:
+        parsed_string = self.parse()
+
+        string_divided_by_bars = ''
+        for elem in parsed_string:
+            stringified_list = ''.join(elem)
+            string_divided_by_bars += stringified_list + '|'
+
+        return string_divided_by_bars
