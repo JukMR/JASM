@@ -3,6 +3,10 @@ import argparse
 from typing import Any, List, Dict, TypeAlias
 
 
+from logging_config import logger
+
+
+
 Command: TypeAlias = List[Any] | Dict[str, Any] | str
 
 class YamlHandler:
@@ -100,7 +104,7 @@ def main() -> None:
 
     output_regex = yaml_handler.produce_regex()
 
-    print(f"The output regex is: {output_regex}")
+    logger.debug(f"The output regex is: {output_regex}")
 
 
 if __name__ == "__main__":
