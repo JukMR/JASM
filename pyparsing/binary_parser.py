@@ -1,8 +1,8 @@
 
-import argparse
-from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, Optional
-from pyparsing import printables, hexnums, line_end, python_style_comment
+from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, ParseResults
+from pyparsing import printables, hexnums, line_end, python_style_comment, Optional
 
+from pathlib import Path
 
 # Set default whitespace
 # This is done to be able to parse the end of line '\n'
@@ -58,25 +58,20 @@ init_section = INIT + lines
 text_section = TEXT + lines
 fini_section = FINI + lines
 
+Start_of_file = Suppress(SkipTo(init_section))
 
 # Parse the binary file
-parsed = ( SkipTo(init_section)
+parsed = (Start_of_file
           + init_section
           + text_section
           + fini_section
           )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-b', '--binary', required=True, help='Input binary for parsing')
-    args = parser.parse_args()
-
-    binary_file = args.binary
-
+def parse(file: Path | str) -> ParseResults:
 
     # Read the binary file
-    with open(binary_file, "r", encoding='utf-8') as f:
+    with open(file, "r", encoding='utf-8') as f:
         binary = f.read()
         print(binary.encode('utf-8'))
 
@@ -89,6 +84,4 @@ def main() -> None:
     for inst in result:
         print(f"The parsed is: {inst}")
 
-
-
-main()
+    return result
