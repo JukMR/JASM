@@ -17,3 +17,7 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 
 logger.addHandler(handler)
+
+
+def enable_debugging():
+    logger.setLevel(logging.DEBUG)
