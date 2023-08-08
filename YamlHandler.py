@@ -9,6 +9,9 @@ from logging_config import logger
 
 Command: TypeAlias = List[Any] | Dict[str, Any] | str
 
+global IGNORE_ARGS
+IGNORE_ARGS = r'[^\|]*\|'
+
 class YamlHandler:
     def __init__(self, yaml_pathStr: str) -> None:
         self.loaded_yaml = self.read_yaml(yaml_pathStr)
@@ -23,7 +26,7 @@ class YamlHandler:
         if isinstance(com, dict):
             return self.processor.process_dict(com)
         elif isinstance(com, str):
-            return com + r'\|'
+            return com + IGNORE_ARGS
         else:
             # TODO implementar excepcion para tipos no soportados por el programa
             raise ValueError("Command type not valid")
@@ -32,19 +35,21 @@ class YamlHandler:
         output_regex = ''
         for com in self.loaded_yaml['commands']:
             output_regex += self.handle_yaml_command(com)
+
+        # Log results
+        logger.debug(f"The output regex is: {output_regex}")
+
         return output_regex
 
 
 class InstructionProcessor:
-    def __init__(self) -> None:
-        pass
 
     def process_any(self, any_com: Command) -> str:
         if 'include_list' in any_com:
             output = ''
             for elem in any_com['include_list']:
-                output += f"{elem}|"
-            output = '(' + output.rstrip('|') + ')'
+                output += fr"{elem}{IGNORE_ARGS}|"
+            output = '(' + output.rstrip(r'\|') + ')'
 
             min_amount = any_com['min']
             max_amount = any_com['max']
@@ -52,15 +57,15 @@ class InstructionProcessor:
             if min_amount > max_amount:
                 raise ValueError(f"Wrong min:{min_amount} or max:{max_amount} in yaml")
 
-            output += rf"\|{{{min_amount},{max_amount}}}"
+            output += rf"{{{min_amount},{max_amount}}}"
 
             return output
 
         elif 'exclude_list' in any_com:
             output = ''
             for elem in any_com['exclude_list']:
-                output += f"{elem}|"
-            output = '(' + output.rstrip('|') + ')'
+                output += rf"{elem}{IGNORE_ARGS}|"
+            output = '(' + output.rstrip(r'\|') + ')'
 
             min_amount = any_com['min']
             max_amount = any_com['max']
@@ -92,20 +97,3 @@ class InstructionProcessor:
                 return self.process_mov(com['mov'])
             case _:
                 raise ValueError('Invalid YAML input.')
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input-yaml', required=True)
-    args = parser.parse_args()
-
-
-    yaml_handler = YamlHandler(args.input_yaml)
-
-    output_regex = yaml_handler.produce_regex()
-
-    logger.debug(f"The output regex is: {output_regex}")
-
-
-if __name__ == "__main__":
-    main()
