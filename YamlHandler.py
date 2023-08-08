@@ -23,7 +23,7 @@ class YamlHandler:
         if isinstance(com, dict):
             return self.processor.process_dict(com)
         elif isinstance(com, str):
-            return com
+            return com + r'\|'
         else:
             # TODO implementar excepcion para tipos no soportados por el programa
             raise ValueError("Command type not valid")
@@ -52,7 +52,7 @@ class InstructionProcessor:
             if min_amount > max_amount:
                 raise ValueError(f"Wrong min:{min_amount} or max:{max_amount} in yaml")
 
-            output += f"{{{min_amount},{max_amount}}}"
+            output += rf"\|{{{min_amount},{max_amount}}}"
 
             return output
 
@@ -68,7 +68,7 @@ class InstructionProcessor:
             if min_amount > max_amount:
                 raise ValueError(f"Wrong min:{min_amount} or max:{max_amount} in yaml")
 
-            exclude_output = f"(?!.*{output})"
+            exclude_output = rf"(?!.*{output})\|"
 
             # TODO: add this implementation
             # exclude_output += f"{{{min_amount},{max_amount}}}"
@@ -77,10 +77,10 @@ class InstructionProcessor:
 
     def process_not(self, not_com: Command) -> str:
         not_command = not_com[0]
-        return f'(?!.*{not_command})'
+        return fr'(?!.*{not_command})\|'
 
     def process_mov(self, mov_com: Command) -> str:
-        return r'mov[^\|]+'
+        return r'mov[^\|]+\|'
 
     def process_dict(self, com) -> str:
         match list(com.keys())[0]:
