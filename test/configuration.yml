@@ -1,0 +1,8 @@
+test_configs:
+  - yaml: 'yaml/9_calls.yml'
+    binary: 'binary/binary_data.s'
+    expected: True
+
+  - yaml: 'yaml/10_calls.yml'
+    binary: 'binary/binary_data.s'
+    expected: False
