@@ -5,13 +5,12 @@ from typing import Any, List, Dict, TypeAlias
 from logging_config import logger
 
 
-
 Command: TypeAlias = List[Any] | Dict[str, Any] | str
 
 global IGNORE_ARGS
 IGNORE_ARGS = r'[^\|]*\|'
 
-class YamlHandler:
+class Yaml2Regex:
     def __init__(self, yaml_pathStr: str) -> None:
         self.loaded_yaml = self.read_yaml(yaml_pathStr)
         self.processor = InstructionProcessor()

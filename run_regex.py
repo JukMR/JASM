@@ -2,7 +2,7 @@ from parsing.binary_parser import Parser
 import re
 import argparse
 
-from YamlRegexCreator import YamlHandler
+from Yaml2Regex import Yaml2Regex
 
 from logging_config import enable_debugging
 
@@ -25,7 +25,7 @@ def match(yaml_pathStr: str, binary: str, debug: bool = False) -> bool:
     if debug:
         enable_debugging()
 
-    regex_rule = YamlHandler(yaml_pathStr=yaml_pathStr).produce_regex()
+    regex_rule = Yaml2Regex(yaml_pathStr=yaml_pathStr).produce_regex()
     stringify_binary = Parser(file=binary).generate_string_divided_by_bars()
 
     did_match = run_regex_rule(regex_rule=regex_rule, stringify_binary=stringify_binary)
