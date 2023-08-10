@@ -6,3 +6,7 @@ test_configs:
   - yaml: 'yaml/10_calls.yml'
     binary: 'binary/binary_data.s'
     expected: False
+
+  - yaml: 'yaml/exclude_list.yml'
+    binary: 'binary/binary_data.s'
+    expected: False

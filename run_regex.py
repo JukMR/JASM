@@ -2,7 +2,7 @@ from parsing.binary_parser import Parser
 import re
 import argparse
 
-from YamlHandler import YamlHandler
+from YamlRegexCreator import YamlHandler
 
 from logging_config import enable_debugging
 
