@@ -12,11 +12,11 @@ logging.basicConfig(
 logger = logging.getLogger("main_app")
 logger.setLevel(logging.WARNING)
 
-handler = logging.FileHandler("main_app.log")
+# handler = logging.FileHandler("main_app.log")
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
+# handler.setFormatter(formatter)
 
-logger.addHandler(handler)
+# logger.addHandler(handler)
 
 
 def enable_debugging():

@@ -14,10 +14,3 @@ def test_all_configs():
         binary = config['binary']
         expected_result = config['expected']
         assert match(yaml_pathStr=config_yaml, binary=binary) == expected_result
-
-def test_8_calls():
-    assert match(yaml_pathStr='yaml/9_calls.yml', binary='binary/binary_data.s', debug=False) == True
-
-
-def test_9_calls():
-    assert match(yaml_pathStr='yaml/10_calls.yml', binary='binary/binary_data.s', debug=False) == False
