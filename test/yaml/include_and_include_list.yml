@@ -2,13 +2,22 @@
 commands:
   - call
   - $any:
+      include_list:
+        inst:
+          - jmp
+          - endbr64
+          - nopw
+        operands:
+
       exclude_list:
         inst:
           - not
           - mov
           - call
           - add
+        operands:
+
       times:
         min: 1
         max: 1
-  - ret
+  - endbr64
