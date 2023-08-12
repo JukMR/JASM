@@ -35,7 +35,7 @@ class Yaml2Regex:
             output_regex += self.handle_yaml_command(com)
 
         # Log results
-        logger.debug(f"The output regex is: {output_regex}")
+        logger.debug(f"The output regex is:\n {output_regex}")
 
         return output_regex
 
@@ -46,7 +46,7 @@ class InstructionProcessor:
         if 'include_list' in any_com:
             output = ''
             for elem in any_com['include_list']:
-                output += fr"{elem}{IGNORE_ARGS}|"
+                output += rf"{elem}{IGNORE_ARGS}|"
             output = '(' + output.rstrip(r'\|') + ')'
 
             min_amount = any_com['min']
@@ -71,7 +71,7 @@ class InstructionProcessor:
             if min_amount > max_amount:
                 raise ValueError(f"Wrong min:{min_amount} or max:{max_amount} in yaml")
 
-            exclude_output = rf"(?!.*{output})\|"
+            exclude_output = rf"(?!.*{output}){IGNORE_ARGS}|"
 
             # TODO: add this implementation
             # exclude_output += f"{{{min_amount},{max_amount}}}"
@@ -80,10 +80,10 @@ class InstructionProcessor:
 
     def process_not(self, not_com: Command) -> str:
         not_command = not_com[0]
-        return fr'(?!.*{not_command})\|'
+        return rf'(?!.*{not_command}){IGNORE_ARGS}\|'
 
     def process_mov(self, mov_com: Command) -> str:
-        return r'mov[^\|]+\|'
+        return rf'mov{IGNORE_ARGS}\|'
 
     def process_dict(self, com) -> str:
         match list(com.keys())[0]:
