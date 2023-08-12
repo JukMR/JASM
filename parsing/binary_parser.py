@@ -35,7 +35,7 @@ INIT = Suppress(init_section_title)
 TEXT = Suppress(text_section_title)
 FINI = Suppress(fini_section_title)
 
-commentary = Suppress(python_style_comment)
+comment = Suppress(python_style_comment)
 
 TAB = Suppress(Literal('\t'))
 instruction_addr = Suppress(HEX + COLON) + TAB
@@ -51,7 +51,7 @@ inst = (
         instruction_addr ("index*")
         + hex_coding ("coding*")
         + Optional(instruction_code) ("command*")
-        + Optional(commentary) ("comment*")
+        + Optional(comment) ("comment*")
         + many_line_end
         )
 
@@ -79,15 +79,15 @@ class Parser:
         # Read the binary file
         with open(self.file, "r", encoding='utf-8') as f:
             binary = f.read()
-            logger.debug(binary.encode('utf-8'))
+            # logger.critical(binary.encode('utf-8'))
 
         parsed.parse_with_tabs()
         parsed_instructions = parsed.parseString(binary)
-        logger.debug(parsed_instructions.as_dict())
+        # logger.debug(parsed_instructions.as_dict())
 
         # Print the instructions with their arguments
-        for inst in parsed_instructions:
-            logger.debug(f"The parsed is: {inst}")
+        # for inst in parsed_instructions:
+            # logger.debug(f"The parsed is: {inst}")
 
         return parsed_instructions
 
@@ -99,4 +99,5 @@ class Parser:
             stringified_list = ''.join(elem)
             string_divided_by_bars += stringified_list + '|'
 
+        logger.debug(f"The concatenated instructions are:\n {string_divided_by_bars}")
         return string_divided_by_bars
