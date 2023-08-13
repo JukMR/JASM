@@ -1,6 +1,8 @@
 
+from dataclasses import dataclass
+from typing import List
 from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, ParseResults
-from pyparsing import printables, hexnums, line_end, python_style_comment, Optional
+from pyparsing import printables, hexnums, line_end, python_style_comment, Optional, alphanums
 
 from pathlib import Path
 
@@ -43,7 +45,12 @@ instruction_addr = Suppress(HEX + COLON) + TAB
 
 hex_coding = Suppress(Group(Word(hexnums, exact=2)[1, ...] + Optional(TAB)))
 
-command = Word(printables, exclude_chars='#') # TODO: generate rules for this
+mnemonic = Word(alphanums)
+operand = Word(printables, exclude_chars='#,') + Suppress(Literal(',')[0, 1])
+
+command = Group(mnemonic + operand[0, ...])
+
+
 instruction_code = Group(command[1, ...])
 
 
@@ -71,6 +78,15 @@ parsed = (Start_of_file
           + fini_section
           )
 
+
+@dataclass
+class Instruction:
+    mnemonic: str
+    operands: List[str]
+
+    def stringify(self):
+        return self.mnemonic + ',' + ','.join(self.operands)
+
 class Parser:
     def __init__(self, file: Path | str) -> None:
         self.file = file
@@ -82,22 +98,36 @@ class Parser:
             # logger.critical(binary.encode('utf-8'))
 
         parsed.parse_with_tabs()
-        parsed_instructions = parsed.parseString(binary)
+        parsed_instructions = parsed.parse_string(binary)
         # logger.debug(parsed_instructions.as_dict())
 
         # Print the instructions with their arguments
-        # for inst in parsed_instructions:
-            # logger.debug(f"The parsed is: {inst}")
+        for inst in parsed_instructions:
+            logger.debug(f"The parsed is: {inst}")
 
         return parsed_instructions
+
+    def join_all_instructions(self, instruction_lst: List[Instruction]) -> str:
+        result = ''
+        for inst in instruction_lst:
+            result += inst.stringify() + '|'
+        return result
+
+    def parse_Instruction(self, inst: ParserElement) -> Instruction:
+        parsed_inst = inst.asList()[0]
+        mnemonic = parsed_inst[0]
+        operands = parsed_inst[1:]
+        return Instruction(mnemonic=mnemonic, operands=operands)
+
 
     def generate_string_divided_by_bars(self) -> str:
         parsed_string = self.parse()
 
-        string_divided_by_bars = ''
+        instructions = []
         for elem in parsed_string:
-            stringified_list = ''.join(elem)
-            string_divided_by_bars += stringified_list + '|'
+            inst = self.parse_Instruction(elem)
+            instructions.append(inst)
 
+        string_divided_by_bars = self.join_all_instructions(instructions)
         logger.debug(f"The concatenated instructions are:\n {string_divided_by_bars}")
         return string_divided_by_bars
