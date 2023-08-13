@@ -95,11 +95,11 @@ class Parser:
         # Read the binary file
         with open(self.file, "r", encoding='utf-8') as f:
             binary = f.read()
-            # logger.critical(binary.encode('utf-8'))
+            logger.debug(binary.encode('utf-8'))
 
         parsed.parse_with_tabs()
         parsed_instructions = parsed.parse_string(binary)
-        # logger.debug(parsed_instructions.as_dict())
+        logger.debug(parsed_instructions.as_dict())
 
         # Print the instructions with their arguments
         for inst in parsed_instructions:
@@ -129,5 +129,5 @@ class Parser:
             instructions.append(inst)
 
         string_divided_by_bars = self.join_all_instructions(instructions)
-        logger.debug(f"The concatenated instructions are:\n {string_divided_by_bars}")
+        logger.info(f"The concatenated instructions are:\n {string_divided_by_bars}")
         return string_divided_by_bars

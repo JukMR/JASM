@@ -4,7 +4,7 @@ import argparse
 
 from Yaml2Regex import Yaml2Regex
 
-from logging_config import enable_debugging
+from logging_config import enable_debugging, enable_info_level
 
 def run_regex_rule(regex_rule: str, stringify_binary: str) -> bool:
     result = re.findall(pattern=regex_rule, string=stringify_binary)
@@ -14,14 +14,17 @@ def parse_args_from_console():
     parser = argparse.ArgumentParser()
     parser.add_argument('-y', '--yaml', required=True, help='Input yaml for parsing')
     parser.add_argument('-b', '--binary', required=True, help='Input binary for parsing')
-    parser.add_argument('--debug', default=False, action='store_true', help='Enable debugging')
+    parser.add_argument('--debug', default=False, action='store_true', help='Set debugging level')
+    parser.add_argument('--info', default=False, action='store_true', help='Set info level')
 
     args = parser.parse_args()
 
     return args
 
 
-def match(yaml_pathStr: str, binary: str, debug: bool = False) -> bool:
+def match(yaml_pathStr: str, binary: str, debug: bool = False, info: bool = True) -> bool:
+    if info:
+        enable_info_level()
     if debug:
         enable_debugging()
 

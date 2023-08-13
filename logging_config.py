@@ -10,7 +10,7 @@ logging.basicConfig(
 
 # Create a custom logger
 logger = logging.getLogger("main_app")
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.DEBUG)
 
 # handler = logging.FileHandler("main_app.log")
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -19,5 +19,8 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 # logger.addHandler(handler)
 
 
-def enable_debugging():
+def enable_debugging() -> None:
     logger.setLevel(logging.DEBUG)
+
+def enable_info_level() -> None:
+    logger.setLevel(logging.INFO)
