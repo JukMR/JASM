@@ -1,23 +1,35 @@
 import subprocess
 
-class disassembler:
+
+class Disassembler:
     def write_to_disk(self, data: str):
         with open('dissasembled.s', 'w', encoding='utf-8') as file:
             file.write(data)
 
-    def objdump(self, binary: str) -> str | None:
+    def _binary_disambler(self, program: str,
+                          flags: str,
+                          binary: str
+                          ) -> str | None:
         try:
-            result = subprocess.run(['objdump', '-d', binary], capture_output=True, text=True)
+            result = subprocess.run(
+                [program, flags, binary], capture_output=True, text=True)
 
         # Check the return code to see if the command executed successfully
             if result.returncode == 0:
                 self.write_to_disk(result.stdout)
             else:
-                return f"Error: {result.stderr}"  # Return the error message, if any
-
+                # Return the error message, if any
+                return f"Error: {result.stderr}"
 
         except FileNotFoundError:
-            return "Error: objdump command not found. Make sure you have 'objdump' installed and in your system PATH."
+            return f"Error: program not found. Make sure you have {program} installed and in your system PATH."
+
+    def dissamble_with_objdump(self, binary: str):
+        return self._binary_disambler(program='objdump', flags='d', binary=binary)
+
+    def dissamble_with_llvm(self, binary: str):
+        return self._binary_disambler(program='llvm-objdump', flags='d', binary=binary)
+
 
 if __name__ == "__main__":
-    disassembler().objdump(binary='/bin/ls')
+    Disassembler().dissamble_with_objdump(binary='/bin/ls')
