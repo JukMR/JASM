@@ -40,7 +40,7 @@ class Yaml2Regex:
             output_regex += self.handle_yaml_command(com)
 
         # Log results
-        logger.debug(f"The output regex is:\n {output_regex}")
+        logger.info(f"The output regex is:\n {output_regex}")
 
         return output_regex
 
