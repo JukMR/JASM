@@ -13,4 +13,4 @@ def test_all_configs():
         config_yaml = config['yaml']
         binary = config['binary']
         expected_result = config['expected']
-        assert match(yaml_pathStr=config_yaml, binary=binary) == expected_result
+        assert match(pattern_pathStr=config_yaml, binary=binary) == expected_result
