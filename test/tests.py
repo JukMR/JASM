@@ -11,6 +11,6 @@ def test_all_configs():
 
     for config in loaded_yaml['test_configs']:
         config_yaml = config['yaml']
-        binary = config['binary']
+        assembly = config['assembly']
         expected_result = config['expected']
-        assert match(pattern_pathStr=config_yaml, binary=binary) == expected_result
+        assert match(pattern_pathStr=config_yaml, assembly=assembly) == expected_result
