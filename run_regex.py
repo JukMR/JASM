@@ -12,7 +12,7 @@ def run_regex_rule(regex_rule: str, stringify_binary: str) -> bool:
     return len(result) != 0
 
 
-def parse_args_from_console():
+def parse_args_from_console() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--pattern', required=True,
                         help='Input pattern for parsing')
