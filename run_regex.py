@@ -1,11 +1,8 @@
-from pathlib import Path
 import re
 import argparse
 from typing import Optional
 
-from outcome import Value
-
-from parsing.binary_parser import Parser
+from parsing.binary_parser import Parser, ParserImplementation, DissasembleImplementation
 from Yaml2Regex import Yaml2Regex
 
 from logging_config import enable_debugging, enable_info_level
@@ -35,7 +32,13 @@ def parse_args_from_console() -> argparse.Namespace:
     return args
 
 
-def match(pattern_pathStr: str, binary: Optional[str] = None, assembly: Optional[str] = None, debug: bool = False, info: bool = True) -> bool:
+def match(pattern_pathStr: str,
+          binary: Optional[str] = None,
+          assembly: Optional[str] = None,
+          debug: bool = False,
+          info: bool = True
+          ) -> bool:
+
     if info:
         enable_info_level()
     if debug:
@@ -43,10 +46,13 @@ def match(pattern_pathStr: str, binary: Optional[str] = None, assembly: Optional
 
     regex_rule = Yaml2Regex(pattern_pathStr=pattern_pathStr).produce_regex()
 
+    parser_implementation = Parser(parser=ParserImplementation(), disassembler=DissasembleImplementation())
+
     if assembly:
-        stringify_binary =Parser().parse(file=assembly)
+        stringify_binary = parser_implementation.parse(file=assembly)
     elif binary:
-        stringify_binary = Parser().dissamble_and_parse(binary=binary, temp_path_to_dissasemble='tmp_dissasembly.s')
+        parser_implementation.dissasemble(binary=binary, output_path='tmp_dissasembly.s')
+        stringify_binary = parser_implementation.parse(file='tmp_dissasembly.s')
     else:
         raise ValueError("Some error occured")
 
