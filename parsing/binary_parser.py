@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pyparsing import ParseResults, ParserElement
 
 from parsing.pyparsing_binary_rules import parsed
-
+from global_definitions import PathStr
 import sys
 sys.path.append('..')
 
@@ -22,35 +22,39 @@ class Instruction:
 
 
 class BinaryParser(ABC):
-    def parse(self):
+    @abstractmethod
+    def parse(self) -> None:
         pass
 
-    def dissasemble(self):
+    @abstractmethod
+    def dissasemble() -> None:
         pass
 
 
 class Parser(BinaryParser):
-    @staticmethod
-    def parse(file: Path | str) -> str:
-        return ParserImplementation(file=file).parse()
+    def __init__(self, parser: 'ParserImplementation', disassembler: 'DissasembleImplementation'):
+        self.parser_implementation = parser
+        self.disassembler_implementation = disassembler
 
-    @staticmethod
-    def dissasemble(binary: str, output_path: str | Path) -> None:
-        return DissableImplementation(binary=binary, output_path=output_path).dissamble()
+    def parse(self, file) -> str:
+        self.parser_implementation.parse_binary(file=file)
 
-    def dissamble_and_parse(self, binary: str, temp_path_to_dissasemble: str | Path) -> str:
-        self.dissasemble(binary=binary, output_path=temp_path_to_dissasemble)
-        return self.parse(file=temp_path_to_dissasemble)
+        return self.parser_implementation.parse()
+
+    def dissasemble(self, binary: str, output_path: PathStr) -> None:
+        self.disassembler_implementation.load_binary_and_output_path(binary=binary, output_path=output_path)
+        return self.disassembler_implementation.dissasemble()
+
+    # def disassemble_and_parse(self, binary: str, temp_path_to_disassemble: str | Path) -> str:
+    #     self.disassemble(binary=binary, output_path=temp_path_to_disassemble)
+    #     return self.parse(file=temp_path_to_disassemble)
+
 
 
 class ParserImplementation():
-    def __init__(self, file: Path | str) -> None:
-        self.file = file
-        self.parsed_binary = self._run_pyparsing()
-
-    def _run_pyparsing(self) -> ParseResults:
+    def _run_pyparsing(self, file: PathStr) -> ParseResults:
         # Read the binary file
-        with open(self.file, "r", encoding='utf-8') as f:
+        with open(file, "r", encoding='utf-8') as f:
             binary = f.read()
             logger.debug(binary.encode('utf-8'))
 
@@ -87,12 +91,15 @@ class ParserImplementation():
             f"The concatenated instructions are:\n {string_divided_by_bars}")
         return string_divided_by_bars
 
+    def parse_binary(self, file: PathStr) -> None:
+        self.parsed_binary = self.parsed_binary = self._run_pyparsing(file=file)
+
     def parse(self):
         return self._generate_string_divided_by_bars()
 
 
-class DissableImplementation:
-    def __init__(self, binary: str, output_path: str | Path) -> None:
+class DissasembleImplementation:
+    def load_binary_and_output_path(self, binary: str, output_path: PathStr):
         self.binary = binary
         self.output_path = output_path
 
@@ -100,9 +107,9 @@ class DissableImplementation:
         with open(self.output_path, 'w', encoding='utf-8') as file:
             file.write(data)
 
-    def _binary_disambler(self, program: str, flags: str) -> str | None:
+    def _binary_dissasemble(self, program: str, flags: str) -> str | None:
         try:
-            result = subprocess.run([program, flags, self.binary], capture_output=True,text=True)
+            result = subprocess.run([program, flags, self.binary], capture_output=True, text=True)
 
             # Check the return code to see if the command executed successfully
             if result.returncode == 0:
@@ -114,11 +121,11 @@ class DissableImplementation:
         except FileNotFoundError:
             return f"Error: program not found. Make sure you have {program} installed and in your system PATH."
 
-    def dissamble_with_objdump(self):
-        return self._binary_disambler(program='objdump', flags='-d')
+    def dissasemble_with_objdump(self):
+        return self._binary_dissasemble(program='objdump', flags='-d')
 
-    def dissamble_with_llvm(self):
-        return self._binary_disambler(program='llvm-objdump', flags='-d')
+    def dissasemble_with_llvm(self):
+        return self._binary_dissasemble(program='llvm-objdump', flags='-d')
 
-    def dissamble(self):
-        self.dissamble_with_objdump()
+    def dissasemble(self):
+        self.dissasemble_with_objdump()
