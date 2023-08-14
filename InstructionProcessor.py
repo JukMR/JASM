@@ -14,7 +14,7 @@ class InstructionProcessor:
     operands: Dict | None
 
     def _generate_only_include(self, include_list_regex: List[str], times_regex: str | None) -> str:
-        inst_joined = self.join_instructions(inst_list=include_list_regex)
+        inst_joined = self._join_instructions(inst_list=include_list_regex)
 
         if times_regex is None:
             return f"({inst_joined})"
@@ -22,7 +22,7 @@ class InstructionProcessor:
             return f"({inst_joined}){times_regex}"
 
     def _generate_only_exclude(self, exclude_list_regex: List[str], times_regex: str | None) -> str:
-        inst_joined = self.join_instructions(inst_list=exclude_list_regex)
+        inst_joined = self._join_instructions(inst_list=exclude_list_regex)
 
         if times_regex is None:
             return f"((?!{inst_joined}){IGNORE_ARGS})"
@@ -33,7 +33,7 @@ class InstructionProcessor:
     def _remove_last_character(string: str) -> str:
         return string[:-1]
 
-    def join_instructions(self, inst_list: List[str]) -> str:
+    def _join_instructions(self, inst_list: List[str]) -> str:
         if len(inst_list) == 0:
             raise ValueError("There are no instructions to join")
 
@@ -68,8 +68,8 @@ class InstructionProcessor:
         # $any case
         if self.exclude_list is not None and self.include_list is not None:
 
-            exclude_list_regex = self.join_instructions(inst_list=self.exclude_list)
-            include_list_regex = self.join_instructions(inst_list=self.include_list)
+            exclude_list_regex = self._join_instructions(inst_list=self.exclude_list)
+            include_list_regex = self._join_instructions(inst_list=self.include_list)
 
             if times_regex is not None:
                 return f"((?!{exclude_list_regex})({include_list_regex})){times_regex}"

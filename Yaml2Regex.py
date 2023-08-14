@@ -4,15 +4,15 @@ from typing import Any
 
 from logging_config import logger
 from InstructionProcessor import AnyInstructionProcessor, NotInstructionProcessor, BasicInstructionProcessor
-from global_definitions import IGNORE_ARGS, Pattern
+from global_definitions import IGNORE_ARGS, Pattern, PathStr
 
 
 class Yaml2Regex:
-    def __init__(self, pattern_pathStr: str) -> None:
+    def __init__(self, pattern_pathStr: PathStr) -> None:
         self.loaded_yaml = self.read_yaml(file=pattern_pathStr)
 
     @staticmethod
-    def read_yaml(file) -> Any:
+    def read_yaml(file: PathStr) -> Any:
         with open(file=file, mode='r', encoding='utf-8') as f:
             return yaml.load(stream=f.read(), Loader=yaml.Loader)
 
