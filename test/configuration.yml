@@ -1,24 +1,24 @@
 test_configs:
   - yaml: 'yaml/9_calls.yml'
-    binary: 'binary/binary_data.s'
+    assembly: 'binary/binary_data.s'
     expected: True
 
   - yaml: 'yaml/10_calls.yml'
-    binary: 'binary/binary_data.s'
+    assembly: 'binary/binary_data.s'
     expected: False
 
   - yaml: 'yaml/exclude_list.yml'
-    binary: 'binary/binary_data.s'
+    assembly: 'binary/binary_data.s'
     expected: True
 
   - yaml: 'yaml/not_call.yml'
-    binary: 'binary/binary_data.s'
+    assembly: 'binary/binary_data.s'
     expected: True
 
   - yaml: 'yaml/include_and_include_list.yml'
-    binary: 'binary/binary_data.s'
+    assembly: 'binary/binary_data.s'
     expected: True
 
   - yaml: 'yaml/call_between_3_and_9.yml'
-    binary: 'binary/binary_data.s'
+    assembly: 'binary/binary_data.s'
     expected: True
