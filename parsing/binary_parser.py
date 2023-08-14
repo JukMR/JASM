@@ -22,21 +22,25 @@ class Instruction:
 
 
 class BinaryParser(ABC):
-    @abstractmethod
-    def parse():
+    def parse(self):
         pass
 
-    @abstractmethod
-    def dissamble():
+    def dissasemble(self):
         pass
 
 
 class Parser(BinaryParser):
-    def parse(self, parseImplementation: 'ParserImplementation'):
-        return parseImplementation.parse
+    @staticmethod
+    def parse(file: Path | str) -> str:
+        return ParserImplementation(file=file).parse()
 
-    def dissamble(self, dissambleImplementation: 'DissableImplementation'):
-        return dissambleImplementation.dissamble
+    @staticmethod
+    def dissasemble(binary: str, output_path: str | Path) -> None:
+        return DissableImplementation(binary=binary, output_path=output_path).dissamble()
+
+    def dissamble_and_parse(self, binary: str, temp_path_to_dissasemble: str | Path) -> str:
+        self.dissasemble(binary=binary, output_path=temp_path_to_dissasemble)
+        return self.parse(file=temp_path_to_dissasemble)
 
 
 class ParserImplementation():
@@ -88,25 +92,21 @@ class ParserImplementation():
 
 
 class DissableImplementation:
-    def __init__(self, binary: str) -> None:
+    def __init__(self, binary: str, output_path: str | Path) -> None:
         self.binary = binary
+        self.output_path = output_path
 
-    def write_to_disk(self, data: str) -> None:
-        with open('dissasembled.s', 'w', encoding='utf-8') as file:
+    def _write_to_disk(self, data: str) -> None:
+        with open(self.output_path, 'w', encoding='utf-8') as file:
             file.write(data)
 
-    def _binary_disambler(self, program: str,
-                          flags: str
-                          ) -> str | None:
+    def _binary_disambler(self, program: str, flags: str) -> str | None:
         try:
-            result = subprocess.run(
-                [program, flags, self.binary],
-            capture_output=True,
-            text=True)
+            result = subprocess.run([program, flags, self.binary], capture_output=True,text=True)
 
-        # Check the return code to see if the command executed successfully
+            # Check the return code to see if the command executed successfully
             if result.returncode == 0:
-                    self.write_to_disk(result.stdout)
+                self._write_to_disk(result.stdout)
             else:
                 # Return the error message, if any
                 return f"Error: {result.stderr}"
@@ -115,10 +115,10 @@ class DissableImplementation:
             return f"Error: program not found. Make sure you have {program} installed and in your system PATH."
 
     def dissamble_with_objdump(self):
-        return self._binary_disambler(program='objdump', flags='d')
+        return self._binary_disambler(program='objdump', flags='-d')
 
     def dissamble_with_llvm(self):
-        return self._binary_disambler(program='llvm-objdump', flags='d')
+        return self._binary_disambler(program='llvm-objdump', flags='-d')
 
     def dissamble(self):
         self.dissamble_with_objdump()
