@@ -3,13 +3,15 @@ patterns:
   - ret
   - $any:
       include_list:
-        - nop
-        - int3
+        inst:
+          - nop
+          - int3
       min: 0
       max: 3
   - $any:
       exclude_list:
-        - ret
+        inst:
+          - ret
       min: 0
       max: 4
   - call

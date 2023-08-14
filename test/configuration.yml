@@ -18,3 +18,7 @@ test_configs:
   - yaml: 'yaml/include_and_include_list.yml'
     binary: 'binary/binary_data.s'
     expected: True
+
+  - yaml: 'yaml/call_between_3_and_9.yml'
+    binary: 'binary/binary_data.s'
+    expected: True
