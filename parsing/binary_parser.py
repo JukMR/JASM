@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import subprocess
+import time
 from logging_config import logger
 from pathlib import Path
 from typing import List
@@ -10,6 +11,27 @@ from parsing.pyparsing_binary_rules import parsed
 from global_definitions import PathStr
 import sys
 sys.path.append('..')
+
+
+def measure_performance(title=None):
+    'Function to test performance'
+    def decorator(func):
+        'Decorator to add a custom title to this function'
+        def wrapper(*args, **kwargs):
+            'Main wrapper to run perf'
+            start_time = time.time()
+            result = func(*args, **kwargs)
+            end_time = time.time()
+            execution_time = end_time - start_time
+
+            if title:
+                logger.debug("%s: Function '%s' took %f seconds to execute.", title, func.__name__, execution_time)
+            else:
+                logger.debug("Function '%s' took %f seconds to execute.", func.__name__, execution_time)
+
+            return result
+        return wrapper
+    return decorator
 
 
 @dataclass
@@ -52,19 +74,31 @@ class Parser(BinaryParser):
 
 
 class ParserImplementation():
-    def _run_pyparsing(self, file: PathStr) -> ParseResults:
-        # Read the binary file
-        with open(file, "r", encoding='utf-8') as f:
-            binary = f.read()
+
+    def _open_assembly(self, file: PathStr) -> str:
+    # Read the binary file
+        with open(file, "r", encoding='utf-8') as file_d:
+            binary = file_d.read()
             logger.debug(binary.encode('utf-8'))
 
+        return binary
+
+    @measure_performance(title="Pyparsing")
+    def _execute_pyparsing(self, binary: str) -> ParseResults:
         parsed.parse_with_tabs()
         parsed_instructions = parsed.parse_string(binary)
         logger.debug(parsed_instructions.as_dict())
 
+        return parsed_instructions
+
+    def _run_pyparsing(self, file: PathStr) -> ParseResults:
+        binary = self._open_assembly(file)
+
+        parsed_instructions = self._execute_pyparsing(binary=binary)
+
         # Print the instructions with their arguments
         for inst in parsed_instructions:
-            logger.debug(f"The parsed is: {inst}")
+            logger.debug("The parsed is: %s", inst)
 
         return parsed_instructions
 
@@ -87,11 +121,11 @@ class ParserImplementation():
             instructions.append(inst)
 
         string_divided_by_bars = self._join_all_instructions(instructions)
-        logger.info(f"The concatenated instructions are:\n {string_divided_by_bars}\n")
+        logger.info("The concatenated instructions are:\n %s\n", string_divided_by_bars)
         return string_divided_by_bars
 
     def parse_binary(self, file: PathStr) -> None:
-        self.parsed_binary = self.parsed_binary = self._run_pyparsing(file=file)
+        self.parsed_binary = self._run_pyparsing(file=file)
 
     def parse(self):
         return self._generate_string_divided_by_bars()
