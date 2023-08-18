@@ -1,4 +1,5 @@
 'Main entry module'
+from pathlib import Path
 import re
 import time
 import argparse
@@ -7,7 +8,7 @@ from typing import List, Optional, Any
 from parsing.binary_parser import Parser, ParserImplementation, DissasembleImplementation
 from yaml2regex import Yaml2Regex
 
-from logging_config import enable_debugging, enable_info_level, logger
+from logging_config import enable_debugging, enable_info_level, logger, add_log_file
 
 
 def run_regex_rule(regex_rule: str, stringify_binary: str) -> List[Any]:
@@ -52,12 +53,19 @@ def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional
     if debug:
         enable_debugging()
 
+
+    start_time = time.time()
     regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
+    execution_time = time.time() - start_time
+
+    logger.debug("Finishing generating regex in %4f", execution_time)
 
     parser_implementation = Parser(
                                 parser=ParserImplementation(),
                                 disassembler=DissasembleImplementation()
                                 )
+
+    start_time = time.time()
 
     if assembly:
         stringify_binary = parser_implementation.parse(file=assembly)
@@ -67,21 +75,33 @@ def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional
     else:
         raise ValueError("Some error occured")
 
-    match_result = run_regex_rule(regex_rule=regex_rule, stringify_binary=stringify_binary)
+    execution_time = time.time() - start_time
+    logger.debug("Finishing parsing and generating instructions in %4f", execution_time)
 
+    start_time = time.time()
+    match_result = run_regex_rule(regex_rule=regex_rule, stringify_binary=stringify_binary)
+    execution_time = time.time() - start_time
+    logger.debug("Finishing running regex rule in %4f", execution_time)
 
     if len(match_result) == 0:
-        print("RESULT: Pattern not found\n")
+        logger.info("RESULT: Pattern not found\n")
         return False
 
-    print("RESULT: Found a match:")
+    logger.info("RESULT: Found a match:")
     for matched_pattern in match_result:
-        print(f"Pattern: {matched_pattern}\n")
+        logger.info("Pattern: %s\n", matched_pattern)
     return True
 
 
 
 if __name__ == "__main__":
+    date = time.ctime().replace(' ', '_').replace(':','_').lower()
+    # Create log file
+    logs_folder = Path('logs')
+    logs_folder.mkdir(parents=True, exist_ok=True)
+
+
+    add_log_file(f'{logs_folder.name}/main_log_{date}')
     args = parse_args_from_console()
     print("Starting execution... ")
     match(pattern_pathstr=args.pattern, assembly=args.assembly, binary=args.binary,
