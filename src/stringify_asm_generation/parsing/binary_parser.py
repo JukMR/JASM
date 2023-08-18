@@ -1,16 +1,15 @@
+'Binary Parser module'
 from abc import ABC, abstractmethod
 import subprocess
 import time
-from logging_config import logger
-from pathlib import Path
 from typing import List
 from dataclasses import dataclass
 from pyparsing import ParseResults, ParserElement
 
-from parsing.pyparsing_binary_rules import parsed
-from global_definitions import PathStr
-import sys
-sys.path.append('..')
+from src.logging_config import logger
+from src.stringify_asm_generation.parsing.pyparsing_binary_rules import parsed
+from src.global_definitions import PathStr
+
 
 
 def measure_performance(title=None):

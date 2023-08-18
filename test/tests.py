@@ -5,8 +5,8 @@ import yaml
 import sys
 sys.path.append('..')
 
-from logging_config import logger
-from run_regex import match
+from src.logging_config import logger
+from main import match
 
 
 def load_test_configs(file_path):

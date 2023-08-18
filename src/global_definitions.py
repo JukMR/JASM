@@ -7,5 +7,6 @@ IGNORE_ARGS = r'[^\|]*\|'
 
 MAX_PYTHON_INT = sys.maxsize * 2
 
-Pattern: TypeAlias = List[Any] | Dict[str, Any] | str
+PatternDict: TypeAlias = Dict[str, Any]
+Pattern: TypeAlias = List[Any] | PatternDict
 PathStr: TypeAlias = str | Path
