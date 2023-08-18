@@ -26,9 +26,9 @@ fini_section_title = "Disassembly of section .fini:" + many_line_end
 
 label = Suppress(HEX + LESS_THAN + Word(printables, exclude_chars=GREATER_THAN) + GREATER_THAN + COLON + line_end)
 
-INIT = Suppress(init_section_title)
-TEXT = Suppress(text_section_title)
-FINI = Suppress(fini_section_title)
+INIT = Optional(Suppress(init_section_title))
+TEXT = Optional(Suppress(text_section_title))
+FINI = Optional(Suppress(fini_section_title))
 
 comment = Suppress(python_style_comment)
 
@@ -61,11 +61,11 @@ inst = (
 line = label("label") | inst ("inst")
 lines = OneOrMore(line)
 
-init_section = INIT + lines
-text_section = TEXT + lines
-fini_section = FINI + lines
+init_section = Optional(INIT + lines)
+text_section = Optional(TEXT + lines)
+fini_section = Optional(FINI + lines)
 
-Start_of_file = Suppress(SkipTo(init_section))
+Start_of_file = Suppress(SkipTo(Literal("Disassembly")))
 
 # Parse the binary file
 parsed = (Start_of_file

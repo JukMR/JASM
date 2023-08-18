@@ -22,3 +22,11 @@ test_configs:
   - yaml: 'yaml/call_between_3_and_9.yml'
     assembly: 'binary/binary_data.s'
     expected: True
+
+  - yaml: 'yaml/moonbounce_regex_matcher.yaml'
+    assembly: 'binary/moonbounce_malware_truncated.s'
+    expected: True
+
+  - yaml: 'yaml/1_call.yml'
+    assembly: 'binary/binary_data.s'
+    expected: True
