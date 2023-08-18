@@ -7,7 +7,7 @@ import yaml
 from src.logging_config import logger
 from src.regex_generation.instruction_processor import AnyInstructionProcessor, NotInstructionProcessor
 from src.regex_generation.instruction_processor import BasicInstructionProcessor
-from src.global_definitions import IGNORE_ARGS, Pattern, PathStr
+from src.global_definitions import IGNORE_ARGS, Pattern, PathStr, PatternDict
 
 
 class Yaml2Regex:
@@ -22,7 +22,7 @@ class Yaml2Regex:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
     @staticmethod
-    def process_dict_pattern(pattern) -> str:
+    def process_dict_pattern(pattern: PatternDict) -> str:
         'Dispatch dict pattern. Resolve if pattern is $any, $not or $basic'
         match list(pattern.keys())[0]:
             case '$any':

@@ -1,20 +1,22 @@
 'Instruction Processor Module'
 from dataclasses import dataclass
+from inspect import isroutine
 from typing import Any, List, Dict, Literal, Optional
 
-from src.global_definitions import IGNORE_ARGS, MAX_PYTHON_INT, PatternDict
+from src.global_definitions import IGNORE_ARGS, MAX_PYTHON_INT
+from src.global_definitions import PatternDict, IncludeListType, ExcludeListType, TimesType, OperandType
 
 
 @dataclass
 class InstructionProcessor:
     'Instruction Processor'
     pattern: PatternDict
-    include_list: Optional[List[str]]
-    exclude_list: Optional[List[str]]
-    times: Optional[Dict]
-    operands: Optional[Dict]
+    include_list: IncludeListType
+    exclude_list: ExcludeListType
+    times: TimesType
+    operands: OperandType
 
-    def _generate_only_include(self, include_list_regex: List[str], times_regex: str | None) -> str:
+    def _generate_only_include(self, include_list_regex: List[str], times_regex: Optional[str]) -> str:
         inst_joined = self._join_instructions(inst_list=include_list_regex)
 
         if times_regex is None:
@@ -22,7 +24,7 @@ class InstructionProcessor:
 
         return f"({inst_joined}){times_regex}"
 
-    def _generate_only_exclude(self, exclude_list_regex: List[str], times_regex: str | None) -> str:
+    def _generate_only_exclude(self, exclude_list_regex: List[str], times_regex: Optional[str]) -> str:
         inst_joined = self._join_instructions(inst_list=exclude_list_regex)
 
         if times_regex is None:
@@ -46,7 +48,7 @@ class InstructionProcessor:
         return output
 
 
-    def _get_min_max_regex(self) -> str | None:
+    def _get_min_max_regex(self) -> Optional[str]:
 
         if self.times is None:
             return None
@@ -116,20 +118,25 @@ class BasicInstructionProcessor(InstructionProcessor):
         return pattern_elems
 
     @staticmethod
-    def _get_instruction_properties(include_list: Optional[List[str]],
-                                    pattern: PatternDict) -> Dict:
+    def _get_instruction_properties(include_list: IncludeListType,
+                                    pattern: PatternDict) -> Dict[str, Any]:
         if include_list is None:
             raise ValueError(
                 f"Some error happened and this basic instruction: {pattern}"
                 + "doesn't have include_list")
 
         include_inst = include_list[0]
-        return pattern[include_inst]
 
-    def _get_times(self) -> Dict | None:
+        instruction_properties = pattern[include_inst]
+        if not isinstance(instruction_properties, Dict):
+            raise ValueError(f"Returning properties {instruction_properties} is not a Dict")
+
+        return instruction_properties
+
+    def _get_times(self) -> TimesType:
         return self._properties.get('times', None)
 
-    def _get_operands(self) -> Dict | None:
+    def _get_operands(self) -> OperandType:
         return self._properties.get('operands', None)
 
     def process_basic_pattern(self) -> str:
@@ -145,7 +152,7 @@ class NotInstructionProcessor(InstructionProcessor):
         super().__init__(pattern=not_pattern, include_list=None, exclude_list=exclude_list,
                          times=times, operands=None)
 
-    def _get_times(self) -> Dict | None:
+    def _get_times(self) -> TimesType:
         return self.pattern.get('times', None)
 
     def process_not_pattern(self) -> str:
@@ -166,7 +173,7 @@ class AnyInstructionProcessor(InstructionProcessor):
     @staticmethod
     def _get_instruction_list(pattern: PatternDict,
                               pattern_type: Literal['include_list', 'exclude_list']
-                              ) -> List[str] | None:
+                              ) -> Optional[List[str]]:
         if not isinstance(pattern, Dict):
             return None
 
@@ -178,10 +185,12 @@ class AnyInstructionProcessor(InstructionProcessor):
         if type_list_inst is None:
             return None
 
-        return type_list_inst
+        if isinstance(type_list_inst, List):
+            return type_list_inst
+        raise ValueError(f"{type_list_inst} is not a List. It is: {type(type_list_inst)}")
 
     @staticmethod
-    def _get_times( pattern: PatternDict) -> Any | None:
+    def _get_times( pattern: PatternDict) -> Optional[Any]:
         return pattern.get('times', None)
 
 

@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 import subprocess
 import time
-from typing import List
+from typing import Any, Callable, List, Optional
 from dataclasses import dataclass
 from pyparsing import ParseResults, ParserElement
 
@@ -12,11 +12,11 @@ from src.global_definitions import PathStr
 
 
 
-def measure_performance(title=None):
+def measure_performance(title: Optional[str] = None) -> Callable[..., Any]:
     'Function to test performance'
-    def decorator(func):
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         'Decorator to add a custom title to this function'
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             'Main wrapper to run perf'
             start_time = time.time()
             result = func(*args, **kwargs)
@@ -49,7 +49,7 @@ class Instruction:
 class BinaryParser(ABC):
     'Base class for Binary Parser'
     @abstractmethod
-    def parse(self, file: PathStr) -> None:
+    def parse(self, file: PathStr) -> str:
         'Method for creating parsing assembly implementation'
 
     @abstractmethod
@@ -81,7 +81,7 @@ class Parser(BinaryParser):
 class ParserImplementation():
     'Parse Implementation'
     def __init__(self) -> None:
-        self.parsed_binary = None
+        self.parsed_binary: Optional[ParseResults] = None
 
     def _open_assembly(self, file: PathStr) -> str:
     # Read the binary file
@@ -108,7 +108,10 @@ class ParserImplementation():
         for inst in parsed_instructions:
             logger.debug("The parsed is: %s", inst)
 
-        return parsed_instructions
+        if isinstance(parsed_instructions, ParseResults):
+            return parsed_instructions
+
+        raise ValueError(f"Return ParseResults: {parsed_instructions}")
 
     def _join_all_instructions(self, instruction_lst: List[Instruction]) -> str:
         result = ''
@@ -117,7 +120,7 @@ class ParserImplementation():
         return result
 
     def _parse_instruction(self, inst: ParserElement) -> Instruction:
-        parsed_inst = inst.asList()[0]
+        parsed_inst = inst.as_list()[0] #type: ignore
         mnemonic = parsed_inst[0]
         operands = parsed_inst[1:]
         return Instruction(mnemonic=mnemonic, operands=operands)
@@ -139,7 +142,7 @@ class ParserImplementation():
         'Execute function to parse binary'
         self.parsed_binary = self._run_pyparsing(file=file)
 
-    def parse(self):
+    def parse(self) -> str:
         'Main parse function'
         return self._generate_string_divided_by_bars()
 
@@ -147,9 +150,9 @@ class ParserImplementation():
 class DissasembleImplementation:
     'Dissasembler Implementation'
     def __init__(self) -> None:
-        self.binary = None
-        self.output_path = None
-        self.dissasemble_program = None
+        self.binary: Optional[str] = None
+        self.output_path: Optional[PathStr] = None
+        self.dissasemble_program: Optional[str] = None
 
     def set_binary(self, binary: str) -> None:
         'Set binary for DissasembleImplementation class'

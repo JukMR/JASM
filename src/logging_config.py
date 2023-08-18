@@ -12,7 +12,7 @@ logging.basicConfig(
 logger = logging.getLogger("main_app")
 logger.setLevel(logging.DEBUG)
 
-def add_log_file(filename: str):
+def add_log_file(filename: str) -> None:
     'Add a log file'
     handler = logging.FileHandler(f"{filename}.log")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
