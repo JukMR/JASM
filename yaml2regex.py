@@ -1,5 +1,7 @@
-import yaml
+'yaml2regex module'
+
 from typing import Any
+import yaml
 
 
 from logging_config import logger
@@ -8,16 +10,19 @@ from global_definitions import IGNORE_ARGS, Pattern, PathStr
 
 
 class Yaml2Regex:
-    def __init__(self, pattern_pathStr: PathStr) -> None:
-        self.loaded_yaml = self.read_yaml(file=pattern_pathStr)
+    'Yaml2Regex class'
+    def __init__(self, pattern_pathstr: PathStr) -> None:
+        self.loaded_yaml = self.read_yaml(file=pattern_pathstr)
 
     @staticmethod
     def read_yaml(file: PathStr) -> Any:
+        'Read and return the parsed yaml'
         with open(file=file, mode='r', encoding='utf-8') as f:
             return yaml.load(stream=f.read(), Loader=yaml.Loader)
 
     @staticmethod
     def process_dict_pattern(pattern) -> str:
+        'Dispatch dict pattern. Resolve if pattern is $any, $not or $basic'
         match list(pattern.keys())[0]:
             case '$any':
                 pattern = pattern['$any']
@@ -29,6 +34,7 @@ class Yaml2Regex:
                 return BasicInstructionProcessor(pattern).process_basic_pattern()
 
     def handle_pattern(self, pattern: Pattern) -> str:
+        'Dispatch pattern based on its type: str or dict'
 
         if isinstance(pattern, dict):
             return self.process_dict_pattern(pattern)
@@ -38,7 +44,8 @@ class Yaml2Regex:
             # TODO implementar excepcion para tipos no soportados por el programa
             raise ValueError("Pattern type not valid")
 
-    def produce_regex(self):
+    def produce_regex(self) -> str:
+        'Handle all patterns and returns the final string'
         output_regex = ''
         for com in self.loaded_yaml['patterns']:
             output_regex += self.handle_pattern(pattern=com)
