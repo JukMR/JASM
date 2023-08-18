@@ -33,7 +33,7 @@ class Yaml2Regex:
         if isinstance(pattern, dict):
             return self.process_dict_pattern(pattern)
         elif isinstance(pattern, str):
-            return pattern + IGNORE_ARGS
+            return f"({pattern}{IGNORE_ARGS})"
         else:
             # TODO implementar excepcion para tipos no soportados por el programa
             raise ValueError("Pattern type not valid")
