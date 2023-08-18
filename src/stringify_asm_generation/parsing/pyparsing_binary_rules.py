@@ -1,4 +1,5 @@
 
+'Pyparsing assembly matching rules'
 from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore
 from pyparsing import printables, hexnums, line_end, python_style_comment, Optional, alphanums
 

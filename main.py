@@ -5,10 +5,10 @@ import time
 import argparse
 from typing import List, Optional, Any
 
-from parsing.binary_parser import Parser, ParserImplementation, DissasembleImplementation
-from yaml2regex import Yaml2Regex
+from src.stringify_asm_generation.parsing.binary_parser import Parser, ParserImplementation, DissasembleImplementation
+from src.stringify_asm_generation.yaml2regex import Yaml2Regex
 
-from logging_config import enable_debugging, enable_info_level, logger, add_log_file
+from src.logging_config import enable_debugging, enable_info_level, logger, add_log_file
 
 
 def run_regex_rule(regex_rule: str, stringify_binary: str) -> List[Any]:

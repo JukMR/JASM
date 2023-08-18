@@ -4,9 +4,9 @@ from typing import Any
 import yaml
 
 
-from logging_config import logger
-from instruction_processor import AnyInstructionProcessor, NotInstructionProcessor, BasicInstructionProcessor
-from global_definitions import IGNORE_ARGS, Pattern, PathStr
+from src.logging_config import logger
+from src.regex_generation.instruction_processor import AnyInstructionProcessor, NotInstructionProcessor, BasicInstructionProcessor
+from src.global_definitions import IGNORE_ARGS, Pattern, PathStr
 
 
 class Yaml2Regex:

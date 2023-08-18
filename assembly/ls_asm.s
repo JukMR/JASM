@@ -28,7 +28,7 @@ Disassembly of section .text:
     404b:	ff 15 5f dc 01 00    	call   *0x1dc5f(%rip)        # 21cb0 <_obstack_memory_used@@Base+0x145b0>
     4051:	ff 15 59 dc 01 00    	call   *0x1dc59(%rip)        # 21cb0 <_obstack_memory_used@@Base+0x145b0>
     4057:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    405e:	00 00
+    405e:	00 00 
     4060:	f3 0f 1e fa          	endbr64
     4064:	41 57                	push   %r15
     4066:	41 56                	push   %r14
@@ -39,9 +39,9 @@ Disassembly of section .text:
     406e:	48 81 ec f8 00 00 00 	sub    $0xf8,%rsp
     4075:	48 8b 2e             	mov    (%rsi),%rbp
     4078:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    407f:	00 00
+    407f:	00 00 
     4081:	48 89 84 24 e8 00 00 	mov    %rax,0xe8(%rsp)
-    4088:	00
+    4088:	00 
     4089:	31 c0                	xor    %eax,%eax
     408b:	48 85 ed             	test   %rbp,%rbp
     408e:	0f 84 1c 1e 00 00    	je     5eb0 <_obstack_begin@@Base-0x7610>
@@ -82,29 +82,29 @@ Disassembly of section .text:
     4135:	ff 15 0d dc 01 00    	call   *0x1dc0d(%rip)        # 21d48 <_obstack_memory_used@@Base+0x14648>
     413b:	48 8d 3d ae 6f 00 00 	lea    0x6fae(%rip),%rdi        # b0f0 <_obstack_begin@@Base-0x23d0>
     4142:	c7 05 3c df 01 00 02 	movl   $0x2,0x1df3c(%rip)        # 22088 <_obstack_memory_used@@Base+0x14988>
-    4149:	00 00 00
+    4149:	00 00 00 
     414c:	67 e8 de 31 01 00    	addr32 call 17330 <_obstack_memory_used@@Base+0x9c30>
     4152:	66 0f 6f 05 56 89 01 	movdqa 0x18956(%rip),%xmm0        # 1cab0 <_obstack_memory_used@@Base+0xf3b0>
-    4159:	00
+    4159:	00 
     415a:	c7 05 18 e6 01 00 00 	movl   $0x0,0x1e618(%rip)        # 2277c <obstack_alloc_failed_handler@@Base+0x6dc>
-    4161:	00 00 00
+    4161:	00 00 00 
     4164:	c6 05 0d e6 01 00 01 	movb   $0x1,0x1e60d(%rip)        # 22778 <obstack_alloc_failed_handler@@Base+0x6d8>
     416b:	48 c7 05 fa e5 01 00 	movq   $0x0,0x1e5fa(%rip)        # 22770 <obstack_alloc_failed_handler@@Base+0x6d0>
-    4172:	00 00 00 00
+    4172:	00 00 00 00 
     4176:	48 c7 44 24 18 ff ff 	movq   $0xffffffffffffffff,0x18(%rsp)
-    417d:	ff ff
+    417d:	ff ff 
     417f:	48 c7 44 24 20 ff ff 	movq   $0xffffffffffffffff,0x20(%rsp)
-    4186:	ff ff
+    4186:	ff ff 
     4188:	c7 04 24 ff ff ff ff 	movl   $0xffffffff,(%rsp)
     418f:	c7 44 24 0c ff ff ff 	movl   $0xffffffff,0xc(%rsp)
-    4196:	ff
+    4196:	ff 
     4197:	c7 44 24 28 ff ff ff 	movl   $0xffffffff,0x28(%rsp)
-    419e:	ff
+    419e:	ff 
     419f:	c7 44 24 08 ff ff ff 	movl   $0xffffffff,0x8(%rsp)
-    41a6:	ff
+    41a6:	ff 
     41a7:	c6 44 24 2f 00       	movb   $0x0,0x2f(%rsp)
     41ac:	48 c7 44 24 10 00 00 	movq   $0x0,0x10(%rsp)
-    41b3:	00 00
+    41b3:	00 00 
     41b5:	0f 29 05 a4 e5 01 00 	movaps %xmm0,0x1e5a4(%rip)        # 22760 <obstack_alloc_failed_handler@@Base+0x6c0>
     41bc:	0f 1f 40 00          	nopl   0x0(%rax)
     41c0:	4d 89 f8             	mov    %r15,%r8
@@ -112,7 +112,7 @@ Disassembly of section .text:
     41c6:	4c 89 f2             	mov    %r14,%rdx
     41c9:	48 89 de             	mov    %rbx,%rsi
     41cc:	c7 44 24 4c ff ff ff 	movl   $0xffffffff,0x4c(%rsp)
-    41d3:	ff
+    41d3:	ff 
     41d4:	44 89 e7             	mov    %r12d,%edi
     41d7:	ff 15 bb db 01 00    	call   *0x1dbbb(%rip)        # 21d98 <_obstack_memory_used@@Base+0x14698>
     41dd:	83 f8 ff             	cmp    $0xffffffff,%eax
@@ -132,7 +132,7 @@ Disassembly of section .text:
     421c:	89 44 24 08          	mov    %eax,0x8(%rsp)
     4220:	44 89 4c 24 0c       	mov    %r9d,0xc(%rsp)
     4225:	c7 44 24 28 00 00 00 	movl   $0x0,0x28(%rsp)
-    422c:	00
+    422c:	00 
     422d:	eb 91                	jmp    41c0 <_obstack_begin@@Base-0x9300>
     422f:	ba 03 00 00 00       	mov    $0x3,%edx
     4234:	48 8d 35 19 5f 01 00 	lea    0x15f19(%rip),%rsi        # 1a154 <_obstack_memory_used@@Base+0xca54>
@@ -176,13 +176,13 @@ Disassembly of section .text:
     42fd:	89 04 24             	mov    %eax,(%rsp)
     4300:	e9 bb fe ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4305:	c7 05 a9 df 01 00 90 	movl   $0x90,0x1dfa9(%rip)        # 222b8 <obstack_alloc_failed_handler@@Base+0x218>
-    430c:	00 00 00
+    430c:	00 00 00 
     430f:	c7 05 73 e1 01 00 90 	movl   $0x90,0x1e173(%rip)        # 2248c <obstack_alloc_failed_handler@@Base+0x3ec>
-    4316:	00 00 00
+    4316:	00 00 00 
     4319:	48 c7 05 8c df 01 00 	movq   $0x1,0x1df8c(%rip)        # 222b0 <obstack_alloc_failed_handler@@Base+0x210>
-    4320:	01 00 00 00
+    4320:	01 00 00 00 
     4324:	48 c7 05 51 dd 01 00 	movq   $0x1,0x1dd51(%rip)        # 22080 <_obstack_memory_used@@Base+0x14980>
-    432b:	01 00 00 00
+    432b:	01 00 00 00 
     432f:	e9 8c fe ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4334:	48 8b 05 1d db 01 00 	mov    0x1db1d(%rip),%rax        # 21e58 <_obstack_memory_used@@Base+0x14758>
     433b:	48 8d 0d fe 43 01 00 	lea    0x143fe(%rip),%rcx        # 18740 <_obstack_memory_used@@Base+0xb040>
@@ -258,10 +258,10 @@ Disassembly of section .text:
     44a8:	89 44 24 08          	mov    %eax,0x8(%rsp)
     44ac:	e9 0f fd ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     44b1:	c7 05 41 de 01 00 02 	movl   $0x2,0x1de41(%rip)        # 222fc <obstack_alloc_failed_handler@@Base+0x25c>
-    44b8:	00 00 00
+    44b8:	00 00 00 
     44bb:	e9 00 fd ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     44c0:	c7 05 7a e2 01 00 03 	movl   $0x3,0x1e27a(%rip)        # 22744 <obstack_alloc_failed_handler@@Base+0x6a4>
-    44c7:	00 00 00
+    44c7:	00 00 00 
     44ca:	e9 f1 fc ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     44cf:	48 8b 05 82 d9 01 00 	mov    0x1d982(%rip),%rax        # 21e58 <_obstack_memory_used@@Base+0x14758>
     44d6:	48 8b 30             	mov    (%rax),%rsi
@@ -299,7 +299,7 @@ Disassembly of section .text:
     456c:	c6 05 b5 ee 01 00 01 	movb   $0x1,0x1eeb5(%rip)        # 23428 <obstack_alloc_failed_handler@@Base+0x1388>
     4573:	e9 48 fc ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4578:	c7 44 24 08 03 00 00 	movl   $0x3,0x8(%rsp)
-    457f:	00
+    457f:	00 
     4580:	e9 3b fc ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4585:	48 8b 05 cc d8 01 00 	mov    0x1d8cc(%rip),%rax        # 21e58 <_obstack_memory_used@@Base+0x14758>
     458c:	48 8b 38             	mov    (%rax),%rdi
@@ -325,7 +325,7 @@ Disassembly of section .text:
     45e4:	c7 04 24 04 00 00 00 	movl   $0x4,(%rsp)
     45eb:	e9 d0 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     45f0:	c7 05 26 ee 01 00 02 	movl   $0x2,0x1ee26(%rip)        # 23420 <obstack_alloc_failed_handler@@Base+0x1380>
-    45f7:	00 00 00
+    45f7:	00 00 00 
     45fa:	e9 c1 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     45ff:	c7 04 24 05 00 00 00 	movl   $0x5,(%rsp)
     4606:	e9 b5 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
@@ -334,10 +334,10 @@ Disassembly of section .text:
     4617:	c6 05 6a de 01 00 01 	movb   $0x1,0x1de6a(%rip)        # 22488 <obstack_alloc_failed_handler@@Base+0x3e8>
     461e:	e9 9d fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4623:	c7 44 24 28 01 00 00 	movl   $0x1,0x28(%rsp)
-    462a:	00
+    462a:	00 
     462b:	e9 90 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4630:	c7 05 c2 dc 01 00 01 	movl   $0x1,0x1dcc2(%rip)        # 222fc <obstack_alloc_failed_handler@@Base+0x25c>
-    4637:	00 00 00
+    4637:	00 00 00 
     463a:	e9 81 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     463f:	31 c0                	xor    %eax,%eax
     4641:	c6 05 44 da 01 00 00 	movb   $0x0,0x1da44(%rip)        # 2208c <_obstack_memory_used@@Base+0x1498c>
@@ -348,25 +348,25 @@ Disassembly of section .text:
     465a:	89 44 24 08          	mov    %eax,0x8(%rsp)
     465e:	e9 5d fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4663:	c7 44 24 08 04 00 00 	movl   $0x4,0x8(%rsp)
-    466a:	00
+    466a:	00 
     466b:	e9 50 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4670:	c6 05 92 dc 01 00 01 	movb   $0x1,0x1dc92(%rip)        # 22309 <obstack_alloc_failed_handler@@Base+0x269>
     4677:	e9 44 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     467c:	c7 05 32 dc 01 00 b0 	movl   $0xb0,0x1dc32(%rip)        # 222b8 <obstack_alloc_failed_handler@@Base+0x218>
-    4683:	00 00 00
+    4683:	00 00 00 
     4686:	c7 05 fc dd 01 00 b0 	movl   $0xb0,0x1ddfc(%rip)        # 2248c <obstack_alloc_failed_handler@@Base+0x3ec>
-    468d:	00 00 00
+    468d:	00 00 00 
     4690:	48 c7 05 15 dc 01 00 	movq   $0x1,0x1dc15(%rip)        # 222b0 <obstack_alloc_failed_handler@@Base+0x210>
-    4697:	01 00 00 00
+    4697:	01 00 00 00 
     469b:	48 c7 05 da d9 01 00 	movq   $0x1,0x1d9da(%rip)        # 22080 <_obstack_memory_used@@Base+0x14980>
-    46a2:	01 00 00 00
+    46a2:	01 00 00 00 
     46a6:	e9 15 fb ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     46ab:	c7 05 db dd 01 00 02 	movl   $0x2,0x1dddb(%rip)        # 22490 <obstack_alloc_failed_handler@@Base+0x3f0>
-    46b2:	00 00 00
+    46b2:	00 00 00 
     46b5:	83 7c 24 08 00       	cmpl   $0x0,0x8(%rsp)
     46ba:	75 08                	jne    46c4 <_obstack_begin@@Base-0x8dfc>
     46bc:	c7 44 24 08 ff ff ff 	movl   $0xffffffff,0x8(%rsp)
-    46c3:	ff
+    46c3:	ff 
     46c4:	c6 05 35 dc 01 00 00 	movb   $0x0,0x1dc35(%rip)        # 22300 <obstack_alloc_failed_handler@@Base+0x260>
     46cb:	c6 05 16 df 01 00 00 	movb   $0x0,0x1df16(%rip)        # 225e8 <obstack_alloc_failed_handler@@Base+0x548>
     46d2:	c6 05 2f dc 01 00 00 	movb   $0x0,0x1dc2f(%rip)        # 22308 <obstack_alloc_failed_handler@@Base+0x268>
@@ -375,13 +375,13 @@ Disassembly of section .text:
     46e5:	c6 05 55 e0 01 00 01 	movb   $0x1,0x1e055(%rip)        # 22741 <obstack_alloc_failed_handler@@Base+0x6a1>
     46ec:	e9 cf fa ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     46f1:	c7 05 25 ed 01 00 01 	movl   $0x1,0x1ed25(%rip)        # 23420 <obstack_alloc_failed_handler@@Base+0x1380>
-    46f8:	00 00 00
+    46f8:	00 00 00 
     46fb:	e9 c0 fa ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4700:	c7 44 24 0c 07 00 00 	movl   $0x7,0xc(%rsp)
-    4707:	00
+    4707:	00 
     4708:	e9 b3 fa ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     470d:	c7 05 79 dd 01 00 02 	movl   $0x2,0x1dd79(%rip)        # 22490 <obstack_alloc_failed_handler@@Base+0x3f0>
-    4714:	00 00 00
+    4714:	00 00 00 
     4717:	e9 a4 fa ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     471c:	c6 05 d5 db 01 00 01 	movb   $0x1,0x1dbd5(%rip)        # 222f8 <obstack_alloc_failed_handler@@Base+0x258>
     4723:	e9 98 fa ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
@@ -431,20 +431,20 @@ Disassembly of section .text:
     47f2:	c6 05 47 df 01 00 01 	movb   $0x1,0x1df47(%rip)        # 22740 <obstack_alloc_failed_handler@@Base+0x6a0>
     47f9:	e9 c2 f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     47fe:	c7 44 24 0c 05 00 00 	movl   $0x5,0xc(%rsp)
-    4805:	00
+    4805:	00 
     4806:	e9 b5 f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     480b:	31 c0                	xor    %eax,%eax
     480d:	89 44 24 0c          	mov    %eax,0xc(%rsp)
     4811:	e9 aa f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4816:	c7 05 24 df 01 00 04 	movl   $0x4,0x1df24(%rip)        # 22744 <obstack_alloc_failed_handler@@Base+0x6a4>
-    481d:	00 00 00
+    481d:	00 00 00 
     4820:	e9 9b f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4825:	48 8b 05 2c d6 01 00 	mov    0x1d62c(%rip),%rax        # 21e58 <_obstack_memory_used@@Base+0x14758>
     482c:	48 8b 38             	mov    (%rax),%rdi
     482f:	e8 ac 94 00 00       	call   dce0 <_obstack_memory_used@@Base+0x5e0>
     4834:	e9 87 f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4839:	c7 05 01 df 01 00 02 	movl   $0x2,0x1df01(%rip)        # 22744 <obstack_alloc_failed_handler@@Base+0x6a4>
-    4840:	00 00 00
+    4840:	00 00 00 
     4843:	e9 78 f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4848:	c6 05 3d d8 01 00 00 	movb   $0x0,0x1d83d(%rip)        # 2208c <_obstack_memory_used@@Base+0x1498c>
     484f:	e9 6c f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
@@ -467,12 +467,12 @@ Disassembly of section .text:
     48a1:	84 c0                	test   %al,%al
     48a3:	0f 84 17 f9 ff ff    	je     41c0 <_obstack_begin@@Base-0x9300>
     48a9:	c7 05 49 da 01 00 03 	movl   $0x3,0x1da49(%rip)        # 222fc <obstack_alloc_failed_handler@@Base+0x25c>
-    48b0:	00 00 00
+    48b0:	00 00 00 
     48b3:	e9 08 f9 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     48b8:	c6 05 f9 dd 01 00 01 	movb   $0x1,0x1ddf9(%rip)        # 226b8 <obstack_alloc_failed_handler@@Base+0x618>
     48bf:	e9 fc f8 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     48c4:	c7 44 24 08 02 00 00 	movl   $0x2,0x8(%rsp)
-    48cb:	00
+    48cb:	00 
     48cc:	e9 ef f8 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     48d1:	48 8d 3d ad 58 01 00 	lea    0x158ad(%rip),%rdi        # 1a185 <_obstack_memory_used@@Base+0xca85>
     48d8:	e8 03 94 00 00       	call   dce0 <_obstack_memory_used@@Base+0x5e0>
@@ -480,7 +480,7 @@ Disassembly of section .text:
     48e4:	e8 f7 93 00 00       	call   dce0 <_obstack_memory_used@@Base+0x5e0>
     48e9:	e9 d2 f8 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     48ee:	c7 05 98 db 01 00 01 	movl   $0x1,0x1db98(%rip)        # 22490 <obstack_alloc_failed_handler@@Base+0x3f0>
-    48f5:	00 00 00
+    48f5:	00 00 00 
     48f8:	e9 c3 f8 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     48fd:	31 c0                	xor    %eax,%eax
     48ff:	83 7c 24 08 00       	cmpl   $0x0,0x8(%rsp)
@@ -501,7 +501,7 @@ Disassembly of section .text:
     4948:	31 ff                	xor    %edi,%edi
     494a:	ff 15 40 d6 01 00    	call   *0x1d640(%rip)        # 21f90 <_obstack_memory_used@@Base+0x14890>
     4950:	48 83 3d 58 d9 01 00 	cmpq   $0x0,0x1d958(%rip)        # 222b0 <obstack_alloc_failed_handler@@Base+0x210>
-    4957:	00
+    4957:	00 
     4958:	0f 84 9c 0a 00 00    	je     53fa <_obstack_begin@@Base-0x80c6>
     495e:	83 7c 24 08 00       	cmpl   $0x0,0x8(%rsp)
     4963:	0f 88 67 05 00 00    	js     4ed0 <_obstack_begin@@Base-0x85f0>
@@ -669,7 +669,7 @@ Disassembly of section .text:
     4c37:	ba d0 00 00 00       	mov    $0xd0,%edx
     4c3c:	be 64 00 00 00       	mov    $0x64,%esi
     4c41:	48 c7 05 8c d9 01 00 	movq   $0x64,0x1d98c(%rip)        # 225d8 <obstack_alloc_failed_handler@@Base+0x538>
-    4c48:	64 00 00 00
+    4c48:	64 00 00 00 
     4c4c:	ff 15 be d0 01 00    	call   *0x1d0be(%rip)        # 21d10 <_obstack_memory_used@@Base+0x14610>
     4c52:	48 85 c0             	test   %rax,%rax
     4c55:	0f 84 06 0a 00 00    	je     5661 <_obstack_begin@@Base-0x7e5f>
@@ -684,7 +684,7 @@ Disassembly of section .text:
     4c7d:	0f 8e e3 09 00 00    	jle    5666 <_obstack_begin@@Base-0x7e5a>
     4c83:	48 63 6c 24 08       	movslq 0x8(%rsp),%rbp
     4c88:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    4c8f:	00
+    4c8f:	00 
     4c90:	48 8b 3c eb          	mov    (%rbx,%rbp,8),%rdi
     4c94:	48 8d 0d 64 53 01 00 	lea    0x15364(%rip),%rcx        # 19fff <_obstack_memory_used@@Base+0xc8ff>
     4c9b:	ba 01 00 00 00       	mov    $0x1,%edx
@@ -694,7 +694,7 @@ Disassembly of section .text:
     4cab:	41 39 ec             	cmp    %ebp,%r12d
     4cae:	7f e0                	jg     4c90 <_obstack_begin@@Base-0x8830>
     4cb0:	48 83 3d 10 d9 01 00 	cmpq   $0x0,0x1d910(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    4cb7:	00
+    4cb7:	00 
     4cb8:	0f 85 16 0c 00 00    	jne    58d4 <_obstack_begin@@Base-0x7bec>
     4cbe:	41 83 ed 01          	sub    $0x1,%r13d
     4cc2:	0f 8e d6 09 00 00    	jle    569e <_obstack_begin@@Base-0x7e22>
@@ -762,13 +762,13 @@ Disassembly of section .text:
     4de6:	80 3d 13 da 01 00 00 	cmpb   $0x0,0x1da13(%rip)        # 22800 <obstack_alloc_failed_handler@@Base+0x760>
     4ded:	0f 84 85 00 00 00    	je     4e78 <_obstack_begin@@Base-0x8648>
     4df3:	48 83 3d c5 d2 01 00 	cmpq   $0x2,0x1d2c5(%rip)        # 220c0 <obstack_alloc_failed_handler@@Base+0x20>
-    4dfa:	02
+    4dfa:	02 
     4dfb:	75 24                	jne    4e21 <_obstack_begin@@Base-0x869f>
     4dfd:	48 8b 05 c4 d2 01 00 	mov    0x1d2c4(%rip),%rax        # 220c8 <obstack_alloc_failed_handler@@Base+0x28>
     4e04:	66 81 38 1b 5b       	cmpw   $0x5b1b,(%rax)
     4e09:	75 16                	jne    4e21 <_obstack_begin@@Base-0x869f>
     4e0b:	48 83 3d bd d2 01 00 	cmpq   $0x1,0x1d2bd(%rip)        # 220d0 <obstack_alloc_failed_handler@@Base+0x30>
-    4e12:	01
+    4e12:	01 
     4e13:	75 0c                	jne    4e21 <_obstack_begin@@Base-0x869f>
     4e15:	48 8b 05 bc d2 01 00 	mov    0x1d2bc(%rip),%rax        # 220d8 <obstack_alloc_failed_handler@@Base+0x38>
     4e1c:	80 38 6d             	cmpb   $0x6d,(%rax)
@@ -802,9 +802,9 @@ Disassembly of section .text:
     4e9c:	e8 af 72 00 00       	call   c150 <_obstack_begin@@Base-0x1370>
     4ea1:	8b 05 d5 d8 01 00    	mov    0x1d8d5(%rip),%eax        # 2277c <obstack_alloc_failed_handler@@Base+0x6dc>
     4ea7:	48 8b 94 24 e8 00 00 	mov    0xe8(%rsp),%rdx
-    4eae:	00
+    4eae:	00 
     4eaf:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    4eb6:	00 00
+    4eb6:	00 00 
     4eb8:	0f 85 00 0f 00 00    	jne    5dbe <_obstack_begin@@Base-0x7702>
     4ebe:	48 81 c4 f8 00 00 00 	add    $0xf8,%rsp
     4ec5:	5b                   	pop    %rbx
@@ -818,14 +818,14 @@ Disassembly of section .text:
     4ed5:	84 c0                	test   %al,%al
     4ed7:	0f 85 2f 0d 00 00    	jne    5c0c <_obstack_begin@@Base-0x78b4>
     4edd:	c7 05 1d d4 01 00 01 	movl   $0x1,0x1d41d(%rip)        # 22304 <obstack_alloc_failed_handler@@Base+0x264>
-    4ee4:	00 00 00
+    4ee4:	00 00 00 
     4ee7:	80 3d 12 d4 01 00 00 	cmpb   $0x0,0x1d412(%rip)        # 22300 <obstack_alloc_failed_handler@@Base+0x260>
     4eee:	0f 85 8b fa ff ff    	jne    497f <_obstack_begin@@Base-0x8b41>
     4ef4:	48 83 7c 24 18 ff    	cmpq   $0xffffffffffffffff,0x18(%rsp)
     4efa:	0f 85 8b fa ff ff    	jne    498b <_obstack_begin@@Base-0x8b35>
     4f00:	e9 c6 08 00 00       	jmp    57cb <_obstack_begin@@Base-0x7cf5>
     4f05:	48 83 3d 6b d5 01 00 	cmpq   $0x0,0x1d56b(%rip)        # 22478 <obstack_alloc_failed_handler@@Base+0x3d8>
-    4f0c:	00
+    4f0c:	00 
     4f0d:	0f 84 0e fb ff ff    	je     4a21 <_obstack_begin@@Base-0x8a9f>
     4f13:	83 fd 06             	cmp    $0x6,%ebp
     4f16:	0f 87 05 fb ff ff    	ja     4a21 <_obstack_begin@@Base-0x8a9f>
@@ -853,7 +853,7 @@ Disassembly of section .text:
     4f7d:	c6 44 24 2f 01       	movb   $0x1,0x2f(%rsp)
     4f82:	e9 39 f2 ff ff       	jmp    41c0 <_obstack_begin@@Base-0x9300>
     4f87:	48 c7 05 be d7 01 00 	movq   $0x8,0x1d7be(%rip)        # 22750 <obstack_alloc_failed_handler@@Base+0x6b0>
-    4f8e:	08 00 00 00
+    4f8e:	08 00 00 00 
     4f92:	48 8d 3d 96 52 01 00 	lea    0x15296(%rip),%rdi        # 1a22f <_obstack_memory_used@@Base+0xcb2f>
     4f99:	ff 15 d9 cc 01 00    	call   *0x1ccd9(%rip)        # 21c78 <_obstack_memory_used@@Base+0x14578>
     4f9f:	48 89 c5             	mov    %rax,%rbp
@@ -1010,7 +1010,7 @@ Disassembly of section .text:
     5246:	84 c0                	test   %al,%al
     5248:	0f 84 b3 f7 ff ff    	je     4a01 <_obstack_begin@@Base-0x8abf>
     524e:	c7 44 24 0c 03 00 00 	movl   $0x3,0xc(%rsp)
-    5255:	00
+    5255:	00 
     5256:	e9 9c f7 ff ff       	jmp    49f7 <_obstack_begin@@Base-0x8ac9>
     525b:	31 c0                	xor    %eax,%eax
     525d:	48 8d 0d 5c d2 01 00 	lea    0x1d25c(%rip),%rcx        # 224c0 <obstack_alloc_failed_handler@@Base+0x420>
@@ -1038,10 +1038,10 @@ Disassembly of section .text:
     52b8:	48 3d 00 01 00 00    	cmp    $0x100,%rax
     52be:	75 a8                	jne    5268 <_obstack_begin@@Base-0x8258>
     52c0:	48 c7 44 24 60 64 00 	movq   $0x64,0x60(%rsp)
-    52c7:	00 00
+    52c7:	00 00 
     52c9:	31 ed                	xor    %ebp,%ebp
     52cb:	4c 8d bc 24 80 00 00 	lea    0x80(%rsp),%r15
-    52d2:	00
+    52d2:	00 
     52d3:	ff 15 df c9 01 00    	call   *0x1c9df(%rip)        # 21cb8 <_obstack_memory_used@@Base+0x145b8>
     52d9:	49 89 c5             	mov    %rax,%r13
     52dc:	0f 1f 40 00          	nopl   0x0(%rax)
@@ -1051,7 +1051,7 @@ Disassembly of section .text:
     52ec:	41 c6 44 07 ff 00    	movb   $0x0,-0x1(%r15,%rax,1)
     52f2:	4c 89 f6             	mov    %r14,%rsi
     52f5:	41 c7 45 00 00 00 00 	movl   $0x0,0x0(%r13)
-    52fc:	00
+    52fc:	00 
     52fd:	ff 15 7d cc 01 00    	call   *0x1cc7d(%rip)        # 21f80 <_obstack_memory_used@@Base+0x14880>
     5303:	85 c0                	test   %eax,%eax
     5305:	75 1e                	jne    5325 <_obstack_begin@@Base-0x819b>
@@ -1061,7 +1061,7 @@ Disassembly of section .text:
     5314:	49 39 d6             	cmp    %rdx,%r14
     5317:	0f 8f 07 04 00 00    	jg     5724 <_obstack_begin@@Base-0x7d9c>
     531d:	41 c7 45 00 00 00 00 	movl   $0x0,0x0(%r13)
-    5324:	00
+    5324:	00 
     5325:	48 89 ef             	mov    %rbp,%rdi
     5328:	ff 15 72 c9 01 00    	call   *0x1c972(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
     532e:	41 8b 45 00          	mov    0x0(%r13),%eax
@@ -1083,7 +1083,7 @@ Disassembly of section .text:
     5378:	e9 eb fe ff ff       	jmp    5268 <_obstack_begin@@Base-0x8258>
     537d:	0f 1f 00             	nopl   (%rax)
     5380:	48 b9 fe ef bf ff ef 	movabs $0xffffffefffbfeffe,%rcx
-    5387:	ff ff ff
+    5387:	ff ff ff 
     538a:	48 0f a3 c1          	bt     %rax,%rcx
     538e:	72 a7                	jb     5337 <_obstack_begin@@Base-0x8189>
     5390:	48 8d 74 24 60       	lea    0x60(%rsp),%rsi
@@ -1124,7 +1124,7 @@ Disassembly of section .text:
     5435:	80 7c 24 2f 00       	cmpb   $0x0,0x2f(%rsp)
     543a:	0f 84 1e f5 ff ff    	je     495e <_obstack_begin@@Base-0x8b62>
     5440:	48 c7 05 65 ce 01 00 	movq   $0x400,0x1ce65(%rip)        # 222b0 <obstack_alloc_failed_handler@@Base+0x210>
-    5447:	00 04 00 00
+    5447:	00 04 00 00 
     544b:	31 ff                	xor    %edi,%edi
     544d:	89 3d 65 ce 01 00    	mov    %edi,0x1ce65(%rip)        # 222b8 <obstack_alloc_failed_handler@@Base+0x218>
     5453:	e9 06 f5 ff ff       	jmp    495e <_obstack_begin@@Base-0x8b62>
@@ -1216,7 +1216,7 @@ Disassembly of section .text:
     55bd:	75 ee                	jne    55ad <_obstack_begin@@Base-0x7f13>
     55bf:	c6 05 3a cd 01 00 00 	movb   $0x0,0x1cd3a(%rip)        # 22300 <obstack_alloc_failed_handler@@Base+0x260>
     55c6:	48 83 3d 62 cb 01 00 	cmpq   $0x6,0x1cb62(%rip)        # 22130 <obstack_alloc_failed_handler@@Base+0x90>
-    55cd:	06
+    55cd:	06 
     55ce:	75 24                	jne    55f4 <_obstack_begin@@Base-0x7ecc>
     55d0:	48 8b 3d 61 cb 01 00 	mov    0x1cb61(%rip),%rdi        # 22138 <obstack_alloc_failed_handler@@Base+0x98>
     55d7:	ba 06 00 00 00       	mov    $0x6,%edx
@@ -1256,7 +1256,7 @@ Disassembly of section .text:
     5684:	48 8d 3d 06 49 01 00 	lea    0x14906(%rip),%rdi        # 19f91 <_obstack_memory_used@@Base+0xc891>
     568b:	e8 a0 ad 00 00       	call   10430 <_obstack_memory_used@@Base+0x2d30>
     5690:	48 83 3d 30 cf 01 00 	cmpq   $0x0,0x1cf30(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    5697:	00
+    5697:	00 
     5698:	0f 85 f5 01 00 00    	jne    5893 <_obstack_begin@@Base-0x7c2d>
     569e:	48 8b 05 cb d0 01 00 	mov    0x1d0cb(%rip),%rax        # 22770 <obstack_alloc_failed_handler@@Base+0x6d0>
     56a5:	48 85 c0             	test   %rax,%rax
@@ -1369,13 +1369,13 @@ Disassembly of section .text:
     5879:	48 8d 3d 11 47 01 00 	lea    0x14711(%rip),%rdi        # 19f91 <_obstack_memory_used@@Base+0xc891>
     5880:	e8 9b 83 00 00       	call   dc20 <_obstack_memory_used@@Base+0x520>
     5885:	48 83 3d 3b cd 01 00 	cmpq   $0x0,0x1cd3b(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    588c:	00
+    588c:	00 
     588d:	0f 84 0b fe ff ff    	je     569e <_obstack_begin@@Base-0x7e22>
     5893:	e8 08 88 00 00       	call   e0a0 <_obstack_memory_used@@Base+0x9a0>
     5898:	80 3d a2 ce 01 00 00 	cmpb   $0x0,0x1cea2(%rip)        # 22741 <obstack_alloc_failed_handler@@Base+0x6a1>
     589f:	0f 84 56 01 00 00    	je     59fb <_obstack_begin@@Base-0x7ac5>
     58a5:	48 83 3d 1b cd 01 00 	cmpq   $0x0,0x1cd1b(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    58ac:	00
+    58ac:	00 
     58ad:	75 45                	jne    58f4 <_obstack_begin@@Base-0x7bcc>
     58af:	e9 ea fd ff ff       	jmp    569e <_obstack_begin@@Base-0x7e22>
     58b4:	48 8d 0d c9 44 01 00 	lea    0x144c9(%rip),%rcx        # 19d84 <_obstack_memory_used@@Base+0xc684>
@@ -1387,15 +1387,15 @@ Disassembly of section .text:
     58d9:	80 3d 61 ce 01 00 00 	cmpb   $0x0,0x1ce61(%rip)        # 22741 <obstack_alloc_failed_handler@@Base+0x6a1>
     58e0:	0f 84 15 01 00 00    	je     59fb <_obstack_begin@@Base-0x7ac5>
     58e6:	48 83 3d da cc 01 00 	cmpq   $0x0,0x1ccda(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    58ed:	00
+    58ed:	00 
     58ee:	0f 84 ca f3 ff ff    	je     4cbe <_obstack_begin@@Base-0x8802>
     58f4:	e8 e7 a5 00 00       	call   fee0 <_obstack_memory_used@@Base+0x27e0>
     58f9:	48 83 3d 6f ce 01 00 	cmpq   $0x0,0x1ce6f(%rip)        # 22770 <obstack_alloc_failed_handler@@Base+0x6d0>
-    5900:	00
+    5900:	00 
     5901:	0f 84 d2 f4 ff ff    	je     4dd9 <_obstack_begin@@Base-0x86e7>
     5907:	48 8b 05 c2 c3 01 00 	mov    0x1c3c2(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     590e:	48 83 05 fa c9 01 00 	addq   $0x1,0x1c9fa(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
-    5915:	01
+    5915:	01 
     5916:	48 8b 38             	mov    (%rax),%rdi
     5919:	48 8b 47 28          	mov    0x28(%rdi),%rax
     591d:	48 3b 47 30          	cmp    0x30(%rdi),%rax
@@ -1540,7 +1540,7 @@ Disassembly of section .text:
     5b9e:	0f 85 21 f9 ff ff    	jne    54c5 <_obstack_begin@@Base-0x7ffb>
     5ba4:	e9 9a f9 ff ff       	jmp    5543 <_obstack_begin@@Base-0x7f7d>
     5ba9:	f3 0f 5c 25 c3 6e 01 	subss  0x16ec3(%rip),%xmm4        # 1ca74 <_obstack_memory_used@@Base+0xf374>
-    5bb0:	00
+    5bb0:	00 
     5bb1:	f3 48 0f 2c f4       	cvttss2si %xmm4,%rsi
     5bb6:	48 0f ba fe 3f       	btc    $0x3f,%rsi
     5bbb:	e9 e1 f5 ff ff       	jmp    51a1 <_obstack_begin@@Base-0x831f>
@@ -1564,7 +1564,7 @@ Disassembly of section .text:
     5c01:	ff 15 31 c3 01 00    	call   *0x1c331(%rip)        # 21f38 <_obstack_memory_used@@Base+0x14838>
     5c07:	e9 bf fb ff ff       	jmp    57cb <_obstack_begin@@Base-0x7cf5>
     5c0c:	c7 05 ee c6 01 00 02 	movl   $0x2,0x1c6ee(%rip)        # 22304 <obstack_alloc_failed_handler@@Base+0x264>
-    5c13:	00 00 00
+    5c13:	00 00 00 
     5c16:	e9 64 ed ff ff       	jmp    497f <_obstack_begin@@Base-0x8b41>
     5c1b:	48 89 d7             	mov    %rdx,%rdi
     5c1e:	48 89 14 24          	mov    %rdx,(%rsp)
@@ -1622,7 +1622,7 @@ Disassembly of section .text:
     5d07:	85 c0                	test   %eax,%eax
     5d09:	75 0a                	jne    5d15 <_obstack_begin@@Base-0x77ab>
     5d0b:	49 c7 45 00 ff ff ff 	movq   $0xffffffffffffffff,0x0(%r13)
-    5d12:	ff
+    5d12:	ff 
     5d13:	eb c3                	jmp    5cd8 <_obstack_begin@@Base-0x77e8>
     5d15:	4c 89 fa             	mov    %r15,%rdx
     5d18:	48 89 ee             	mov    %rbp,%rsi
@@ -1634,7 +1634,7 @@ Disassembly of section .text:
     5d2b:	74 12                	je     5d3f <_obstack_begin@@Base-0x7781>
     5d2d:	0f b6 44 24 0c       	movzbl 0xc(%rsp),%eax
     5d32:	49 c7 45 00 ff ff ff 	movq   $0xffffffffffffffff,0x0(%r13)
-    5d39:	ff
+    5d39:	ff 
     5d3a:	88 04 24             	mov    %al,(%rsp)
     5d3d:	eb 99                	jmp    5cd8 <_obstack_begin@@Base-0x77e8>
     5d3f:	48 8b 53 10          	mov    0x10(%rbx),%rdx
@@ -1753,9 +1753,9 @@ Disassembly of section .text:
     5f2e:	e9 0e f3 ff ff       	jmp    5241 <_obstack_begin@@Base-0x827f>
     5f33:	48 8d 1d 06 42 01 00 	lea    0x14206(%rip),%rbx        # 1a140 <_obstack_memory_used@@Base+0xca40>
     5f3a:	4c 8d ac 24 80 00 00 	lea    0x80(%rsp),%r13
-    5f41:	00
+    5f41:	00 
     5f42:	66 c7 84 24 80 00 00 	movw   $0x0,0x80(%rsp)
-    5f49:	00 00 00
+    5f49:	00 00 00 
     5f4c:	48 29 c3             	sub    %rax,%rbx
     5f4f:	e9 31 ff ff ff       	jmp    5e85 <_obstack_begin@@Base-0x763b>
     5f54:	48 8d 35 ad 41 01 00 	lea    0x141ad(%rip),%rsi        # 1a108 <_obstack_memory_used@@Base+0xca08>
@@ -1777,7 +1777,7 @@ Disassembly of section .text:
     5f8f:	ff 15 13 bd 01 00    	call   *0x1bd13(%rip)        # 21ca8 <_obstack_memory_used@@Base+0x145a8>
     5f95:	f4                   	hlt
     5f96:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    5f9d:	00 00 00
+    5f9d:	00 00 00 
     5fa0:	48 8d 3d d1 c2 01 00 	lea    0x1c2d1(%rip),%rdi        # 22278 <obstack_alloc_failed_handler@@Base+0x1d8>
     5fa7:	48 8d 05 ca c2 01 00 	lea    0x1c2ca(%rip),%rax        # 22278 <obstack_alloc_failed_handler@@Base+0x1d8>
     5fae:	48 39 f8             	cmp    %rdi,%rax
@@ -1810,7 +1810,7 @@ Disassembly of section .text:
     601b:	75 33                	jne    6050 <_obstack_begin@@Base-0x7470>
     601d:	55                   	push   %rbp
     601e:	48 83 3d aa bf 01 00 	cmpq   $0x0,0x1bfaa(%rip)        # 21fd0 <_obstack_memory_used@@Base+0x148d0>
-    6025:	00
+    6025:	00 
     6026:	48 89 e5             	mov    %rsp,%rbp
     6029:	74 0d                	je     6038 <_obstack_begin@@Base-0x7488>
     602b:	48 8b 3d d6 bf 01 00 	mov    0x1bfd6(%rip),%rdi        # 22008 <_obstack_memory_used@@Base+0x14908>
@@ -1820,10 +1820,10 @@ Disassembly of section .text:
     6044:	5d                   	pop    %rbp
     6045:	c3                   	ret
     6046:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    604d:	00 00 00
+    604d:	00 00 00 
     6050:	c3                   	ret
     6051:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    6058:	00 00 00 00
+    6058:	00 00 00 00 
     605c:	0f 1f 40 00          	nopl   0x0(%rax)
     6060:	f3 0f 1e fa          	endbr64
     6064:	e9 67 ff ff ff       	jmp    5fd0 <_obstack_begin@@Base-0x74f0>
@@ -1853,7 +1853,7 @@ Disassembly of section .text:
     60ae:	89 3d 54 c7 01 00    	mov    %edi,0x1c754(%rip)        # 22808 <obstack_alloc_failed_handler@@Base+0x768>
     60b4:	c3                   	ret
     60b5:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    60bc:	00 00 00 00
+    60bc:	00 00 00 00 
     60c0:	f3 0f 1e fa          	endbr64
     60c4:	8b 05 3e c7 01 00    	mov    0x1c73e(%rip),%eax        # 22808 <obstack_alloc_failed_handler@@Base+0x768>
     60ca:	85 c0                	test   %eax,%eax
@@ -1965,7 +1965,7 @@ Disassembly of section .text:
     6232:	48 01 da             	add    %rbx,%rdx
     6235:	3e ff e2             	notrack jmp *%rdx
     6238:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    623f:	00
+    623f:	00 
     6240:	8d 72 9f             	lea    -0x61(%rdx),%esi
     6243:	40 80 fe 05          	cmp    $0x5,%sil
     6247:	77 17                	ja     6260 <_obstack_begin@@Base-0x7260>
@@ -1987,7 +1987,7 @@ Disassembly of section .text:
     6281:	31 c0                	xor    %eax,%eax
     6283:	e9 46 ff ff ff       	jmp    61ce <_obstack_begin@@Base-0x72f2>
     6288:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    628f:	00
+    628f:	00 
     6290:	c1 e7 04             	shl    $0x4,%edi
     6293:	48 83 c1 01          	add    $0x1,%rcx
     6297:	be 03 00 00 00       	mov    $0x3,%esi
@@ -1998,7 +1998,7 @@ Disassembly of section .text:
     62ab:	0f 85 1d ff ff ff    	jne    61ce <_obstack_begin@@Base-0x72f2>
     62b1:	e9 ef fe ff ff       	jmp    61a5 <_obstack_begin@@Base-0x731b>
     62b6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    62bd:	00 00 00
+    62bd:	00 00 00 
     62c0:	41 c6 00 7f          	movb   $0x7f,(%r8)
     62c4:	49 83 c1 01          	add    $0x1,%r9
     62c8:	49 83 c0 01          	add    $0x1,%r8
@@ -2037,7 +2037,7 @@ Disassembly of section .text:
     635c:	bf 08 00 00 00       	mov    $0x8,%edi
     6361:	e9 1a fe ff ff       	jmp    6180 <_obstack_begin@@Base-0x7340>
     6366:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    636d:	00 00 00
+    636d:	00 00 00 
     6370:	48 8b 05 51 c2 01 00 	mov    0x1c251(%rip),%rax        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
     6377:	41 54                	push   %r12
     6379:	55                   	push   %rbp
@@ -2061,29 +2061,29 @@ Disassembly of section .text:
     63bb:	5d                   	pop    %rbp
     63bc:	c6 05 e9 be 01 00 00 	movb   $0x0,0x1bee9(%rip)        # 222ac <obstack_alloc_failed_handler@@Base+0x20c>
     63c3:	48 c7 05 fa c1 01 00 	movq   $0x0,0x1c1fa(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    63ca:	00 00 00 00
+    63ca:	00 00 00 00 
     63ce:	41 5c                	pop    %r12
     63d0:	c6 05 75 c0 01 00 00 	movb   $0x0,0x1c075(%rip)        # 2244c <obstack_alloc_failed_handler@@Base+0x3ac>
     63d7:	c7 05 c7 be 01 00 00 	movl   $0x0,0x1bec7(%rip)        # 222a8 <obstack_alloc_failed_handler@@Base+0x208>
-    63de:	00 00 00
+    63de:	00 00 00 
     63e1:	c7 05 b9 be 01 00 00 	movl   $0x0,0x1beb9(%rip)        # 222a4 <obstack_alloc_failed_handler@@Base+0x204>
-    63e8:	00 00 00
+    63e8:	00 00 00 
     63eb:	c7 05 53 c0 01 00 00 	movl   $0x0,0x1c053(%rip)        # 22448 <obstack_alloc_failed_handler@@Base+0x3a8>
-    63f2:	00 00 00
+    63f2:	00 00 00 
     63f5:	c7 05 45 c0 01 00 00 	movl   $0x0,0x1c045(%rip)        # 22444 <obstack_alloc_failed_handler@@Base+0x3a4>
-    63fc:	00 00 00
+    63fc:	00 00 00 
     63ff:	c7 05 37 c0 01 00 00 	movl   $0x0,0x1c037(%rip)        # 22440 <obstack_alloc_failed_handler@@Base+0x3a0>
-    6406:	00 00 00
+    6406:	00 00 00 
     6409:	c7 05 29 c0 01 00 00 	movl   $0x0,0x1c029(%rip)        # 2243c <obstack_alloc_failed_handler@@Base+0x39c>
-    6410:	00 00 00
+    6410:	00 00 00 
     6413:	c7 05 83 be 01 00 00 	movl   $0x0,0x1be83(%rip)        # 222a0 <obstack_alloc_failed_handler@@Base+0x200>
-    641a:	00 00 00
+    641a:	00 00 00 
     641d:	c7 05 11 c0 01 00 00 	movl   $0x0,0x1c011(%rip)        # 22438 <obstack_alloc_failed_handler@@Base+0x398>
-    6424:	00 00 00
+    6424:	00 00 00 
     6427:	c7 05 03 c0 01 00 00 	movl   $0x0,0x1c003(%rip)        # 22434 <obstack_alloc_failed_handler@@Base+0x394>
-    642e:	00 00 00
+    642e:	00 00 00 
     6431:	c7 05 f5 bf 01 00 00 	movl   $0x0,0x1bff5(%rip)        # 22430 <obstack_alloc_failed_handler@@Base+0x390>
-    6438:	00 00 00
+    6438:	00 00 00 
     643b:	c3                   	ret
     643c:	0f 1f 40 00          	nopl   0x0(%rax)
     6440:	f3 0f 1e fa          	endbr64
@@ -2135,7 +2135,7 @@ Disassembly of section .text:
     64ee:	66 90                	xchg   %ax,%ax
     64f0:	c3                   	ret
     64f1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    64f8:	00 00 00 00
+    64f8:	00 00 00 00 
     64fc:	0f 1f 40 00          	nopl   0x0(%rax)
     6500:	f3 0f 1e fa          	endbr64
     6504:	48 89 fa             	mov    %rdi,%rdx
@@ -2363,7 +2363,7 @@ Disassembly of section .text:
     6802:	75 8f                	jne    6793 <_obstack_begin@@Base-0x6d2d>
     6804:	eb 9c                	jmp    67a2 <_obstack_begin@@Base-0x6d1e>
     6806:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    680d:	00 00 00
+    680d:	00 00 00 
     6810:	f3 0f 1e fa          	endbr64
     6814:	48 89 fa             	mov    %rdi,%rdx
     6817:	48 89 f1             	mov    %rsi,%rcx
@@ -2423,7 +2423,7 @@ Disassembly of section .text:
     68d2:	75 8f                	jne    6863 <_obstack_begin@@Base-0x6c5d>
     68d4:	eb 9c                	jmp    6872 <_obstack_begin@@Base-0x6c4e>
     68d6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    68dd:	00 00 00
+    68dd:	00 00 00 
     68e0:	f3 0f 1e fa          	endbr64
     68e4:	48 8b 47 60          	mov    0x60(%rdi),%rax
     68e8:	31 d2                	xor    %edx,%edx
@@ -2532,7 +2532,7 @@ Disassembly of section .text:
     6a42:	75 8f                	jne    69d3 <_obstack_begin@@Base-0x6aed>
     6a44:	eb 9c                	jmp    69e2 <_obstack_begin@@Base-0x6ade>
     6a46:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    6a4d:	00 00 00
+    6a4d:	00 00 00 
     6a50:	f3 0f 1e fa          	endbr64
     6a54:	48 89 fa             	mov    %rdi,%rdx
     6a57:	48 89 f1             	mov    %rsi,%rcx
@@ -2592,7 +2592,7 @@ Disassembly of section .text:
     6b12:	75 8f                	jne    6aa3 <_obstack_begin@@Base-0x6a1d>
     6b14:	eb 9c                	jmp    6ab2 <_obstack_begin@@Base-0x6a0e>
     6b16:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    6b1d:	00 00 00
+    6b1d:	00 00 00 
     6b20:	f3 0f 1e fa          	endbr64
     6b24:	48 8b 47 70          	mov    0x70(%rdi),%rax
     6b28:	31 d2                	xor    %edx,%edx
@@ -2701,7 +2701,7 @@ Disassembly of section .text:
     6c82:	75 8f                	jne    6c13 <_obstack_begin@@Base-0x68ad>
     6c84:	eb 9c                	jmp    6c22 <_obstack_begin@@Base-0x689e>
     6c86:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    6c8d:	00 00 00
+    6c8d:	00 00 00 
     6c90:	f3 0f 1e fa          	endbr64
     6c94:	48 89 fa             	mov    %rdi,%rdx
     6c97:	48 89 f1             	mov    %rsi,%rcx
@@ -2761,7 +2761,7 @@ Disassembly of section .text:
     6d52:	75 8f                	jne    6ce3 <_obstack_begin@@Base-0x67dd>
     6d54:	eb 9c                	jmp    6cf2 <_obstack_begin@@Base-0x67ce>
     6d56:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    6d5d:	00 00 00
+    6d5d:	00 00 00 
     6d60:	f3 0f 1e fa          	endbr64
     6d64:	48 8b 47 48          	mov    0x48(%rdi),%rax
     6d68:	48 39 46 48          	cmp    %rax,0x48(%rsi)
@@ -2778,7 +2778,7 @@ Disassembly of section .text:
     6d8b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
     6d90:	c3                   	ret
     6d91:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    6d98:	00 00 00 00
+    6d98:	00 00 00 00 
     6d9c:	0f 1f 40 00          	nopl   0x0(%rax)
     6da0:	f3 0f 1e fa          	endbr64
     6da4:	48 8b 46 48          	mov    0x48(%rsi),%rax
@@ -2793,10 +2793,10 @@ Disassembly of section .text:
     6dbf:	48 8b 3f             	mov    (%rdi),%rdi
     6dc2:	ff 25 70 b0 01 00    	jmp    *0x1b070(%rip)        # 21e38 <_obstack_memory_used@@Base+0x14738>
     6dc8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    6dcf:	00
+    6dcf:	00 
     6dd0:	c3                   	ret
     6dd1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    6dd8:	00 00 00 00
+    6dd8:	00 00 00 00 
     6ddc:	0f 1f 40 00          	nopl   0x0(%rax)
     6de0:	f3 0f 1e fa          	endbr64
     6de4:	48 89 fa             	mov    %rdi,%rdx
@@ -2906,7 +2906,7 @@ Disassembly of section .text:
     6f3a:	48 8b 38             	mov    (%rax),%rdi
     6f3d:	ff 25 f5 ae 01 00    	jmp    *0x1aef5(%rip)        # 21e38 <_obstack_memory_used@@Base+0x14738>
     6f43:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    6f4a:	00 00 00 00
+    6f4a:	00 00 00 00 
     6f4e:	66 90                	xchg   %ax,%ax
     6f50:	f3 0f 1e fa          	endbr64
     6f54:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -2948,7 +2948,7 @@ Disassembly of section .text:
     6fd1:	75 c8                	jne    6f9b <_obstack_begin@@Base-0x6525>
     6fd3:	eb d4                	jmp    6fa9 <_obstack_begin@@Base-0x6517>
     6fd5:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    6fdc:	00 00 00 00
+    6fdc:	00 00 00 00 
     6fe0:	f3 0f 1e fa          	endbr64
     6fe4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
     6fea:	8b 8e a8 00 00 00    	mov    0xa8(%rsi),%ecx
@@ -2981,7 +2981,7 @@ Disassembly of section .text:
     703f:	48 89 c6             	mov    %rax,%rsi
     7042:	ff 25 f0 ad 01 00    	jmp    *0x1adf0(%rip)        # 21e38 <_obstack_memory_used@@Base+0x14738>
     7048:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    704f:	00
+    704f:	00 
     7050:	8b 97 ac 00 00 00    	mov    0xac(%rdi),%edx
     7056:	31 c9                	xor    %ecx,%ecx
     7058:	81 e2 00 f0 00 00    	and    $0xf000,%edx
@@ -3025,7 +3025,7 @@ Disassembly of section .text:
     70d0:	31 c0                	xor    %eax,%eax
     70d2:	c3                   	ret
     70d3:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    70da:	00 00 00 00
+    70da:	00 00 00 00 
     70de:	66 90                	xchg   %ax,%ax
     70e0:	f3 0f 1e fa          	endbr64
     70e4:	48 89 f8             	mov    %rdi,%rax
@@ -3035,7 +3035,7 @@ Disassembly of section .text:
     70f0:	48 89 d0             	mov    %rdx,%rax
     70f3:	c3                   	ret
     70f4:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    70fb:	00 00 00 00
+    70fb:	00 00 00 00 
     70ff:	90                   	nop
     7100:	f3 0f 1e fa          	endbr64
     7104:	48 39 fe             	cmp    %rdi,%rsi
@@ -3071,7 +3071,7 @@ Disassembly of section .text:
     715e:	48 89 d0             	mov    %rdx,%rax
     7161:	c3                   	ret
     7162:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    7169:	00 00 00 00
+    7169:	00 00 00 00 
     716d:	0f 1f 00             	nopl   (%rax)
     7170:	f3 0f 1e fa          	endbr64
     7174:	48 8b 56 08          	mov    0x8(%rsi),%rdx
@@ -3133,7 +3133,7 @@ Disassembly of section .text:
     722d:	48 89 10             	mov    %rdx,(%rax)
     7230:	48 89 53 20          	mov    %rdx,0x20(%rbx)
     7234:	48 c7 40 08 00 00 00 	movq   $0x0,0x8(%rax)
-    723b:	00
+    723b:	00 
     723c:	b8 01 00 00 00       	mov    $0x1,%eax
     7241:	80 63 50 f9          	andb   $0xf9,0x50(%rbx)
     7245:	5b                   	pop    %rbx
@@ -3212,7 +3212,7 @@ Disassembly of section .text:
     7344:	89 f0                	mov    %esi,%eax
     7346:	c3                   	ret
     7347:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    734e:	00 00
+    734e:	00 00 
     7350:	31 f6                	xor    %esi,%esi
     7352:	89 f0                	mov    %esi,%eax
     7354:	c3                   	ret
@@ -3292,7 +3292,7 @@ Disassembly of section .text:
     743c:	0f 1f 40 00          	nopl   0x0(%rax)
     7440:	c3                   	ret
     7441:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    7448:	00 00 00 00
+    7448:	00 00 00 00 
     744c:	0f 1f 40 00          	nopl   0x0(%rax)
     7450:	48 8b 05 79 a8 01 00 	mov    0x1a879(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     7457:	48 01 35 b2 ae 01 00 	add    %rsi,0x1aeb2(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
@@ -3423,7 +3423,7 @@ Disassembly of section .text:
     7638:	0d 04 02 00 00       	or     $0x204,%eax
     763d:	e9 6a ff ff ff       	jmp    75ac <_obstack_begin@@Base-0x5f14>
     7642:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    7649:	00 00 00 00
+    7649:	00 00 00 00 
     764d:	0f 1f 00             	nopl   (%rax)
     7650:	41 56                	push   %r14
     7652:	49 89 d6             	mov    %rdx,%r14
@@ -3463,7 +3463,7 @@ Disassembly of section .text:
     76b3:	41 5e                	pop    %r14
     76b5:	c3                   	ret
     76b6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    76bd:	00 00 00
+    76bd:	00 00 00 
     76c0:	48 8b 30             	mov    (%rax),%rsi
     76c3:	48 39 ee             	cmp    %rbp,%rsi
     76c6:	74 28                	je     76f0 <_obstack_begin@@Base-0x5dd0>
@@ -3514,7 +3514,7 @@ Disassembly of section .text:
     7758:	48 c7 03 00 00 00 00 	movq   $0x0,(%rbx)
     775f:	e9 46 ff ff ff       	jmp    76aa <_obstack_begin@@Base-0x5e16>
     7764:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    776b:	00 00 00 00
+    776b:	00 00 00 00 
     776f:	90                   	nop
     7770:	41 57                	push   %r15
     7772:	49 89 ff             	mov    %rdi,%r15
@@ -3570,7 +3570,7 @@ Disassembly of section .text:
     781a:	75 b5                	jne    77d1 <_obstack_begin@@Base-0x5cef>
     781c:	48 8b 5d 00          	mov    0x0(%rbp),%rbx
     7820:	48 c7 45 08 00 00 00 	movq   $0x0,0x8(%rbp)
-    7827:	00
+    7827:	00 
     7828:	45 84 ed             	test   %r13b,%r13b
     782b:	0f 85 67 ff ff ff    	jne    7798 <_obstack_begin@@Base-0x5d28>
     7831:	49 8b 77 10          	mov    0x10(%r15),%rsi
@@ -3593,7 +3593,7 @@ Disassembly of section .text:
     7871:	0f 11 00             	movups %xmm0,(%rax)
     7874:	49 89 46 08          	mov    %rax,0x8(%r14)
     7878:	48 c7 45 00 00 00 00 	movq   $0x0,0x0(%rbp)
-    787f:	00
+    787f:	00 
     7880:	48 83 c5 10          	add    $0x10,%rbp
     7884:	49 83 6c 24 18 01    	subq   $0x1,0x18(%r12)
     788a:	49 3b 6c 24 08       	cmp    0x8(%r12),%rbp
@@ -3627,29 +3627,29 @@ Disassembly of section .text:
     78dd:	89 e9                	mov    %ebp,%ecx
     78df:	48 81 ec 18 01 00 00 	sub    $0x118,%rsp
     78e6:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    78ed:	00 00
+    78ed:	00 00 
     78ef:	48 89 84 24 08 01 00 	mov    %rax,0x108(%rsp)
-    78f6:	00
+    78f6:	00 
     78f7:	31 c0                	xor    %eax,%eax
     78f9:	49 89 e0             	mov    %rsp,%r8
     78fc:	ff 15 0e a6 01 00    	call   *0x1a60e(%rip)        # 21f10 <_obstack_memory_used@@Base+0x14810>
     7902:	85 c0                	test   %eax,%eax
     7904:	79 2a                	jns    7930 <_obstack_begin@@Base-0x5b90>
     7906:	48 8b 94 24 08 01 00 	mov    0x108(%rsp),%rdx
-    790d:	00
+    790d:	00 
     790e:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    7915:	00 00
+    7915:	00 00 
     7917:	0f 85 58 01 00 00    	jne    7a75 <_obstack_begin@@Base-0x5a4b>
     791d:	48 81 c4 18 01 00 00 	add    $0x118,%rsp
     7924:	5b                   	pop    %rbx
     7925:	5d                   	pop    %rbp
     7926:	c3                   	ret
     7927:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    792e:	00 00
+    792e:	00 00 
     7930:	8b 8c 24 88 00 00 00 	mov    0x88(%rsp),%ecx
     7937:	8b 94 24 8c 00 00 00 	mov    0x8c(%rsp),%edx
     793e:	48 be 00 00 00 00 00 	movabs $0xfffff00000000000,%rsi
-    7945:	f0 ff ff
+    7945:	f0 ff ff 
     7948:	66 0f 6e 54 24 14    	movd   0x14(%rsp),%xmm2
     794e:	66 0f 6e 4c 24 04    	movd   0x4(%rsp),%xmm1
     7954:	48 89 cf             	mov    %rcx,%rdi
@@ -3662,7 +3662,7 @@ Disassembly of section .text:
     796e:	48 c1 e2 0c          	shl    $0xc,%rdx
     7972:	48 09 f9             	or     %rdi,%rcx
     7975:	48 bf 00 00 f0 ff ff 	movabs $0xffffff00000,%rdi
-    797c:	0f 00 00
+    797c:	0f 00 00 
     797f:	48 21 fa             	and    %rdi,%rdx
     7982:	48 09 ca             	or     %rcx,%rdx
     7985:	0f b7 4c 24 1c       	movzwl 0x1c(%rsp),%ecx
@@ -3731,9 +3731,9 @@ Disassembly of section .text:
     7a8b:	53                   	push   %rbx
     7a8c:	48 81 ec 98 06 00 00 	sub    $0x698,%rsp
     7a93:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    7a9a:	00 00
+    7a9a:	00 00 
     7a9c:	48 89 84 24 88 06 00 	mov    %rax,0x688(%rsp)
-    7aa3:	00
+    7aa3:	00 
     7aa4:	31 c0                	xor    %eax,%eax
     7aa6:	4c 8d 44 24 70       	lea    0x70(%rsp),%r8
     7aab:	48 8d 05 8e a7 01 00 	lea    0x1a78e(%rip),%rax        # 22240 <obstack_alloc_failed_handler@@Base+0x1a0>
@@ -3757,21 +3757,21 @@ Disassembly of section .text:
     7aed:	41 b9 0c 00 00 00    	mov    $0xc,%r9d
     7af3:	0f 84 29 05 00 00    	je     8022 <_obstack_begin@@Base-0x549e>
     7af9:	48 8d 84 24 80 00 00 	lea    0x80(%rsp),%rax
-    7b00:	00
+    7b00:	00 
     7b01:	48 8d 9c 24 ff 00 00 	lea    0xff(%rsp),%rbx
-    7b08:	00
+    7b08:	00 
     7b09:	4c 89 44 24 68       	mov    %r8,0x68(%rsp)
     7b0e:	41 bf 01 00 00 00    	mov    $0x1,%r15d
     7b14:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
     7b19:	48 8d 84 24 80 06 00 	lea    0x680(%rsp),%rax
-    7b20:	00
+    7b20:	00 
     7b21:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
     7b26:	48 89 5c 24 50       	mov    %rbx,0x50(%rsp)
     7b2b:	4c 8b 6c 24 50       	mov    0x50(%rsp),%r13
     7b30:	45 31 c0             	xor    %r8d,%r8d
     7b33:	4c 89 4c 24 10       	mov    %r9,0x10(%rsp)
     7b38:	c7 44 24 30 0e 00 02 	movl   $0x2000e,0x30(%rsp)
-    7b3f:	00
+    7b3f:	00 
     7b40:	48 8b 6c 24 48       	mov    0x48(%rsp),%rbp
     7b45:	4c 89 44 24 20       	mov    %r8,0x20(%rsp)
     7b4a:	4d 89 ee             	mov    %r13,%r14
@@ -3793,7 +3793,7 @@ Disassembly of section .text:
     7b8f:	ff 15 93 a3 01 00    	call   *0x1a393(%rip)        # 21f28 <_obstack_memory_used@@Base+0x14828>
     7b95:	48 89 c1             	mov    %rax,%rcx
     7b98:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    7b9f:	00
+    7b9f:	00 
     7ba0:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
     7ba5:	c6 01 00             	movb   $0x0,(%rcx)
     7ba8:	ff 15 f2 a0 01 00    	call   *0x1a0f2(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
@@ -3835,7 +3835,7 @@ Disassembly of section .text:
     7c4d:	4c 8b 54 24 28       	mov    0x28(%rsp),%r10
     7c52:	4c 89 e9             	mov    %r13,%rcx
     7c55:	48 c7 44 24 08 00 00 	movq   $0x0,0x8(%rsp)
-    7c5c:	00 00
+    7c5c:	00 00 
     7c5e:	48 83 f8 01          	cmp    $0x1,%rax
     7c62:	0f 86 f0 fe ff ff    	jbe    7b58 <_obstack_begin@@Base-0x5968>
     7c68:	31 d2                	xor    %edx,%edx
@@ -3847,7 +3847,7 @@ Disassembly of section .text:
     7c7e:	0f 84 2c 03 00 00    	je     7fb0 <_obstack_begin@@Base-0x5510>
     7c84:	48 8d 50 01          	lea    0x1(%rax),%rdx
     7c88:	48 8d 04 95 00 00 00 	lea    0x0(,%rdx,4),%rax
-    7c8f:	00
+    7c8f:	00 
     7c90:	48 89 54 24 58       	mov    %rdx,0x58(%rsp)
     7c95:	48 89 c7             	mov    %rax,%rdi
     7c98:	48 89 44 24 60       	mov    %rax,0x60(%rsp)
@@ -3877,7 +3877,7 @@ Disassembly of section .text:
     7d00:	48 89 6c 24 28       	mov    %rbp,0x28(%rsp)
     7d05:	48 89 cd             	mov    %rcx,%rbp
     7d08:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    7d0f:	00
+    7d0f:	00 
     7d10:	ff 15 b2 a2 01 00    	call   *0x1a2b2(%rip)        # 21fc8 <_obstack_memory_used@@Base+0x148c8>
     7d16:	85 c0                	test   %eax,%eax
     7d18:	75 0c                	jne    7d26 <_obstack_begin@@Base-0x579a>
@@ -3919,7 +3919,7 @@ Disassembly of section .text:
     7daf:	4c 89 54 24 40       	mov    %r10,0x40(%rsp)
     7db4:	eb 28                	jmp    7dde <_obstack_begin@@Base-0x56e2>
     7db6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    7dbd:	00 00 00
+    7dbd:	00 00 00 
     7dc0:	48 98                	cltq
     7dc2:	48 01 e8             	add    %rbp,%rax
     7dc5:	48 39 c3             	cmp    %rax,%rbx
@@ -3934,7 +3934,7 @@ Disassembly of section .text:
     7de7:	75 d7                	jne    7dc0 <_obstack_begin@@Base-0x5700>
     7de9:	b8 01 00 00 00       	mov    $0x1,%eax
     7dee:	41 c7 04 24 fd ff 00 	movl   $0xfffd,(%r12)
-    7df5:	00
+    7df5:	00 
     7df6:	48 01 e8             	add    %rbp,%rax
     7df9:	48 39 c3             	cmp    %rax,%rbx
     7dfc:	73 cc                	jae    7dca <_obstack_begin@@Base-0x56f6>
@@ -3942,7 +3942,7 @@ Disassembly of section .text:
     7e01:	4c 8b 54 24 40       	mov    0x40(%rsp),%r10
     7e06:	48 8b 6c 24 28       	mov    0x28(%rsp),%rbp
     7e0b:	41 c7 04 24 00 00 00 	movl   $0x0,(%r12)
-    7e12:	00
+    7e12:	00 
     7e13:	4c 8b 64 24 18       	mov    0x18(%rsp),%r12
     7e18:	4c 89 ea             	mov    %r13,%rdx
     7e1b:	4c 89 54 24 28       	mov    %r10,0x28(%rsp)
@@ -3977,7 +3977,7 @@ Disassembly of section .text:
     7e8f:	4c 29 d0             	sub    %r10,%rax
     7e92:	e9 e8 fc ff ff       	jmp    7b7f <_obstack_begin@@Base-0x5941>
     7e97:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    7e9e:	00 00
+    7e9e:	00 00 
     7ea0:	80 f9 25             	cmp    $0x25,%cl
     7ea3:	74 2b                	je     7ed0 <_obstack_begin@@Base-0x55f0>
     7ea5:	80 f9 62             	cmp    $0x62,%cl
@@ -3988,7 +3988,7 @@ Disassembly of section .text:
     7ebc:	be 08 00 00 00       	mov    $0x8,%esi
     7ec1:	e9 e5 fb ff ff       	jmp    7aab <_obstack_begin@@Base-0x5a15>
     7ec6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    7ecd:	00 00 00
+    7ecd:	00 00 00 
     7ed0:	0f b6 50 02          	movzbl 0x2(%rax),%edx
     7ed4:	48 83 c0 01          	add    $0x1,%rax
     7ed8:	e9 f2 fb ff ff       	jmp    7acf <_obstack_begin@@Base-0x59f1>
@@ -4049,11 +4049,11 @@ Disassembly of section .text:
     7f9b:	e9 8b fb ff ff       	jmp    7b2b <_obstack_begin@@Base-0x5995>
     7fa0:	c6 05 65 a8 01 00 01 	movb   $0x1,0x1a865(%rip)        # 2280c <obstack_alloc_failed_handler@@Base+0x76c>
     7fa7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    7fae:	00 00
+    7fae:	00 00 
     7fb0:	48 8b 84 24 88 06 00 	mov    0x688(%rsp),%rax
-    7fb7:	00
+    7fb7:	00 
     7fb8:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    7fbf:	00 00
+    7fbf:	00 00 
     7fc1:	0f 85 a6 01 00 00    	jne    816d <_obstack_begin@@Base-0x5353>
     7fc7:	48 81 c4 98 06 00 00 	add    $0x698,%rsp
     7fce:	5b                   	pop    %rbx
@@ -4075,7 +4075,7 @@ Disassembly of section .text:
     8000:	4c 89 e9             	mov    %r13,%rcx
     8003:	e9 39 fe ff ff       	jmp    7e41 <_obstack_begin@@Base-0x567f>
     8008:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    800f:	00
+    800f:	00 
     8010:	48 8b 6c 24 28       	mov    0x28(%rsp),%rbp
     8015:	4c 8b 54 24 40       	mov    0x40(%rsp),%r10
     801a:	48 89 c3             	mov    %rax,%rbx
@@ -4149,9 +4149,9 @@ Disassembly of section .text:
     8134:	ba 01 00 00 00       	mov    $0x1,%edx
     8139:	e9 26 ff ff ff       	jmp    8064 <_obstack_begin@@Base-0x545c>
     813e:	48 8b 84 24 88 06 00 	mov    0x688(%rsp),%rax
-    8145:	00
+    8145:	00 
     8146:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    814d:	00 00
+    814d:	00 00 
     814f:	75 1c                	jne    816d <_obstack_begin@@Base-0x5353>
     8151:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
     8156:	48 81 c4 98 06 00 00 	add    $0x698,%rsp
@@ -4164,7 +4164,7 @@ Disassembly of section .text:
     8167:	ff 25 33 9b 01 00    	jmp    *0x19b33(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
     816d:	ff 15 1d 9c 01 00    	call   *0x19c1d(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     8173:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    817a:	00 00 00 00
+    817a:	00 00 00 00 
     817e:	66 90                	xchg   %ax,%ax
     8180:	41 57                	push   %r15
     8182:	41 56                	push   %r14
@@ -4177,9 +4177,9 @@ Disassembly of section .text:
     8198:	4c 8d 63 30          	lea    0x30(%rbx),%r12
     819c:	48 81 ec a8 00 00 00 	sub    $0xa8,%rsp
     81a3:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    81aa:	00 00
+    81aa:	00 00 
     81ac:	48 89 84 24 98 00 00 	mov    %rax,0x98(%rsp)
-    81b3:	00
+    81b3:	00 
     81b4:	31 c0                	xor    %eax,%eax
     81b6:	40 84 ff             	test   %dil,%dil
     81b9:	74 0e                	je     81c9 <_obstack_begin@@Base-0x52f7>
@@ -4201,9 +4201,9 @@ Disassembly of section .text:
     81e8:	4c 39 e3             	cmp    %r12,%rbx
     81eb:	75 dc                	jne    81c9 <_obstack_begin@@Base-0x52f7>
     81ed:	48 8b 84 24 98 00 00 	mov    0x98(%rsp),%rax
-    81f4:	00
+    81f4:	00 
     81f5:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    81fc:	00 00
+    81fc:	00 00 
     81fe:	0f 85 1a 01 00 00    	jne    831e <_obstack_begin@@Base-0x51a2>
     8204:	48 81 c4 a8 00 00 00 	add    $0xa8,%rsp
     820b:	5b                   	pop    %rbx
@@ -4214,7 +4214,7 @@ Disassembly of section .text:
     8213:	41 5f                	pop    %r15
     8215:	c3                   	ret
     8216:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    821d:	00 00 00
+    821d:	00 00 00 
     8220:	4c 89 ef             	mov    %r13,%rdi
     8223:	48 89 dd             	mov    %rbx,%rbp
     8226:	49 89 e6             	mov    %rsp,%r14
@@ -4234,25 +4234,25 @@ Disassembly of section .text:
     8259:	4c 39 e5             	cmp    %r12,%rbp
     825c:	75 d2                	jne    8230 <_obstack_begin@@Base-0x5290>
     825e:	66 0f 6f 05 1a a5 01 	movdqa 0x1a51a(%rip),%xmm0        # 22780 <obstack_alloc_failed_handler@@Base+0x6e0>
-    8265:	00
+    8265:	00 
     8266:	66 0f 6f 0d 22 a5 01 	movdqa 0x1a522(%rip),%xmm1        # 22790 <obstack_alloc_failed_handler@@Base+0x6f0>
-    826d:	00
+    826d:	00 
     826e:	c7 84 24 88 00 00 00 	movl   $0x10000000,0x88(%rsp)
-    8275:	00 00 00 10
+    8275:	00 00 00 10 
     8279:	4c 8d 3d 40 de ff ff 	lea    -0x21c0(%rip),%r15        # 60c0 <_obstack_begin@@Base-0x7400>
     8280:	66 0f 6f 15 18 a5 01 	movdqa 0x1a518(%rip),%xmm2        # 227a0 <obstack_alloc_failed_handler@@Base+0x700>
-    8287:	00
+    8287:	00 
     8288:	66 0f 6f 1d 20 a5 01 	movdqa 0x1a520(%rip),%xmm3        # 227b0 <obstack_alloc_failed_handler@@Base+0x710>
-    828f:	00
+    828f:	00 
     8290:	66 0f 6f 25 28 a5 01 	movdqa 0x1a528(%rip),%xmm4        # 227c0 <obstack_alloc_failed_handler@@Base+0x720>
-    8297:	00
+    8297:	00 
     8298:	66 0f 6f 2d 30 a5 01 	movdqa 0x1a530(%rip),%xmm5        # 227d0 <obstack_alloc_failed_handler@@Base+0x730>
-    829f:	00
+    829f:	00 
     82a0:	0f 11 44 24 08       	movups %xmm0,0x8(%rsp)
     82a5:	66 0f 6f 35 33 a5 01 	movdqa 0x1a533(%rip),%xmm6        # 227e0 <obstack_alloc_failed_handler@@Base+0x740>
-    82ac:	00
+    82ac:	00 
     82ad:	66 0f 6f 3d 3b a5 01 	movdqa 0x1a53b(%rip),%xmm7        # 227f0 <obstack_alloc_failed_handler@@Base+0x750>
-    82b4:	00
+    82b4:	00 
     82b5:	0f 11 4c 24 18       	movups %xmm1,0x18(%rsp)
     82ba:	0f 11 54 24 28       	movups %xmm2,0x28(%rsp)
     82bf:	0f 11 5c 24 38       	movups %xmm3,0x38(%rsp)
@@ -4261,7 +4261,7 @@ Disassembly of section .text:
     82ce:	0f 11 74 24 68       	movups %xmm6,0x68(%rsp)
     82d3:	0f 11 7c 24 78       	movups %xmm7,0x78(%rsp)
     82d8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    82df:	00
+    82df:	00 
     82e0:	8b 2b                	mov    (%rbx),%ebp
     82e2:	4c 89 ef             	mov    %r13,%rdi
     82e5:	89 ee                	mov    %ebp,%esi
@@ -4282,7 +4282,7 @@ Disassembly of section .text:
     8319:	e9 cf fe ff ff       	jmp    81ed <_obstack_begin@@Base-0x52d3>
     831e:	ff 15 6c 9a 01 00    	call   *0x19a6c(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     8324:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    832b:	00 00 00 00
+    832b:	00 00 00 00 
     832f:	90                   	nop
     8330:	41 57                	push   %r15
     8332:	48 89 f0             	mov    %rsi,%rax
@@ -4338,7 +4338,7 @@ Disassembly of section .text:
     83f1:	48 89 04 24          	mov    %rax,(%rsp)
     83f5:	eb b1                	jmp    83a8 <_obstack_begin@@Base-0x5118>
     83f7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    83fe:	00 00
+    83fe:	00 00 
     8400:	4a 8d 3c fb          	lea    (%rbx,%r15,8),%rdi
     8404:	4c 8b 7c 24 18       	mov    0x18(%rsp),%r15
     8409:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
@@ -4350,7 +4350,7 @@ Disassembly of section .text:
     8419:	4a 8d 34 e8          	lea    (%rax,%r13,8),%rsi
     841d:	41 5d                	pop    %r13
     841f:	4a 8d 14 fd 00 00 00 	lea    0x0(,%r15,8),%rdx
-    8426:	00
+    8426:	00 
     8427:	41 5e                	pop    %r14
     8429:	41 5f                	pop    %r15
     842b:	ff 25 4f 9a 01 00    	jmp    *0x19a4f(%rip)        # 21e80 <_obstack_memory_used@@Base+0x14780>
@@ -4402,7 +4402,7 @@ Disassembly of section .text:
     84f1:	4a 8b 2c e3          	mov    (%rbx,%r12,8),%rbp
     84f5:	eb d9                	jmp    84d0 <_obstack_begin@@Base-0x4ff0>
     84f7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    84fe:	00 00
+    84fe:	00 00 
     8500:	48 8b 04 24          	mov    (%rsp),%rax
     8504:	49 83 c5 01          	add    $0x1,%r13
     8508:	49 89 47 f8          	mov    %rax,-0x8(%r15)
@@ -4426,7 +4426,7 @@ Disassembly of section .text:
     854e:	48 89 04 24          	mov    %rax,(%rsp)
     8552:	e9 39 fe ff ff       	jmp    8390 <_obstack_begin@@Base-0x5130>
     8557:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    855e:	00 00
+    855e:	00 00 
     8560:	48 83 c4 48          	add    $0x48,%rsp
     8564:	5b                   	pop    %rbx
     8565:	5d                   	pop    %rbp
@@ -4477,7 +4477,7 @@ Disassembly of section .text:
     860b:	0f 11 45 00          	movups %xmm0,0x0(%rbp)
     860f:	e9 8e fe ff ff       	jmp    84a2 <_obstack_begin@@Base-0x501e>
     8614:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    861b:	00 00 00 00
+    861b:	00 00 00 00 
     861f:	90                   	nop
     8620:	41 54                	push   %r12
     8622:	55                   	push   %rbp
@@ -4530,7 +4530,7 @@ Disassembly of section .text:
     86c4:	31 f6                	xor    %esi,%esi
     86c6:	48 8d 0d 32 19 01 00 	lea    0x11932(%rip),%rcx        # 19fff <_obstack_memory_used@@Base+0xc8ff>
     86cd:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    86d4:	00 00
+    86d4:	00 00 
     86d6:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
     86db:	31 c0                	xor    %eax,%eax
     86dd:	48 89 e2             	mov    %rsp,%rdx
@@ -4543,7 +4543,7 @@ Disassembly of section .text:
     86f2:	48 f7 d8             	neg    %rax
     86f5:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
     86fa:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    8701:	00 00
+    8701:	00 00 
     8703:	75 1a                	jne    871f <_obstack_begin@@Base-0x4da1>
     8705:	48 83 c4 18          	add    $0x18,%rsp
     8709:	c3                   	ret
@@ -4555,14 +4555,14 @@ Disassembly of section .text:
     871d:	eb d6                	jmp    86f5 <_obstack_begin@@Base-0x4dcb>
     871f:	ff 15 6b 96 01 00    	call   *0x1966b(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     8725:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    872c:	00 00 00 00
+    872c:	00 00 00 00 
     8730:	41 54                	push   %r12
     8732:	55                   	push   %rbp
     8733:	53                   	push   %rbx
     8734:	48 89 fb             	mov    %rdi,%rbx
     8737:	48 83 ec 10          	sub    $0x10,%rsp
     873b:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    8742:	00 00
+    8742:	00 00 
     8744:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
     8749:	31 c0                	xor    %eax,%eax
     874b:	48 85 ff             	test   %rdi,%rdi
@@ -4588,7 +4588,7 @@ Disassembly of section .text:
     879b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
     87a0:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
     87a5:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    87ac:	00 00
+    87ac:	00 00 
     87ae:	0f 85 31 01 00 00    	jne    88e5 <_obstack_begin@@Base-0x4bdb>
     87b4:	48 83 c4 10          	add    $0x10,%rsp
     87b8:	5b                   	pop    %rbx
@@ -4626,7 +4626,7 @@ Disassembly of section .text:
     8823:	eb 14                	jmp    8839 <_obstack_begin@@Base-0x4c87>
     8825:	0f 1f 00             	nopl   (%rax)
     8828:	c7 05 86 9a 01 00 00 	movl   $0x0,0x19a86(%rip)        # 222b8 <obstack_alloc_failed_handler@@Base+0x218>
-    882f:	00 00 00
+    882f:	00 00 00 
     8832:	48 8b 15 77 9a 01 00 	mov    0x19a77(%rip),%rdx        # 222b0 <obstack_alloc_failed_handler@@Base+0x210>
     8839:	48 85 d2             	test   %rdx,%rdx
     883c:	0f 85 5e ff ff ff    	jne    87a0 <_obstack_begin@@Base-0x4d20>
@@ -4674,7 +4674,7 @@ Disassembly of section .text:
     88ff:	48 83 c4 80          	add    $0xffffffffffffff80,%rsp
     8903:	48 8b 1d 56 9b 01 00 	mov    0x19b56(%rip),%rbx        # 22460 <obstack_alloc_failed_handler@@Base+0x3c0>
     890a:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    8911:	00 00
+    8911:	00 00 
     8913:	48 89 44 24 78       	mov    %rax,0x78(%rsp)
     8918:	31 c0                	xor    %eax,%eax
     891a:	85 ff                	test   %edi,%edi
@@ -5214,7 +5214,7 @@ Disassembly of section .text:
     925b:	48 83 ec 08          	sub    $0x8,%rsp
     925f:	e8 8c f6 ff ff       	call   88f0 <_obstack_begin@@Base-0x4bd0>
     9264:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    926b:	00 00 00 00
+    926b:	00 00 00 00 
     926f:	90                   	nop
     9270:	f3 0f 1e fa          	endbr64
     9274:	50                   	push   %rax
@@ -5239,7 +5239,7 @@ Disassembly of section .text:
     92ca:	31 ff                	xor    %edi,%edi
     92cc:	e9 8f ab 00 00       	jmp    13e60 <_obstack_memory_used@@Base+0x6760>
     92d1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    92d8:	00 00 00 00
+    92d8:	00 00 00 00 
     92dc:	0f 1f 40 00          	nopl   0x0(%rax)
     92e0:	41 55                	push   %r13
     92e2:	49 89 fd             	mov    %rdi,%r13
@@ -5332,7 +5332,7 @@ Disassembly of section .text:
     9411:	75 c8                	jne    93db <_obstack_begin@@Base-0x40e5>
     9413:	eb d4                	jmp    93e9 <_obstack_begin@@Base-0x40d7>
     9415:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    941c:	00 00 00 00
+    941c:	00 00 00 00 
     9420:	f3 0f 1e fa          	endbr64
     9424:	48 89 f9             	mov    %rdi,%rcx
     9427:	48 89 f7             	mov    %rsi,%rdi
@@ -5395,7 +5395,7 @@ Disassembly of section .text:
     94e7:	48 89 f3             	mov    %rsi,%rbx
     94ea:	48 83 ec 40          	sub    $0x40,%rsp
     94ee:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    94f5:	00 00
+    94f5:	00 00 
     94f7:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
     94fc:	31 c0                	xor    %eax,%eax
     94fe:	48 83 fa ff          	cmp    $0xffffffffffffffff,%rdx
@@ -5418,13 +5418,13 @@ Disassembly of section .text:
     9547:	0f 11 44 24 18       	movups %xmm0,0x18(%rsp)
     954c:	66 0f ef c0          	pxor   %xmm0,%xmm0
     9550:	48 c7 04 24 08 00 00 	movq   $0x8,(%rsp)
-    9557:	00
+    9557:	00 
     9558:	0f 11 44 24 28       	movups %xmm0,0x28(%rsp)
     955d:	e8 fe a8 00 00       	call   13e60 <_obstack_memory_used@@Base+0x6760>
     9562:	48 89 c1             	mov    %rax,%rcx
     9565:	48 8b 44 24 38       	mov    0x38(%rsp),%rax
     956a:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    9571:	00 00
+    9571:	00 00 
     9573:	75 32                	jne    95a7 <_obstack_begin@@Base-0x3f19>
     9575:	48 83 c4 40          	add    $0x40,%rsp
     9579:	49 89 e8             	mov    %rbp,%r8
@@ -5536,7 +5536,7 @@ Disassembly of section .text:
     96ed:	ff 15 cd 86 01 00    	call   *0x186cd(%rip)        # 21dc0 <_obstack_memory_used@@Base+0x146c0>
     96f3:	eb e4                	jmp    96d9 <_obstack_begin@@Base-0x3de7>
     96f5:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    96fc:	00 00 00 00
+    96fc:	00 00 00 00 
     9700:	41 54                	push   %r12
     9702:	66 0f ef c0          	pxor   %xmm0,%xmm0
     9706:	55                   	push   %rbp
@@ -5547,7 +5547,7 @@ Disassembly of section .text:
     9710:	31 ff                	xor    %edi,%edi
     9712:	48 83 ec 40          	sub    $0x40,%rsp
     9716:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    971d:	00 00
+    971d:	00 00 
     971f:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
     9724:	31 c0                	xor    %eax,%eax
     9726:	48 89 e2             	mov    %rsp,%rdx
@@ -5556,7 +5556,7 @@ Disassembly of section .text:
     9733:	66 0f ef c0          	pxor   %xmm0,%xmm0
     9737:	0f 11 44 24 28       	movups %xmm0,0x28(%rsp)
     973c:	48 c7 04 24 04 00 00 	movq   $0x4,(%rsp)
-    9743:	00
+    9743:	00 
     9744:	e8 17 a7 00 00       	call   13e60 <_obstack_memory_used@@Base+0x6760>
     9749:	49 89 c4             	mov    %rax,%r12
     974c:	ff 15 66 85 01 00    	call   *0x18566(%rip)        # 21cb8 <_obstack_memory_used@@Base+0x145b8>
@@ -5569,10 +5569,10 @@ Disassembly of section .text:
     9764:	84 db                	test   %bl,%bl
     9766:	74 28                	je     9790 <_obstack_begin@@Base-0x3d30>
     9768:	c7 05 0a 90 01 00 02 	movl   $0x2,0x1900a(%rip)        # 2277c <obstack_alloc_failed_handler@@Base+0x6dc>
-    976f:	00 00 00
+    976f:	00 00 00 
     9772:	48 8b 44 24 38       	mov    0x38(%rsp),%rax
     9777:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    977e:	00 00
+    977e:	00 00 
     9780:	75 24                	jne    97a6 <_obstack_begin@@Base-0x3d1a>
     9782:	48 83 c4 40          	add    $0x40,%rsp
     9786:	5b                   	pop    %rbx
@@ -5584,7 +5584,7 @@ Disassembly of section .text:
     9796:	85 c0                	test   %eax,%eax
     9798:	75 d8                	jne    9772 <_obstack_begin@@Base-0x3d4e>
     979a:	c7 05 d8 8f 01 00 01 	movl   $0x1,0x18fd8(%rip)        # 2277c <obstack_alloc_failed_handler@@Base+0x6dc>
-    97a1:	00 00 00
+    97a1:	00 00 00 
     97a4:	eb cc                	jmp    9772 <_obstack_begin@@Base-0x3d4e>
     97a6:	ff 15 e4 85 01 00    	call   *0x185e4(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     97ac:	0f 1f 40 00          	nopl   0x0(%rax)
@@ -5596,7 +5596,7 @@ Disassembly of section .text:
     97b9:	48 83 ec 18          	sub    $0x18,%rsp
     97bd:	48 8b 1d fc 8d 01 00 	mov    0x18dfc(%rip),%rbx        # 225c0 <obstack_alloc_failed_handler@@Base+0x520>
     97c4:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    97cb:	00 00
+    97cb:	00 00 
     97cd:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
     97d2:	31 c0                	xor    %eax,%eax
     97d4:	48 8d 05 e5 8a 01 00 	lea    0x18ae5(%rip),%rax        # 222c0 <obstack_alloc_failed_handler@@Base+0x220>
@@ -5623,7 +5623,7 @@ Disassembly of section .text:
     9821:	b8 01 00 00 00       	mov    $0x1,%eax
     9826:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
     982b:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    9832:	00 00
+    9832:	00 00 
     9834:	75 26                	jne    985c <_obstack_begin@@Base-0x3c64>
     9836:	48 83 c4 18          	add    $0x18,%rsp
     983a:	5b                   	pop    %rbx
@@ -5640,7 +5640,7 @@ Disassembly of section .text:
     985a:	eb ca                	jmp    9826 <_obstack_begin@@Base-0x3c9a>
     985c:	ff 15 2e 85 01 00    	call   *0x1852e(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     9862:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    9869:	00 00 00 00
+    9869:	00 00 00 00 
     986d:	0f 1f 00             	nopl   (%rax)
     9870:	f3 0f 1e fa          	endbr64
     9874:	48 8b 86 80 00 00 00 	mov    0x80(%rsi),%rax
@@ -5676,7 +5676,7 @@ Disassembly of section .text:
     98dc:	0f 1f 40 00          	nopl   0x0(%rax)
     98e0:	c3                   	ret
     98e1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    98e8:	00 00 00 00
+    98e8:	00 00 00 00 
     98ec:	0f 1f 40 00          	nopl   0x0(%rax)
     98f0:	f3 0f 1e fa          	endbr64
     98f4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -5750,7 +5750,7 @@ Disassembly of section .text:
     99dc:	0f 1f 40 00          	nopl   0x0(%rax)
     99e0:	c3                   	ret
     99e1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    99e8:	00 00 00 00
+    99e8:	00 00 00 00 
     99ec:	0f 1f 40 00          	nopl   0x0(%rax)
     99f0:	f3 0f 1e fa          	endbr64
     99f4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -5823,7 +5823,7 @@ Disassembly of section .text:
     9aca:	ff 25 00 84 01 00    	jmp    *0x18400(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     9ad0:	c3                   	ret
     9ad1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    9ad8:	00 00 00 00
+    9ad8:	00 00 00 00 
     9adc:	0f 1f 40 00          	nopl   0x0(%rax)
     9ae0:	f3 0f 1e fa          	endbr64
     9ae4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -5896,7 +5896,7 @@ Disassembly of section .text:
     9bba:	ff 25 10 83 01 00    	jmp    *0x18310(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     9bc0:	c3                   	ret
     9bc1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    9bc8:	00 00 00 00
+    9bc8:	00 00 00 00 
     9bcc:	0f 1f 40 00          	nopl   0x0(%rax)
     9bd0:	f3 0f 1e fa          	endbr64
     9bd4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -5969,7 +5969,7 @@ Disassembly of section .text:
     9caa:	ff 25 20 82 01 00    	jmp    *0x18220(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     9cb0:	c3                   	ret
     9cb1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    9cb8:	00 00 00 00
+    9cb8:	00 00 00 00 
     9cbc:	0f 1f 40 00          	nopl   0x0(%rax)
     9cc0:	f3 0f 1e fa          	endbr64
     9cc4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -6042,7 +6042,7 @@ Disassembly of section .text:
     9d9a:	ff 25 30 81 01 00    	jmp    *0x18130(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     9da0:	c3                   	ret
     9da1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    9da8:	00 00 00 00
+    9da8:	00 00 00 00 
     9dac:	0f 1f 40 00          	nopl   0x0(%rax)
     9db0:	f3 0f 1e fa          	endbr64
     9db4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -6115,7 +6115,7 @@ Disassembly of section .text:
     9e8a:	ff 25 40 80 01 00    	jmp    *0x18040(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     9e90:	c3                   	ret
     9e91:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    9e98:	00 00 00 00
+    9e98:	00 00 00 00 
     9e9c:	0f 1f 40 00          	nopl   0x0(%rax)
     9ea0:	f3 0f 1e fa          	endbr64
     9ea4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -6188,7 +6188,7 @@ Disassembly of section .text:
     9f7a:	ff 25 50 7f 01 00    	jmp    *0x17f50(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     9f80:	c3                   	ret
     9f81:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    9f88:	00 00 00 00
+    9f88:	00 00 00 00 
     9f8c:	0f 1f 40 00          	nopl   0x0(%rax)
     9f90:	f3 0f 1e fa          	endbr64
     9f94:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -6251,10 +6251,10 @@ Disassembly of section .text:
     a04f:	5d                   	pop    %rbp
     a050:	ff 25 7a 7e 01 00    	jmp    *0x17e7a(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     a056:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    a05d:	00 00 00
+    a05d:	00 00 00 
     a060:	c3                   	ret
     a061:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    a068:	00 00 00 00
+    a068:	00 00 00 00 
     a06c:	0f 1f 40 00          	nopl   0x0(%rax)
     a070:	f3 0f 1e fa          	endbr64
     a074:	48 8b 47 48          	mov    0x48(%rdi),%rax
@@ -6279,10 +6279,10 @@ Disassembly of section .text:
     a0af:	5d                   	pop    %rbp
     a0b0:	ff 25 1a 7e 01 00    	jmp    *0x17e1a(%rip)        # 21ed0 <_obstack_memory_used@@Base+0x147d0>
     a0b6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    a0bd:	00 00 00
+    a0bd:	00 00 00 
     a0c0:	c3                   	ret
     a0c1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    a0c8:	00 00 00 00
+    a0c8:	00 00 00 00 
     a0cc:	0f 1f 40 00          	nopl   0x0(%rax)
     a0d0:	f3 0f 1e fa          	endbr64
     a0d4:	48 89 fa             	mov    %rdi,%rdx
@@ -6482,7 +6482,7 @@ Disassembly of section .text:
     a351:	75 a8                	jne    a2fb <_obstack_begin@@Base-0x31c5>
     a353:	eb b4                	jmp    a309 <_obstack_begin@@Base-0x31b7>
     a355:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    a35c:	00 00 00 00
+    a35c:	00 00 00 00 
     a360:	f3 0f 1e fa          	endbr64
     a364:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
     a36a:	8b 8e a8 00 00 00    	mov    0xa8(%rsi),%ecx
@@ -6533,7 +6533,7 @@ Disassembly of section .text:
     a401:	75 a8                	jne    a3ab <_obstack_begin@@Base-0x3115>
     a403:	eb b4                	jmp    a3b9 <_obstack_begin@@Base-0x3107>
     a405:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    a40c:	00 00 00 00
+    a40c:	00 00 00 00 
     a410:	f3 0f 1e fa          	endbr64
     a414:	41 55                	push   %r13
     a416:	41 54                	push   %r12
@@ -6579,7 +6579,7 @@ Disassembly of section .text:
     a4a0:	41 5d                	pop    %r13
     a4a2:	c3                   	ret
     a4a3:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    a4aa:	00 00 00 00
+    a4aa:	00 00 00 00 
     a4ae:	66 90                	xchg   %ax,%ax
     a4b0:	f3 0f 1e fa          	endbr64
     a4b4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -6664,7 +6664,7 @@ Disassembly of section .text:
     a5c0:	41 5d                	pop    %r13
     a5c2:	c3                   	ret
     a5c3:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    a5ca:	00 00 00 00
+    a5ca:	00 00 00 00 
     a5ce:	66 90                	xchg   %ax,%ax
     a5d0:	f3 0f 1e fa          	endbr64
     a5d4:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
@@ -6794,7 +6794,7 @@ Disassembly of section .text:
     a74f:	5d                   	pop    %rbp
     a750:	ff 25 e2 76 01 00    	jmp    *0x176e2(%rip)        # 21e38 <_obstack_memory_used@@Base+0x14738>
     a756:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    a75d:	00 00 00
+    a75d:	00 00 00 
     a760:	8b 97 ac 00 00 00    	mov    0xac(%rdi),%edx
     a766:	31 c9                	xor    %ecx,%ecx
     a768:	81 e2 00 f0 00 00    	and    $0xf000,%edx
@@ -6809,7 +6809,7 @@ Disassembly of section .text:
     a785:	5d                   	pop    %rbp
     a786:	c3                   	ret
     a787:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    a78e:	00 00
+    a78e:	00 00 
     a790:	f3 0f 1e fa          	endbr64
     a794:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
     a79a:	8b 8e a8 00 00 00    	mov    0xa8(%rsi),%ecx
@@ -6854,7 +6854,7 @@ Disassembly of section .text:
     a80f:	5d                   	pop    %rbp
     a810:	ff 25 22 76 01 00    	jmp    *0x17622(%rip)        # 21e38 <_obstack_memory_used@@Base+0x14738>
     a816:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    a81d:	00 00 00
+    a81d:	00 00 00 
     a820:	8b 97 ac 00 00 00    	mov    0xac(%rdi),%edx
     a826:	31 c9                	xor    %ecx,%ecx
     a828:	81 e2 00 f0 00 00    	and    $0xf000,%edx
@@ -6869,7 +6869,7 @@ Disassembly of section .text:
     a845:	5d                   	pop    %rbp
     a846:	c3                   	ret
     a847:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    a84e:	00 00
+    a84e:	00 00 
     a850:	55                   	push   %rbp
     a851:	53                   	push   %rbx
     a852:	89 d3                	mov    %edx,%ebx
@@ -6893,7 +6893,7 @@ Disassembly of section .text:
     a89a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
     a8a0:	48 8b 7d 00          	mov    0x0(%rbp),%rdi
     a8a4:	48 83 05 64 7a 01 00 	addq   $0x1,0x17a64(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
-    a8ab:	01
+    a8ab:	01 
     a8ac:	48 8b 47 28          	mov    0x28(%rdi),%rax
     a8b0:	48 3b 47 30          	cmp    0x30(%rdi),%rax
     a8b4:	73 1a                	jae    a8d0 <_obstack_begin@@Base-0x2bf0>
@@ -6923,7 +6923,7 @@ Disassembly of section .text:
     a905:	5d                   	pop    %rbp
     a906:	c3                   	ret
     a907:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    a90e:	00 00
+    a90e:	00 00 
     a910:	55                   	push   %rbp
     a911:	53                   	push   %rbx
     a912:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
@@ -6936,9 +6936,9 @@ Disassembly of section .text:
     a936:	48 8d 7c 24 18       	lea    0x18(%rsp),%rdi
     a93b:	89 d1                	mov    %edx,%ecx
     a93d:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    a944:	00 00
+    a944:	00 00 
     a946:	48 89 84 24 28 20 00 	mov    %rax,0x2028(%rsp)
-    a94d:	00
+    a94d:	00 
     a94e:	31 c0                	xor    %eax,%eax
     a950:	48 89 f2             	mov    %rsi,%rdx
     a953:	4c 8d 4c 24 0f       	lea    0xf(%rsp),%r9
@@ -6955,9 +6955,9 @@ Disassembly of section .text:
     a97f:	0f b6 44 24 0f       	movzbl 0xf(%rsp),%eax
     a984:	48 03 44 24 10       	add    0x10(%rsp),%rax
     a989:	48 8b 94 24 28 20 00 	mov    0x2028(%rsp),%rdx
-    a990:	00
+    a990:	00 
     a991:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    a998:	00 00
+    a998:	00 00 
     a99a:	75 0a                	jne    a9a6 <_obstack_begin@@Base-0x2b1a>
     a99c:	48 81 c4 38 20 00 00 	add    $0x2038,%rsp
     a9a3:	5b                   	pop    %rbx
@@ -6975,7 +6975,7 @@ Disassembly of section .text:
     a9c5:	48 85 c0             	test   %rax,%rax
     a9c8:	74 56                	je     aa20 <_obstack_begin@@Base-0x2aa0>
     a9ca:	49 8b 94 24 c8 00 00 	mov    0xc8(%r12),%rdx
-    a9d1:	00
+    a9d1:	00 
     a9d2:	89 c3                	mov    %eax,%ebx
     a9d4:	48 85 d2             	test   %rdx,%rdx
     a9d7:	74 27                	je     aa00 <_obstack_begin@@Base-0x2ac0>
@@ -6994,9 +6994,9 @@ Disassembly of section .text:
     a9f4:	41 5c                	pop    %r12
     a9f6:	c3                   	ret
     a9f7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    a9fe:	00 00
+    a9fe:	00 00 
     aa00:	41 8b 94 24 c4 00 00 	mov    0xc4(%r12),%edx
-    aa07:	00
+    aa07:	00 
     aa08:	49 8b 3c 24          	mov    (%r12),%rdi
     aa0c:	48 8b 35 ad 7b 01 00 	mov    0x17bad(%rip),%rsi        # 225c0 <obstack_alloc_failed_handler@@Base+0x520>
     aa13:	e8 f8 fe ff ff       	call   a910 <_obstack_begin@@Base-0x2bb0>
@@ -7009,7 +7009,7 @@ Disassembly of section .text:
     aa30:	e8 db fe ff ff       	call   a910 <_obstack_begin@@Base-0x2bb0>
     aa35:	eb 93                	jmp    a9ca <_obstack_begin@@Base-0x2af6>
     aa37:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    aa3e:	00 00
+    aa3e:	00 00 
     aa40:	f3 0f 1e fa          	endbr64
     aa44:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
     aa4a:	8b 8e a8 00 00 00    	mov    0xa8(%rsi),%ecx
@@ -7079,7 +7079,7 @@ Disassembly of section .text:
     ab14:	41 5c                	pop    %r12
     ab16:	c3                   	ret
     ab17:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ab1e:	00 00
+    ab1e:	00 00 
     ab20:	8b 95 c4 00 00 00    	mov    0xc4(%rbp),%edx
     ab26:	48 8b 7d 00          	mov    0x0(%rbp),%rdi
     ab2a:	48 8b 35 8f 7a 01 00 	mov    0x17a8f(%rip),%rsi        # 225c0 <obstack_alloc_failed_handler@@Base+0x520>
@@ -7093,7 +7093,7 @@ Disassembly of section .text:
     ab50:	e8 bb fd ff ff       	call   a910 <_obstack_begin@@Base-0x2bb0>
     ab55:	eb 83                	jmp    aada <_obstack_begin@@Base-0x29e6>
     ab57:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ab5e:	00 00
+    ab5e:	00 00 
     ab60:	f3 0f 1e fa          	endbr64
     ab64:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
     ab6a:	8b 8e a8 00 00 00    	mov    0xa8(%rsi),%ecx
@@ -7163,7 +7163,7 @@ Disassembly of section .text:
     ac34:	41 5c                	pop    %r12
     ac36:	c3                   	ret
     ac37:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ac3e:	00 00
+    ac3e:	00 00 
     ac40:	8b 95 c4 00 00 00    	mov    0xc4(%rbp),%edx
     ac46:	48 8b 7d 00          	mov    0x0(%rbp),%rdi
     ac4a:	48 8b 35 6f 79 01 00 	mov    0x1796f(%rip),%rsi        # 225c0 <obstack_alloc_failed_handler@@Base+0x520>
@@ -7177,7 +7177,7 @@ Disassembly of section .text:
     ac70:	e8 9b fc ff ff       	call   a910 <_obstack_begin@@Base-0x2bb0>
     ac75:	eb 83                	jmp    abfa <_obstack_begin@@Base-0x28c6>
     ac77:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ac7e:	00 00
+    ac7e:	00 00 
     ac80:	f3 0f 1e fa          	endbr64
     ac84:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
     ac8a:	8b 8e a8 00 00 00    	mov    0xa8(%rsi),%ecx
@@ -7226,7 +7226,7 @@ Disassembly of section .text:
     ad15:	48 85 c0             	test   %rax,%rax
     ad18:	74 56                	je     ad70 <_obstack_begin@@Base-0x2750>
     ad1a:	49 8b 94 24 c8 00 00 	mov    0xc8(%r12),%rdx
-    ad21:	00
+    ad21:	00 
     ad22:	89 c3                	mov    %eax,%ebx
     ad24:	48 85 d2             	test   %rdx,%rdx
     ad27:	74 27                	je     ad50 <_obstack_begin@@Base-0x2770>
@@ -7245,9 +7245,9 @@ Disassembly of section .text:
     ad44:	41 5c                	pop    %r12
     ad46:	c3                   	ret
     ad47:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ad4e:	00 00
+    ad4e:	00 00 
     ad50:	41 8b 94 24 c4 00 00 	mov    0xc4(%r12),%edx
-    ad57:	00
+    ad57:	00 
     ad58:	49 8b 3c 24          	mov    (%r12),%rdi
     ad5c:	48 8b 35 5d 78 01 00 	mov    0x1785d(%rip),%rsi        # 225c0 <obstack_alloc_failed_handler@@Base+0x520>
     ad63:	e8 a8 fb ff ff       	call   a910 <_obstack_begin@@Base-0x2bb0>
@@ -7260,7 +7260,7 @@ Disassembly of section .text:
     ad80:	e8 8b fb ff ff       	call   a910 <_obstack_begin@@Base-0x2bb0>
     ad85:	eb 93                	jmp    ad1a <_obstack_begin@@Base-0x27a6>
     ad87:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ad8e:	00 00
+    ad8e:	00 00 
     ad90:	f3 0f 1e fa          	endbr64
     ad94:	8b 87 a8 00 00 00    	mov    0xa8(%rdi),%eax
     ad9a:	8b 8e a8 00 00 00    	mov    0xa8(%rsi),%ecx
@@ -7307,7 +7307,7 @@ Disassembly of section .text:
     ae1a:	48 83 ec 60          	sub    $0x60,%rsp
     ae1e:	4c 8b 63 28          	mov    0x28(%rbx),%r12
     ae22:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    ae29:	00 00
+    ae29:	00 00 
     ae2b:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
     ae30:	31 c0                	xor    %eax,%eax
     ae32:	41 0f b6 74 24 10    	movzbl 0x10(%r12),%esi
@@ -7332,12 +7332,12 @@ Disassembly of section .text:
     ae88:	48 89 e5             	mov    %rsp,%rbp
     ae8b:	48 89 de             	mov    %rbx,%rsi
     ae8e:	48 c7 44 24 18 00 00 	movq   $0x0,0x18(%rsp)
-    ae95:	00 00
+    ae95:	00 00 
     ae97:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
     ae9c:	48 8b 43 40          	mov    0x40(%rbx),%rax
     aea0:	48 89 ef             	mov    %rbp,%rdi
     aea3:	48 c7 44 24 20 00 00 	movq   $0x0,0x20(%rsp)
-    aeaa:	00 00
+    aeaa:	00 00 
     aeac:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
     aeb1:	48 8b 43 48          	mov    0x48(%rbx),%rax
     aeb5:	4c 89 64 24 28       	mov    %r12,0x28(%rsp)
@@ -7365,7 +7365,7 @@ Disassembly of section .text:
     af0d:	31 c0                	xor    %eax,%eax
     af0f:	48 8b 54 24 58       	mov    0x58(%rsp),%rdx
     af14:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    af1b:	00 00
+    af1b:	00 00 
     af1d:	75 3c                	jne    af5b <_obstack_begin@@Base-0x2565>
     af1f:	48 83 c4 60          	add    $0x60,%rsp
     af23:	5b                   	pop    %rbx
@@ -7373,7 +7373,7 @@ Disassembly of section .text:
     af25:	41 5c                	pop    %r12
     af27:	c3                   	ret
     af28:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    af2f:	00
+    af2f:	00 
     af30:	48 8b 3b             	mov    (%rbx),%rdi
     af33:	ff 15 67 6d 01 00    	call   *0x16d67(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
     af39:	48 8b 44 24 48       	mov    0x48(%rsp),%rax
@@ -7386,7 +7386,7 @@ Disassembly of section .text:
     af59:	eb b4                	jmp    af0f <_obstack_begin@@Base-0x25b1>
     af5b:	ff 15 2f 6e 01 00    	call   *0x16e2f(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     af61:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    af68:	00 00 00 00
+    af68:	00 00 00 00 
     af6c:	0f 1f 40 00          	nopl   0x0(%rax)
     af70:	41 54                	push   %r12
     af72:	55                   	push   %rbp
@@ -7444,7 +7444,7 @@ Disassembly of section .text:
     b01c:	ff 15 1e 6f 01 00    	call   *0x16f1e(%rip)        # 21f40 <_obstack_memory_used@@Base+0x14840>
     b022:	e9 74 ff ff ff       	jmp    af9b <_obstack_begin@@Base-0x2525>
     b027:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    b02e:	00 00
+    b02e:	00 00 
     b030:	48 8b 43 20          	mov    0x20(%rbx),%rax
     b034:	48 39 43 28          	cmp    %rax,0x28(%rbx)
     b038:	75 d8                	jne    b012 <_obstack_begin@@Base-0x24ae>
@@ -7466,7 +7466,7 @@ Disassembly of section .text:
     b07c:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
     b081:	e9 40 ff ff ff       	jmp    afc6 <_obstack_begin@@Base-0x24fa>
     b086:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    b08d:	00 00 00
+    b08d:	00 00 00 
     b090:	41 54                	push   %r12
     b092:	55                   	push   %rbp
     b093:	53                   	push   %rbx
@@ -7499,7 +7499,7 @@ Disassembly of section .text:
     b0e0:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
     b0e5:	eb e4                	jmp    b0cb <_obstack_begin@@Base-0x23f5>
     b0e7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    b0ee:	00 00
+    b0ee:	00 00 
     b0f0:	f3 0f 1e fa          	endbr64
     b0f4:	48 8b 05 d5 6b 01 00 	mov    0x16bd5(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     b0fb:	53                   	push   %rbx
@@ -7522,7 +7522,7 @@ Disassembly of section .text:
     b13b:	8b 3d 47 6f 01 00    	mov    0x16f47(%rip),%edi        # 22088 <_obstack_memory_used@@Base+0x14988>
     b141:	ff 15 99 6b 01 00    	call   *0x16b99(%rip)        # 21ce0 <_obstack_memory_used@@Base+0x145e0>
     b147:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    b14e:	00 00
+    b14e:	00 00 
     b150:	48 8b 05 99 6e 01 00 	mov    0x16e99(%rip),%rax        # 21ff0 <_obstack_memory_used@@Base+0x148f0>
     b157:	48 8b 38             	mov    (%rax),%rdi
     b15a:	e8 31 ff ff ff       	call   b090 <_obstack_begin@@Base-0x2430>
@@ -7533,7 +7533,7 @@ Disassembly of section .text:
     b165:	8b 3d 1d 6f 01 00    	mov    0x16f1d(%rip),%edi        # 22088 <_obstack_memory_used@@Base+0x14988>
     b16b:	ff 15 6f 6b 01 00    	call   *0x16b6f(%rip)        # 21ce0 <_obstack_memory_used@@Base+0x145e0>
     b171:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    b178:	00 00 00 00
+    b178:	00 00 00 00 
     b17c:	0f 1f 40 00          	nopl   0x0(%rax)
     b180:	41 57                	push   %r15
     b182:	49 89 f2             	mov    %rsi,%r10
@@ -7546,52 +7546,52 @@ Disassembly of section .text:
     b192:	53                   	push   %rbx
     b193:	48 81 ec 58 01 00 00 	sub    $0x158,%rsp
     b19a:	4c 89 84 24 c0 00 00 	mov    %r8,0xc0(%rsp)
-    b1a1:	00
+    b1a1:	00 
     b1a2:	4c 89 8c 24 c8 00 00 	mov    %r9,0xc8(%rsp)
-    b1a9:	00
+    b1a9:	00 
     b1aa:	84 c0                	test   %al,%al
     b1ac:	74 40                	je     b1ee <_obstack_begin@@Base-0x22d2>
     b1ae:	0f 29 84 24 d0 00 00 	movaps %xmm0,0xd0(%rsp)
-    b1b5:	00
+    b1b5:	00 
     b1b6:	0f 29 8c 24 e0 00 00 	movaps %xmm1,0xe0(%rsp)
-    b1bd:	00
+    b1bd:	00 
     b1be:	0f 29 94 24 f0 00 00 	movaps %xmm2,0xf0(%rsp)
-    b1c5:	00
+    b1c5:	00 
     b1c6:	0f 29 9c 24 00 01 00 	movaps %xmm3,0x100(%rsp)
-    b1cd:	00
+    b1cd:	00 
     b1ce:	0f 29 a4 24 10 01 00 	movaps %xmm4,0x110(%rsp)
-    b1d5:	00
+    b1d5:	00 
     b1d6:	0f 29 ac 24 20 01 00 	movaps %xmm5,0x120(%rsp)
-    b1dd:	00
+    b1dd:	00 
     b1de:	0f 29 b4 24 30 01 00 	movaps %xmm6,0x130(%rsp)
-    b1e5:	00
+    b1e5:	00 
     b1e6:	0f 29 bc 24 40 01 00 	movaps %xmm7,0x140(%rsp)
-    b1ed:	00
+    b1ed:	00 
     b1ee:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    b1f5:	00 00
+    b1f5:	00 00 
     b1f7:	48 89 84 24 98 00 00 	mov    %rax,0x98(%rsp)
-    b1fe:	00
+    b1fe:	00 
     b1ff:	31 c0                	xor    %eax,%eax
     b201:	4c 8d 8c 24 a0 00 00 	lea    0xa0(%rsp),%r9
-    b208:	00
+    b208:	00 
     b209:	31 ff                	xor    %edi,%edi
     b20b:	45 31 c0             	xor    %r8d,%r8d
     b20e:	48 8d 84 24 90 01 00 	lea    0x190(%rsp),%rax
-    b215:	00
+    b215:	00 
     b216:	c7 44 24 20 20 00 00 	movl   $0x20,0x20(%rsp)
-    b21d:	00
+    b21d:	00 
     b21e:	ba 20 00 00 00       	mov    $0x20,%edx
     b223:	48 8d 8c 24 90 01 00 	lea    0x190(%rsp),%rcx
-    b22a:	00
+    b22a:	00 
     b22b:	c7 44 24 24 30 00 00 	movl   $0x30,0x24(%rsp)
-    b232:	00
+    b232:	00 
     b233:	31 db                	xor    %ebx,%ebx
     b235:	48 8d 74 24 40       	lea    0x40(%rsp),%rsi
     b23a:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
     b23f:	4c 89 4c 24 30       	mov    %r9,0x30(%rsp)
     b244:	eb 32                	jmp    b278 <_obstack_begin@@Base-0x2248>
     b246:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    b24d:	00 00 00
+    b24d:	00 00 00 
     b250:	89 d0                	mov    %edx,%eax
     b252:	41 b8 01 00 00 00    	mov    $0x1,%r8d
     b258:	83 c2 08             	add    $0x8,%edx
@@ -7698,7 +7698,7 @@ Disassembly of section .text:
     b40c:	4c 8b 44 24 48       	mov    0x48(%rsp),%r8
     b411:	ba 05 00 00 00       	mov    $0x5,%edx
     b416:	4c 8b 94 24 80 00 00 	mov    0x80(%rsp),%r10
-    b41d:	00
+    b41d:	00 
     b41e:	48 8b 4c 24 40       	mov    0x40(%rsp),%rcx
     b423:	48 8d 35 ee 11 01 00 	lea    0x111ee(%rip),%rsi        # 1c618 <_obstack_memory_used@@Base+0xef18>
     b42a:	4c 8b 6c 24 78       	mov    0x78(%rsp),%r13
@@ -7729,9 +7729,9 @@ Disassembly of section .text:
     b48a:	ff 15 10 6b 01 00    	call   *0x16b10(%rip)        # 21fa0 <_obstack_memory_used@@Base+0x148a0>
     b490:	48 83 c4 30          	add    $0x30,%rsp
     b494:	48 8b 84 24 98 00 00 	mov    0x98(%rsp),%rax
-    b49b:	00
+    b49b:	00 
     b49c:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    b4a3:	00 00
+    b4a3:	00 00 
     b4a5:	0f 85 a7 02 00 00    	jne    b752 <_obstack_begin@@Base-0x1d6e>
     b4ab:	48 81 c4 58 01 00 00 	add    $0x158,%rsp
     b4b2:	5b                   	pop    %rbx
@@ -7885,7 +7885,7 @@ Disassembly of section .text:
     b708:	ba 05 00 00 00       	mov    $0x5,%edx
     b70d:	48 8d 35 14 10 01 00 	lea    0x11014(%rip),%rsi        # 1c728 <_obstack_memory_used@@Base+0xf028>
     b714:	4c 8b 94 24 80 00 00 	mov    0x80(%rsp),%r10
-    b71b:	00
+    b71b:	00 
     b71c:	48 8b 4c 24 40       	mov    0x40(%rsp),%rcx
     b721:	4c 8b 6c 24 78       	mov    0x78(%rsp),%r13
     b726:	4c 8b 64 24 70       	mov    0x70(%rsp),%r12
@@ -7899,7 +7899,7 @@ Disassembly of section .text:
     b74d:	e9 04 fd ff ff       	jmp    b456 <_obstack_begin@@Base-0x206a>
     b752:	ff 15 38 66 01 00    	call   *0x16638(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     b758:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    b75f:	00
+    b75f:	00 
     b760:	f3 0f 1e fa          	endbr64
     b764:	89 ff                	mov    %edi,%edi
     b766:	48 8d 05 53 69 01 00 	lea    0x16953(%rip),%rax        # 220c0 <obstack_alloc_failed_handler@@Base+0x20>
@@ -8002,7 +8002,7 @@ Disassembly of section .text:
     b8b9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
     b8c0:	c3                   	ret
     b8c1:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    b8c8:	00 00 00 00
+    b8c8:	00 00 00 00 
     b8cc:	0f 1f 40 00          	nopl   0x0(%rax)
     b8d0:	f3 0f 1e fa          	endbr64
     b8d4:	80 3d 25 6f 01 00 00 	cmpb   $0x0,0x16f25(%rip)        # 22800 <obstack_alloc_failed_handler@@Base+0x760>
@@ -8023,7 +8023,7 @@ Disassembly of section .text:
     b912:	85 c0                	test   %eax,%eax
     b914:	79 1a                	jns    b930 <_obstack_begin@@Base-0x1b90>
     b916:	48 83 3d ca 67 01 00 	cmpq   $0x0,0x167ca(%rip)        # 220e8 <obstack_alloc_failed_handler@@Base+0x48>
-    b91d:	00
+    b91d:	00 
     b91e:	74 20                	je     b940 <_obstack_begin@@Base-0x1b80>
     b920:	48 8d 3d b9 67 01 00 	lea    0x167b9(%rip),%rdi        # 220e0 <obstack_alloc_failed_handler@@Base+0x40>
     b927:	e8 a4 ff ff ff       	call   b8d0 <_obstack_begin@@Base-0x1bf0>
@@ -8051,9 +8051,9 @@ Disassembly of section .text:
     b989:	53                   	push   %rbx
     b98a:	48 81 ec 90 00 00 00 	sub    $0x90,%rsp
     b991:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    b998:	00 00
+    b998:	00 00 
     b99a:	48 89 84 24 88 00 00 	mov    %rax,0x88(%rsp)
-    b9a1:	00
+    b9a1:	00 
     b9a2:	31 c0                	xor    %eax,%eax
     b9a4:	48 89 e3             	mov    %rsp,%rbx
     b9a7:	eb 5e                	jmp    ba07 <_obstack_begin@@Base-0x1ab9>
@@ -8098,9 +8098,9 @@ Disassembly of section .text:
     ba4b:	eb a1                	jmp    b9ee <_obstack_begin@@Base-0x1ad2>
     ba4d:	0f 1f 00             	nopl   (%rax)
     ba50:	48 8b 84 24 88 00 00 	mov    0x88(%rsp),%rax
-    ba57:	00
+    ba57:	00 
     ba58:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    ba5f:	00 00
+    ba5f:	00 00 
     ba61:	75 10                	jne    ba73 <_obstack_begin@@Base-0x1a4d>
     ba63:	48 81 c4 90 00 00 00 	add    $0x90,%rsp
     ba6a:	5b                   	pop    %rbx
@@ -8126,7 +8126,7 @@ Disassembly of section .text:
     ba9f:	4c 8d 4a 01          	lea    0x1(%rdx),%r9
     baa3:	4c 89 ca             	mov    %r9,%rdx
     baa6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    baad:	00 00 00
+    baad:	00 00 00 
     bab0:	80 3c 17 2e          	cmpb   $0x2e,(%rdi,%rdx,1)
     bab4:	75 de                	jne    ba94 <_obstack_begin@@Base-0x1a2c>
     bab6:	0f b6 44 17 01       	movzbl 0x1(%rdi,%rdx,1),%eax
@@ -8165,7 +8165,7 @@ Disassembly of section .text:
     bb12:	4c 89 c8             	mov    %r9,%rax
     bb15:	c3                   	ret
     bb16:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    bb1d:	00 00 00
+    bb1d:	00 00 00 
     bb20:	8d 48 9f             	lea    -0x61(%rax),%ecx
     bb23:	80 f9 19             	cmp    $0x19,%cl
     bb26:	76 08                	jbe    bb30 <_obstack_begin@@Base-0x1990>
@@ -8417,7 +8417,7 @@ Disassembly of section .text:
     bee1:	41 5c                	pop    %r12
     bee3:	c3                   	ret
     bee4:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    beeb:	00 00 00 00
+    beeb:	00 00 00 00 
     beef:	90                   	nop
     bef0:	f3 0f 1e fa          	endbr64
     bef4:	41 56                	push   %r14
@@ -8467,7 +8467,7 @@ Disassembly of section .text:
     bf7f:	ff 15 1b 5d 01 00    	call   *0x15d1b(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
     bf85:	4c 89 33             	mov    %r14,(%rbx)
     bf88:	48 c7 43 08 00 04 00 	movq   $0x400,0x8(%rbx)
-    bf8f:	00
+    bf8f:	00 
     bf90:	31 c0                	xor    %eax,%eax
     bf92:	eb a5                	jmp    bf39 <_obstack_begin@@Base-0x1587>
     bf94:	0f 1f 40 00          	nopl   0x0(%rax)
@@ -8479,9 +8479,9 @@ Disassembly of section .text:
     bfa5:	31 f6                	xor    %esi,%esi
     bfa7:	48 81 ec 10 01 00 00 	sub    $0x110,%rsp
     bfae:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    bfb5:	00 00
+    bfb5:	00 00 
     bfb7:	48 89 84 24 08 01 00 	mov    %rax,0x108(%rsp)
-    bfbe:	00
+    bfbe:	00 
     bfbf:	31 c0                	xor    %eax,%eax
     bfc1:	ff 15 39 5f 01 00    	call   *0x15f39(%rip)        # 21f00 <_obstack_memory_used@@Base+0x14800>
     bfc7:	48 85 c0             	test   %rax,%rax
@@ -8493,9 +8493,9 @@ Disassembly of section .text:
     bfde:	76 28                	jbe    c008 <_obstack_begin@@Base-0x14b8>
     bfe0:	31 c0                	xor    %eax,%eax
     bfe2:	48 8b 94 24 08 01 00 	mov    0x108(%rsp),%rdx
-    bfe9:	00
+    bfe9:	00 
     bfea:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    bff1:	00 00
+    bff1:	00 00 
     bff3:	0f 85 c1 00 00 00    	jne    c0ba <_obstack_begin@@Base-0x1406>
     bff9:	48 81 c4 10 01 00 00 	add    $0x110,%rsp
     c000:	5b                   	pop    %rbx
@@ -8522,7 +8522,7 @@ Disassembly of section .text:
     c041:	0f 95 c0             	setne  %al
     c044:	eb 9c                	jmp    bfe2 <_obstack_begin@@Base-0x14de>
     c046:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    c04d:	00 00 00
+    c04d:	00 00 00 
     c050:	80 7c 24 01 00       	cmpb   $0x0,0x1(%rsp)
     c055:	74 89                	je     bfe0 <_obstack_begin@@Base-0x14e0>
     c057:	eb d6                	jmp    c02f <_obstack_begin@@Base-0x1491>
@@ -8547,7 +8547,7 @@ Disassembly of section .text:
     c093:	74 90                	je     c025 <_obstack_begin@@Base-0x149b>
     c095:	eb d9                	jmp    c070 <_obstack_begin@@Base-0x1450>
     c097:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    c09e:	00 00
+    c09e:	00 00 
     c0a0:	89 c1                	mov    %eax,%ecx
     c0a2:	48 89 de             	mov    %rbx,%rsi
     c0a5:	31 d2                	xor    %edx,%edx
@@ -8567,7 +8567,7 @@ Disassembly of section .text:
     c0d9:	0f 2f 05 80 09 01 00 	comiss 0x10980(%rip),%xmm0        # 1ca60 <_obstack_memory_used@@Base+0xf360>
     c0e0:	76 51                	jbe    c133 <_obstack_begin@@Base-0x138d>
     c0e2:	f3 0f 10 0d 7a 09 01 	movss  0x1097a(%rip),%xmm1        # 1ca64 <_obstack_memory_used@@Base+0xf364>
-    c0e9:	00
+    c0e9:	00 
     c0ea:	0f 2f c8             	comiss %xmm0,%xmm1
     c0ed:	76 44                	jbe    c133 <_obstack_begin@@Base-0x138d>
     c0ef:	f3 0f 10 48 0c       	movss  0xc(%rax),%xmm1
@@ -8578,12 +8578,12 @@ Disassembly of section .text:
     c105:	0f 2f ca             	comiss %xmm2,%xmm1
     c108:	72 29                	jb     c133 <_obstack_begin@@Base-0x138d>
     c10a:	f3 0f 58 0d 4e 09 01 	addss  0x1094e(%rip),%xmm1        # 1ca60 <_obstack_memory_used@@Base+0xf360>
-    c111:	00
+    c111:	00 
     c112:	f3 0f 10 50 04       	movss  0x4(%rax),%xmm2
     c117:	0f 2f d1             	comiss %xmm1,%xmm2
     c11a:	76 17                	jbe    c133 <_obstack_begin@@Base-0x138d>
     c11c:	f3 0f 10 1d 48 09 01 	movss  0x10948(%rip),%xmm3        # 1ca6c <_obstack_memory_used@@Base+0xf36c>
-    c123:	00
+    c123:	00 
     c124:	0f 2f da             	comiss %xmm2,%xmm3
     c127:	72 0a                	jb     c133 <_obstack_begin@@Base-0x138d>
     c129:	0f 2f c1             	comiss %xmm1,%xmm0
@@ -8596,7 +8596,7 @@ Disassembly of section .text:
     c140:	b8 01 00 00 00       	mov    $0x1,%eax
     c145:	c3                   	ret
     c146:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    c14d:	00 00 00
+    c14d:	00 00 00 
     c150:	f3 0f 1e fa          	endbr64
     c154:	41 54                	push   %r12
     c156:	49 89 fc             	mov    %rdi,%r12
@@ -8652,7 +8652,7 @@ Disassembly of section .text:
     c202:	48 85 db             	test   %rbx,%rbx
     c205:	74 1b                	je     c222 <_obstack_begin@@Base-0x129e>
     c207:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    c20e:	00 00
+    c20e:	00 00 
     c210:	48 89 df             	mov    %rbx,%rdi
     c213:	48 8b 5b 08          	mov    0x8(%rbx),%rbx
     c217:	ff 15 83 5a 01 00    	call   *0x15a83(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
@@ -8673,7 +8673,7 @@ Disassembly of section .text:
     c249:	53                   	push   %rbx
     c24a:	48 83 ec 18          	sub    $0x18,%rsp
     c24e:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    c255:	00 00
+    c255:	00 00 
     c257:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
     c25c:	31 c0                	xor    %eax,%eax
     c25e:	48 85 f6             	test   %rsi,%rsi
@@ -8691,7 +8691,7 @@ Disassembly of section .text:
     c286:	31 c0                	xor    %eax,%eax
     c288:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
     c28d:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    c294:	00 00
+    c294:	00 00 
     c296:	0f 85 c8 01 00 00    	jne    c464 <_obstack_begin@@Base-0x105c>
     c29c:	48 83 c4 18          	add    $0x18,%rsp
     c2a0:	5b                   	pop    %rbx
@@ -8700,7 +8700,7 @@ Disassembly of section .text:
     c2a4:	41 5d                	pop    %r13
     c2a6:	c3                   	ret
     c2a7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    c2ae:	00 00
+    c2ae:	00 00 
     c2b0:	48 8b 43 18          	mov    0x18(%rbx),%rax
     c2b4:	48 85 c0             	test   %rax,%rax
     c2b7:	78 7f                	js     c338 <_obstack_begin@@Base-0x1188>
@@ -8769,7 +8769,7 @@ Disassembly of section .text:
     c3bf:	90                   	nop
     c3c0:	f3 0f 6f 43 18       	movdqu 0x18(%rbx),%xmm0
     c3c5:	66 0f d4 05 b3 06 01 	paddq  0x106b3(%rip),%xmm0        # 1ca80 <_obstack_memory_used@@Base+0xf380>
-    c3cc:	00
+    c3cc:	00 
     c3cd:	49 89 2c 24          	mov    %rbp,(%r12)
     c3d1:	0f 11 43 18          	movups %xmm0,0x18(%rbx)
     c3d5:	e9 50 ff ff ff       	jmp    c32a <_obstack_begin@@Base-0x1196>
@@ -8777,7 +8777,7 @@ Disassembly of section .text:
     c3e0:	f3 0f 59 e0          	mulss  %xmm0,%xmm4
     c3e4:	eb c6                	jmp    c3ac <_obstack_begin@@Base-0x1114>
     c3e6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    c3ed:	00 00 00
+    c3ed:	00 00 00 
     c3f0:	0f 2f 25 7d 06 01 00 	comiss 0x1067d(%rip),%xmm4        # 1ca74 <_obstack_memory_used@@Base+0xf374>
     c3f7:	73 57                	jae    c450 <_obstack_begin@@Base-0x1070>
     c3f9:	f3 48 0f 2c f4       	cvttss2si %xmm4,%rsi
@@ -8794,7 +8794,7 @@ Disassembly of section .text:
     c41d:	0f 84 cb fe ff ff    	je     c2ee <_obstack_begin@@Base-0x11d2>
     c423:	e9 11 7c ff ff       	jmp    4039 <_obstack_begin@@Base-0x9487>
     c428:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    c42f:	00
+    c42f:	00 
     c430:	bf 10 00 00 00       	mov    $0x10,%edi
     c435:	ff 15 7d 5a 01 00    	call   *0x15a7d(%rip)        # 21eb8 <_obstack_memory_used@@Base+0x147b8>
     c43b:	48 85 c0             	test   %rax,%rax
@@ -8802,7 +8802,7 @@ Disassembly of section .text:
     c444:	e9 6c ff ff ff       	jmp    c3b5 <_obstack_begin@@Base-0x110b>
     c449:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
     c450:	f3 0f 5c 25 1c 06 01 	subss  0x1061c(%rip),%xmm4        # 1ca74 <_obstack_memory_used@@Base+0xf374>
-    c457:	00
+    c457:	00 
     c458:	f3 48 0f 2c f4       	cvttss2si %xmm4,%rsi
     c45d:	48 0f ba fe 3f       	btc    $0x3f,%rsi
     c462:	eb 9a                	jmp    c3fe <_obstack_begin@@Base-0x10c2>
@@ -8823,9 +8823,9 @@ Disassembly of section .text:
     c492:	4c 89 44 24 18       	mov    %r8,0x18(%rsp)
     c497:	89 54 24 40          	mov    %edx,0x40(%rsp)
     c49b:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    c4a2:	00 00
+    c4a2:	00 00 
     c4a4:	48 89 84 24 88 00 00 	mov    %rax,0x88(%rsp)
-    c4ab:	00
+    c4ab:	00 
     c4ac:	89 d0                	mov    %edx,%eax
     c4ae:	83 e2 20             	and    $0x20,%edx
     c4b1:	89 54 24 48          	mov    %edx,0x48(%rsp)
@@ -8908,7 +8908,7 @@ Disassembly of section .text:
     c5dc:	0f 84 a1 08 00 00    	je     ce83 <_obstack_begin@@Base-0x63d>
     c5e2:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
     c5e8:	48 be cd cc cc cc cc 	movabs $0xcccccccccccccccd,%rsi
-    c5ef:	cc cc cc
+    c5ef:	cc cc cc 
     c5f2:	49 89 df             	mov    %rbx,%r15
     c5f5:	0f 1f 00             	nopl   (%rax)
     c5f8:	48 89 c8             	mov    %rcx,%rax
@@ -9061,7 +9061,7 @@ Disassembly of section .text:
     c813:	dd d8                	fstp   %st(0)
     c815:	eb 0b                	jmp    c822 <_obstack_begin@@Base-0xc9e>
     c817:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    c81e:	00 00
+    c81e:	00 00 
     c820:	dd d8                	fstp   %st(0)
     c822:	48 89 d3             	mov    %rdx,%rbx
     c825:	4c 29 fb             	sub    %r15,%rbx
@@ -9124,7 +9124,7 @@ Disassembly of section .text:
     c8fe:	79 10                	jns    c910 <_obstack_begin@@Base-0xbb0>
     c900:	d8 05 6a 01 01 00    	fadds  0x1016a(%rip)        # 1ca70 <_obstack_memory_used@@Base+0xf370>
     c906:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    c90d:	00 00 00
+    c90d:	00 00 00 
     c910:	48 83 ec 10          	sub    $0x10,%rsp
     c914:	48 8d 0d 78 d6 00 00 	lea    0xd678(%rip),%rcx        # 19f93 <_obstack_memory_used@@Base+0xc893>
     c91b:	48 c7 c2 ff ff ff ff 	mov    $0xffffffffffffffff,%rdx
@@ -9163,9 +9163,9 @@ Disassembly of section .text:
     c9a3:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
     c9a8:	c6 00 00             	movb   $0x0,(%rax)
     c9ab:	48 8b 84 24 88 00 00 	mov    0x88(%rsp),%rax
-    c9b2:	00
+    c9b2:	00 
     c9b3:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    c9ba:	00 00
+    c9ba:	00 00 
     c9bc:	0f 85 fb 06 00 00    	jne    d0bd <_obstack_begin@@Base-0x403>
     c9c2:	48 81 c4 98 00 00 00 	add    $0x98,%rsp
     c9c9:	4c 89 f8             	mov    %r15,%rax
@@ -9177,7 +9177,7 @@ Disassembly of section .text:
     c9d4:	41 5f                	pop    %r15
     c9d6:	c3                   	ret
     c9d7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    c9de:	00 00
+    c9de:	00 00 
     c9e0:	4d 89 e6             	mov    %r12,%r14
     c9e3:	48 89 ee             	mov    %rbp,%rsi
     c9e6:	45 31 e4             	xor    %r12d,%r12d
@@ -9186,7 +9186,7 @@ Disassembly of section .text:
     c9f0:	44 8b 44 24 30       	mov    0x30(%rsp),%r8d
     c9f5:	eb 87                	jmp    c97e <_obstack_begin@@Base-0xb42>
     c9f7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    c9fe:	00 00
+    c9fe:	00 00 
     ca00:	85 ff                	test   %edi,%edi
     ca02:	40 0f 95 c7          	setne  %dil
     ca06:	40 0f b6 ff          	movzbl %dil,%edi
@@ -9260,7 +9260,7 @@ Disassembly of section .text:
     cafc:	41 b8 ff ff ff ff    	mov    $0xffffffff,%r8d
     cb02:	e9 a4 fa ff ff       	jmp    c5ab <_obstack_begin@@Base-0xf15>
     cb07:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    cb0e:	00 00
+    cb0e:	00 00 
     cb10:	48 8b 54 24 18       	mov    0x18(%rsp),%rdx
     cb15:	48 83 fa 01          	cmp    $0x1,%rdx
     cb19:	0f 86 6a 04 00 00    	jbe    cf89 <_obstack_begin@@Base-0x537>
@@ -9384,7 +9384,7 @@ Disassembly of section .text:
     cce2:	48 01 d0             	add    %rdx,%rax
     cce5:	eb 0b                	jmp    ccf2 <_obstack_begin@@Base-0x7ce>
     cce7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ccee:	00 00
+    ccee:	00 00 
     ccf0:	dd d8                	fstp   %st(0)
     ccf2:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
     ccf7:	df 6c 24 10          	fildll 0x10(%rsp)
@@ -9445,7 +9445,7 @@ Disassembly of section .text:
     cddd:	0f 85 8d fe ff ff    	jne    cc70 <_obstack_begin@@Base-0x850>
     cde3:	e9 30 fe ff ff       	jmp    cc18 <_obstack_begin@@Base-0x8a8>
     cde8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    cdef:	00
+    cdef:	00 
     cdf0:	44 8b 44 24 48       	mov    0x48(%rsp),%r8d
     cdf5:	45 85 c0             	test   %r8d,%r8d
     cdf8:	0f 84 4e ff ff ff    	je     cd4c <_obstack_begin@@Base-0x774>
@@ -9631,7 +9631,7 @@ Disassembly of section .text:
     d0b8:	e9 df fd ff ff       	jmp    ce9c <_obstack_begin@@Base-0x624>
     d0bd:	ff 15 cd 4c 01 00    	call   *0x14ccd(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     d0c3:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    d0ca:	00 00 00 00
+    d0ca:	00 00 00 00 
     d0ce:	66 90                	xchg   %ax,%ax
     d0d0:	41 54                	push   %r12
     d0d2:	55                   	push   %rbp
@@ -9639,11 +9639,11 @@ Disassembly of section .text:
     d0d6:	53                   	push   %rbx
     d0d7:	48 81 ec a0 02 00 00 	sub    $0x2a0,%rsp
     d0de:	44 0f b6 25 22 52 01 	movzbl 0x15222(%rip),%r12d        # 22308 <obstack_alloc_failed_handler@@Base+0x268>
-    d0e5:	00
+    d0e5:	00 
     d0e6:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    d0ed:	00 00
+    d0ed:	00 00 
     d0ef:	48 89 84 24 98 02 00 	mov    %rax,0x298(%rsp)
-    d0f6:	00
+    d0f6:	00 
     d0f7:	31 c0                	xor    %eax,%eax
     d0f9:	80 3d 09 52 01 00 00 	cmpb   $0x0,0x15209(%rip)        # 22309 <obstack_alloc_failed_handler@@Base+0x269>
     d100:	0f 84 9a 00 00 00    	je     d1a0 <_obstack_begin@@Base-0x320>
@@ -9672,9 +9672,9 @@ Disassembly of section .text:
     d174:	3c 01                	cmp    $0x1,%al
     d176:	48 83 db ff          	sbb    $0xffffffffffffffff,%rbx
     d17a:	48 8b 84 24 98 02 00 	mov    0x298(%rsp),%rax
-    d181:	00
+    d181:	00 
     d182:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    d189:	00 00
+    d189:	00 00 
     d18b:	0f 85 55 01 00 00    	jne    d2e6 <_obstack_begin@@Base-0x1da>
     d191:	48 81 c4 a0 02 00 00 	add    $0x2a0,%rsp
     d198:	48 89 d8             	mov    %rbx,%rax
@@ -9701,7 +9701,7 @@ Disassembly of section .text:
     d1ed:	48 83 c0 01          	add    $0x1,%rax
     d1f1:	e9 3c ff ff ff       	jmp    d132 <_obstack_begin@@Base-0x38e>
     d1f6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    d1fd:	00 00 00
+    d1fd:	00 00 00 
     d200:	83 3d fd 50 01 00 04 	cmpl   $0x4,0x150fd(%rip)        # 22304 <obstack_alloc_failed_handler@@Base+0x264>
     d207:	0f 84 c3 00 00 00    	je     d2d0 <_obstack_begin@@Base-0x1f0>
     d20d:	48 63 05 8c 50 01 00 	movslq 0x1508c(%rip),%rax        # 222a0 <obstack_alloc_failed_handler@@Base+0x200>
@@ -9716,7 +9716,7 @@ Disassembly of section .text:
     d23c:	e8 cf d6 ff ff       	call   a910 <_obstack_begin@@Base-0x2bb0>
     d241:	e9 0c ff ff ff       	jmp    d152 <_obstack_begin@@Base-0x36e>
     d246:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    d24d:	00 00 00
+    d24d:	00 00 00 
     d250:	80 3d a1 50 01 00 00 	cmpb   $0x0,0x150a1(%rip)        # 222f8 <obstack_alloc_failed_handler@@Base+0x258>
     d257:	75 b4                	jne    d20d <_obstack_begin@@Base-0x2b3>
     d259:	e9 e4 fe ff ff       	jmp    d142 <_obstack_begin@@Base-0x37e>
@@ -9724,10 +9724,10 @@ Disassembly of section .text:
     d260:	c6 44 24 14 00       	movb   $0x0,0x14(%rsp)
     d265:	48 8b 4f 20          	mov    0x20(%rdi),%rcx
     d269:	49 b8 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%r8
-    d270:	cc cc cc
+    d270:	cc cc cc 
     d273:	48 8d 7c 24 14       	lea    0x14(%rsp),%rdi
     d278:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    d27f:	00
+    d27f:	00 
     d280:	48 89 c8             	mov    %rcx,%rax
     d283:	48 83 ef 01          	sub    $0x1,%rdi
     d287:	49 f7 e0             	mul    %r8
@@ -9763,7 +9763,7 @@ Disassembly of section .text:
     d2f9:	53                   	push   %rbx
     d2fa:	48 83 ec 18          	sub    $0x18,%rsp
     d2fe:	48 83 3d c2 52 01 00 	cmpq   $0x0,0x152c2(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    d305:	00
+    d305:	00 
     d306:	0f 84 44 01 00 00    	je     d450 <_obstack_begin@@Base-0x70>
     d30c:	4c 8b 35 bd 49 01 00 	mov    0x149bd(%rip),%r14        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     d313:	41 89 ff             	mov    %edi,%r15d
@@ -9782,7 +9782,7 @@ Disassembly of section .text:
     d342:	0f 83 18 01 00 00    	jae    d460 <_obstack_begin@@Base-0x60>
     d348:	48 8b 05 01 51 01 00 	mov    0x15101(%rip),%rax        # 22450 <obstack_alloc_failed_handler@@Base+0x3b0>
     d34f:	48 83 3d 21 51 01 00 	cmpq   $0x0,0x15121(%rip)        # 22478 <obstack_alloc_failed_handler@@Base+0x3d8>
-    d356:	00
+    d356:	00 
     d357:	4c 8b 24 d8          	mov    (%rax,%rbx,8),%r12
     d35b:	74 c3                	je     d320 <_obstack_begin@@Base-0x1a0>
     d35d:	4c 89 e7             	mov    %r12,%rdi
@@ -9847,10 +9847,10 @@ Disassembly of section .text:
     d43b:	ff 15 7f 49 01 00    	call   *0x1497f(%rip)        # 21dc0 <_obstack_memory_used@@Base+0x146c0>
     d441:	e9 e6 fe ff ff       	jmp    d32c <_obstack_begin@@Base-0x194>
     d446:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    d44d:	00 00 00
+    d44d:	00 00 00 
     d450:	4c 8b 35 79 48 01 00 	mov    0x14879(%rip),%r14        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     d457:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    d45e:	00 00
+    d45e:	00 00 
     d460:	49 8b 3e             	mov    (%r14),%rdi
     d463:	0f b6 15 0e 4c 01 00 	movzbl 0x14c0e(%rip),%edx        # 22078 <_obstack_memory_used@@Base+0x14978>
     d46a:	48 8b 47 28          	mov    0x28(%rdi),%rax
@@ -9882,7 +9882,7 @@ Disassembly of section .text:
     d4af:	41 5f                	pop    %r15
     d4b1:	ff 25 09 49 01 00    	jmp    *0x14909(%rip)        # 21dc0 <_obstack_memory_used@@Base+0x146c0>
     d4b7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    d4be:	00 00
+    d4be:	00 00 
 
 000000000000d4c0 <_obstack_begin@@Base>:
     d4c0:	f3 0f 1e fa          	endbr64
@@ -9891,7 +9891,7 @@ Disassembly of section .text:
     d4cc:	4c 89 47 40          	mov    %r8,0x40(%rdi)
     d4d0:	e9 fb 9c ff ff       	jmp    71d0 <_obstack_begin@@Base-0x62f0>
     d4d5:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    d4dc:	00 00 00 00
+    d4dc:	00 00 00 00 
 
 000000000000d4e0 <_obstack_begin_1@@Base>:
     d4e0:	f3 0f 1e fa          	endbr64
@@ -10010,12 +10010,12 @@ Disassembly of section .text:
     d653:	31 c0                	xor    %eax,%eax
     d655:	c3                   	ret
     d656:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    d65d:	00 00 00
+    d65d:	00 00 00 
     d660:	b8 01 00 00 00       	mov    $0x1,%eax
     d665:	c3                   	ret
     d666:	c3                   	ret
     d667:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    d66e:	00 00
+    d66e:	00 00 
 
 000000000000d670 <_obstack_free@@Base>:
     d670:	f3 0f 1e fa          	endbr64
@@ -10055,7 +10055,7 @@ Disassembly of section .text:
     d6d3:	41 5c                	pop    %r12
     d6d5:	c3                   	ret
     d6d6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    d6dd:	00 00 00
+    d6dd:	00 00 00 
     d6e0:	48 8b 06             	mov    (%rsi),%rax
     d6e3:	4c 89 63 18          	mov    %r12,0x18(%rbx)
     d6e7:	4c 89 63 10          	mov    %r12,0x10(%rbx)
@@ -10066,7 +10066,7 @@ Disassembly of section .text:
     d6f5:	41 5c                	pop    %r12
     d6f7:	c3                   	ret
     d6f8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    d6ff:	00
+    d6ff:	00 
 
 000000000000d700 <_obstack_memory_used@@Base>:
     d700:	f3 0f 1e fa          	endbr64
@@ -10084,7 +10084,7 @@ Disassembly of section .text:
     d722:	48 89 c8             	mov    %rcx,%rax
     d725:	c3                   	ret
     d726:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    d72d:	00 00 00
+    d72d:	00 00 00 
     d730:	f3 0f 1e fa          	endbr64
     d734:	55                   	push   %rbp
     d735:	89 f5                	mov    %esi,%ebp
@@ -10165,7 +10165,7 @@ Disassembly of section .text:
     d824:	5d                   	pop    %rbp
     d825:	c3                   	ret
     d826:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    d82d:	00 00 00
+    d82d:	00 00 00 
     d830:	f3 0f 1e fa          	endbr64
     d834:	41 56                	push   %r14
     d836:	41 55                	push   %r13
@@ -10333,7 +10333,7 @@ Disassembly of section .text:
     da3f:	41 5d                	pop    %r13
     da41:	c3                   	ret
     da42:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    da49:	00 00 00 00
+    da49:	00 00 00 00 
     da4d:	0f 1f 00             	nopl   (%rax)
     da50:	f3 0f 1e fa          	endbr64
     da54:	41 55                	push   %r13
@@ -10463,11 +10463,11 @@ Disassembly of section .text:
     dbdc:	48 85 c0             	test   %rax,%rax
     dbdf:	74 37                	je     dc18 <_obstack_memory_used@@Base+0x518>
     dbe1:	66 0f 6f 05 d7 46 01 	movdqa 0x146d7(%rip),%xmm0        # 222c0 <obstack_alloc_failed_handler@@Base+0x220>
-    dbe8:	00
+    dbe8:	00 
     dbe9:	66 0f 6f 0d df 46 01 	movdqa 0x146df(%rip),%xmm1        # 222d0 <obstack_alloc_failed_handler@@Base+0x230>
-    dbf0:	00
+    dbf0:	00 
     dbf1:	66 0f 6f 15 e7 46 01 	movdqa 0x146e7(%rip),%xmm2        # 222e0 <obstack_alloc_failed_handler@@Base+0x240>
-    dbf8:	00
+    dbf8:	00 
     dbf9:	48 8b 15 f0 46 01 00 	mov    0x146f0(%rip),%rdx        # 222f0 <obstack_alloc_failed_handler@@Base+0x250>
     dc00:	89 2b                	mov    %ebp,(%rbx)
     dc02:	0f 11 00             	movups %xmm0,(%rax)
@@ -10535,7 +10535,7 @@ Disassembly of section .text:
     dcd1:	c3                   	ret
     dcd2:	e8 a9 fe ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
     dcd7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    dcde:	00 00
+    dcde:	00 00 
     dce0:	53                   	push   %rbx
     dce1:	48 89 fb             	mov    %rdi,%rbx
     dce4:	bf 10 00 00 00       	mov    $0x10,%edi
@@ -10550,7 +10550,7 @@ Disassembly of section .text:
     dd0b:	c3                   	ret
     dd0c:	e8 6f fe ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
     dd11:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    dd18:	00 00 00 00
+    dd18:	00 00 00 00 
     dd1c:	0f 1f 40 00          	nopl   0x0(%rax)
     dd20:	41 57                	push   %r15
     dd22:	41 56                	push   %r14
@@ -10564,7 +10564,7 @@ Disassembly of section .text:
     dd36:	48 85 ff             	test   %rdi,%rdi
     dd39:	74 16                	je     dd51 <_obstack_memory_used@@Base+0x651>
     dd3b:	48 83 3d f5 49 01 00 	cmpq   $0x0,0x149f5(%rip)        # 22738 <obstack_alloc_failed_handler@@Base+0x698>
-    dd42:	00
+    dd42:	00 
     dd43:	74 0c                	je     dd51 <_obstack_memory_used@@Base+0x651>
     dd45:	48 89 fe             	mov    %rdi,%rsi
     dd48:	31 d2                	xor    %edx,%edx
@@ -10580,7 +10580,7 @@ Disassembly of section .text:
     dd70:	48 8b 05 d9 46 01 00 	mov    0x146d9(%rip),%rax        # 22450 <obstack_alloc_failed_handler@@Base+0x3b0>
     dd77:	4e 8b 24 f0          	mov    (%rax,%r14,8),%r12
     dd7b:	41 8b 84 24 a8 00 00 	mov    0xa8(%r12),%eax
-    dd82:	00
+    dd82:	00 
     dd83:	83 f8 03             	cmp    $0x3,%eax
     dd86:	0f 94 c2             	sete   %dl
     dd89:	83 f8 09             	cmp    $0x9,%eax
@@ -10630,7 +10630,7 @@ Disassembly of section .text:
     de23:	3c 2f                	cmp    $0x2f,%al
     de25:	75 15                	jne    de3c <_obstack_memory_used@@Base+0x73c>
     de27:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    de2e:	00 00
+    de2e:	00 00 
     de30:	0f b6 43 01          	movzbl 0x1(%rbx),%eax
     de34:	48 83 c3 01          	add    $0x1,%rbx
     de38:	3c 2f                	cmp    $0x2f,%al
@@ -10641,7 +10641,7 @@ Disassembly of section .text:
     de43:	31 f6                	xor    %esi,%esi
     de45:	eb 1f                	jmp    de66 <_obstack_memory_used@@Base+0x766>
     de47:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    de4e:	00 00
+    de4e:	00 00 
     de50:	40 84 f6             	test   %sil,%sil
     de53:	74 05                	je     de5a <_obstack_memory_used@@Base+0x75a>
     de55:	48 89 d3             	mov    %rdx,%rbx
@@ -10673,7 +10673,7 @@ Disassembly of section .text:
     deb3:	80 7c 1d ff 2f       	cmpb   $0x2f,-0x1(%rbp,%rbx,1)
     deb8:	0f 84 9c 01 00 00    	je     e05a <_obstack_memory_used@@Base+0x95a>
     debe:	48 c7 44 24 10 01 00 	movq   $0x1,0x10(%rsp)
-    dec5:	00 00
+    dec5:	00 00 
     dec7:	c6 44 24 1f 2f       	movb   $0x2f,0x1f(%rsp)
     decc:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
     ded1:	48 8d 7c 18 01       	lea    0x1(%rax,%rbx,1),%rdi
@@ -10702,7 +10702,7 @@ Disassembly of section .text:
     df31:	4c 89 ff             	mov    %r15,%rdi
     df34:	ff 15 66 3d 01 00    	call   *0x13d66(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
     df3a:	41 83 bc 24 a8 00 00 	cmpl   $0x9,0xa8(%r12)
-    df41:	00 09
+    df41:	00 09 
     df43:	0f 84 97 00 00 00    	je     dfe0 <_obstack_memory_used@@Base+0x8e0>
     df49:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
     df50:	49 83 ee 01          	sub    $0x1,%r14
@@ -10734,13 +10734,13 @@ Disassembly of section .text:
     dfb3:	41 5f                	pop    %r15
     dfb5:	c3                   	ret
     dfb6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    dfbd:	00 00 00
+    dfbd:	00 00 00 
     dfc0:	49 8b 74 24 08       	mov    0x8(%r12),%rsi
     dfc5:	8b 54 24 18          	mov    0x18(%rsp),%edx
     dfc9:	4c 89 ef             	mov    %r13,%rdi
     dfcc:	e8 4f fc ff ff       	call   dc20 <_obstack_memory_used@@Base+0x520>
     dfd1:	41 83 bc 24 a8 00 00 	cmpl   $0x9,0xa8(%r12)
-    dfd8:	00 09
+    dfd8:	00 09 
     dfda:	0f 85 70 ff ff ff    	jne    df50 <_obstack_memory_used@@Base+0x850>
     dfe0:	49 8b 3c 24          	mov    (%r12),%rdi
     dfe4:	ff 15 b6 3c 01 00    	call   *0x13cb6(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
@@ -10771,7 +10771,7 @@ Disassembly of section .text:
     e051:	4d 85 ff             	test   %r15,%r15
     e054:	0f 85 59 fe ff ff    	jne    deb3 <_obstack_memory_used@@Base+0x7b3>
     e05a:	48 c7 44 24 10 00 00 	movq   $0x0,0x10(%rsp)
-    e061:	00 00
+    e061:	00 00 
     e063:	c6 44 24 1f 00       	movb   $0x0,0x1f(%rsp)
     e068:	e9 5f fe ff ff       	jmp    decc <_obstack_memory_used@@Base+0x7cc>
     e06d:	0f 1f 00             	nopl   (%rax)
@@ -10786,7 +10786,7 @@ Disassembly of section .text:
     e08e:	e9 0d ff ff ff       	jmp    dfa0 <_obstack_memory_used@@Base+0x8a0>
     e093:	e8 e8 fa ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
     e098:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    e09f:	00
+    e09f:	00 
     e0a0:	41 54                	push   %r12
     e0a2:	55                   	push   %rbp
     e0a3:	53                   	push   %rbx
@@ -10821,7 +10821,7 @@ Disassembly of section .text:
     e129:	83 f8 02             	cmp    $0x2,%eax
     e12c:	0f 84 19 01 00 00    	je     e24b <_obstack_memory_used@@Base+0xb4b>
     e132:	48 83 3d 3e 43 01 00 	cmpq   $0x0,0x1433e(%rip)        # 22478 <obstack_alloc_failed_handler@@Base+0x3d8>
-    e139:	00
+    e139:	00 
     e13a:	0f 85 f0 00 00 00    	jne    e230 <_obstack_memory_used@@Base+0xb30>
     e140:	83 f8 06             	cmp    $0x6,%eax
     e143:	0f 84 a7 00 00 00    	je     e1f0 <_obstack_memory_used@@Base+0xaf0>
@@ -10841,7 +10841,7 @@ Disassembly of section .text:
     e18f:	48 89 d8             	mov    %rbx,%rax
     e192:	48 8d 34 fb          	lea    (%rbx,%rdi,8),%rsi
     e196:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    e19d:	00 00 00
+    e19d:	00 00 00 
     e1a0:	48 89 10             	mov    %rdx,(%rax)
     e1a3:	48 83 c0 08          	add    $0x8,%rax
     e1a7:	48 81 c2 d0 00 00 00 	add    $0xd0,%rdx
@@ -10943,7 +10943,7 @@ Disassembly of section .text:
     e327:	48 8d 3d 96 bc 00 00 	lea    0xbc96(%rip),%rdi        # 19fc4 <_obstack_memory_used@@Base+0xc8c4>
     e32e:	ff 15 ac 3a 01 00    	call   *0x13aac(%rip)        # 21de0 <_obstack_memory_used@@Base+0x146e0>
     e334:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    e33b:	00 00 00 00
+    e33b:	00 00 00 00 
     e33f:	90                   	nop
     e340:	41 57                	push   %r15
     e342:	41 56                	push   %r14
@@ -11011,7 +11011,7 @@ Disassembly of section .text:
     e40a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
     e410:	e8 6b f7 ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
     e415:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    e41c:	00 00 00 00
+    e41c:	00 00 00 00 
     e420:	41 57                	push   %r15
     e422:	41 56                	push   %r14
     e424:	41 55                	push   %r13
@@ -11024,7 +11024,7 @@ Disassembly of section .text:
     e43d:	48 83 0c 24 00       	orq    $0x0,(%rsp)
     e442:	48 83 ec 68          	sub    $0x68,%rsp
     e446:	4c 8b ac 24 a0 20 00 	mov    0x20a0(%rsp),%r13
-    e44d:	00
+    e44d:	00 
     e44e:	48 89 7c 24 30       	mov    %rdi,0x30(%rsp)
     e453:	49 89 fa             	mov    %rdi,%r10
     e456:	48 8d 44 24 50       	lea    0x50(%rsp),%rax
@@ -11035,9 +11035,9 @@ Disassembly of section .text:
     e469:	45 31 c0             	xor    %r8d,%r8d
     e46c:	4c 8d 4c 24 47       	lea    0x47(%rsp),%r9
     e471:	64 48 8b 0c 25 28 00 	mov    %fs:0x28,%rcx
-    e478:	00 00
+    e478:	00 00 
     e47a:	48 89 8c 24 58 20 00 	mov    %rcx,0x2058(%rsp)
-    e481:	00
+    e481:	00 
     e482:	31 c9                	xor    %ecx,%ecx
     e484:	89 d1                	mov    %edx,%ecx
     e486:	48 89 f2             	mov    %rsi,%rdx
@@ -11072,7 +11072,7 @@ Disassembly of section .text:
     e4fc:	4d 85 ed             	test   %r13,%r13
     e4ff:	0f 84 f3 01 00 00    	je     e6f8 <_obstack_memory_used@@Base+0xff8>
     e505:	44 0f b6 3d a0 3d 01 	movzbl 0x13da0(%rip),%r15d        # 222ad <obstack_alloc_failed_handler@@Base+0x20d>
-    e50c:	00
+    e50c:	00 
     e50d:	45 84 ff             	test   %r15b,%r15b
     e510:	0f 85 8a 01 00 00    	jne    e6a0 <_obstack_memory_used@@Base+0xfa0>
     e516:	4c 89 64 24 20       	mov    %r12,0x20(%rsp)
@@ -11154,9 +11154,9 @@ Disassembly of section .text:
     e66d:	0f b6 44 24 0f       	movzbl 0xf(%rsp),%eax
     e672:	48 01 e8             	add    %rbp,%rax
     e675:	48 8b 94 24 58 20 00 	mov    0x2058(%rsp),%rdx
-    e67c:	00
+    e67c:	00 
     e67d:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-    e684:	00 00
+    e684:	00 00 
     e686:	0f 85 64 01 00 00    	jne    e7f0 <_obstack_memory_used@@Base+0x10f0>
     e68c:	48 81 c4 68 20 00 00 	add    $0x2068,%rsp
     e693:	5b                   	pop    %rbx
@@ -11176,7 +11176,7 @@ Disassembly of section .text:
     e6bc:	48 89 6c 24 28       	mov    %rbp,0x28(%rsp)
     e6c1:	e9 5a fe ff ff       	jmp    e520 <_obstack_memory_used@@Base+0xe20>
     e6c6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    e6cd:	00 00 00
+    e6cd:	00 00 00 
     e6d0:	49 8b 0e             	mov    (%r14),%rcx
     e6d3:	48 8b 54 24 28       	mov    0x28(%rsp),%rdx
     e6d8:	be 01 00 00 00       	mov    $0x1,%esi
@@ -11192,7 +11192,7 @@ Disassembly of section .text:
     e70a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
     e710:	4c 8b 35 b9 35 01 00 	mov    0x135b9(%rip),%r14        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     e717:	48 83 05 f1 3b 01 00 	addq   $0x1,0x13bf1(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
-    e71e:	01
+    e71e:	01 
     e71f:	49 8b 3e             	mov    (%r14),%rdi
     e722:	48 8b 47 28          	mov    0x28(%rdi),%rax
     e726:	48 3b 47 30          	cmp    0x30(%rdi),%rax
@@ -11244,7 +11244,7 @@ Disassembly of section .text:
     e7ee:	eb 8c                	jmp    e77c <_obstack_memory_used@@Base+0x107c>
     e7f0:	ff 15 9a 35 01 00    	call   *0x1359a(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     e7f6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    e7fd:	00 00 00
+    e7fd:	00 00 00 
     e800:	f3 0f 1e fa          	endbr64
     e804:	41 57                	push   %r15
     e806:	49 89 ff             	mov    %rdi,%r15
@@ -11305,7 +11305,7 @@ Disassembly of section .text:
     e8c9:	0f 85 b1 01 00 00    	jne    ea80 <_obstack_memory_used@@Base+0x1380>
     e8cf:	45 8b 47 30          	mov    0x30(%r15),%r8d
     e8d3:	41 80 bf b8 00 00 00 	cmpb   $0x0,0xb8(%r15)
-    e8da:	00
+    e8da:	00 
     e8db:	0f 85 1f 01 00 00    	jne    ea00 <_obstack_memory_used@@Base+0x1300>
     e8e1:	41 8b 8f a8 00 00 00 	mov    0xa8(%r15),%ecx
     e8e8:	48 8d 15 91 9d 00 00 	lea    0x9d91(%rip),%rdx        # 18680 <_obstack_memory_used@@Base+0xaf80>
@@ -11347,7 +11347,7 @@ Disassembly of section .text:
     e982:	5a                   	pop    %rdx
     e983:	e8 e8 cf ff ff       	call   b970 <_obstack_begin@@Base-0x1b50>
     e988:	48 83 3d 58 37 01 00 	cmpq   $0x0,0x13758(%rip)        # 220e8 <obstack_alloc_failed_handler@@Base+0x48>
-    e98f:	00
+    e98f:	00 
     e990:	0f 84 4a 01 00 00    	je     eae0 <_obstack_memory_used@@Base+0x13e0>
     e996:	48 8d 3d 43 37 01 00 	lea    0x13743(%rip),%rdi        # 220e0 <obstack_alloc_failed_handler@@Base+0x40>
     e99d:	e8 2e cf ff ff       	call   b8d0 <_obstack_begin@@Base-0x1bf0>
@@ -11368,10 +11368,10 @@ Disassembly of section .text:
     e9de:	e8 ed ce ff ff       	call   b8d0 <_obstack_begin@@Base-0x1bf0>
     e9e3:	e9 85 fe ff ff       	jmp    e86d <_obstack_memory_used@@Base+0x116d>
     e9e8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    e9ef:	00
+    e9ef:	00 
     e9f0:	31 c0                	xor    %eax,%eax
     e9f2:	41 80 bf b8 00 00 00 	cmpb   $0x0,0xb8(%r15)
-    e9f9:	00
+    e9f9:	00 
     e9fa:	0f 84 e1 fe ff ff    	je     e8e1 <_obstack_memory_used@@Base+0x11e1>
     ea00:	44 89 c2             	mov    %r8d,%edx
     ea03:	81 e2 00 f0 00 00    	and    $0xf000,%edx
@@ -11420,7 +11420,7 @@ Disassembly of section .text:
     eacc:	0f 84 9b fd ff ff    	je     e86d <_obstack_memory_used@@Base+0x116d>
     ead2:	e9 b1 fe ff ff       	jmp    e988 <_obstack_memory_used@@Base+0x1288>
     ead7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    eade:	00 00
+    eade:	00 00 
     eae0:	48 8d 3d d9 35 01 00 	lea    0x135d9(%rip),%rdi        # 220c0 <obstack_alloc_failed_handler@@Base+0x20>
     eae7:	e8 e4 cd ff ff       	call   b8d0 <_obstack_begin@@Base-0x1bf0>
     eaec:	48 8d 3d fd 35 01 00 	lea    0x135fd(%rip),%rdi        # 220f0 <obstack_alloc_failed_handler@@Base+0x50>
@@ -11477,7 +11477,7 @@ Disassembly of section .text:
     ebc3:	84 c0                	test   %al,%al
     ebc5:	0f 84 cd 00 00 00    	je     ec98 <_obstack_memory_used@@Base+0x1598>
     ebcb:	41 80 bf c0 00 00 00 	cmpb   $0x0,0xc0(%r15)
-    ebd2:	00
+    ebd2:	00 
     ebd3:	0f 84 bf 00 00 00    	je     ec98 <_obstack_memory_used@@Base+0x1598>
     ebd9:	b9 50 01 00 00       	mov    $0x150,%ecx
     ebde:	e9 55 fd ff ff       	jmp    e938 <_obstack_memory_used@@Base+0x1238>
@@ -11529,7 +11529,7 @@ Disassembly of section .text:
     ecac:	b9 e0 00 00 00       	mov    $0xe0,%ecx
     ecb1:	e9 82 fc ff ff       	jmp    e938 <_obstack_memory_used@@Base+0x1238>
     ecb6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    ecbd:	00 00 00
+    ecbd:	00 00 00 
     ecc0:	49 83 7f 28 01       	cmpq   $0x1,0x28(%r15)
     ecc5:	0f 86 45 fe ff ff    	jbe    eb10 <_obstack_memory_used@@Base+0x1410>
     eccb:	bf 16 00 00 00       	mov    $0x16,%edi
@@ -11545,7 +11545,7 @@ Disassembly of section .text:
     ecf8:	0f 85 3a fc ff ff    	jne    e938 <_obstack_memory_used@@Base+0x1238>
     ecfe:	e9 30 ff ff ff       	jmp    ec33 <_obstack_memory_used@@Base+0x1533>
     ed03:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    ed0a:	00 00 00 00
+    ed0a:	00 00 00 00 
     ed0e:	66 90                	xchg   %ax,%ax
     ed10:	41 57                	push   %r15
     ed12:	41 56                	push   %r14
@@ -11612,13 +11612,13 @@ Disassembly of section .text:
     ee07:	0f 84 c0 01 00 00    	je     efcd <_obstack_memory_used@@Base+0x18cd>
     ee0d:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
     ee12:	4a 8d 34 fd 08 00 00 	lea    0x8(,%r15,8),%rsi
-    ee19:	00
+    ee19:	00 
     ee1a:	48 8d 14 cd 00 00 00 	lea    0x0(,%rcx,8),%rdx
-    ee21:	00
+    ee21:	00 
     ee22:	4c 39 fd             	cmp    %r15,%rbp
     ee25:	73 1e                	jae    ee45 <_obstack_memory_used@@Base+0x1745>
     ee27:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-    ee2e:	00 00
+    ee2e:	00 00 
     ee30:	48 8d 0c 52          	lea    (%rdx,%rdx,2),%rcx
     ee34:	49 89 44 0e f8       	mov    %rax,-0x8(%r14,%rcx,1)
     ee39:	48 01 d0             	add    %rdx,%rax
@@ -11737,7 +11737,7 @@ Disassembly of section .text:
     efcb:	eb 93                	jmp    ef60 <_obstack_memory_used@@Base+0x1860>
     efcd:	e8 ae eb ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
     efd2:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    efd9:	00 00 00 00
+    efd9:	00 00 00 00 
     efdd:	0f 1f 00             	nopl   (%rax)
     efe0:	41 54                	push   %r12
     efe2:	55                   	push   %rbp
@@ -11762,7 +11762,7 @@ Disassembly of section .text:
     f013:	41 5c                	pop    %r12
     f015:	c3                   	ret
     f016:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    f01d:	00 00 00
+    f01d:	00 00 00 
     f020:	89 ef                	mov    %ebp,%edi
     f022:	4c 8d 25 d6 af 00 00 	lea    0xafd6(%rip),%r12        # 19fff <_obstack_memory_used@@Base+0xc8ff>
     f029:	ff 15 39 2d 01 00    	call   *0x12d39(%rip)        # 21d68 <_obstack_memory_used@@Base+0x14668>
@@ -11788,7 +11788,7 @@ Disassembly of section .text:
     f07c:	eb 87                	jmp    f005 <_obstack_memory_used@@Base+0x1905>
     f07e:	e8 fd ea ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
     f083:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    f08a:	00 00 00 00
+    f08a:	00 00 00 00 
     f08e:	66 90                	xchg   %ax,%ax
     f090:	55                   	push   %rbp
     f091:	53                   	push   %rbx
@@ -11848,7 +11848,7 @@ Disassembly of section .text:
     f133:	41 5c                	pop    %r12
     f135:	c3                   	ret
     f136:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    f13d:	00 00 00
+    f13d:	00 00 00 
     f140:	89 ef                	mov    %ebp,%edi
     f142:	4c 8d 25 b6 ae 00 00 	lea    0xaeb6(%rip),%r12        # 19fff <_obstack_memory_used@@Base+0xc8ff>
     f149:	ff 15 61 2c 01 00    	call   *0x12c61(%rip)        # 21db0 <_obstack_memory_used@@Base+0x146b0>
@@ -11874,7 +11874,7 @@ Disassembly of section .text:
     f19c:	eb 87                	jmp    f125 <_obstack_memory_used@@Base+0x1a25>
     f19e:	e8 dd e9 ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
     f1a3:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    f1aa:	00 00 00 00
+    f1aa:	00 00 00 00 
     f1ae:	66 90                	xchg   %ax,%ax
     f1b0:	41 57                	push   %r15
     f1b2:	41 56                	push   %r14
@@ -11887,9 +11887,9 @@ Disassembly of section .text:
     f1c6:	48 81 ec 28 03 00 00 	sub    $0x328,%rsp
     f1cd:	0f b6 97 b8 00 00 00 	movzbl 0xb8(%rdi),%edx
     f1d4:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    f1db:	00 00
+    f1db:	00 00 
     f1dd:	48 89 84 24 18 13 00 	mov    %rax,0x1318(%rsp)
-    f1e4:	00
+    f1e4:	00 
     f1e5:	31 c0                	xor    %eax,%eax
     f1e7:	48 89 fd             	mov    %rdi,%rbp
     f1ea:	84 d2                	test   %dl,%dl
@@ -11992,7 +11992,7 @@ Disassembly of section .text:
     f354:	80 3d f1 30 01 00 00 	cmpb   $0x0,0x130f1(%rip)        # 2244c <obstack_alloc_failed_handler@@Base+0x3ac>
     f35b:	88 84 24 bd 00 00 00 	mov    %al,0xbd(%rsp)
     f362:	66 44 89 94 24 be 00 	mov    %r10w,0xbe(%rsp)
-    f369:	00 00
+    f369:	00 00 
     f36b:	0f 84 1d 02 00 00    	je     f58e <_obstack_memory_used@@Base+0x1e8e>
     f371:	8b 85 bc 00 00 00    	mov    0xbc(%rbp),%eax
     f377:	83 f8 01             	cmp    $0x1,%eax
@@ -12001,14 +12001,14 @@ Disassembly of section .text:
     f383:	0f 85 0d 02 00 00    	jne    f596 <_obstack_memory_used@@Base+0x1e96>
     f389:	8b 05 91 40 01 00    	mov    0x14091(%rip),%eax        # 23420 <obstack_alloc_failed_handler@@Base+0x1380>
     f38f:	c6 84 24 be 00 00 00 	movb   $0x2b,0xbe(%rsp)
-    f396:	2b
+    f396:	2b 
     f397:	83 f8 02             	cmp    $0x2,%eax
     f39a:	0f 85 05 02 00 00    	jne    f5a5 <_obstack_memory_used@@Base+0x1ea5>
     f3a0:	f3 0f 6f 45 60       	movdqu 0x60(%rbp),%xmm0
     f3a5:	41 bd 01 00 00 00    	mov    $0x1,%r13d
     f3ab:	0f 29 44 24 20       	movaps %xmm0,0x20(%rsp)
     f3b0:	4c 8d a4 24 d0 04 00 	lea    0x4d0(%rsp),%r12
-    f3b7:	00
+    f3b7:	00 
     f3b8:	80 3d 4a 2f 01 00 00 	cmpb   $0x0,0x12f4a(%rip)        # 22309 <obstack_alloc_failed_handler@@Base+0x269>
     f3bf:	4d 89 e6             	mov    %r12,%r14
     f3c2:	0f 85 10 04 00 00    	jne    f7d8 <_obstack_memory_used@@Base+0x20d8>
@@ -12052,7 +12052,7 @@ Disassembly of section .text:
     f460:	4c 89 f7             	mov    %r14,%rdi
     f463:	be 01 00 00 00       	mov    $0x1,%esi
     f468:	4c 8d 84 24 c4 00 00 	lea    0xc4(%rsp),%r8
-    f46f:	00
+    f46f:	00 
     f470:	ff 15 82 2b 01 00    	call   *0x12b82(%rip)        # 21ff8 <_obstack_memory_used@@Base+0x148f8>
     f476:	5f                   	pop    %rdi
     f477:	41 58                	pop    %r8
@@ -12086,7 +12086,7 @@ Disassembly of section .text:
     f507:	48 8b 7d 48          	mov    0x48(%rbp),%rdi
     f50b:	4c 8b 05 6e 2b 01 00 	mov    0x12b6e(%rip),%r8        # 22080 <_obstack_memory_used@@Base+0x14980>
     f512:	48 8d b4 24 e0 00 00 	lea    0xe0(%rsp),%rsi
-    f519:	00
+    f519:	00 
     f51a:	b9 01 00 00 00       	mov    $0x1,%ecx
     f51f:	8b 15 67 2f 01 00    	mov    0x12f67(%rip),%edx        # 2248c <obstack_alloc_failed_handler@@Base+0x3ec>
     f525:	e8 46 cf ff ff       	call   c470 <_obstack_begin@@Base-0x1050>
@@ -12101,18 +12101,18 @@ Disassembly of section .text:
     f54d:	41 b9 3f 3f 00 00    	mov    $0x3f3f,%r9d
     f553:	80 3d f2 2e 01 00 00 	cmpb   $0x0,0x12ef2(%rip)        # 2244c <obstack_alloc_failed_handler@@Base+0x3ac>
     f55a:	66 44 89 8c 24 bd 00 	mov    %r9w,0xbd(%rsp)
-    f561:	00 00
+    f561:	00 00 
     f563:	0f b6 04 01          	movzbl (%rcx,%rax,1),%eax
     f567:	c6 84 24 bf 00 00 00 	movb   $0x0,0xbf(%rsp)
-    f56e:	00
+    f56e:	00 
     f56f:	88 84 24 b4 00 00 00 	mov    %al,0xb4(%rsp)
     f576:	48 b8 3f 3f 3f 3f 3f 	movabs $0x3f3f3f3f3f3f3f3f,%rax
-    f57d:	3f 3f 3f
+    f57d:	3f 3f 3f 
     f580:	48 89 84 24 b5 00 00 	mov    %rax,0xb5(%rsp)
-    f587:	00
+    f587:	00 
     f588:	0f 85 e3 fd ff ff    	jne    f371 <_obstack_memory_used@@Base+0x1c71>
     f58e:	c6 84 24 be 00 00 00 	movb   $0x0,0xbe(%rsp)
-    f595:	00
+    f595:	00 
     f596:	8b 05 84 3e 01 00    	mov    0x13e84(%rip),%eax        # 23420 <obstack_alloc_failed_handler@@Base+0x1380>
     f59c:	83 f8 02             	cmp    $0x2,%eax
     f59f:	0f 84 fb fd ff ff    	je     f3a0 <_obstack_memory_used@@Base+0x1ca0>
@@ -12194,9 +12194,9 @@ Disassembly of section .text:
     f6d7:	85 c0                	test   %eax,%eax
     f6d9:	0f 85 e1 02 00 00    	jne    f9c0 <_obstack_memory_used@@Base+0x22c0>
     f6df:	48 8b 84 24 18 13 00 	mov    0x1318(%rsp),%rax
-    f6e6:	00
+    f6e6:	00 
     f6e7:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    f6ee:	00 00
+    f6ee:	00 00 
     f6f0:	0f 85 d1 07 00 00    	jne    fec7 <_obstack_memory_used@@Base+0x27c7>
     f6f6:	48 81 c4 28 13 00 00 	add    $0x1328,%rsp
     f6fd:	5b                   	pop    %rbx
@@ -12207,7 +12207,7 @@ Disassembly of section .text:
     f705:	41 5f                	pop    %r15
     f707:	c3                   	ret
     f708:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-    f70f:	00
+    f70f:	00 
     f710:	80 3d 11 3d 01 00 00 	cmpb   $0x0,0x13d11(%rip)        # 23428 <obstack_alloc_failed_handler@@Base+0x1388>
     f717:	0f 85 85 fd ff ff    	jne    f4a2 <_obstack_memory_used@@Base+0x1da2>
     f71d:	80 3d d4 2b 01 00 00 	cmpb   $0x0,0x12bd4(%rip)        # 222f8 <obstack_alloc_failed_handler@@Base+0x258>
@@ -12215,7 +12215,7 @@ Disassembly of section .text:
     f72a:	e9 73 fd ff ff       	jmp    f4a2 <_obstack_memory_used@@Base+0x1da2>
     f72f:	90                   	nop
     f730:	f3 0f 6f 85 80 00 00 	movdqu 0x80(%rbp),%xmm0
-    f737:	00
+    f737:	00 
     f738:	e9 77 fe ff ff       	jmp    f5b4 <_obstack_memory_used@@Base+0x1eb4>
     f73d:	0f 1f 00             	nopl   (%rax)
     f740:	83 e1 e0             	and    $0xffffffe0,%ecx
@@ -12243,7 +12243,7 @@ Disassembly of section .text:
     f79e:	0f 84 3b ff ff ff    	je     f6df <_obstack_memory_used@@Base+0x1fdf>
     f7a4:	48 8b 15 25 25 01 00 	mov    0x12525(%rip),%rdx        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     f7ab:	48 83 05 5d 2b 01 00 	addq   $0x1,0x12b5d(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
-    f7b2:	01
+    f7b2:	01 
     f7b3:	48 8b 3a             	mov    (%rdx),%rdi
     f7b6:	48 8b 57 28          	mov    0x28(%rdi),%rdx
     f7ba:	48 3b 57 30          	cmp    0x30(%rdi),%rdx
@@ -12260,13 +12260,13 @@ Disassembly of section .text:
     f7e7:	48 85 c9             	test   %rcx,%rcx
     f7ea:	74 54                	je     f840 <_obstack_memory_used@@Base+0x2140>
     f7ec:	c6 84 24 f4 00 00 00 	movb   $0x0,0xf4(%rsp)
-    f7f3:	00
+    f7f3:	00 
     f7f4:	4c 8d 8c 24 f4 00 00 	lea    0xf4(%rsp),%r9
-    f7fb:	00
+    f7fb:	00 
     f7fc:	48 bf cd cc cc cc cc 	movabs $0xcccccccccccccccd,%rdi
-    f803:	cc cc cc
+    f803:	cc cc cc 
     f806:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    f80d:	00 00 00
+    f80d:	00 00 00 
     f810:	48 89 c8             	mov    %rcx,%rax
     f813:	49 83 e9 01          	sub    $0x1,%r9
     f817:	48 f7 e7             	mul    %rdi
@@ -12283,7 +12283,7 @@ Disassembly of section .text:
     f83b:	77 d3                	ja     f810 <_obstack_memory_used@@Base+0x2110>
     f83d:	0f 1f 00             	nopl   (%rax)
     f840:	4c 8d a4 24 d0 04 00 	lea    0x4d0(%rsp),%r12
-    f847:	00
+    f847:	00 
     f848:	ba 3b 0e 00 00       	mov    $0xe3b,%edx
     f84d:	31 c0                	xor    %eax,%eax
     f84f:	44 8b 05 52 2a 01 00 	mov    0x12a52(%rip),%r8d        # 222a8 <obstack_alloc_failed_handler@@Base+0x208>
@@ -12301,14 +12301,14 @@ Disassembly of section .text:
     f88c:	e8 bf 7b ff ff       	call   7450 <_obstack_begin@@Base-0x6070>
     f891:	e9 f6 fb ff ff       	jmp    f48c <_obstack_memory_used@@Base+0x1d8c>
     f896:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    f89d:	00 00 00
+    f89d:	00 00 00 
     f8a0:	c6 84 24 f4 00 00 00 	movb   $0x0,0xf4(%rsp)
-    f8a7:	00
+    f8a7:	00 
     f8a8:	48 8b 4d 28          	mov    0x28(%rbp),%rcx
     f8ac:	48 8d bc 24 f4 00 00 	lea    0xf4(%rsp),%rdi
-    f8b3:	00
+    f8b3:	00 
     f8b4:	49 b8 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%r8
-    f8bb:	cc cc cc
+    f8bb:	cc cc cc 
     f8be:	66 90                	xchg   %ax,%ax
     f8c0:	48 89 c8             	mov    %rcx,%rax
     f8c3:	48 83 ef 01          	sub    $0x1,%rdi
@@ -12373,19 +12373,19 @@ Disassembly of section .text:
     f9d7:	e9 c8 fd ff ff       	jmp    f7a4 <_obstack_memory_used@@Base+0x20a4>
     f9dc:	0f 1f 40 00          	nopl   0x0(%rax)
     f9e0:	c6 84 24 be 00 00 00 	movb   $0x2e,0xbe(%rsp)
-    f9e7:	2e
+    f9e7:	2e 
     f9e8:	e9 a9 fb ff ff       	jmp    f596 <_obstack_memory_used@@Base+0x1e96>
     f9ed:	0f 1f 00             	nopl   (%rax)
     f9f0:	48 8b 4d 40          	mov    0x40(%rbp),%rcx
     f9f4:	44 8b 15 3d 2a 01 00 	mov    0x12a3d(%rip),%r10d        # 22438 <obstack_alloc_failed_handler@@Base+0x398>
     f9fb:	c6 84 24 d4 00 00 00 	movb   $0x0,0xd4(%rsp)
-    fa02:	00
+    fa02:	00 
     fa03:	48 8d bc 24 d4 00 00 	lea    0xd4(%rsp),%rdi
-    fa0a:	00
+    fa0a:	00 
     fa0b:	44 8b 1d 22 2a 01 00 	mov    0x12a22(%rip),%r11d        # 22434 <obstack_alloc_failed_handler@@Base+0x394>
     fa12:	44 8b 05 17 2a 01 00 	mov    0x12a17(%rip),%r8d        # 22430 <obstack_alloc_failed_handler@@Base+0x390>
     fa19:	49 b9 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%r9
-    fa20:	cc cc cc
+    fa20:	cc cc cc 
     fa23:	48 89 ce             	mov    %rcx,%rsi
     fa26:	43 8d 44 1a 02       	lea    0x2(%r10,%r11,1),%eax
     fa2b:	48 c1 ee 0c          	shr    $0xc,%rsi
@@ -12411,13 +12411,13 @@ Disassembly of section .text:
     fa6c:	48 89 c8             	mov    %rcx,%rax
     fa6f:	48 c1 e9 20          	shr    $0x20,%rcx
     fa73:	c6 84 24 f4 00 00 00 	movb   $0x0,0xf4(%rsp)
-    fa7a:	00
+    fa7a:	00 
     fa7b:	4c 8d 8c 24 f4 00 00 	lea    0xf4(%rsp),%r9
-    fa82:	00
+    fa82:	00 
     fa83:	48 c1 e8 08          	shr    $0x8,%rax
     fa87:	81 e1 00 f0 ff ff    	and    $0xfffff000,%ecx
     fa8d:	48 be cd cc cc cc cc 	movabs $0xcccccccccccccccd,%rsi
-    fa94:	cc cc cc
+    fa94:	cc cc cc 
     fa97:	25 ff 0f 00 00       	and    $0xfff,%eax
     fa9c:	09 c1                	or     %eax,%ecx
     fa9e:	66 90                	xchg   %ax,%ax
@@ -12455,7 +12455,7 @@ Disassembly of section .text:
     fb08:	48 8b 7d 58          	mov    0x58(%rbp),%rdi
     fb0c:	4c 8b 05 9d 27 01 00 	mov    0x1279d(%rip),%r8        # 222b0 <obstack_alloc_failed_handler@@Base+0x210>
     fb13:	48 8d b4 24 e0 00 00 	lea    0xe0(%rsp),%rsi
-    fb1a:	00
+    fb1a:	00 
     fb1b:	b9 00 02 00 00       	mov    $0x200,%ecx
     fb20:	8b 15 92 27 01 00    	mov    0x12792(%rip),%edx        # 222b8 <obstack_alloc_failed_handler@@Base+0x218>
     fb26:	e8 45 c9 ff ff       	call   c470 <_obstack_begin@@Base-0x1050>
@@ -12580,7 +12580,7 @@ Disassembly of section .text:
     fcf7:	4c 8d 74 24 70       	lea    0x70(%rsp),%r14
     fcfc:	48 8d 74 24 18       	lea    0x18(%rsp),%rsi
     fd01:	48 c7 44 24 18 00 00 	movq   $0x0,0x18(%rsp)
-    fd08:	00 00
+    fd08:	00 00 
     fd0a:	4c 89 f2             	mov    %r14,%rdx
     fd0d:	4c 89 ff             	mov    %r15,%rdi
     fd10:	e8 cb dd ff ff       	call   dae0 <_obstack_memory_used@@Base+0x3e0>
@@ -12590,7 +12590,7 @@ Disassembly of section .text:
     fd21:	48 8b 15 18 25 01 00 	mov    0x12518(%rip),%rdx        # 22240 <obstack_alloc_failed_handler@@Base+0x1a0>
     fd28:	74 16                	je     fd40 <_obstack_memory_used@@Base+0x2640>
     fd2a:	48 63 94 24 80 00 00 	movslq 0x80(%rsp),%rdx
-    fd31:	00
+    fd31:	00 
     fd32:	48 8d 05 e7 2a 01 00 	lea    0x12ae7(%rip),%rax        # 22820 <obstack_alloc_failed_handler@@Base+0x780>
     fd39:	48 c1 e2 07          	shl    $0x7,%rdx
     fd3d:	48 01 c2             	add    %rax,%rdx
@@ -12599,7 +12599,7 @@ Disassembly of section .text:
     fd46:	be e9 03 00 00       	mov    $0x3e9,%esi
     fd4b:	4c 89 f1             	mov    %r14,%rcx
     fd4e:	48 8d bc 24 e0 00 00 	lea    0xe0(%rsp),%rdi
-    fd55:	00
+    fd55:	00 
     fd56:	48 83 ec 08          	sub    $0x8,%rsp
     fd5a:	6a 00                	push   $0x0
     fd5c:	41 57                	push   %r15
@@ -12612,7 +12612,7 @@ Disassembly of section .text:
     fd75:	48 89 c6             	mov    %rax,%rsi
     fd78:	75 12                	jne    fd8c <_obstack_memory_used@@Base+0x268c>
     fd7a:	c7 05 a0 22 01 00 00 	movl   $0x0,0x122a0(%rip)        # 22024 <_obstack_memory_used@@Base+0x14924>
-    fd81:	00 00 00
+    fd81:	00 00 00 
     fd84:	45 31 c0             	xor    %r8d,%r8d
     fd87:	e9 ec f8 ff ff       	jmp    f678 <_obstack_memory_used@@Base+0x1f78>
     fd8c:	e8 af 42 00 00       	call   14040 <_obstack_memory_used@@Base+0x6940>
@@ -12628,11 +12628,11 @@ Disassembly of section .text:
     fdb8:	0f 84 a3 f8 ff ff    	je     f661 <_obstack_memory_used@@Base+0x1f61>
     fdbe:	48 8b 4c 24 20       	mov    0x20(%rsp),%rcx
     fdc3:	c6 84 24 d4 00 00 00 	movb   $0x0,0xd4(%rsp)
-    fdca:	00
+    fdca:	00 
     fdcb:	4c 8d ac 24 d4 00 00 	lea    0xd4(%rsp),%r13
-    fdd2:	00
+    fdd2:	00 
     fdd3:	48 be cd cc cc cc cc 	movabs $0xcccccccccccccccd,%rsi
-    fdda:	cc cc cc
+    fdda:	cc cc cc 
     fddd:	48 85 c9             	test   %rcx,%rcx
     fde0:	78 45                	js     fe27 <_obstack_memory_used@@Base+0x2727>
     fde2:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
@@ -12656,7 +12656,7 @@ Disassembly of section .text:
     fe27:	4c 89 ee             	mov    %r13,%rsi
     fe2a:	bf 30 00 00 00       	mov    $0x30,%edi
     fe2f:	49 b8 67 66 66 66 66 	movabs $0x6666666666666667,%r8
-    fe36:	66 66 66
+    fe36:	66 66 66 
     fe39:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
     fe40:	48 89 c8             	mov    %rcx,%rax
     fe43:	49 89 f5             	mov    %rsi,%r13
@@ -12696,7 +12696,7 @@ Disassembly of section .text:
     fec7:	ff 15 c3 1e 01 00    	call   *0x11ec3(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
     fecd:	e9 73 41 ff ff       	jmp    4045 <_obstack_begin@@Base-0x947b>
     fed2:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    fed9:	00 00 00 00
+    fed9:	00 00 00 00 
     fedd:	0f 1f 00             	nopl   (%rax)
     fee0:	83 3d 1d 24 01 00 04 	cmpl   $0x4,0x1241d(%rip)        # 22304 <obstack_alloc_failed_handler@@Base+0x264>
     fee7:	0f 87 2e 04 00 00    	ja     1031b <_obstack_memory_used@@Base+0x2c1b>
@@ -12714,7 +12714,7 @@ Disassembly of section .text:
     ff0f:	3e ff e0             	notrack jmp *%rax
     ff12:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
     ff18:	48 83 3d 58 25 01 00 	cmpq   $0x0,0x12558(%rip)        # 22478 <obstack_alloc_failed_handler@@Base+0x3d8>
-    ff1f:	00
+    ff1f:	00 
     ff20:	0f 84 5a 03 00 00    	je     10280 <_obstack_memory_used@@Base+0x2b80>
     ff26:	31 ff                	xor    %edi,%edi
     ff28:	e8 e3 ed ff ff       	call   ed10 <_obstack_memory_used@@Base+0x1610>
@@ -12733,7 +12733,7 @@ Disassembly of section .text:
     ff5f:	4c 8b 20             	mov    (%rax),%r12
     ff62:	e8 69 71 00 00       	call   170d0 <_obstack_memory_used@@Base+0x99d0>
     ff67:	48 83 3d 59 26 01 00 	cmpq   $0x1,0x12659(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-    ff6e:	01
+    ff6e:	01 
     ff6f:	0f 86 36 03 00 00    	jbe    102ab <_obstack_memory_used@@Base+0x2bab>
     ff75:	48 8b 05 54 1d 01 00 	mov    0x11d54(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
     ff7c:	45 31 ed             	xor    %r13d,%r13d
@@ -12787,9 +12787,9 @@ Disassembly of section .text:
    10031:	41 5f                	pop    %r15
    10033:	e9 b8 d2 ff ff       	jmp    d2f0 <_obstack_begin@@Base-0x1d0>
    10038:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   1003f:	00
+   1003f:	00 
    10040:	48 83 3d 80 25 01 00 	cmpq   $0x0,0x12580(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-   10047:	00
+   10047:	00 
    10048:	0f 84 21 02 00 00    	je     1026f <_obstack_memory_used@@Base+0x2b6f>
    1004e:	48 8b 05 7b 1c 01 00 	mov    0x11c7b(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
    10055:	4c 8d 2d 64 20 01 00 	lea    0x12064(%rip),%r13        # 220c0 <obstack_alloc_failed_handler@@Base+0x20>
@@ -12804,7 +12804,7 @@ Disassembly of section .text:
    1007b:	e8 30 f1 ff ff       	call   f1b0 <_obstack_memory_used@@Base+0x1ab0>
    10080:	48 8b 44 24 10       	mov    0x10(%rsp),%rax
    10085:	48 83 05 83 22 01 00 	addq   $0x1,0x12283(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
-   1008c:	01
+   1008c:	01 
    1008d:	0f b6 35 e4 1f 01 00 	movzbl 0x11fe4(%rip),%esi        # 22078 <_obstack_memory_used@@Base+0x14978>
    10094:	48 8b 38             	mov    (%rax),%rdi
    10097:	48 8b 47 28          	mov    0x28(%rdi),%rax
@@ -12831,7 +12831,7 @@ Disassembly of section .text:
    100f0:	e9 7b ff ff ff       	jmp    10070 <_obstack_memory_used@@Base+0x2970>
    100f5:	0f 1f 00             	nopl   (%rax)
    100f8:	48 83 3d c8 24 01 00 	cmpq   $0x0,0x124c8(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-   100ff:	00
+   100ff:	00 
    10100:	0f 84 69 01 00 00    	je     1026f <_obstack_memory_used@@Base+0x2b6f>
    10106:	48 8b 05 c3 1b 01 00 	mov    0x11bc3(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
    1010d:	31 db                	xor    %ebx,%ebx
@@ -12856,7 +12856,7 @@ Disassembly of section .text:
    1015f:	e9 0b 01 00 00       	jmp    1026f <_obstack_memory_used@@Base+0x2b6f>
    10164:	0f 1f 40 00          	nopl   0x0(%rax)
    10168:	48 83 3d 08 23 01 00 	cmpq   $0x0,0x12308(%rip)        # 22478 <obstack_alloc_failed_handler@@Base+0x3d8>
-   1016f:	00
+   1016f:	00 
    10170:	0f 84 0a 01 00 00    	je     10280 <_obstack_memory_used@@Base+0x2b80>
    10176:	bf 01 00 00 00       	mov    $0x1,%edi
    1017b:	e8 90 eb ff ff       	call   ed10 <_obstack_memory_used@@Base+0x1610>
@@ -12873,7 +12873,7 @@ Disassembly of section .text:
    101ac:	48 85 c0             	test   %rax,%rax
    101af:	0f 84 ba 00 00 00    	je     1026f <_obstack_memory_used@@Base+0x2b6f>
    101b5:	48 c7 44 24 18 00 00 	movq   $0x0,0x18(%rsp)
-   101bc:	00 00
+   101bc:	00 00 
    101be:	48 8b 05 0b 1b 01 00 	mov    0x11b0b(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
    101c5:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
    101ca:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
@@ -12935,7 +12935,7 @@ Disassembly of section .text:
    102ab:	48 8b 05 1e 1a 01 00 	mov    0x11a1e(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
    102b2:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
    102b7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   102be:	00 00
+   102be:	00 00 
    102c0:	48 8b 44 24 10       	mov    0x10(%rsp),%rax
    102c5:	0f b6 15 ac 1d 01 00 	movzbl 0x11dac(%rip),%edx        # 22078 <_obstack_memory_used@@Base+0x14978>
    102cc:	48 8b 38             	mov    (%rax),%rdi
@@ -13028,7 +13028,7 @@ Disassembly of section .text:
    103d6:	75 9e                	jne    10376 <_obstack_memory_used@@Base+0x2c76>
    103d8:	48 89 d8             	mov    %rbx,%rax
    103db:	49 c7 04 24 00 00 00 	movq   $0x0,(%r12)
-   103e2:	00
+   103e2:	00 
    103e3:	48 29 c8             	sub    %rcx,%rax
    103e6:	4c 39 c8             	cmp    %r9,%rax
    103e9:	7c 96                	jl     10381 <_obstack_memory_used@@Base+0x2c81>
@@ -13038,10 +13038,10 @@ Disassembly of section .text:
    103f7:	75 b5                	jne    103ae <_obstack_memory_used@@Base+0x2cae>
    103f9:	e8 82 d7 ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
    103fe:	48 be ff ff ff ff ff 	movabs $0x7fffffffffffffff,%rsi
-   10405:	ff ff 7f
+   10405:	ff ff 7f 
    10408:	eb bb                	jmp    103c5 <_obstack_memory_used@@Base+0x2cc5>
    1040a:	48 bb ff ff ff ff ff 	movabs $0x7fffffffffffffff,%rbx
-   10411:	ff ff 7f
+   10411:	ff ff 7f 
    10414:	e9 33 ff ff ff       	jmp    1034c <_obstack_memory_used@@Base+0x2c4c>
    10419:	4d 85 ed             	test   %r13,%r13
    1041c:	74 db                	je     103f9 <_obstack_memory_used@@Base+0x2cf9>
@@ -13049,7 +13049,7 @@ Disassembly of section .text:
    10421:	74 8b                	je     103ae <_obstack_memory_used@@Base+0x2cae>
    10423:	eb d4                	jmp    103f9 <_obstack_memory_used@@Base+0x2cf9>
    10425:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-   1042c:	00 00 00 00
+   1042c:	00 00 00 00 
    10430:	55                   	push   %rbp
    10431:	48 89 e5             	mov    %rsp,%rbp
    10434:	41 57                	push   %r15
@@ -13066,7 +13066,7 @@ Disassembly of section .text:
    1045d:	4c 8b 35 74 21 01 00 	mov    0x12174(%rip),%r14        # 225d8 <obstack_alloc_failed_handler@@Base+0x538>
    10464:	4c 8b 3d 65 21 01 00 	mov    0x12165(%rip),%r15        # 225d0 <obstack_alloc_failed_handler@@Base+0x530>
    1046b:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   10472:	00 00
+   10472:	00 00 
    10474:	48 89 45 c8          	mov    %rax,-0x38(%rbp)
    10478:	31 c0                	xor    %eax,%eax
    1047a:	4d 39 f5             	cmp    %r14,%r13
@@ -13080,7 +13080,7 @@ Disassembly of section .text:
    1049b:	4c 89 f1             	mov    %r14,%rcx
    1049e:	49 c7 06 00 00 00 00 	movq   $0x0,(%r14)
    104a5:	49 c7 86 c8 00 00 00 	movq   $0x0,0xc8(%r14)
-   104ac:	00 00 00 00
+   104ac:	00 00 00 00 
    104b0:	48 83 e7 f8          	and    $0xfffffffffffffff8,%rdi
    104b4:	48 29 f9             	sub    %rdi,%rcx
    104b7:	81 c1 d0 00 00 00    	add    $0xd0,%ecx
@@ -13088,7 +13088,7 @@ Disassembly of section .text:
    104c0:	f3 48 ab             	rep stos %rax,%es:(%rdi)
    104c3:	41 89 9e a8 00 00 00 	mov    %ebx,0xa8(%r14)
    104ca:	41 c7 86 c4 00 00 00 	movl   $0xffffffff,0xc4(%r14)
-   104d1:	ff ff ff ff
+   104d1:	ff ff ff ff 
    104d5:	80 3d d0 1d 01 00 00 	cmpb   $0x0,0x11dd0(%rip)        # 222ac <obstack_alloc_failed_handler@@Base+0x20c>
    104dc:	75 0d                	jne    104eb <_obstack_memory_used@@Base+0x2deb>
    104de:	80 3d c8 1d 01 00 00 	cmpb   $0x0,0x11dc8(%rip)        # 222ad <obstack_alloc_failed_handler@@Base+0x20d>
@@ -13128,7 +13128,7 @@ Disassembly of section .text:
    10595:	85 c0                	test   %eax,%eax
    10597:	0f 85 fe 01 00 00    	jne    1079b <_obstack_memory_used@@Base+0x309b>
    1059d:	41 c6 86 b8 00 00 00 	movb   $0x1,0xb8(%r14)
-   105a4:	01
+   105a4:	01 
    105a5:	83 fb 05             	cmp    $0x5,%ebx
    105a8:	0f 84 3a 02 00 00    	je     107e8 <_obstack_memory_used@@Base+0x30e8>
    105ae:	41 8b 46 30          	mov    0x30(%r14),%eax
@@ -13153,7 +13153,7 @@ Disassembly of section .text:
    1060f:	45 85 c9             	test   %r9d,%r9d
    10612:	0f 84 88 08 00 00    	je     10ea0 <_obstack_memory_used@@Base+0x37a0>
    10618:	41 c7 86 bc 00 00 00 	movl   $0x0,0xbc(%r14)
-   1061f:	00 00 00 00
+   1061f:	00 00 00 00 
    10623:	41 8b 46 30          	mov    0x30(%r14),%eax
    10627:	25 00 f0 00 00       	and    $0xf000,%eax
    1062c:	3d 00 a0 00 00       	cmp    $0xa000,%eax
@@ -13186,11 +13186,11 @@ Disassembly of section .text:
    106b5:	4c 89 fe             	mov    %r15,%rsi
    106b8:	ff 15 c2 17 01 00    	call   *0x117c2(%rip)        # 21e80 <_obstack_memory_used@@Base+0x14780>
    106be:	48 83 05 02 1f 01 00 	addq   $0x1,0x11f02(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-   106c5:	01
+   106c5:	01 
    106c6:	49 89 06             	mov    %rax,(%r14)
    106c9:	48 8b 45 c8          	mov    -0x38(%rbp),%rax
    106cd:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   106d4:	00 00
+   106d4:	00 00 
    106d6:	0f 85 48 12 00 00    	jne    11924 <_obstack_memory_used@@Base+0x4224>
    106dc:	48 8d 65 d8          	lea    -0x28(%rbp),%rsp
    106e0:	48 89 d8             	mov    %rbx,%rax
@@ -13285,7 +13285,7 @@ Disassembly of section .text:
    1086a:	41 88 9e c0 00 00 00 	mov    %bl,0xc0(%r14)
    10871:	e9 4c fd ff ff       	jmp    105c2 <_obstack_memory_used@@Base+0x2ec2>
    10876:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1087d:	00 00 00
+   1087d:	00 00 00 
    10880:	4c 8b 05 29 1a 01 00 	mov    0x11a29(%rip),%r8        # 222b0 <obstack_alloc_failed_handler@@Base+0x210>
    10887:	8b 15 2b 1a 01 00    	mov    0x11a2b(%rip),%edx        # 222b8 <obstack_alloc_failed_handler@@Base+0x218>
    1088d:	b9 00 02 00 00       	mov    $0x200,%ecx
@@ -13323,9 +13323,9 @@ Disassembly of section .text:
    10932:	49 8b 4e 28          	mov    0x28(%r14),%rcx
    10936:	48 8d bd 24 fd ff ff 	lea    -0x2dc(%rbp),%rdi
    1093d:	49 b8 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%r8
-   10944:	cc cc cc
+   10944:	cc cc cc 
    10947:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   1094e:	00 00
+   1094e:	00 00 
    10950:	48 89 c8             	mov    %rcx,%rax
    10953:	48 83 ef 01          	sub    $0x1,%rdi
    10957:	49 f7 e0             	mul    %r8
@@ -13352,7 +13352,7 @@ Disassembly of section .text:
    109a8:	c6 85 44 fd ff ff 00 	movb   $0x0,-0x2bc(%rbp)
    109af:	4c 8d ad 44 fd ff ff 	lea    -0x2bc(%rbp),%r13
    109b6:	48 b9 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%rcx
-   109bd:	cc cc cc
+   109bd:	cc cc cc 
    109c0:	4c 89 ef             	mov    %r13,%rdi
    109c3:	4c 89 f8             	mov    %r15,%rax
    109c6:	4c 89 fe             	mov    %r15,%rsi
@@ -13387,7 +13387,7 @@ Disassembly of section .text:
    10a31:	41 0f b6 c7          	movzbl %r15b,%eax
    10a35:	4c 89 ef             	mov    %r13,%rdi
    10a38:	49 b8 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%r8
-   10a3f:	cc cc cc
+   10a3f:	cc cc cc 
    10a42:	48 c1 e9 0c          	shr    $0xc,%rcx
    10a46:	30 c9                	xor    %cl,%cl
    10a48:	09 c1                	or     %eax,%ecx
@@ -13444,10 +13444,10 @@ Disassembly of section .text:
    10b2e:	0f 84 a4 02 00 00    	je     10dd8 <_obstack_memory_used@@Base+0x36d8>
    10b34:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
    10b3b:	48 83 8c 24 f8 0f 00 	orq    $0x0,0xff8(%rsp)
-   10b42:	00 00
+   10b42:	00 00 
    10b44:	eb e5                	jmp    10b2b <_obstack_memory_used@@Base+0x342b>
    10b46:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   10b4d:	00 00 00
+   10b4d:	00 00 00 
    10b50:	80 bd fc fc ff ff 00 	cmpb   $0x0,-0x304(%rbp)
    10b57:	0f 84 17 fa ff ff    	je     10574 <_obstack_memory_used@@Base+0x2e74>
    10b5d:	48 8b b5 00 fd ff ff 	mov    -0x300(%rbp),%rsi
@@ -13468,12 +13468,12 @@ Disassembly of section .text:
    10b9c:	0f 84 fb f9 ff ff    	je     1059d <_obstack_memory_used@@Base+0x2e9d>
    10ba2:	e9 88 07 00 00       	jmp    1132f <_obstack_memory_used@@Base+0x3c2f>
    10ba7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   10bae:	00 00
+   10bae:	00 00 
    10bb0:	49 8b 4e 20          	mov    0x20(%r14),%rcx
    10bb4:	c6 85 44 fd ff ff 00 	movb   $0x0,-0x2bc(%rbp)
    10bbb:	48 8d bd 44 fd ff ff 	lea    -0x2bc(%rbp),%rdi
    10bc2:	49 b8 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%r8
-   10bc9:	cc cc cc
+   10bc9:	cc cc cc 
    10bcc:	0f 1f 40 00          	nopl   0x0(%rax)
    10bd0:	48 89 c8             	mov    %rcx,%rax
    10bd3:	48 83 ef 01          	sub    $0x1,%rdi
@@ -13546,7 +13546,7 @@ Disassembly of section .text:
    10d11:	31 db                	xor    %ebx,%ebx
    10d13:	e9 69 f9 ff ff       	jmp    10681 <_obstack_memory_used@@Base+0x2f81>
    10d18:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   10d1f:	00
+   10d1f:	00 
    10d20:	4c 8b 05 59 13 01 00 	mov    0x11359(%rip),%r8        # 22080 <_obstack_memory_used@@Base+0x14980>
    10d27:	49 8b 7e 48          	mov    0x48(%r14),%rdi
    10d2b:	48 8d b5 30 fd ff ff 	lea    -0x2d0(%rbp),%rsi
@@ -13577,11 +13577,11 @@ Disassembly of section .text:
    10d9f:	31 db                	xor    %ebx,%ebx
    10da1:	ff 15 d9 10 01 00    	call   *0x110d9(%rip)        # 21e80 <_obstack_memory_used@@Base+0x14780>
    10da7:	48 83 05 19 18 01 00 	addq   $0x1,0x11819(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-   10dae:	01
+   10dae:	01 
    10daf:	49 89 06             	mov    %rax,(%r14)
    10db2:	e9 12 f9 ff ff       	jmp    106c9 <_obstack_memory_used@@Base+0x2fc9>
    10db7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   10dbe:	00 00
+   10dbe:	00 00 
    10dc0:	48 8b 85 08 fd ff ff 	mov    -0x2f8(%rbp),%rax
    10dc7:	48 89 85 00 fd ff ff 	mov    %rax,-0x300(%rbp)
    10dce:	e9 4c f9 ff ff       	jmp    1071f <_obstack_memory_used@@Base+0x301f>
@@ -13615,7 +13615,7 @@ Disassembly of section .text:
    10e41:	45 84 ed             	test   %r13b,%r13b
    10e44:	74 1e                	je     10e64 <_obstack_memory_used@@Base+0x3764>
    10e46:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   10e4d:	00 00 00
+   10e4d:	00 00 00 
    10e50:	48 83 c2 01          	add    $0x1,%rdx
    10e54:	44 88 28             	mov    %r13b,(%rax)
    10e57:	48 83 c0 01          	add    $0x1,%rax
@@ -13645,7 +13645,7 @@ Disassembly of section .text:
    10ebc:	3d 00 a0 00 00       	cmp    $0xa000,%eax
    10ec1:	0f 85 a9 04 00 00    	jne    11370 <_obstack_memory_used@@Base+0x3c70>
    10ec7:	41 c7 86 bc 00 00 00 	movl   $0x0,0xbc(%r14)
-   10ece:	00 00 00 00
+   10ece:	00 00 00 00 
    10ed2:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
    10ed8:	41 8b 46 30          	mov    0x30(%r14),%eax
    10edc:	25 00 f0 00 00       	and    $0xf000,%eax
@@ -13655,14 +13655,14 @@ Disassembly of section .text:
    10ef2:	85 ff                	test   %edi,%edi
    10ef4:	74 17                	je     10f0d <_obstack_memory_used@@Base+0x380d>
    10ef6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   10efd:	00 00 00
+   10efd:	00 00 00 
    10f00:	80 3d 42 18 01 00 00 	cmpb   $0x0,0x11842(%rip)        # 22749 <obstack_alloc_failed_handler@@Base+0x6a9>
    10f07:	0f 84 b6 01 00 00    	je     110c3 <_obstack_memory_used@@Base+0x39c3>
    10f0d:	49 8b 46 48          	mov    0x48(%r14),%rax
    10f11:	b9 00 04 00 00       	mov    $0x400,%ecx
    10f16:	4c 89 b5 e0 fc ff ff 	mov    %r14,-0x320(%rbp)
    10f1d:	49 bc ff ff ff ff ff 	movabs $0x3fffffffffffffff,%r12
-   10f24:	ff ff 3f
+   10f24:	ff ff 3f 
    10f27:	4c 8b ad 00 fd ff ff 	mov    -0x300(%rbp),%r13
    10f2e:	48 39 c8             	cmp    %rcx,%rax
    10f31:	48 0f 46 c8          	cmovbe %rax,%rcx
@@ -13698,11 +13698,11 @@ Disassembly of section .text:
    10fb6:	4d 39 f4             	cmp    %r14,%r12
    10fb9:	73 ad                	jae    10f68 <_obstack_memory_used@@Base+0x3868>
    10fbb:	48 b8 ff ff ff ff ff 	movabs $0x7fffffffffffffff,%rax
-   10fc2:	ff ff 7f
+   10fc2:	ff ff 7f 
    10fc5:	49 39 c6             	cmp    %rax,%r14
    10fc8:	0f 84 b2 05 00 00    	je     11580 <_obstack_memory_used@@Base+0x3e80>
    10fce:	49 be ff ff ff ff ff 	movabs $0x7fffffffffffffff,%r14
-   10fd5:	ff ff 7f
+   10fd5:	ff ff 7f 
    10fd8:	4c 89 f7             	mov    %r14,%rdi
    10fdb:	ff 15 d7 0e 01 00    	call   *0x10ed7(%rip)        # 21eb8 <_obstack_memory_used@@Base+0x147b8>
    10fe1:	49 89 c7             	mov    %rax,%r15
@@ -13750,7 +13750,7 @@ Disassembly of section .text:
    1108f:	75 15                	jne    110a6 <_obstack_memory_used@@Base+0x39a6>
    11091:	8b 85 48 fd ff ff    	mov    -0x2b8(%rbp),%eax
    11097:	41 c6 86 b9 00 00 00 	movb   $0x1,0xb9(%r14)
-   1109e:	01
+   1109e:	01 
    1109f:	41 89 86 ac 00 00 00 	mov    %eax,0xac(%r14)
    110a6:	4c 89 ef             	mov    %r13,%rdi
    110a9:	ff 15 f1 0b 01 00    	call   *0x10bf1(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
@@ -13770,7 +13770,7 @@ Disassembly of section .text:
    110ee:	83 c2 03             	add    $0x3,%edx
    110f1:	e9 51 f5 ff ff       	jmp    10647 <_obstack_memory_used@@Base+0x2f47>
    110f6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   110fd:	00 00 00
+   110fd:	00 00 00 
    11100:	41 8b 7e 34          	mov    0x34(%r14),%edi
    11104:	e8 87 df ff ff       	call   f090 <_obstack_memory_used@@Base+0x1990>
    11109:	3b 05 35 13 01 00    	cmp    0x11335(%rip),%eax        # 22444 <obstack_alloc_failed_handler@@Base+0x3a4>
@@ -13806,7 +13806,7 @@ Disassembly of section .text:
    111a5:	48 8d 35 f6 8e 00 00 	lea    0x8ef6(%rip),%rsi        # 1a0a2 <_obstack_memory_used@@Base+0xc9a2>
    111ac:	31 ff                	xor    %edi,%edi
    111ae:	49 c7 46 08 00 00 00 	movq   $0x0,0x8(%r14)
-   111b5:	00
+   111b5:	00 
    111b6:	ff 15 bc 0b 01 00    	call   *0x10bbc(%rip)        # 21d78 <_obstack_memory_used@@Base+0x14678>
    111bc:	0f b6 bd fc fc ff ff 	movzbl -0x304(%rbp),%edi
    111c3:	48 8b 95 00 fd ff ff 	mov    -0x300(%rbp),%rdx
@@ -13867,7 +13867,7 @@ Disassembly of section .text:
    1129d:	ff 15 45 0a 01 00    	call   *0x10a45(%rip)        # 21ce8 <_obstack_memory_used@@Base+0x145e8>
    112a3:	e9 a8 fd ff ff       	jmp    11050 <_obstack_memory_used@@Base+0x3950>
    112a8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   112af:	00
+   112af:	00 
    112b0:	4d 89 fd             	mov    %r15,%r13
    112b3:	4c 8d 60 01          	lea    0x1(%rax),%r12
    112b7:	4d 89 f7             	mov    %r14,%r15
@@ -13888,7 +13888,7 @@ Disassembly of section .text:
    112fb:	0f 82 d0 f9 ff ff    	jb     10cd1 <_obstack_memory_used@@Base+0x35d1>
    11301:	e9 0f f2 ff ff       	jmp    10515 <_obstack_memory_used@@Base+0x2e15>
    11306:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1130d:	00 00 00
+   1130d:	00 00 00 
    11310:	48 83 4c 14 f8 00    	orq    $0x0,-0x8(%rsp,%rdx,1)
    11316:	e9 cf fa ff ff       	jmp    10dea <_obstack_memory_used@@Base+0x36ea>
    1131b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
@@ -13930,16 +13930,16 @@ Disassembly of section .text:
    113bc:	49 8b 46 18          	mov    0x18(%r14),%rax
    113c0:	48 89 05 51 0f 01 00 	mov    %rax,0x10f51(%rip)        # 22318 <obstack_alloc_failed_handler@@Base+0x278>
    113c7:	41 c7 86 bc 00 00 00 	movl   $0x0,0xbc(%r14)
-   113ce:	00 00 00 00
+   113ce:	00 00 00 00 
    113d2:	85 d2                	test   %edx,%edx
    113d4:	0f 84 fe fa ff ff    	je     10ed8 <_obstack_memory_used@@Base+0x37d8>
    113da:	48 8d 95 30 fd ff ff 	lea    -0x2d0(%rbp),%rdx
    113e1:	66 0f 6f 05 b7 b6 00 	movdqa 0xb6b7(%rip),%xmm0        # 1caa0 <_obstack_memory_used@@Base+0xf3a0>
-   113e8:	00
+   113e8:	00 
    113e9:	31 ff                	xor    %edi,%edi
    113eb:	48 8b b5 00 fd ff ff 	mov    -0x300(%rbp),%rsi
    113f2:	48 c7 85 30 fd ff ff 	movq   $0x3,-0x2d0(%rbp)
-   113f9:	03 00 00 00
+   113f9:	03 00 00 00 
    113fd:	0f 11 85 38 fd ff ff 	movups %xmm0,-0x2c8(%rbp)
    11404:	66 0f ef c0          	pxor   %xmm0,%xmm0
    11408:	0f 11 85 48 fd ff ff 	movups %xmm0,-0x2b8(%rbp)
@@ -13968,7 +13968,7 @@ Disassembly of section .text:
    1146e:	49 89 c4             	mov    %rax,%r12
    11471:	e9 6a fe ff ff       	jmp    112e0 <_obstack_memory_used@@Base+0x3be0>
    11476:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1147d:	00 00 00
+   1147d:	00 00 00 
    11480:	80 3d 79 0e 01 00 00 	cmpb   $0x0,0x10e79(%rip)        # 22300 <obstack_alloc_failed_handler@@Base+0x260>
    11487:	74 57                	je     114e0 <_obstack_memory_used@@Base+0x3de0>
    11489:	bf 13 00 00 00       	mov    $0x13,%edi
@@ -14015,15 +14015,15 @@ Disassembly of section .text:
    11541:	84 c0                	test   %al,%al
    11543:	0f 84 16 fb ff ff    	je     1105f <_obstack_memory_used@@Base+0x395f>
    11549:	41 c7 86 c4 00 00 00 	movl   $0xffffffff,0xc4(%r14)
-   11550:	ff ff ff ff
+   11550:	ff ff ff ff 
    11554:	e9 06 fb ff ff       	jmp    1105f <_obstack_memory_used@@Base+0x395f>
    11559:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
    11560:	c7 03 5f 00 00 00    	movl   $0x5f,(%rbx)
    11566:	41 c7 86 bc 00 00 00 	movl   $0x0,0xbc(%r14)
-   1156d:	00 00 00 00
+   1156d:	00 00 00 00 
    11571:	e9 62 f9 ff ff       	jmp    10ed8 <_obstack_memory_used@@Base+0x37d8>
    11576:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1157d:	00 00 00
+   1157d:	00 00 00 
    11580:	ff 15 32 07 01 00    	call   *0x10732(%rip)        # 21cb8 <_obstack_memory_used@@Base+0x145b8>
    11586:	4c 8b b5 e0 fc ff ff 	mov    -0x320(%rbp),%r14
    1158d:	c7 00 0c 00 00 00    	movl   $0xc,(%rax)
@@ -14049,7 +14049,7 @@ Disassembly of section .text:
    115dc:	0f 85 fe fc ff ff    	jne    112e0 <_obstack_memory_used@@Base+0x3be0>
    115e2:	e9 f2 fc ff ff       	jmp    112d9 <_obstack_memory_used@@Base+0x3bd9>
    115e7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   115ee:	00 00
+   115ee:	00 00 
    115f0:	48 8b 85 08 fd ff ff 	mov    -0x2f8(%rbp),%rax
    115f7:	44 0f b6 28          	movzbl (%rax),%r13d
    115fb:	41 80 fd 2f          	cmp    $0x2f,%r13b
@@ -14090,7 +14090,7 @@ Disassembly of section .text:
    116ad:	45 31 c0             	xor    %r8d,%r8d
    116b0:	48 8d 85 34 fd ff ff 	lea    -0x2cc(%rbp),%rax
    116b7:	49 bf 45 56 45 52 59 	movabs $0x454e4f5952455645,%r15
-   116be:	4f 4e 45
+   116be:	4f 4e 45 
    116c1:	8b 78 0c             	mov    0xc(%rax),%edi
    116c4:	8b 08                	mov    (%rax),%ecx
    116c6:	31 f6                	xor    %esi,%esi
@@ -14105,7 +14105,7 @@ Disassembly of section .text:
    116e6:	41 0f cc             	bswap  %r12d
    116e9:	44 01 de             	add    %r11d,%esi
    116ec:	4c 8d 1c b5 00 00 00 	lea    0x0(,%rsi,4),%r11
-   116f3:	00
+   116f3:	00 
    116f4:	83 f9 01             	cmp    $0x1,%ecx
    116f7:	77 2c                	ja     11725 <_obstack_memory_used@@Base+0x4025>
    116f9:	41 83 e4 bf          	and    $0xffffffbf,%r12d
@@ -14123,7 +14123,7 @@ Disassembly of section .text:
    11730:	85 c9                	test   %ecx,%ecx
    11732:	0f 84 8f f7 ff ff    	je     10ec7 <_obstack_memory_used@@Base+0x37c7>
    11738:	41 c7 86 bc 00 00 00 	movl   $0x2,0xbc(%r14)
-   1173f:	02 00 00 00
+   1173f:	02 00 00 00 
    11743:	c6 05 02 0d 01 00 01 	movb   $0x1,0x10d02(%rip)        # 2244c <obstack_alloc_failed_handler@@Base+0x3ac>
    1174a:	e9 89 f7 ff ff       	jmp    10ed8 <_obstack_memory_used@@Base+0x37d8>
    1174f:	83 fb 05             	cmp    $0x5,%ebx
@@ -14177,7 +14177,7 @@ Disassembly of section .text:
    1183f:	49 8b 46 18          	mov    0x18(%r14),%rax
    11843:	c7 03 16 00 00 00    	movl   $0x16,(%rbx)
    11849:	41 c7 86 bc 00 00 00 	movl   $0x0,0xbc(%r14)
-   11850:	00 00 00 00
+   11850:	00 00 00 00 
    11854:	48 89 05 bd 0a 01 00 	mov    %rax,0x10abd(%rip)        # 22318 <obstack_alloc_failed_handler@@Base+0x278>
    1185b:	e9 81 fb ff ff       	jmp    113e1 <_obstack_memory_used@@Base+0x3ce1>
    11860:	41 8b 46 30          	mov    0x30(%r14),%eax
@@ -14229,7 +14229,7 @@ Disassembly of section .text:
    1192d:	44 89 03             	mov    %r8d,(%rbx)
    11930:	e9 92 f5 ff ff       	jmp    10ec7 <_obstack_memory_used@@Base+0x37c7>
    11935:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-   1193c:	00 00 00 00
+   1193c:	00 00 00 00 
    11940:	41 57                	push   %r15
    11942:	41 56                	push   %r14
    11944:	49 89 fe             	mov    %rdi,%r14
@@ -14242,9 +14242,9 @@ Disassembly of section .text:
    11957:	89 54 24 14          	mov    %edx,0x14(%rsp)
    1195b:	88 54 24 10          	mov    %dl,0x10(%rsp)
    1195f:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   11966:	00 00
+   11966:	00 00 
    11968:	48 89 84 24 08 03 00 	mov    %rax,0x308(%rsp)
-   1196f:	00
+   1196f:	00 
    11970:	31 c0                	xor    %eax,%eax
    11972:	ff 15 40 03 01 00    	call   *0x10340(%rip)        # 21cb8 <_obstack_memory_used@@Base+0x145b8>
    11978:	4c 89 f7             	mov    %r14,%rdi
@@ -14298,9 +14298,9 @@ Disassembly of section .text:
    11a51:	4c 89 f6             	mov    %r14,%rsi
    11a54:	31 ff                	xor    %edi,%edi
    11a56:	66 0f 6f 05 42 b0 00 	movdqa 0xb042(%rip),%xmm0        # 1caa0 <_obstack_memory_used@@Base+0xf3a0>
-   11a5d:	00
+   11a5d:	00 
    11a5e:	48 c7 44 24 30 03 00 	movq   $0x3,0x30(%rsp)
-   11a65:	00 00
+   11a65:	00 00 
    11a67:	0f 11 44 24 38       	movups %xmm0,0x38(%rsp)
    11a6c:	66 0f ef c0          	pxor   %xmm0,%xmm0
    11a70:	0f 11 44 24 48       	movups %xmm0,0x48(%rsp)
@@ -14321,7 +14321,7 @@ Disassembly of section .text:
    11aac:	4c 89 ef             	mov    %r13,%rdi
    11aaf:	ff 15 53 03 01 00    	call   *0x10353(%rip)        # 21e08 <_obstack_memory_used@@Base+0x14708>
    11ab5:	c7 05 bd 0c 01 00 02 	movl   $0x2,0x10cbd(%rip)        # 2277c <obstack_alloc_failed_handler@@Base+0x6dc>
-   11abc:	00 00 00
+   11abc:	00 00 00 
    11abf:	e9 8c 03 00 00       	jmp    11e50 <_obstack_memory_used@@Base+0x4750>
    11ac4:	48 8b 05 2d 0c 01 00 	mov    0x10c2d(%rip),%rax        # 226f8 <obstack_alloc_failed_handler@@Base+0x658>
    11acb:	48 8b 15 2e 0c 01 00 	mov    0x10c2e(%rip),%rdx        # 22700 <obstack_alloc_failed_handler@@Base+0x660>
@@ -14363,10 +14363,10 @@ Disassembly of section .text:
    11b7a:	e8 d1 58 ff ff       	call   7450 <_obstack_begin@@Base-0x6070>
    11b7f:	0f b6 44 24 10       	movzbl 0x10(%rsp),%eax
    11b84:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
-   11b8b:	00
+   11b8b:	00 
    11b8c:	89 44 24 10          	mov    %eax,0x10(%rsp)
    11b90:	41 c7 04 24 00 00 00 	movl   $0x0,(%r12)
-   11b97:	00
+   11b97:	00 
    11b98:	4c 89 ef             	mov    %r13,%rdi
    11b9b:	ff 15 07 03 01 00    	call   *0x10307(%rip)        # 21ea8 <_obstack_memory_used@@Base+0x147a8>
    11ba1:	48 89 c5             	mov    %rax,%rbp
@@ -14403,7 +14403,7 @@ Disassembly of section .text:
    11c2e:	0f 85 dd fe ff ff    	jne    11b11 <_obstack_memory_used@@Base+0x4411>
    11c34:	48 8b 05 95 00 01 00 	mov    0x10095(%rip),%rax        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
    11c3b:	48 83 05 cd 06 01 00 	addq   $0x1,0x106cd(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
-   11c42:	01
+   11c42:	01 
    11c43:	48 8b 38             	mov    (%rax),%rdi
    11c46:	48 8b 47 28          	mov    0x28(%rdi),%rax
    11c4a:	48 3b 47 30          	cmp    0x30(%rdi),%rax
@@ -14451,9 +14451,9 @@ Disassembly of section .text:
    11d0b:	48 89 c6             	mov    %rax,%rsi
    11d0e:	e8 ed 79 ff ff       	call   9700 <_obstack_begin@@Base-0x3dc0>
    11d13:	48 8b 84 24 08 03 00 	mov    0x308(%rsp),%rax
-   11d1a:	00
+   11d1a:	00 
    11d1b:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   11d22:	00 00
+   11d22:	00 00 
    11d24:	0f 85 22 03 00 00    	jne    1204c <_obstack_memory_used@@Base+0x494c>
    11d2a:	48 81 c4 18 03 00 00 	add    $0x318,%rsp
    11d31:	4c 89 ef             	mov    %r13,%rdi
@@ -14522,12 +14522,12 @@ Disassembly of section .text:
    11e3a:	4c 29 e6             	sub    %r12,%rsi
    11e3d:	e8 0e 56 ff ff       	call   7450 <_obstack_begin@@Base-0x6070>
    11e42:	48 83 3d 7e 07 01 00 	cmpq   $0x0,0x1077e(%rip)        # 225c8 <obstack_alloc_failed_handler@@Base+0x528>
-   11e49:	00
+   11e49:	00 
    11e4a:	0f 85 06 01 00 00    	jne    11f56 <_obstack_memory_used@@Base+0x4856>
    11e50:	48 8b 84 24 08 03 00 	mov    0x308(%rsp),%rax
-   11e57:	00
+   11e57:	00 
    11e58:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   11e5f:	00 00
+   11e5f:	00 00 
    11e61:	0f 85 e5 01 00 00    	jne    1204c <_obstack_memory_used@@Base+0x494c>
    11e67:	48 81 c4 18 03 00 00 	add    $0x318,%rsp
    11e6e:	5b                   	pop    %rbx
@@ -14580,7 +14580,7 @@ Disassembly of section .text:
    11f0c:	e8 5f 9a ff ff       	call   b970 <_obstack_begin@@Base-0x1b50>
    11f11:	e9 7a fc ff ff       	jmp    11b90 <_obstack_memory_used@@Base+0x4490>
    11f16:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   11f1d:	00 00 00
+   11f1d:	00 00 00 
    11f20:	83 3d fd 14 01 00 06 	cmpl   $0x6,0x114fd(%rip)        # 23424 <obstack_alloc_failed_handler@@Base+0x1384>
    11f27:	75 df                	jne    11f08 <_obstack_memory_used@@Base+0x4808>
    11f29:	80 3d d8 03 01 00 00 	cmpb   $0x0,0x103d8(%rip)        # 22308 <obstack_alloc_failed_handler@@Base+0x268>
@@ -14594,9 +14594,9 @@ Disassembly of section .text:
    11f4f:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
    11f54:	eb b2                	jmp    11f08 <_obstack_memory_used@@Base+0x4808>
    11f56:	48 8b 84 24 08 03 00 	mov    0x308(%rsp),%rax
-   11f5d:	00
+   11f5d:	00 
    11f5e:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   11f65:	00 00
+   11f65:	00 00 
    11f67:	0f 85 df 00 00 00    	jne    1204c <_obstack_memory_used@@Base+0x494c>
    11f6d:	48 81 c4 18 03 00 00 	add    $0x318,%rsp
    11f74:	5b                   	pop    %rbx
@@ -14637,9 +14637,9 @@ Disassembly of section .text:
    1200d:	ff 15 65 fd 00 00    	call   *0xfd65(%rip)        # 21d78 <_obstack_memory_used@@Base+0x14678>
    12013:	48 89 c6             	mov    %rax,%rsi
    12016:	48 8b 84 24 08 03 00 	mov    0x308(%rsp),%rax
-   1201d:	00
+   1201d:	00 
    1201e:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   12025:	00 00
+   12025:	00 00 
    12027:	75 23                	jne    1204c <_obstack_memory_used@@Base+0x494c>
    12029:	0f b6 7c 24 14       	movzbl 0x14(%rsp),%edi
    1202e:	48 81 c4 18 03 00 00 	add    $0x318,%rsp
@@ -14654,7 +14654,7 @@ Disassembly of section .text:
    12047:	e8 34 bb ff ff       	call   db80 <_obstack_memory_used@@Base+0x480>
    1204c:	ff 15 3e fd 00 00    	call   *0xfd3e(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
    12052:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   12059:	00 00 00
+   12059:	00 00 00 
    1205c:	0f 1f 40 00          	nopl   0x0(%rax)
    12060:	f3 0f 1e fa          	endbr64
    12064:	41 57                	push   %r15
@@ -14724,7 +14724,7 @@ Disassembly of section .text:
    1213d:	49 c7 c5 ff ff ff ff 	mov    $0xffffffffffffffff,%r13
    12144:	eb da                	jmp    12120 <_obstack_memory_used@@Base+0x4a20>
    12146:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1214d:	00 00 00
+   1214d:	00 00 00 
    12150:	f3 0f 1e fa          	endbr64
    12154:	41 57                	push   %r15
    12156:	49 89 f7             	mov    %rsi,%r15
@@ -14738,7 +14738,7 @@ Disassembly of section .text:
    12169:	53                   	push   %rbx
    1216a:	48 83 ec 28          	sub    $0x28,%rsp
    1216e:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   12175:	00 00
+   12175:	00 00 
    12177:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
    1217c:	31 c0                	xor    %eax,%eax
    1217e:	48 85 f6             	test   %rsi,%rsi
@@ -14780,7 +14780,7 @@ Disassembly of section .text:
    12200:	49 89 5d 00          	mov    %rbx,0x0(%r13)
    12204:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
    12209:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   12210:	00 00
+   12210:	00 00 
    12212:	0f 85 6e 03 00 00    	jne    12586 <_obstack_memory_used@@Base+0x4e86>
    12218:	48 83 c4 28          	add    $0x28,%rsp
    1221c:	44 89 e0             	mov    %r12d,%eax
@@ -14816,7 +14816,7 @@ Disassembly of section .text:
    12281:	3c 2f                	cmp    $0x2f,%al
    12283:	77 10                	ja     12295 <_obstack_memory_used@@Base+0x4b95>
    12285:	48 ba 45 b9 30 00 44 	movabs $0x81440030b945,%rdx
-   1228c:	81 00 00
+   1228c:	81 00 00 
    1228f:	48 0f a3 c2          	bt     %rax,%rdx
    12293:	72 75                	jb     1230a <_obstack_memory_used@@Base+0x4c0a>
    12295:	83 ed 42             	sub    $0x42,%ebp
@@ -14957,7 +14957,7 @@ Disassembly of section .text:
    124b1:	be 06 00 00 00       	mov    $0x6,%esi
    124b6:	31 ff                	xor    %edi,%edi
    124b8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   124bf:	00
+   124bf:	00 
    124c0:	48 89 d8             	mov    %rbx,%rax
    124c3:	48 f7 e1             	mul    %rcx
    124c6:	48 89 c3             	mov    %rax,%rbx
@@ -15038,14 +15038,14 @@ Disassembly of section .text:
    125ec:	48 83 ec 20          	sub    $0x20,%rsp
    125f0:	0f b6 17             	movzbl (%rdi),%edx
    125f3:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   125fa:	00 00
+   125fa:	00 00 
    125fc:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
    12601:	31 c0                	xor    %eax,%eax
    12603:	0f b6 06             	movzbl (%rsi),%eax
    12606:	48 c7 44 24 10 ff ff 	movq   $0xffffffffffffffff,0x10(%rsp)
-   1260d:	ff ff
+   1260d:	ff ff 
    1260f:	48 c7 44 24 08 ff ff 	movq   $0xffffffffffffffff,0x8(%rsp)
-   12616:	ff ff
+   12616:	ff ff 
    12618:	84 d2                	test   %dl,%dl
    1261a:	0f 84 f8 00 00 00    	je     12718 <_obstack_memory_used@@Base+0x5018>
    12620:	84 c0                	test   %al,%al
@@ -15078,7 +15078,7 @@ Disassembly of section .text:
    12688:	74 6b                	je     126f5 <_obstack_memory_used@@Base+0x4ff5>
    1268a:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
    1268f:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   12696:	00 00
+   12696:	00 00 
    12698:	0f 85 a9 00 00 00    	jne    12747 <_obstack_memory_used@@Base+0x5047>
    1269e:	48 8b 4c 24 10       	mov    0x10(%rsp),%rcx
    126a3:	48 83 c4 20          	add    $0x20,%rsp
@@ -15110,7 +15110,7 @@ Disassembly of section .text:
    126f0:	b8 01 00 00 00       	mov    $0x1,%eax
    126f5:	48 8b 54 24 18       	mov    0x18(%rsp),%rdx
    126fa:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-   12701:	00 00
+   12701:	00 00 
    12703:	75 42                	jne    12747 <_obstack_memory_used@@Base+0x5047>
    12705:	48 83 c4 20          	add    $0x20,%rsp
    12709:	5b                   	pop    %rbx
@@ -15160,24 +15160,24 @@ Disassembly of section .text:
    12788:	48 81 ec c8 00 00 00 	sub    $0xc8,%rsp
    1278f:	4c 89 4c 24 20       	mov    %r9,0x20(%rsp)
    12794:	4c 8b ac 24 00 01 00 	mov    0x100(%rsp),%r13
-   1279b:	00
+   1279b:	00 
    1279c:	49 89 f1             	mov    %rsi,%r9
    1279f:	48 89 54 24 08       	mov    %rdx,0x8(%rsp)
    127a4:	4c 8b b4 24 08 01 00 	mov    0x108(%rsp),%r14
-   127ab:	00
+   127ab:	00 
    127ac:	44 89 44 24 6c       	mov    %r8d,0x6c(%rsp)
    127b1:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   127b8:	00 00
+   127b8:	00 00 
    127ba:	48 89 84 24 b8 00 00 	mov    %rax,0xb8(%rsp)
-   127c1:	00
+   127c1:	00 
    127c2:	31 c0                	xor    %eax,%eax
    127c4:	4c 89 ac 24 98 00 00 	mov    %r13,0x98(%rsp)
-   127cb:	00
+   127cb:	00 
    127cc:	4c 89 b4 24 90 00 00 	mov    %r14,0x90(%rsp)
-   127d3:	00
+   127d3:	00 
    127d4:	49 89 fe             	mov    %rdi,%r14
    127d7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   127de:	00 00
+   127de:	00 00 
    127e0:	44 89 5c 24 10       	mov    %r11d,0x10(%rsp)
    127e5:	4c 89 0c 24          	mov    %r9,(%rsp)
    127e9:	ff 15 91 f5 00 00    	call   *0xf591(%rip)        # 21d80 <_obstack_memory_used@@Base+0x14680>
@@ -15195,7 +15195,7 @@ Disassembly of section .text:
    12821:	48 01 f0             	add    %rsi,%rax
    12824:	3e ff e0             	notrack jmp *%rax
    12827:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   1282e:	00 00
+   1282e:	00 00 
    12830:	41 83 fb 0a          	cmp    $0xa,%r11d
    12834:	74 74                	je     128aa <_obstack_memory_used@@Base+0x51aa>
    12836:	48 8d 1d 73 a8 00 00 	lea    0xa873(%rip),%rbx        # 1d0b0 <_obstack_memory_used@@Base+0xf9b0>
@@ -15209,7 +15209,7 @@ Disassembly of section .text:
    1285a:	44 8b 5c 24 10       	mov    0x10(%rsp),%r11d
    1285f:	48 39 d8             	cmp    %rbx,%rax
    12862:	48 89 84 24 98 00 00 	mov    %rax,0x98(%rsp)
-   12869:	00
+   12869:	00 
    1286a:	0f 84 1f 14 00 00    	je     13c8f <_obstack_memory_used@@Base+0x658f>
    12870:	48 8d 1d aa 78 00 00 	lea    0x78aa(%rip),%rbx        # 1a121 <_obstack_memory_used@@Base+0xca21>
    12877:	44 89 5c 24 10       	mov    %r11d,0x10(%rsp)
@@ -15222,13 +15222,13 @@ Disassembly of section .text:
    12894:	44 8b 5c 24 10       	mov    0x10(%rsp),%r11d
    12899:	48 39 d8             	cmp    %rbx,%rax
    1289c:	48 89 84 24 90 00 00 	mov    %rax,0x90(%rsp)
-   128a3:	00
+   128a3:	00 
    128a4:	0f 84 bb 13 00 00    	je     13c65 <_obstack_memory_used@@Base+0x6565>
    128aa:	31 db                	xor    %ebx,%ebx
    128ac:	85 ed                	test   %ebp,%ebp
    128ae:	0f 84 b0 12 00 00    	je     13b64 <_obstack_memory_used@@Base+0x6464>
    128b4:	48 8b ac 24 90 00 00 	mov    0x90(%rsp),%rbp
-   128bb:	00
+   128bb:	00 
    128bc:	44 89 5c 24 30       	mov    %r11d,0x30(%rsp)
    128c1:	4c 89 4c 24 28       	mov    %r9,0x28(%rsp)
    128c6:	48 89 ef             	mov    %rbp,%rdi
@@ -15240,9 +15240,9 @@ Disassembly of section .text:
    128e1:	44 8b 5c 24 30       	mov    0x30(%rsp),%r11d
    128e6:	c6 04 24 01          	movb   $0x1,(%rsp)
    128ea:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   128f1:	00
+   128f1:	00 
    128f2:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   128f9:	00 00
+   128f9:	00 00 
    128fb:	c6 44 24 10 01       	movb   $0x1,0x10(%rsp)
    12900:	31 ed                	xor    %ebp,%ebp
    12902:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
@@ -15286,7 +15286,7 @@ Disassembly of section .text:
    1299a:	8d 4a bf             	lea    -0x41(%rdx),%ecx
    1299d:	b8 01 00 00 00       	mov    $0x1,%eax
    129a2:	48 be ff ff ff 53 ff 	movabs $0x3ffffff53ffffff,%rsi
-   129a9:	ff ff 03
+   129a9:	ff ff 03 
    129ac:	48 d3 e0             	shl    %cl,%rax
    129af:	48 85 f0             	test   %rsi,%rax
    129b2:	0f 84 48 01 00 00    	je     12b00 <_obstack_memory_used@@Base+0x5400>
@@ -15351,7 +15351,7 @@ Disassembly of section .text:
    12a7b:	48 83 7c 24 70 01    	cmpq   $0x1,0x70(%rsp)
    12a81:	0f 85 12 05 00 00    	jne    12f99 <_obstack_memory_used@@Base+0x5899>
    12a87:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   12a8e:	00 00
+   12a8e:	00 00 
    12a90:	44 89 5c 24 48       	mov    %r11d,0x48(%rsp)
    12a95:	4c 89 4c 24 40       	mov    %r9,0x40(%rsp)
    12a9a:	44 88 54 24 38       	mov    %r10b,0x38(%rsp)
@@ -15391,7 +15391,7 @@ Disassembly of section .text:
    12b33:	44 0f 45 d8          	cmovne %eax,%r11d
    12b37:	83 64 24 6c fd       	andl   $0xfffffffd,0x6c(%rsp)
    12b3c:	48 c7 44 24 20 00 00 	movq   $0x0,0x20(%rsp)
-   12b43:	00 00
+   12b43:	00 00 
    12b45:	e9 96 fc ff ff       	jmp    127e0 <_obstack_memory_used@@Base+0x50e0>
    12b4a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
    12b50:	41 83 fb 02          	cmp    $0x2,%r11d
@@ -15412,7 +15412,7 @@ Disassembly of section .text:
    12b91:	80 7c 24 10 00       	cmpb   $0x0,0x10(%rsp)
    12b96:	74 d7                	je     12b6f <_obstack_memory_used@@Base+0x546f>
    12b98:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   12b9f:	00
+   12b9f:	00 
    12ba0:	45 31 e4             	xor    %r12d,%r12d
    12ba3:	80 7c 24 6b 00       	cmpb   $0x0,0x6b(%rsp)
    12ba8:	89 ca                	mov    %ecx,%edx
@@ -15456,20 +15456,20 @@ Disassembly of section .text:
    12c48:	41 83 fb 02          	cmp    $0x2,%r11d
    12c4c:	0f 84 4e 08 00 00    	je     134a0 <_obstack_memory_used@@Base+0x5da0>
    12c52:	44 88 a4 24 83 00 00 	mov    %r12b,0x83(%rsp)
-   12c59:	00
+   12c59:	00 
    12c5a:	31 c0                	xor    %eax,%eax
    12c5c:	31 f6                	xor    %esi,%esi
    12c5e:	ba 27 00 00 00       	mov    $0x27,%edx
    12c63:	e9 59 fd ff ff       	jmp    129c1 <_obstack_memory_used@@Base+0x52c1>
    12c68:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   12c6f:	00
+   12c6f:	00 
    12c70:	41 83 fb 02          	cmp    $0x2,%r11d
    12c74:	ba 08 00 00 00       	mov    $0x8,%edx
    12c79:	b9 62 00 00 00       	mov    $0x62,%ecx
    12c7e:	0f 94 c0             	sete   %al
    12c81:	e9 e2 fe ff ff       	jmp    12b68 <_obstack_memory_used@@Base+0x5468>
    12c86:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   12c8d:	00 00 00
+   12c8d:	00 00 00 
    12c90:	80 7c 24 10 00       	cmpb   $0x0,0x10(%rsp)
    12c95:	0f 85 b5 08 00 00    	jne    13550 <_obstack_memory_used@@Base+0x5e50>
    12c9b:	f6 44 24 6c 01       	testb  $0x1,0x6c(%rsp)
@@ -15497,7 +15497,7 @@ Disassembly of section .text:
    12ced:	b9 72 00 00 00       	mov    $0x72,%ecx
    12cf2:	e9 eb fe ff ff       	jmp    12be2 <_obstack_memory_used@@Base+0x54e2>
    12cf7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   12cfe:	00 00
+   12cfe:	00 00 
    12d00:	ba 20 00 00 00       	mov    $0x20,%edx
    12d05:	e9 04 fe ff ff       	jmp    12b0e <_obstack_memory_used@@Base+0x540e>
    12d0a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
@@ -15508,15 +15508,15 @@ Disassembly of section .text:
    12d23:	45 31 d2             	xor    %r10d,%r10d
    12d26:	31 db                	xor    %ebx,%ebx
    12d28:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   12d2f:	00
+   12d2f:	00 
    12d30:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   12d37:	00 00
+   12d37:	00 00 
    12d39:	c6 44 24 6b 00       	movb   $0x0,0x6b(%rsp)
    12d3e:	c6 44 24 10 01       	movb   $0x1,0x10(%rsp)
    12d43:	48 c7 44 24 18 00 00 	movq   $0x0,0x18(%rsp)
-   12d4a:	00 00
+   12d4a:	00 00 
    12d4c:	48 c7 44 24 58 00 00 	movq   $0x0,0x58(%rsp)
-   12d53:	00 00
+   12d53:	00 00 
    12d55:	e9 a6 fb ff ff       	jmp    12900 <_obstack_memory_used@@Base+0x5200>
    12d5a:	85 ed                	test   %ebp,%ebp
    12d5c:	0f 85 36 01 00 00    	jne    12e98 <_obstack_memory_used@@Base+0x5798>
@@ -15537,22 +15537,22 @@ Disassembly of section .text:
    12da0:	41 bb 02 00 00 00    	mov    $0x2,%r11d
    12da6:	c6 44 24 6b 00       	movb   $0x0,0x6b(%rsp)
    12dab:	48 c7 44 24 18 01 00 	movq   $0x1,0x18(%rsp)
-   12db2:	00 00
+   12db2:	00 00 
    12db4:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
    12db9:	e9 42 fb ff ff       	jmp    12900 <_obstack_memory_used@@Base+0x5200>
    12dbe:	c6 04 24 01          	movb   $0x1,(%rsp)
    12dc2:	45 31 d2             	xor    %r10d,%r10d
    12dc5:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   12dcc:	00
+   12dcc:	00 
    12dcd:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   12dd4:	00 00
+   12dd4:	00 00 
    12dd6:	c6 44 24 6b 01       	movb   $0x1,0x6b(%rsp)
    12ddb:	c6 44 24 10 01       	movb   $0x1,0x10(%rsp)
    12de0:	48 8d 05 3a 73 00 00 	lea    0x733a(%rip),%rax        # 1a121 <_obstack_memory_used@@Base+0xca21>
    12de7:	31 db                	xor    %ebx,%ebx
    12de9:	41 bb 02 00 00 00    	mov    $0x2,%r11d
    12def:	48 c7 44 24 18 01 00 	movq   $0x1,0x18(%rsp)
-   12df6:	00 00
+   12df6:	00 00 
    12df8:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
    12dfd:	e9 fe fa ff ff       	jmp    12900 <_obstack_memory_used@@Base+0x5200>
    12e02:	85 ed                	test   %ebp,%ebp
@@ -15565,13 +15565,13 @@ Disassembly of section .text:
    12e1e:	45 31 d2             	xor    %r10d,%r10d
    12e21:	bb 01 00 00 00       	mov    $0x1,%ebx
    12e26:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   12e2d:	00
+   12e2d:	00 
    12e2e:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   12e35:	00 00
+   12e35:	00 00 
    12e37:	c6 44 24 6b 00       	movb   $0x0,0x6b(%rsp)
    12e3c:	c6 44 24 10 01       	movb   $0x1,0x10(%rsp)
    12e41:	48 c7 44 24 18 01 00 	movq   $0x1,0x18(%rsp)
-   12e48:	00 00
+   12e48:	00 00 
    12e4a:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
    12e4f:	e9 ac fa ff ff       	jmp    12900 <_obstack_memory_used@@Base+0x5200>
    12e54:	48 8d 05 4b 71 00 00 	lea    0x714b(%rip),%rax        # 19fa6 <_obstack_memory_used@@Base+0xc8a6>
@@ -15579,22 +15579,22 @@ Disassembly of section .text:
    12e5f:	45 31 d2             	xor    %r10d,%r10d
    12e62:	31 db                	xor    %ebx,%ebx
    12e64:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   12e6b:	00
+   12e6b:	00 
    12e6c:	41 bb 05 00 00 00    	mov    $0x5,%r11d
    12e72:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   12e79:	00 00
+   12e79:	00 00 
    12e7b:	c6 44 24 6b 01       	movb   $0x1,0x6b(%rsp)
    12e80:	c6 44 24 10 01       	movb   $0x1,0x10(%rsp)
    12e85:	48 c7 44 24 18 01 00 	movq   $0x1,0x18(%rsp)
-   12e8c:	00 00
+   12e8c:	00 00 
    12e8e:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
    12e93:	e9 68 fa ff ff       	jmp    12900 <_obstack_memory_used@@Base+0x5200>
    12e98:	c6 04 24 01          	movb   $0x1,(%rsp)
    12e9c:	45 31 d2             	xor    %r10d,%r10d
    12e9f:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   12ea6:	00
+   12ea6:	00 
    12ea7:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   12eae:	00 00
+   12eae:	00 00 
    12eb0:	c6 44 24 6b 01       	movb   $0x1,0x6b(%rsp)
    12eb5:	c6 44 24 10 00       	movb   $0x0,0x10(%rsp)
    12eba:	e9 21 ff ff ff       	jmp    12de0 <_obstack_memory_used@@Base+0x56e0>
@@ -15602,15 +15602,15 @@ Disassembly of section .text:
    12ec3:	45 31 d2             	xor    %r10d,%r10d
    12ec6:	31 db                	xor    %ebx,%ebx
    12ec8:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   12ecf:	00
+   12ecf:	00 
    12ed0:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   12ed7:	00 00
+   12ed7:	00 00 
    12ed9:	c6 44 24 6b 00       	movb   $0x0,0x6b(%rsp)
    12ede:	c6 44 24 10 00       	movb   $0x0,0x10(%rsp)
    12ee3:	48 c7 44 24 18 00 00 	movq   $0x0,0x18(%rsp)
-   12eea:	00 00
+   12eea:	00 00 
    12eec:	48 c7 44 24 58 00 00 	movq   $0x0,0x58(%rsp)
-   12ef3:	00 00
+   12ef3:	00 00 
    12ef5:	e9 06 fa ff ff       	jmp    12900 <_obstack_memory_used@@Base+0x5200>
    12efa:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
    12f00:	80 fa 5c             	cmp    $0x5c,%dl
@@ -15649,9 +15649,9 @@ Disassembly of section .text:
    12f8d:	48 83 7c 24 70 01    	cmpq   $0x1,0x70(%rsp)
    12f93:	0f 84 f7 fa ff ff    	je     12a90 <_obstack_memory_used@@Base+0x5390>
    12f99:	48 8d 84 24 b0 00 00 	lea    0xb0(%rsp),%rax
-   12fa0:	00
+   12fa0:	00 
    12fa1:	48 c7 84 24 b0 00 00 	movq   $0x0,0xb0(%rsp)
-   12fa8:	00 00 00 00 00
+   12fa8:	00 00 00 00 00 
    12fad:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
    12fb2:	49 83 ff ff          	cmp    $0xffffffffffffffff,%r15
    12fb6:	75 41                	jne    12ff9 <_obstack_memory_used@@Base+0x58f9>
@@ -15669,23 +15669,23 @@ Disassembly of section .text:
    12ff0:	49 89 c7             	mov    %rax,%r15
    12ff3:	44 0f b6 44 24 30    	movzbl 0x30(%rsp),%r8d
    12ff9:	48 8d 84 24 ac 00 00 	lea    0xac(%rsp),%rax
-   13000:	00
+   13000:	00 
    13001:	44 88 84 24 84 00 00 	mov    %r8b,0x84(%rsp)
-   13008:	00
+   13008:	00 
    13009:	31 ff                	xor    %edi,%edi
    1300b:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
    13010:	48 89 6c 24 38       	mov    %rbp,0x38(%rsp)
    13015:	4c 89 7c 24 30       	mov    %r15,0x30(%rsp)
    1301a:	44 88 94 24 85 00 00 	mov    %r10b,0x85(%rsp)
-   13021:	00
+   13021:	00 
    13022:	88 94 24 86 00 00 00 	mov    %dl,0x86(%rsp)
    13029:	44 88 ac 24 87 00 00 	mov    %r13b,0x87(%rsp)
-   13030:	00
+   13030:	00 
    13031:	4c 89 74 24 50       	mov    %r14,0x50(%rsp)
    13036:	4c 89 4c 24 78       	mov    %r9,0x78(%rsp)
    1303b:	44 89 5c 24 40       	mov    %r11d,0x40(%rsp)
    13040:	48 89 9c 24 88 00 00 	mov    %rbx,0x88(%rsp)
-   13047:	00
+   13047:	00 
    13048:	48 89 fb             	mov    %rdi,%rbx
    1304b:	48 8b 44 24 38       	mov    0x38(%rsp),%rax
    13050:	4c 8b 7c 24 30       	mov    0x30(%rsp),%r15
@@ -15730,18 +15730,18 @@ Disassembly of section .text:
    130f4:	48 8b 6c 24 38       	mov    0x38(%rsp),%rbp
    130f9:	4c 8b 7c 24 30       	mov    0x30(%rsp),%r15
    130fe:	0f b6 94 24 86 00 00 	movzbl 0x86(%rsp),%edx
-   13105:	00
+   13105:	00 
    13106:	4c 8b 74 24 50       	mov    0x50(%rsp),%r14
    1310b:	83 f6 01             	xor    $0x1,%esi
    1310e:	44 0f b6 84 24 84 00 	movzbl 0x84(%rsp),%r8d
-   13115:	00 00
+   13115:	00 00 
    13117:	48 8b 9c 24 88 00 00 	mov    0x88(%rsp),%rbx
-   1311e:	00
+   1311e:	00 
    1311f:	44 0f b6 94 24 85 00 	movzbl 0x85(%rsp),%r10d
-   13126:	00 00
+   13126:	00 00 
    13128:	4c 8b 4c 24 78       	mov    0x78(%rsp),%r9
    1312d:	44 0f b6 ac 24 87 00 	movzbl 0x87(%rsp),%r13d
-   13134:	00 00
+   13134:	00 00 
    13136:	44 8b 5c 24 40       	mov    0x40(%rsp),%r11d
    1313b:	40 22 74 24 10       	and    0x10(%rsp),%sil
    13140:	48 83 ff 01          	cmp    $0x1,%rdi
@@ -15753,7 +15753,7 @@ Disassembly of section .text:
    1315b:	44 0f b6 64 24 6b    	movzbl 0x6b(%rsp),%r12d
    13161:	e9 b8 00 00 00       	jmp    1321e <_obstack_memory_used@@Base+0x5b1e>
    13166:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1316d:	00 00 00
+   1316d:	00 00 00 
    13170:	41 83 fb 02          	cmp    $0x2,%r11d
    13174:	0f 94 c0             	sete   %al
    13177:	45 84 e4             	test   %r12b,%r12b
@@ -15893,7 +15893,7 @@ Disassembly of section .text:
    13380:	31 f6                	xor    %esi,%esi
    13382:	e9 46 f6 ff ff       	jmp    129cd <_obstack_memory_used@@Base+0x52cd>
    13387:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   1338e:	00 00
+   1338e:	00 00 
    13390:	80 fa 7a             	cmp    $0x7a,%dl
    13393:	0f 8f 07 03 00 00    	jg     136a0 <_obstack_memory_used@@Base+0x5fa0>
    13399:	80 fa 40             	cmp    $0x40,%dl
@@ -15901,7 +15901,7 @@ Disassembly of section .text:
    133a2:	8d 4a bf             	lea    -0x41(%rdx),%ecx
    133a5:	b8 01 00 00 00       	mov    $0x1,%eax
    133aa:	48 be ff ff ff 53 ff 	movabs $0x3ffffff53ffffff,%rsi
-   133b1:	ff ff 03
+   133b1:	ff ff 03 
    133b4:	48 d3 e0             	shl    %cl,%rax
    133b7:	31 c9                	xor    %ecx,%ecx
    133b9:	48 85 f0             	test   %rsi,%rax
@@ -15975,7 +15975,7 @@ Disassembly of section .text:
    134cb:	31 f6                	xor    %esi,%esi
    134cd:	45 31 d2             	xor    %r10d,%r10d
    134d0:	44 88 a4 24 83 00 00 	mov    %r12b,0x83(%rsp)
-   134d7:	00
+   134d7:	00 
    134d8:	49 89 c1             	mov    %rax,%r9
    134db:	ba 27 00 00 00       	mov    $0x27,%edx
    134e0:	83 f6 01             	xor    $0x1,%esi
@@ -16000,7 +16000,7 @@ Disassembly of section .text:
    13530:	31 c9                	xor    %ecx,%ecx
    13532:	e9 41 fe ff ff       	jmp    13378 <_obstack_memory_used@@Base+0x5c78>
    13537:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   1353e:	00 00
+   1353e:	00 00 
    13540:	31 c0                	xor    %eax,%eax
    13542:	45 31 ed             	xor    %r13d,%r13d
    13545:	45 31 e4             	xor    %r12d,%r12d
@@ -16088,7 +16088,7 @@ Disassembly of section .text:
    1367c:	80 7c 24 6b 00       	cmpb   $0x0,0x6b(%rsp)
    13681:	0f 85 a9 f8 ff ff    	jne    12f30 <_obstack_memory_used@@Base+0x5830>
    13687:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   1368e:	00 00
+   1368e:	00 00 
    13690:	31 c0                	xor    %eax,%eax
    13692:	b9 5c 00 00 00       	mov    $0x5c,%ecx
    13697:	e9 cc f4 ff ff       	jmp    12b68 <_obstack_memory_used@@Base+0x5468>
@@ -16108,7 +16108,7 @@ Disassembly of section .text:
    136cd:	ba 7e 00 00 00       	mov    $0x7e,%edx
    136d2:	e9 ea f2 ff ff       	jmp    129c1 <_obstack_memory_used@@Base+0x52c1>
    136d7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   136de:	00 00
+   136de:	00 00 
    136e0:	80 fa 7a             	cmp    $0x7a,%dl
    136e3:	0f 8f a7 00 00 00    	jg     13790 <_obstack_memory_used@@Base+0x6090>
    136e9:	80 fa 40             	cmp    $0x40,%dl
@@ -16116,7 +16116,7 @@ Disassembly of section .text:
    136f2:	8d 4a bf             	lea    -0x41(%rdx),%ecx
    136f5:	b8 01 00 00 00       	mov    $0x1,%eax
    136fa:	48 be ff ff ff 53 ff 	movabs $0x3ffffff53ffffff,%rsi
-   13701:	ff ff 03
+   13701:	ff ff 03 
    13704:	48 d3 e0             	shl    %cl,%rax
    13707:	44 89 e9             	mov    %r13d,%ecx
    1370a:	48 85 f0             	test   %rsi,%rax
@@ -16168,7 +16168,7 @@ Disassembly of section .text:
    137c6:	80 7c 24 6b 00       	cmpb   $0x0,0x6b(%rsp)
    137cb:	0f 85 52 f3 ff ff    	jne    12b23 <_obstack_memory_used@@Base+0x5423>
    137d1:	80 bc 24 83 00 00 00 	cmpb   $0x0,0x83(%rsp)
-   137d8:	00
+   137d8:	00 
    137d9:	0f 84 e3 05 00 00    	je     13dc2 <_obstack_memory_used@@Base+0x66c2>
    137df:	80 3c 24 00          	cmpb   $0x0,(%rsp)
    137e3:	0f 85 64 05 00 00    	jne    13d4d <_obstack_memory_used@@Base+0x664d>
@@ -16213,16 +16213,16 @@ Disassembly of section .text:
    13885:	4c 89 f0             	mov    %r14,%rax
    13888:	4c 8b 7c 24 30       	mov    0x30(%rsp),%r15
    1388d:	44 0f b6 84 24 84 00 	movzbl 0x84(%rsp),%r8d
-   13894:	00 00
+   13894:	00 00 
    13896:	0f b6 94 24 86 00 00 	movzbl 0x86(%rsp),%edx
-   1389d:	00
+   1389d:	00 
    1389e:	44 0f b6 94 24 85 00 	movzbl 0x85(%rsp),%r10d
-   138a5:	00 00
+   138a5:	00 00 
    138a7:	48 8b 6c 24 38       	mov    0x38(%rsp),%rbp
    138ac:	44 0f b6 ac 24 87 00 	movzbl 0x87(%rsp),%r13d
-   138b3:	00 00
+   138b3:	00 00 
    138b5:	48 8b 9c 24 88 00 00 	mov    0x88(%rsp),%rbx
-   138bc:	00
+   138bc:	00 
    138bd:	4c 8b 74 24 50       	mov    0x50(%rsp),%r14
    138c2:	4c 8b 4c 24 78       	mov    0x78(%rsp),%r9
    138c7:	44 8b 5c 24 40       	mov    0x40(%rsp),%r11d
@@ -16257,7 +16257,7 @@ Disassembly of section .text:
    13933:	3c 21                	cmp    $0x21,%al
    13935:	77 e9                	ja     13920 <_obstack_memory_used@@Base+0x6220>
    13937:	48 bf 2b 00 00 00 02 	movabs $0x20000002b,%rdi
-   1393e:	00 00 00
+   1393e:	00 00 00 
    13941:	48 0f a3 c7          	bt     %rax,%rdi
    13945:	73 d9                	jae    13920 <_obstack_memory_used@@Base+0x6220>
    13947:	4c 8b 7c 24 30       	mov    0x30(%rsp),%r15
@@ -16295,9 +16295,9 @@ Disassembly of section .text:
    139b3:	4d 39 fb             	cmp    %r15,%r11
    139b6:	0f 82 52 03 00 00    	jb     13d0e <_obstack_memory_used@@Base+0x660e>
    139bc:	48 8b 84 24 b8 00 00 	mov    0xb8(%rsp),%rax
-   139c3:	00
+   139c3:	00 
    139c4:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   139cb:	00 00
+   139cb:	00 00 
    139cd:	0f 85 38 04 00 00    	jne    13e0b <_obstack_memory_used@@Base+0x670b>
    139d3:	48 81 c4 c8 00 00 00 	add    $0xc8,%rsp
    139da:	4c 89 d8             	mov    %r11,%rax
@@ -16309,7 +16309,7 @@ Disassembly of section .text:
    139e5:	41 5f                	pop    %r15
    139e7:	c3                   	ret
    139e8:	80 bc 24 83 00 00 00 	cmpb   $0x0,0x83(%rsp)
-   139ef:	00
+   139ef:	00 
    139f0:	0f 84 f0 03 00 00    	je     13de6 <_obstack_memory_used@@Base+0x66e6>
    139f6:	80 3c 24 00          	cmpb   $0x0,(%rsp)
    139fa:	0f 85 4d 03 00 00    	jne    13d4d <_obstack_memory_used@@Base+0x664d>
@@ -16325,7 +16325,7 @@ Disassembly of section .text:
    13a20:	80 3c 24 00          	cmpb   $0x0,(%rsp)
    13a24:	48 8d 35 f6 66 00 00 	lea    0x66f6(%rip),%rsi        # 1a121 <_obstack_memory_used@@Base+0xca21>
    13a2b:	48 c7 44 24 18 01 00 	movq   $0x1,0x18(%rsp)
-   13a32:	00 00
+   13a32:	00 00 
    13a34:	48 89 74 24 58       	mov    %rsi,0x58(%rsp)
    13a39:	41 bb 02 00 00 00    	mov    $0x2,%r11d
    13a3f:	0f 84 07 04 00 00    	je     13e4c <_obstack_memory_used@@Base+0x674c>
@@ -16399,7 +16399,7 @@ Disassembly of section .text:
    13b5c:	45 31 ed             	xor    %r13d,%r13d
    13b5f:	e9 a8 f6 ff ff       	jmp    1320c <_obstack_memory_used@@Base+0x5b0c>
    13b64:	4c 8b ac 24 98 00 00 	mov    0x98(%rsp),%r13
-   13b6b:	00
+   13b6b:	00 
    13b6c:	41 0f b6 45 00       	movzbl 0x0(%r13),%eax
    13b71:	84 c0                	test   %al,%al
    13b73:	0f 84 3b ed ff ff    	je     128b4 <_obstack_memory_used@@Base+0x51b4>
@@ -16416,7 +16416,7 @@ Disassembly of section .text:
    13ba0:	80 fa 3e             	cmp    $0x3e,%dl
    13ba3:	0f 87 87 f0 ff ff    	ja     12c30 <_obstack_memory_used@@Base+0x5530>
    13ba9:	48 b8 00 00 00 00 82 	movabs $0x7000a38200000000,%rax
-   13bb0:	a3 00 70
+   13bb0:	a3 00 70 
    13bb3:	48 0f a3 d0          	bt     %rdx,%rax
    13bb7:	40 0f 92 c6          	setb   %sil
    13bbb:	40 84 f6             	test   %sil,%sil
@@ -16430,13 +16430,13 @@ Disassembly of section .text:
    13bde:	45 31 d2             	xor    %r10d,%r10d
    13be1:	31 db                	xor    %ebx,%ebx
    13be3:	c6 84 24 83 00 00 00 	movb   $0x0,0x83(%rsp)
-   13bea:	00
+   13bea:	00 
    13beb:	48 c7 44 24 60 00 00 	movq   $0x0,0x60(%rsp)
-   13bf2:	00 00
+   13bf2:	00 00 
    13bf4:	c6 44 24 6b 01       	movb   $0x1,0x6b(%rsp)
    13bf9:	c6 44 24 10 01       	movb   $0x1,0x10(%rsp)
    13bfe:	48 c7 44 24 18 01 00 	movq   $0x1,0x18(%rsp)
-   13c05:	00 00
+   13c05:	00 00 
    13c07:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
    13c0c:	e9 ef ec ff ff       	jmp    12900 <_obstack_memory_used@@Base+0x5200>
    13c11:	48 89 df             	mov    %rbx,%rdi
@@ -16444,16 +16444,16 @@ Disassembly of section .text:
    13c19:	4c 8b 7c 24 30       	mov    0x30(%rsp),%r15
    13c1e:	45 31 e4             	xor    %r12d,%r12d
    13c21:	44 0f b6 84 24 84 00 	movzbl 0x84(%rsp),%r8d
-   13c28:	00 00
+   13c28:	00 00 
    13c2a:	4c 8b 74 24 50       	mov    0x50(%rsp),%r14
    13c2f:	44 0f b6 94 24 85 00 	movzbl 0x85(%rsp),%r10d
-   13c36:	00 00
+   13c36:	00 00 
    13c38:	0f b6 94 24 86 00 00 	movzbl 0x86(%rsp),%edx
-   13c3f:	00
+   13c3f:	00 
    13c40:	44 0f b6 ac 24 87 00 	movzbl 0x87(%rsp),%r13d
-   13c47:	00 00
+   13c47:	00 00 
    13c49:	48 8b 9c 24 88 00 00 	mov    0x88(%rsp),%rbx
-   13c50:	00
+   13c50:	00 
    13c51:	4c 8b 4c 24 78       	mov    0x78(%rsp),%r9
    13c56:	44 8b 5c 24 40       	mov    0x40(%rsp),%r11d
    13c5b:	0f b6 74 24 10       	movzbl 0x10(%rsp),%esi
@@ -16466,7 +16466,7 @@ Disassembly of section .text:
    13c79:	4c 8b 4c 24 10       	mov    0x10(%rsp),%r9
    13c7e:	44 8b 1c 24          	mov    (%rsp),%r11d
    13c82:	48 89 84 24 90 00 00 	mov    %rax,0x90(%rsp)
-   13c89:	00
+   13c89:	00 
    13c8a:	e9 1b ec ff ff       	jmp    128aa <_obstack_memory_used@@Base+0x51aa>
    13c8f:	44 89 de             	mov    %r11d,%esi
    13c92:	48 89 c7             	mov    %rax,%rdi
@@ -16476,7 +16476,7 @@ Disassembly of section .text:
    13ca3:	4c 8b 4c 24 10       	mov    0x10(%rsp),%r9
    13ca8:	44 8b 1c 24          	mov    (%rsp),%r11d
    13cac:	48 89 84 24 98 00 00 	mov    %rax,0x98(%rsp)
-   13cb3:	00
+   13cb3:	00 
    13cb4:	e9 b7 eb ff ff       	jmp    12870 <_obstack_memory_used@@Base+0x5170>
    13cb9:	80 7c 24 6b 00       	cmpb   $0x0,0x6b(%rsp)
    13cbe:	0f 85 73 ee ff ff    	jne    12b37 <_obstack_memory_used@@Base+0x5437>
@@ -16524,21 +16524,21 @@ Disassembly of section .text:
    13d63:	48 8b 6c 24 38       	mov    0x38(%rsp),%rbp
    13d68:	4c 8b 7c 24 30       	mov    0x30(%rsp),%r15
    13d6d:	44 0f b6 84 24 84 00 	movzbl 0x84(%rsp),%r8d
-   13d74:	00 00
+   13d74:	00 00 
    13d76:	4c 8b 74 24 50       	mov    0x50(%rsp),%r14
    13d7b:	44 0f b6 94 24 85 00 	movzbl 0x85(%rsp),%r10d
-   13d82:	00 00
+   13d82:	00 00 
    13d84:	0f b6 94 24 86 00 00 	movzbl 0x86(%rsp),%edx
-   13d8b:	00
+   13d8b:	00 
    13d8c:	44 0f b6 ac 24 87 00 	movzbl 0x87(%rsp),%r13d
-   13d93:	00 00
+   13d93:	00 00 
    13d95:	48 8b 9c 24 88 00 00 	mov    0x88(%rsp),%rbx
-   13d9c:	00
+   13d9c:	00 
    13d9d:	4c 8b 4c 24 78       	mov    0x78(%rsp),%r9
    13da2:	44 8b 5c 24 40       	mov    0x40(%rsp),%r11d
    13da7:	e9 26 fb ff ff       	jmp    138d2 <_obstack_memory_used@@Base+0x61d2>
    13dac:	0f b6 84 24 83 00 00 	movzbl 0x83(%rsp),%eax
-   13db3:	00
+   13db3:	00 
    13db4:	49 89 db             	mov    %rbx,%r11
    13db7:	4d 89 f2             	mov    %r14,%r10
    13dba:	4d 89 cf             	mov    %r9,%r15
@@ -16548,7 +16548,7 @@ Disassembly of section .text:
    13dc8:	45 31 db             	xor    %r11d,%r11d
    13dcb:	e9 ad fb ff ff       	jmp    1397d <_obstack_memory_used@@Base+0x627d>
    13dd0:	0f b6 84 24 83 00 00 	movzbl 0x83(%rsp),%eax
-   13dd7:	00
+   13dd7:	00 
    13dd8:	4d 89 f2             	mov    %r14,%r10
    13ddb:	4d 89 cf             	mov    %r9,%r15
    13dde:	45 31 db             	xor    %r11d,%r11d
@@ -16583,7 +16583,7 @@ Disassembly of section .text:
    13e4c:	88 0c 24             	mov    %cl,(%rsp)
    13e4f:	e9 23 ef ff ff       	jmp    12d77 <_obstack_memory_used@@Base+0x5677>
    13e54:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-   13e5b:	00 00 00 00
+   13e5b:	00 00 00 00 
    13e5f:	90                   	nop
    13e60:	f3 0f 1e fa          	endbr64
    13e64:	41 57                	push   %r15
@@ -16597,7 +16597,7 @@ Disassembly of section .text:
    13e74:	48 83 ec 38          	sub    $0x38,%rsp
    13e78:	48 89 74 24 08       	mov    %rsi,0x8(%rsp)
    13e7d:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   13e84:	00 00
+   13e84:	00 00 
    13e86:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
    13e8b:	31 c0                	xor    %eax,%eax
    13e8d:	ff 15 25 de 00 00    	call   *0xde25(%rip)        # 21cb8 <_obstack_memory_used@@Base+0x145b8>
@@ -16686,7 +16686,7 @@ Disassembly of section .text:
    13fd1:	89 45 00             	mov    %eax,0x0(%rbp)
    13fd4:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
    13fd9:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   13fe0:	00 00
+   13fe0:	00 00 
    13fe2:	75 52                	jne    14036 <_obstack_memory_used@@Base+0x6936>
    13fe4:	48 83 c4 38          	add    $0x38,%rsp
    13fe8:	4c 89 e8             	mov    %r13,%rax
@@ -16698,14 +16698,14 @@ Disassembly of section .text:
    13ff3:	41 5f                	pop    %r15
    13ff5:	c3                   	ret
    13ff6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   13ffd:	00 00 00
+   13ffd:	00 00 00 
    14000:	48 8d 74 24 20       	lea    0x20(%rsp),%rsi
    14005:	41 b8 10 00 00 00    	mov    $0x10,%r8d
    1400b:	b9 ff ff ff 7f       	mov    $0x7fffffff,%ecx
    14010:	31 ff                	xor    %edi,%edi
    14012:	e8 09 c3 ff ff       	call   10320 <_obstack_memory_used@@Base+0x2c20>
    14017:	66 0f 6f 05 41 e2 00 	movdqa 0xe241(%rip),%xmm0        # 22260 <obstack_alloc_failed_handler@@Base+0x1c0>
-   1401e:	00
+   1401e:	00 
    1401f:	48 89 05 4a e2 00 00 	mov    %rax,0xe24a(%rip)        # 22270 <obstack_alloc_failed_handler@@Base+0x1d0>
    14026:	49 89 c5             	mov    %rax,%r13
    14029:	0f 11 00             	movups %xmm0,(%rax)
@@ -16724,7 +16724,7 @@ Disassembly of section .text:
    14054:	53                   	push   %rbx
    14055:	48 83 ec 38          	sub    $0x38,%rsp
    14059:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   14060:	00 00
+   14060:	00 00 
    14062:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
    14067:	31 c0                	xor    %eax,%eax
    14069:	ff 15 11 dd 00 00    	call   *0xdd11(%rip)        # 21d80 <_obstack_memory_used@@Base+0x14680>
@@ -16768,7 +16768,7 @@ Disassembly of section .text:
    14101:	41 83 c4 01          	add    $0x1,%r12d
    14105:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
    1410a:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   14111:	00 00
+   14111:	00 00 
    14113:	0f 85 35 01 00 00    	jne    1424e <_obstack_memory_used@@Base+0x6b4e>
    14119:	48 83 c4 38          	add    $0x38,%rsp
    1411d:	44 89 e0             	mov    %r12d,%eax
@@ -16858,7 +16858,7 @@ Disassembly of section .text:
    14249:	e9 b7 fe ff ff       	jmp    14105 <_obstack_memory_used@@Base+0x6a05>
    1424e:	ff 15 3c db 00 00    	call   *0xdb3c(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
    14254:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-   1425b:	00 00 00 00
+   1425b:	00 00 00 00 
    1425f:	90                   	nop
    14260:	f3 0f 1e fa          	endbr64
    14264:	41 57                	push   %r15
@@ -16875,7 +16875,7 @@ Disassembly of section .text:
    14280:	4c 89 44 24 18       	mov    %r8,0x18(%rsp)
    14285:	4c 89 4c 24 28       	mov    %r9,0x28(%rsp)
    1428a:	64 48 8b 14 25 28 00 	mov    %fs:0x28,%rdx
-   14291:	00 00
+   14291:	00 00 
    14293:	48 89 54 24 58       	mov    %rdx,0x58(%rsp)
    14298:	31 d2                	xor    %edx,%edx
    1429a:	4d 85 f6             	test   %r14,%r14
@@ -16933,7 +16933,7 @@ Disassembly of section .text:
    14375:	4c 89 20             	mov    %r12,(%rax)
    14378:	48 8b 44 24 58       	mov    0x58(%rsp),%rax
    1437d:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   14384:	00 00
+   14384:	00 00 
    14386:	0f 85 45 04 00 00    	jne    147d1 <_obstack_memory_used@@Base+0x70d1>
    1438c:	48 83 c4 68          	add    $0x68,%rsp
    14390:	48 89 d8             	mov    %rbx,%rax
@@ -16975,7 +16975,7 @@ Disassembly of section .text:
    14411:	49 89 c6             	mov    %rax,%r14
    14414:	eb 53                	jmp    14469 <_obstack_memory_used@@Base+0x6d69>
    14416:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1441d:	00 00 00
+   1441d:	00 00 00 
    14420:	48 85 ed             	test   %rbp,%rbp
    14423:	0f 84 b0 00 00 00    	je     144d9 <_obstack_memory_used@@Base+0x6dd9>
    14429:	31 ff                	xor    %edi,%edi
@@ -17007,10 +17007,10 @@ Disassembly of section .text:
    14492:	4c 89 44 24 08       	mov    %r8,0x8(%rsp)
    14497:	4d 89 fc             	mov    %r15,%r12
    1449a:	48 c7 44 24 50 00 00 	movq   $0x0,0x50(%rsp)
-   144a1:	00 00
+   144a1:	00 00 
    144a3:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
    144a8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   144af:	00
+   144af:	00 
    144b0:	48 8b 6c 24 08       	mov    0x8(%rsp),%rbp
    144b5:	48 8b 7c 24 10       	mov    0x10(%rsp),%rdi
    144ba:	4c 89 f1             	mov    %r14,%rcx
@@ -17053,7 +17053,7 @@ Disassembly of section .text:
    14554:	e9 d3 00 00 00       	jmp    1462c <_obstack_memory_used@@Base+0x6f2c>
    14559:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
    14560:	c7 44 24 08 00 00 00 	movl   $0x0,0x8(%rsp)
-   14567:	00
+   14567:	00 
    14568:	ff 15 4a d7 00 00    	call   *0xd74a(%rip)        # 21cb8 <_obstack_memory_used@@Base+0x145b8>
    1456e:	45 8b 46 04          	mov    0x4(%r14),%r8d
    14572:	89 d9                	mov    %ebx,%ecx
@@ -17091,7 +17091,7 @@ Disassembly of section .text:
    145ed:	0f 85 eb fc ff ff    	jne    142de <_obstack_memory_used@@Base+0x6bde>
    145f3:	e9 48 fd ff ff       	jmp    14340 <_obstack_memory_used@@Base+0x6c40>
    145f8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   145ff:	00
+   145ff:	00 
    14600:	4d 39 f4             	cmp    %r14,%r12
    14603:	73 24                	jae    14629 <_obstack_memory_used@@Base+0x6f29>
    14605:	ff 15 dd d9 00 00    	call   *0xd9dd(%rip)        # 21fe8 <_obstack_memory_used@@Base+0x148e8>
@@ -17114,7 +17114,7 @@ Disassembly of section .text:
    14645:	c6 00 00             	movb   $0x0,(%rax)
    14648:	e9 23 fd ff ff       	jmp    14370 <_obstack_memory_used@@Base+0x6c70>
    1464d:	c7 44 24 08 01 00 00 	movl   $0x1,0x8(%rsp)
-   14654:	00
+   14654:	00 
    14655:	e9 0e ff ff ff       	jmp    14568 <_obstack_memory_used@@Base+0x6e68>
    1465a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
    14660:	8d 48 db             	lea    -0x25(%rax),%ecx
@@ -17211,7 +17211,7 @@ Disassembly of section .text:
    147cc:	e9 5b fe ff ff       	jmp    1462c <_obstack_memory_used@@Base+0x6f2c>
    147d1:	ff 15 b9 d5 00 00    	call   *0xd5b9(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
    147d7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   147de:	00 00
+   147de:	00 00 
    147e0:	f3 0f 1e fa          	endbr64
    147e4:	41 57                	push   %r15
    147e6:	49 89 ff             	mov    %rdi,%r15
@@ -17224,18 +17224,18 @@ Disassembly of section .text:
    147f6:	53                   	push   %rbx
    147f7:	48 81 ec 08 05 00 00 	sub    $0x508,%rsp
    147fe:	48 8b 84 24 48 05 00 	mov    0x548(%rsp),%rax
-   14805:	00
+   14805:	00 
    14806:	44 89 4c 24 1c       	mov    %r9d,0x1c(%rsp)
    1480b:	48 89 34 24          	mov    %rsi,(%rsp)
    1480f:	4c 63 b4 24 40 05 00 	movslq 0x540(%rsp),%r14
-   14816:	00
+   14816:	00 
    14817:	48 89 4c 24 08       	mov    %rcx,0x8(%rsp)
    1481c:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
    14821:	44 88 44 24 1b       	mov    %r8b,0x1b(%rsp)
    14826:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   1482d:	00 00
+   1482d:	00 00 
    1482f:	48 89 84 24 f8 04 00 	mov    %rax,0x4f8(%rsp)
-   14836:	00
+   14836:	00 
    14837:	31 c0                	xor    %eax,%eax
    14839:	ff 15 79 d4 00 00    	call   *0xd479(%rip)        # 21cb8 <_obstack_memory_used@@Base+0x145b8>
    1483f:	4d 8b 55 30          	mov    0x30(%r13),%r10
@@ -17302,9 +17302,9 @@ Disassembly of section .text:
    14920:	c7 03 22 00 00 00    	movl   $0x22,(%rbx)
    14926:	45 31 db             	xor    %r11d,%r11d
    14929:	48 8b 94 24 f8 04 00 	mov    0x4f8(%rsp),%rdx
-   14930:	00
+   14930:	00 
    14931:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
-   14938:	00 00
+   14938:	00 00 
    1493a:	0f 85 ea 1c 00 00    	jne    1662a <_obstack_memory_used@@Base+0x8f2a>
    14940:	48 81 c4 08 05 00 00 	add    $0x508,%rsp
    14947:	4c 89 d8             	mov    %r11,%rax
@@ -17331,13 +17331,13 @@ Disassembly of section .text:
    1498d:	4c 8b 44 24 28       	mov    0x28(%rsp),%r8
    14992:	e9 2a ff ff ff       	jmp    148c1 <_obstack_memory_used@@Base+0x71c1>
    14997:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   1499e:	00 00
+   1499e:	00 00 
    149a0:	0f b6 44 24 1b       	movzbl 0x1b(%rsp),%eax
    149a5:	4d 89 c5             	mov    %r8,%r13
    149a8:	45 31 c9             	xor    %r9d,%r9d
    149ab:	45 31 db             	xor    %r11d,%r11d
    149ae:	48 ba 00 25 00 00 00 	movabs $0x1000000000002500,%rdx
-   149b5:	00 00 10
+   149b5:	00 00 10 
    149b8:	41 ba 01 00 00 00    	mov    $0x1,%r10d
    149be:	88 44 24 28          	mov    %al,0x28(%rsp)
    149c2:	41 0f be 75 01       	movsbl 0x1(%r13),%esi
@@ -17360,7 +17360,7 @@ Disassembly of section .text:
    14a03:	77 36                	ja     14a3b <_obstack_memory_used@@Base+0x733b>
    14a05:	45 31 f6             	xor    %r14d,%r14d
    14a08:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   14a0f:	00
+   14a0f:	00 
    14a10:	45 6b f6 0a          	imul   $0xa,%r14d,%r14d
    14a14:	0f 80 ed 1b 00 00    	jo     16607 <_obstack_memory_used@@Base+0x8f07>
    14a1a:	0f be 02             	movsbl (%rdx),%eax
@@ -17380,7 +17380,7 @@ Disassembly of section .text:
    14a4d:	40 80 ff 7a          	cmp    $0x7a,%dil
    14a51:	0f 86 25 01 00 00    	jbe    14b7c <_obstack_memory_used@@Base+0x747c>
    14a57:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   14a5e:	00 00
+   14a5e:	00 00 
    14a60:	48 8b 04 24          	mov    (%rsp),%rax
    14a64:	4c 89 e9             	mov    %r13,%rcx
    14a67:	4c 29 c1             	sub    %r8,%rcx
@@ -17462,11 +17462,11 @@ Disassembly of section .text:
    14bb0:	4c 01 d5             	add    %r10,%rbp
    14bb3:	e9 1b fd ff ff       	jmp    148d3 <_obstack_memory_used@@Base+0x71d3>
    14bb8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   14bbf:	00
+   14bbf:	00 
    14bc0:	41 89 f3             	mov    %esi,%r11d
    14bc3:	e9 fa fd ff ff       	jmp    149c2 <_obstack_memory_used@@Base+0x72c2>
    14bc8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   14bcf:	00
+   14bcf:	00 
    14bd0:	4c 89 54 24 30       	mov    %r10,0x30(%rsp)
    14bd5:	4c 89 ca             	mov    %r9,%rdx
    14bd8:	4c 89 c6             	mov    %r8,%rsi
@@ -17482,17 +17482,17 @@ Disassembly of section .text:
    14c01:	45 31 c9             	xor    %r9d,%r9d
    14c04:	0f b7 05 c3 84 00 00 	movzwl 0x84c3(%rip),%eax        # 1d0ce <_obstack_memory_used@@Base+0xf9ce>
    14c0b:	66 89 84 24 ea 00 00 	mov    %ax,0xea(%rsp)
-   14c12:	00
+   14c12:	00 
    14c13:	48 8d 84 24 ec 00 00 	lea    0xec(%rsp),%rax
-   14c1a:	00
+   14c1a:	00 
    14c1b:	85 f6                	test   %esi,%esi
    14c1d:	0f 85 f0 02 00 00    	jne    14f13 <_obstack_memory_used@@Base+0x7813>
    14c23:	40 88 38             	mov    %dil,(%rax)
    14c26:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
    14c2b:	48 8d 94 24 ea 00 00 	lea    0xea(%rsp),%rdx
-   14c32:	00
+   14c32:	00 
    14c33:	48 8d bc 24 f0 00 00 	lea    0xf0(%rsp),%rdi
-   14c3a:	00
+   14c3a:	00 
    14c3b:	44 89 5c 24 40       	mov    %r11d,0x40(%rsp)
    14c40:	be 00 04 00 00       	mov    $0x400,%esi
    14c45:	44 88 4c 24 30       	mov    %r9b,0x30(%rsp)
@@ -17551,7 +17551,7 @@ Disassembly of section .text:
    14d2e:	4c 8b 44 24 28       	mov    0x28(%rsp),%r8
    14d33:	4c 8b 54 24 30       	mov    0x30(%rsp),%r10
    14d38:	48 8d b4 24 f1 00 00 	lea    0xf1(%rsp),%rsi
-   14d3f:	00
+   14d3f:	00 
    14d40:	48 89 c2             	mov    %rax,%rdx
    14d43:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
    14d48:	42 0f b6 0c 36       	movzbl (%rsi,%r14,1),%ecx
@@ -17673,11 +17673,11 @@ Disassembly of section .text:
    14f01:	0f b7 05 c6 81 00 00 	movzwl 0x81c6(%rip),%eax        # 1d0ce <_obstack_memory_used@@Base+0xf9ce>
    14f08:	45 31 c9             	xor    %r9d,%r9d
    14f0b:	66 89 84 24 ea 00 00 	mov    %ax,0xea(%rsp)
-   14f12:	00
+   14f12:	00 
    14f13:	40 88 b4 24 ec 00 00 	mov    %sil,0xec(%rsp)
-   14f1a:	00
+   14f1a:	00 
    14f1b:	48 8d 84 24 ed 00 00 	lea    0xed(%rsp),%rax
-   14f22:	00
+   14f22:	00 
    14f23:	e9 fb fc ff ff       	jmp    14c23 <_obstack_memory_used@@Base+0x7523>
    14f28:	85 f6                	test   %esi,%esi
    14f2a:	0f 85 30 fb ff ff    	jne    14a60 <_obstack_memory_used@@Base+0x7360>
@@ -17687,9 +17687,9 @@ Disassembly of section .text:
    14f40:	44 88 4c 24 28       	mov    %r9b,0x28(%rsp)
    14f45:	45 31 c9             	xor    %r9d,%r9d
    14f48:	66 89 84 24 ea 00 00 	mov    %ax,0xea(%rsp)
-   14f4f:	00
+   14f4f:	00 
    14f50:	48 8d 84 24 ec 00 00 	lea    0xec(%rsp),%rax
-   14f57:	00
+   14f57:	00 
    14f58:	e9 c6 fc ff ff       	jmp    14c23 <_obstack_memory_used@@Base+0x7523>
    14f5d:	0f b6 44 24 28       	movzbl 0x28(%rsp),%eax
    14f62:	45 84 c9             	test   %r9b,%r9b
@@ -17789,7 +17789,7 @@ Disassembly of section .text:
    150d3:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
    150d8:	48 89 5c 24 48       	mov    %rbx,0x48(%rsp)
    150dd:	48 8d bc 24 07 01 00 	lea    0x107(%rsp),%rdi
-   150e4:	00
+   150e4:	00 
    150e5:	41 ba cd cc cc cc    	mov    $0xcccccccd,%r10d
    150eb:	4c 89 64 24 50       	mov    %r12,0x50(%rsp)
    150f0:	49 89 f8             	mov    %rdi,%r8
@@ -17894,15 +17894,15 @@ Disassembly of section .text:
    15269:	48 8b 40 30          	mov    0x30(%rax),%rax
    1526d:	0f 29 64 24 30       	movaps %xmm4,0x30(%rsp)
    15272:	0f 29 94 24 80 00 00 	movaps %xmm2,0x80(%rsp)
-   15279:	00
+   15279:	00 
    1527a:	48 89 84 24 a0 00 00 	mov    %rax,0xa0(%rsp)
-   15281:	00
+   15281:	00 
    15282:	c7 84 24 8c 00 00 00 	movl   $0xffffffff,0x8c(%rsp)
-   15289:	ff ff ff ff
+   15289:	ff ff ff ff 
    1528d:	44 89 5c 24 30       	mov    %r11d,0x30(%rsp)
    15292:	0f 29 44 24 70       	movaps %xmm0,0x70(%rsp)
    15297:	0f 29 a4 24 90 00 00 	movaps %xmm4,0x90(%rsp)
-   1529e:	00
+   1529e:	00 
    1529f:	0f 84 eb 11 00 00    	je     16490 <_obstack_memory_used@@Base+0x8d90>
    152a5:	48 8b 7c 24 10       	mov    0x10(%rsp),%rdi
    152aa:	e8 91 86 ff ff       	call   d940 <_obstack_memory_used@@Base+0x240>
@@ -17911,21 +17911,21 @@ Disassembly of section .text:
    152b7:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
    152bc:	0f 84 88 00 00 00    	je     1534a <_obstack_memory_used@@Base+0x7c4a>
    152c2:	48 8b 84 24 80 00 00 	mov    0x80(%rsp),%rax
-   152c9:	00
+   152c9:	00 
    152ca:	66 0f 6f 74 24 70    	movdqa 0x70(%rsp),%xmm6
    152d0:	44 89 5c 24 40       	mov    %r11d,0x40(%rsp)
    152d5:	48 8d b4 24 b0 00 00 	lea    0xb0(%rsp),%rsi
-   152dc:	00
+   152dc:	00 
    152dd:	48 89 f7             	mov    %rsi,%rdi
    152e0:	48 89 74 24 30       	mov    %rsi,0x30(%rsp)
    152e5:	48 89 84 24 c0 00 00 	mov    %rax,0xc0(%rsp)
-   152ec:	00
+   152ec:	00 
    152ed:	8b 84 24 90 00 00 00 	mov    0x90(%rsp),%eax
    152f4:	c7 84 24 cc 00 00 00 	movl   $0xffffffff,0xcc(%rsp)
-   152fb:	ff ff ff ff
+   152fb:	ff ff ff ff 
    152ff:	89 84 24 d0 00 00 00 	mov    %eax,0xd0(%rsp)
    15306:	0f 29 b4 24 b0 00 00 	movaps %xmm6,0xb0(%rsp)
-   1530d:	00
+   1530d:	00 
    1530e:	ff 15 c4 cb 00 00    	call   *0xcbc4(%rip)        # 21ed8 <_obstack_memory_used@@Base+0x147d8>
    15314:	48 8b 74 24 30       	mov    0x30(%rsp),%rsi
    15319:	44 8b 5c 24 40       	mov    0x40(%rsp),%r11d
@@ -17946,9 +17946,9 @@ Disassembly of section .text:
    1535d:	48 89 c8             	mov    %rcx,%rax
    15360:	48 89 5c 24 40       	mov    %rbx,0x40(%rsp)
    15365:	48 8d bc 24 07 01 00 	lea    0x107(%rsp),%rdi
-   1536c:	00
+   1536c:	00 
    1536d:	49 b9 67 66 66 66 66 	movabs $0x6666666666666667,%r9
-   15374:	66 66 66
+   15374:	66 66 66 
    15377:	48 c1 e8 3f          	shr    $0x3f,%rax
    1537b:	49 89 f8             	mov    %rdi,%r8
    1537e:	be 30 00 00 00       	mov    $0x30,%esi
@@ -18029,12 +18029,12 @@ Disassembly of section .text:
    1548e:	4c 63 c9             	movslq %ecx,%r9
    15491:	8d 51 ff             	lea    -0x1(%rcx),%edx
    15494:	4e 8d 84 0c ef 00 00 	lea    0xef(%rsp,%r9,1),%r8
-   1549b:	00
+   1549b:	00 
    1549c:	4a 8d b4 0c f0 00 00 	lea    0xf0(%rsp,%r9,1),%rsi
-   154a3:	00
+   154a3:	00 
    154a4:	49 29 d0             	sub    %rdx,%r8
    154a7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   154ae:	00 00
+   154ae:	00 00 
    154b0:	48 63 d0             	movslq %eax,%rdx
    154b3:	89 c7                	mov    %eax,%edi
    154b5:	48 83 ee 01          	sub    $0x1,%rsi
@@ -18072,7 +18072,7 @@ Disassembly of section .text:
    15531:	8b 4c 24 28          	mov    0x28(%rsp),%ecx
    15535:	44 8b 5c 24 30       	mov    0x30(%rsp),%r11d
    1553a:	48 8d bc 24 f0 00 00 	lea    0xf0(%rsp),%rdi
-   15541:	00
+   15541:	00 
    15542:	48 8b 54 24 48       	mov    0x48(%rsp),%rdx
    15547:	4c 8b 4c 24 40       	mov    0x40(%rsp),%r9
    1554c:	49 89 c0             	mov    %rax,%r8
@@ -18107,7 +18107,7 @@ Disassembly of section .text:
    155c0:	4d 01 f7             	add    %r14,%r15
    155c3:	e9 f2 01 00 00       	jmp    157ba <_obstack_memory_used@@Base+0x80ba>
    155c8:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   155cf:	00
+   155cf:	00 
    155d0:	83 fe 45             	cmp    $0x45,%esi
    155d3:	0f 84 87 f4 ff ff    	je     14a60 <_obstack_memory_used@@Base+0x7360>
    155d9:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
@@ -18151,7 +18151,7 @@ Disassembly of section .text:
    1567d:	0f 85 dd f3 ff ff    	jne    14a60 <_obstack_memory_used@@Base+0x7360>
    15683:	48 8d 05 28 7a 00 00 	lea    0x7a28(%rip),%rax        # 1d0b2 <_obstack_memory_used@@Base+0xf9b2>
    1568a:	c7 44 24 40 ff ff ff 	movl   $0xffffffff,0x40(%rsp)
-   15691:	ff
+   15691:	ff 
    15692:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
    15697:	44 0f b6 44 24 28    	movzbl 0x28(%rsp),%r8d
    1569d:	48 83 ec 08          	sub    $0x8,%rsp
@@ -18522,12 +18522,12 @@ Disassembly of section .text:
    15c75:	e9 8a ef ff ff       	jmp    14c04 <_obstack_memory_used@@Base+0x7504>
    15c7a:	48 8d 05 43 74 00 00 	lea    0x7443(%rip),%rax        # 1d0c4 <_obstack_memory_used@@Base+0xf9c4>
    15c81:	c7 44 24 40 ff ff ff 	movl   $0xffffffff,0x40(%rsp)
-   15c88:	ff
+   15c88:	ff 
    15c89:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
    15c8e:	e9 04 fa ff ff       	jmp    15697 <_obstack_memory_used@@Base+0x7f97>
    15c93:	48 8d 05 2b 46 00 00 	lea    0x462b(%rip),%rax        # 1a2c5 <_obstack_memory_used@@Base+0xcbc5>
    15c9a:	c7 44 24 40 ff ff ff 	movl   $0xffffffff,0x40(%rsp)
-   15ca1:	ff
+   15ca1:	ff 
    15ca2:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
    15ca7:	e9 eb f9 ff ff       	jmp    15697 <_obstack_memory_used@@Base+0x7f97>
    15cac:	b8 01 00 00 00       	mov    $0x1,%eax
@@ -18618,7 +18618,7 @@ Disassembly of section .text:
    15e24:	4c 89 c2             	mov    %r8,%rdx
    15e27:	4c 89 ff             	mov    %r15,%rdi
    15e2a:	48 8d b4 24 f1 00 00 	lea    0xf1(%rsp),%rsi
-   15e31:	00
+   15e31:	00 
    15e32:	4c 89 44 24 28       	mov    %r8,0x28(%rsp)
    15e37:	ff 15 43 c0 00 00    	call   *0xc043(%rip)        # 21e80 <_obstack_memory_used@@Base+0x14780>
    15e3d:	4c 8b 54 24 30       	mov    0x30(%rsp),%r10
@@ -18633,7 +18633,7 @@ Disassembly of section .text:
    15e69:	4c 8b 44 24 28       	mov    0x28(%rsp),%r8
    15e6e:	4c 8b 54 24 30       	mov    0x30(%rsp),%r10
    15e73:	48 8d b4 24 f1 00 00 	lea    0xf1(%rsp),%rsi
-   15e7a:	00
+   15e7a:	00 
    15e7b:	48 89 c2             	mov    %rax,%rdx
    15e7e:	66 90                	xchg   %ax,%ax
    15e80:	42 0f b6 0c 36       	movzbl (%rsi,%r14,1),%ecx
@@ -18714,7 +18714,7 @@ Disassembly of section .text:
    15fd8:	44 8b 44 24 68       	mov    0x68(%rsp),%r8d
    15fdd:	48 83 c4 20          	add    $0x20,%rsp
    15fe1:	c7 44 24 40 04 00 00 	movl   $0x4,0x40(%rsp)
-   15fe8:	00
+   15fe8:	00 
    15fe9:	4c 89 74 24 30       	mov    %r14,0x30(%rsp)
    15fee:	4c 8b 14 24          	mov    (%rsp),%r10
    15ff2:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
@@ -18772,9 +18772,9 @@ Disassembly of section .text:
    160e4:	e9 95 f6 ff ff       	jmp    1577e <_obstack_memory_used@@Base+0x807e>
    160e9:	0f b7 05 de 6f 00 00 	movzwl 0x6fde(%rip),%eax        # 1d0ce <_obstack_memory_used@@Base+0xf9ce>
    160f0:	66 89 84 24 ea 00 00 	mov    %ax,0xea(%rsp)
-   160f7:	00
+   160f7:	00 
    160f8:	48 8d 84 24 ec 00 00 	lea    0xec(%rsp),%rax
-   160ff:	00
+   160ff:	00 
    16100:	e9 1e eb ff ff       	jmp    14c23 <_obstack_memory_used@@Base+0x7523>
    16105:	48 8b 14 24          	mov    (%rsp),%rdx
    16109:	48 29 ea             	sub    %rbp,%rdx
@@ -18899,7 +18899,7 @@ Disassembly of section .text:
    16300:	e9 61 f2 ff ff       	jmp    15566 <_obstack_memory_used@@Base+0x7e66>
    16305:	b8 94 f8 ff ff       	mov    $0xfffff894,%eax
    1630a:	43 8d 94 10 6c 07 00 	lea    0x76c(%r8,%r10,1),%edx
-   16311:	00
+   16311:	00 
    16312:	44 29 d0             	sub    %r10d,%eax
    16315:	41 39 c0             	cmp    %eax,%r8d
    16318:	0f 9c 44 24 30       	setl   0x30(%rsp)
@@ -18935,7 +18935,7 @@ Disassembly of section .text:
    16392:	83 c2 01             	add    $0x1,%edx
    16395:	e9 f6 eb ff ff       	jmp    14f90 <_obstack_memory_used@@Base+0x7890>
    1639a:	69 54 24 40 10 27 00 	imul   $0x2710,0x40(%rsp),%edx
-   163a1:	00
+   163a1:	00 
    163a2:	0f b6 44 24 30       	movzbl 0x30(%rsp),%eax
    163a7:	c6 44 24 40 01       	movb   $0x1,0x40(%rsp)
    163ac:	45 6b c9 64          	imul   $0x64,%r9d,%r9d
@@ -18972,7 +18972,7 @@ Disassembly of section .text:
    1642e:	48 8b 4c 24 28       	mov    0x28(%rsp),%rcx
    16433:	e9 fd eb ff ff       	jmp    15035 <_obstack_memory_used@@Base+0x7935>
    16438:	48 8d bc 24 f0 00 00 	lea    0xf0(%rsp),%rdi
-   1643f:	00
+   1643f:	00 
    16440:	49 83 f9 08          	cmp    $0x8,%r9
    16444:	0f 83 48 01 00 00    	jae    16592 <_obstack_memory_used@@Base+0x8e92>
    1644a:	41 f6 c1 04          	test   $0x4,%r9b
@@ -18980,16 +18980,16 @@ Disassembly of section .text:
    16454:	4d 85 c9             	test   %r9,%r9
    16457:	0f 84 06 f1 ff ff    	je     15563 <_obstack_memory_used@@Base+0x7e63>
    1645d:	0f b6 84 24 f0 00 00 	movzbl 0xf0(%rsp),%eax
-   16464:	00
+   16464:	00 
    16465:	41 88 07             	mov    %al,(%r15)
    16468:	41 f6 c1 02          	test   $0x2,%r9b
    1646c:	0f 84 f1 f0 ff ff    	je     15563 <_obstack_memory_used@@Base+0x7e63>
    16472:	42 0f b7 84 0c ee 00 	movzwl 0xee(%rsp,%r9,1),%eax
-   16479:	00 00
+   16479:	00 00 
    1647b:	66 43 89 44 0f fe    	mov    %ax,-0x2(%r15,%r9,1)
    16481:	e9 dd f0 ff ff       	jmp    15563 <_obstack_memory_used@@Base+0x7e63>
    16486:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1648d:	00 00 00
+   1648d:	00 00 00 
    16490:	48 8d 7c 24 70       	lea    0x70(%rsp),%rdi
    16495:	ff 15 7d ba 00 00    	call   *0xba7d(%rip)        # 21f18 <_obstack_memory_used@@Base+0x14818>
    1649b:	44 8b 5c 24 30       	mov    0x30(%rsp),%r11d
@@ -19029,32 +19029,32 @@ Disassembly of section .text:
    16532:	84 c0                	test   %al,%al
    16534:	0f 84 10 ee ff ff    	je     1534a <_obstack_memory_used@@Base+0x7c4a>
    1653a:	66 0f 6f bc 24 b0 00 	movdqa 0xb0(%rsp),%xmm7
-   16541:	00 00
+   16541:	00 00 
    16543:	48 8b 84 24 e0 00 00 	mov    0xe0(%rsp),%rax
-   1654a:	00
+   1654a:	00 
    1654b:	66 0f 6f 84 24 d0 00 	movdqa 0xd0(%rsp),%xmm0
-   16552:	00 00
+   16552:	00 00 
    16554:	0f 29 7c 24 70       	movaps %xmm7,0x70(%rsp)
    16559:	66 0f 6f bc 24 c0 00 	movdqa 0xc0(%rsp),%xmm7
-   16560:	00 00
+   16560:	00 00 
    16562:	48 89 84 24 a0 00 00 	mov    %rax,0xa0(%rsp)
-   16569:	00
+   16569:	00 
    1656a:	0f 29 bc 24 80 00 00 	movaps %xmm7,0x80(%rsp)
-   16571:	00
+   16571:	00 
    16572:	0f 29 84 24 90 00 00 	movaps %xmm0,0x90(%rsp)
-   16579:	00
+   16579:	00 
    1657a:	e9 cf ed ff ff       	jmp    1534e <_obstack_memory_used@@Base+0x7c4e>
    1657f:	be 30 00 00 00       	mov    $0x30,%esi
    16584:	4c 89 ff             	mov    %r15,%rdi
    16587:	ff 15 63 b8 00 00    	call   *0xb863(%rip)        # 21df0 <_obstack_memory_used@@Base+0x146f0>
    1658d:	e9 2e f0 ff ff       	jmp    155c0 <_obstack_memory_used@@Base+0x7ec0>
    16592:	48 8b 84 24 f0 00 00 	mov    0xf0(%rsp),%rax
-   16599:	00
+   16599:	00 
    1659a:	49 8d 57 08          	lea    0x8(%r15),%rdx
    1659e:	48 83 e2 f8          	and    $0xfffffffffffffff8,%rdx
    165a2:	49 89 07             	mov    %rax,(%r15)
    165a5:	4a 8b 84 0c e8 00 00 	mov    0xe8(%rsp,%r9,1),%rax
-   165ac:	00
+   165ac:	00 
    165ad:	4b 89 44 0f f8       	mov    %rax,-0x8(%r15,%r9,1)
    165b2:	4c 89 f8             	mov    %r15,%rax
    165b5:	48 29 d0             	sub    %rdx,%rax
@@ -19097,11 +19097,11 @@ Disassembly of section .text:
    1664c:	8b 84 24 f0 00 00 00 	mov    0xf0(%rsp),%eax
    16653:	41 89 07             	mov    %eax,(%r15)
    16656:	42 8b 84 0c ec 00 00 	mov    0xec(%rsp,%r9,1),%eax
-   1665d:	00
+   1665d:	00 
    1665e:	43 89 44 0f fc       	mov    %eax,-0x4(%r15,%r9,1)
    16663:	e9 fb ee ff ff       	jmp    15563 <_obstack_memory_used@@Base+0x7e63>
    16668:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   1666f:	00
+   1666f:	00 
    16670:	f3 0f 1e fa          	endbr64
    16674:	40 84 f6             	test   %sil,%sil
    16677:	75 47                	jne    166c0 <_obstack_memory_used@@Base+0x8fc0>
@@ -19116,12 +19116,12 @@ Disassembly of section .text:
    1669e:	0f 2f 0d cf 63 00 00 	comiss 0x63cf(%rip),%xmm1        # 1ca74 <_obstack_memory_used@@Base+0xf374>
    166a5:	0f 82 f8 00 00 00    	jb     167a3 <_obstack_memory_used@@Base+0x90a3>
    166ab:	f3 0f 5c 0d c1 63 00 	subss  0x63c1(%rip),%xmm1        # 1ca74 <_obstack_memory_used@@Base+0xf374>
-   166b2:	00
+   166b2:	00 
    166b3:	f3 48 0f 2c f9       	cvttss2si %xmm1,%rdi
    166b8:	48 0f ba ff 3f       	btc    $0x3f,%rdi
    166bd:	0f 1f 00             	nopl   (%rax)
    166c0:	49 b9 ab aa aa aa aa 	movabs $0xaaaaaaaaaaaaaaab,%r9
-   166c7:	aa aa aa
+   166c7:	aa aa aa 
    166ca:	b8 0a 00 00 00       	mov    $0xa,%eax
    166cf:	48 39 c7             	cmp    %rax,%rdi
    166d2:	48 0f 43 c7          	cmovae %rdi,%rax
@@ -19212,7 +19212,7 @@ Disassembly of section .text:
    167f2:	84 c0                	test   %al,%al
    167f4:	74 6a                	je     16860 <_obstack_memory_used@@Base+0x9160>
    167f6:	f3 0f 10 05 d2 68 00 	movss  0x68d2(%rip),%xmm0        # 1d0d0 <_obstack_memory_used@@Base+0xf9d0>
-   167fd:	00
+   167fd:	00 
    167fe:	48 89 ef             	mov    %rbp,%rdi
    16801:	31 f6                	xor    %esi,%esi
    16803:	e8 68 fe ff ff       	call   16670 <_obstack_memory_used@@Base+0x8f70>
@@ -19235,7 +19235,7 @@ Disassembly of section .text:
    16841:	48 89 d8             	mov    %rbx,%rax
    16844:	4c 89 63 40          	mov    %r12,0x40(%rbx)
    16848:	48 c7 43 48 00 00 00 	movq   $0x0,0x48(%rbx)
-   1684f:	00
+   1684f:	00 
    16850:	0f 11 43 18          	movups %xmm0,0x18(%rbx)
    16854:	5b                   	pop    %rbx
    16855:	5d                   	pop    %rbp
@@ -19255,7 +19255,7 @@ Disassembly of section .text:
    16874:	41 5e                	pop    %r14
    16876:	c3                   	ret
    16877:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
-   1687e:	00 00
+   1687e:	00 00 
    16880:	f3 0f 1e fa          	endbr64
    16884:	41 57                	push   %r15
    16886:	41 56                	push   %r14
@@ -19265,28 +19265,28 @@ Disassembly of section .text:
    1688d:	53                   	push   %rbx
    1688e:	48 81 ec 58 0d 00 00 	sub    $0xd58,%rsp
    16895:	48 8d 9c 24 20 01 00 	lea    0x120(%rsp),%rbx
-   1689c:	00
+   1689c:	00 
    1689d:	48 8d ac 24 30 05 00 	lea    0x530(%rsp),%rbp
-   168a4:	00
+   168a4:	00 
    168a5:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   168ac:	00 00
+   168ac:	00 00 
    168ae:	48 89 84 24 48 0d 00 	mov    %rax,0xd48(%rsp)
-   168b5:	00
+   168b5:	00 
    168b6:	31 c0                	xor    %eax,%eax
    168b8:	4c 8d ac 24 40 09 00 	lea    0x940(%rsp),%r13
-   168bf:	00
+   168bf:	00 
    168c0:	48 89 9c 24 10 01 00 	mov    %rbx,0x110(%rsp)
-   168c7:	00
+   168c7:	00 
    168c8:	48 c7 84 24 18 01 00 	movq   $0x400,0x118(%rsp)
-   168cf:	00 00 04 00 00
+   168cf:	00 00 04 00 00 
    168d4:	48 89 ac 24 20 05 00 	mov    %rbp,0x520(%rsp)
-   168db:	00
+   168db:	00 
    168dc:	48 c7 84 24 28 05 00 	movq   $0x400,0x528(%rsp)
-   168e3:	00 00 04 00 00
+   168e3:	00 00 04 00 00 
    168e8:	4c 89 ac 24 30 09 00 	mov    %r13,0x930(%rsp)
-   168ef:	00
+   168ef:	00 
    168f0:	48 c7 84 24 38 09 00 	movq   $0x400,0x938(%rsp)
-   168f7:	00 00 04 00 00
+   168f7:	00 00 04 00 00 
    168fc:	48 85 ff             	test   %rdi,%rdi
    168ff:	0f 84 bb 02 00 00    	je     16bc0 <_obstack_memory_used@@Base+0x94c0>
    16905:	0f b6 07             	movzbl (%rdi),%eax
@@ -19310,39 +19310,39 @@ Disassembly of section .text:
    1694b:	45 31 e4             	xor    %r12d,%r12d
    1694e:	66 90                	xchg   %ax,%ax
    16950:	48 8b bc 24 30 09 00 	mov    0x930(%rsp),%rdi
-   16957:	00
+   16957:	00 
    16958:	4c 39 ef             	cmp    %r13,%rdi
    1695b:	74 06                	je     16963 <_obstack_memory_used@@Base+0x9263>
    1695d:	ff 15 3d b3 00 00    	call   *0xb33d(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
    16963:	48 8b bc 24 20 05 00 	mov    0x520(%rsp),%rdi
-   1696a:	00
+   1696a:	00 
    1696b:	48 39 ef             	cmp    %rbp,%rdi
    1696e:	0f 84 0b 02 00 00    	je     16b7f <_obstack_memory_used@@Base+0x947f>
    16974:	ff 15 26 b3 00 00    	call   *0xb326(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
    1697a:	e9 00 02 00 00       	jmp    16b7f <_obstack_memory_used@@Base+0x947f>
    1697f:	90                   	nop
    16980:	48 8d bc 24 10 01 00 	lea    0x110(%rsp),%rdi
-   16987:	00
+   16987:	00 
    16988:	e8 e3 54 ff ff       	call   be70 <_obstack_begin@@Base-0x1650>
    1698d:	84 c0                	test   %al,%al
    1698f:	0f 84 d1 01 00 00    	je     16b66 <_obstack_memory_used@@Base+0x9466>
    16995:	4c 8b bc 24 10 01 00 	mov    0x110(%rsp),%r15
-   1699c:	00
+   1699c:	00 
    1699d:	48 8b b4 24 18 01 00 	mov    0x118(%rsp),%rsi
-   169a4:	00
+   169a4:	00 
    169a5:	e9 79 ff ff ff       	jmp    16923 <_obstack_memory_used@@Base+0x9223>
    169aa:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
    169b0:	c6 84 24 20 01 00 00 	movb   $0x2f,0x120(%rsp)
-   169b7:	2f
+   169b7:	2f 
    169b8:	4c 8d 9c 24 21 01 00 	lea    0x121(%rsp),%r11
-   169bf:	00
+   169bf:	00 
    169c0:	c6 44 24 10 00       	movb   $0x0,0x10(%rsp)
    169c5:	4c 8d a4 24 10 01 00 	lea    0x110(%rsp),%r12
-   169cc:	00
+   169cc:	00 
    169cd:	48 c7 44 24 08 00 00 	movq   $0x0,0x8(%rsp)
-   169d4:	00 00
+   169d4:	00 00 
    169d6:	c7 44 24 34 00 00 00 	movl   $0x0,0x34(%rsp)
-   169dd:	00
+   169dd:	00 
    169de:	48 89 5c 24 18       	mov    %rbx,0x18(%rsp)
    169e3:	48 89 6c 24 20       	mov    %rbp,0x20(%rsp)
    169e8:	4c 89 6c 24 28       	mov    %r13,0x28(%rsp)
@@ -19422,7 +19422,7 @@ Disassembly of section .text:
    16b00:	41 c6 03 2f          	movb   $0x2f,(%r11)
    16b04:	49 83 c3 01          	add    $0x1,%r11
    16b08:	48 8b 84 24 18 01 00 	mov    0x118(%rsp),%rax
-   16b0f:	00
+   16b0f:	00 
    16b10:	48 8d 53 02          	lea    0x2(%rbx),%rdx
    16b14:	4c 01 e8             	add    %r13,%rax
    16b17:	4c 29 d8             	sub    %r11,%rax
@@ -19435,9 +19435,9 @@ Disassembly of section .text:
    16b30:	eb 22                	jmp    16b54 <_obstack_memory_used@@Base+0x9454>
    16b32:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
    16b38:	48 8b 84 24 18 01 00 	mov    0x118(%rsp),%rax
-   16b3f:	00
+   16b3f:	00 
    16b40:	48 8b 94 24 10 01 00 	mov    0x110(%rsp),%rdx
-   16b47:	00
+   16b47:	00 
    16b48:	48 29 e8             	sub    %rbp,%rax
    16b4b:	4c 8d 1c 2a          	lea    (%rdx,%rbp,1),%r11
    16b4f:	48 39 d8             	cmp    %rbx,%rax
@@ -19454,14 +19454,14 @@ Disassembly of section .text:
    16b76:	c7 00 02 00 00 00    	movl   $0x2,(%rax)
    16b7c:	45 31 e4             	xor    %r12d,%r12d
    16b7f:	48 8b bc 24 10 01 00 	mov    0x110(%rsp),%rdi
-   16b86:	00
+   16b86:	00 
    16b87:	48 39 df             	cmp    %rbx,%rdi
    16b8a:	74 06                	je     16b92 <_obstack_memory_used@@Base+0x9492>
    16b8c:	ff 15 0e b1 00 00    	call   *0xb10e(%rip)        # 21ca0 <_obstack_memory_used@@Base+0x145a0>
    16b92:	48 8b 84 24 48 0d 00 	mov    0xd48(%rsp),%rax
-   16b99:	00
+   16b99:	00 
    16b9a:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   16ba1:	00 00
+   16ba1:	00 00 
    16ba3:	0f 85 e1 04 00 00    	jne    1708a <_obstack_memory_used@@Base+0x998a>
    16ba9:	48 81 c4 58 0d 00 00 	add    $0xd58,%rsp
    16bb0:	4c 89 e0             	mov    %r12,%rax
@@ -19486,14 +19486,14 @@ Disassembly of section .text:
    16be3:	ff 15 3f b3 00 00    	call   *0xb33f(%rip)        # 21f28 <_obstack_memory_used@@Base+0x14828>
    16be9:	4c 89 24 24          	mov    %r12,(%rsp)
    16bed:	48 8d 9c 24 30 09 00 	lea    0x930(%rsp),%rbx
-   16bf4:	00
+   16bf4:	00 
    16bf5:	c6 00 00             	movb   $0x0,(%rax)
    16bf8:	48 89 6c 24 38       	mov    %rbp,0x38(%rsp)
    16bfd:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
    16c02:	48 8b 84 24 38 09 00 	mov    0x938(%rsp),%rax
-   16c09:	00
+   16c09:	00 
    16c0a:	4c 8b a4 24 30 09 00 	mov    0x930(%rsp),%r12
-   16c11:	00
+   16c11:	00 
    16c12:	4c 89 ef             	mov    %r13,%rdi
    16c15:	48 8d 68 ff          	lea    -0x1(%rax),%rbp
    16c19:	4c 89 e6             	mov    %r12,%rsi
@@ -19518,7 +19518,7 @@ Disassembly of section .text:
    16c60:	4d 89 e7             	mov    %r12,%r15
    16c63:	e9 05 fe ff ff       	jmp    16a6d <_obstack_memory_used@@Base+0x936d>
    16c68:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-   16c6f:	00
+   16c6f:	00 
    16c70:	31 f6                	xor    %esi,%esi
    16c72:	4c 89 ff             	mov    %r15,%rdi
    16c75:	ff 15 ad b1 00 00    	call   *0xb1ad(%rip)        # 21e28 <_obstack_memory_used@@Base+0x14728>
@@ -19549,7 +19549,7 @@ Disassembly of section .text:
    16ce7:	48 8d 3d a3 32 00 00 	lea    0x32a3(%rip),%rdi        # 19f91 <_obstack_memory_used@@Base+0xc891>
    16cee:	4c 89 1c 24          	mov    %r11,(%rsp)
    16cf2:	48 8d b4 24 80 00 00 	lea    0x80(%rsp),%rsi
-   16cf9:	00
+   16cf9:	00 
    16cfa:	4c 29 e3             	sub    %r12,%rbx
    16cfd:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
    16d02:	4c 01 db             	add    %r11,%rbx
@@ -19569,7 +19569,7 @@ Disassembly of section .text:
    16d3f:	48 8d 7c 24 60       	lea    0x60(%rsp),%rdi
    16d44:	4c 89 5c 24 40       	mov    %r11,0x40(%rsp)
    16d49:	66 0f 6f 84 24 80 00 	movdqa 0x80(%rsp),%xmm0
-   16d50:	00 00
+   16d50:	00 00 
    16d52:	4c 89 44 24 38       	mov    %r8,0x38(%rsp)
    16d57:	48 8b 58 10          	mov    0x10(%rax),%rbx
    16d5b:	4c 89 7c 24 60       	mov    %r15,0x60(%rsp)
@@ -19619,7 +19619,7 @@ Disassembly of section .text:
    16e0e:	4c 89 04 24          	mov    %r8,(%rsp)
    16e12:	42 c6 04 00 00       	movb   $0x0,(%rax,%r8,1)
    16e17:	4c 8b bc 24 20 05 00 	mov    0x520(%rsp),%r15
-   16e1e:	00
+   16e1e:	00 
    16e1f:	0f 84 8c 00 00 00    	je     16eb1 <_obstack_memory_used@@Base+0x97b1>
    16e25:	4c 89 e0             	mov    %r12,%rax
    16e28:	4c 89 e7             	mov    %r12,%rdi
@@ -19631,20 +19631,20 @@ Disassembly of section .text:
    16e42:	48 89 c5             	mov    %rax,%rbp
    16e45:	49 8d 34 00          	lea    (%r8,%rax,1),%rsi
    16e49:	48 3b b4 24 28 05 00 	cmp    0x528(%rsp),%rsi
-   16e50:	00
+   16e50:	00 
    16e51:	0f 82 25 02 00 00    	jb     1707c <_obstack_memory_used@@Base+0x997c>
    16e57:	4d 89 f7             	mov    %r14,%r15
    16e5a:	4c 89 04 24          	mov    %r8,(%rsp)
    16e5e:	49 89 ee             	mov    %rbp,%r14
    16e61:	48 8d 9c 24 20 05 00 	lea    0x520(%rsp),%rbx
-   16e68:	00
+   16e68:	00 
    16e69:	4c 89 5c 24 38       	mov    %r11,0x38(%rsp)
    16e6e:	48 89 f5             	mov    %rsi,%rbp
    16e71:	eb 16                	jmp    16e89 <_obstack_memory_used@@Base+0x9789>
    16e73:	48 8b 84 24 20 05 00 	mov    0x520(%rsp),%rax
-   16e7a:	00
+   16e7a:	00 
    16e7b:	48 3b ac 24 28 05 00 	cmp    0x528(%rsp),%rbp
-   16e82:	00
+   16e82:	00 
    16e83:	0f 82 d6 01 00 00    	jb     1705f <_obstack_memory_used@@Base+0x995f>
    16e89:	48 89 df             	mov    %rbx,%rdi
    16e8c:	e8 5f 50 ff ff       	call   bef0 <_obstack_begin@@Base-0x15d0>
@@ -19663,7 +19663,7 @@ Disassembly of section .text:
    16ec3:	48 89 c5             	mov    %rax,%rbp
    16ec6:	4a 8d 34 00          	lea    (%rax,%r8,1),%rsi
    16eca:	48 3b b4 24 28 05 00 	cmp    0x528(%rsp),%rsi
-   16ed1:	00
+   16ed1:	00 
    16ed2:	73 83                	jae    16e57 <_obstack_memory_used@@Base+0x9757>
    16ed4:	4c 89 5c 24 10       	mov    %r11,0x10(%rsp)
    16ed9:	4b 8d 3c 07          	lea    (%r15,%r8,1),%rdi
@@ -19715,7 +19715,7 @@ Disassembly of section .text:
    16f9e:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
    16fa3:	48 89 de             	mov    %rbx,%rsi
    16fa6:	66 0f 6f 84 24 80 00 	movdqa 0x80(%rsp),%xmm0
-   16fad:	00 00
+   16fad:	00 00 
    16faf:	48 89 03             	mov    %rax,(%rbx)
    16fb2:	66 0f c6 c0 01       	shufpd $0x1,%xmm0,%xmm0
    16fb7:	0f 11 43 08          	movups %xmm0,0x8(%rbx)
@@ -19784,9 +19784,9 @@ Disassembly of section .text:
    170d9:	48 89 fb             	mov    %rdi,%rbx
    170dc:	48 81 ec a8 02 00 00 	sub    $0x2a8,%rsp
    170e3:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-   170ea:	00 00
+   170ea:	00 00 
    170ec:	48 89 84 24 98 02 00 	mov    %rax,0x298(%rsp)
-   170f3:	00
+   170f3:	00 
    170f4:	31 c0                	xor    %eax,%eax
    170f6:	80 3d 03 b2 00 00 00 	cmpb   $0x0,0xb203(%rip)        # 22300 <obstack_alloc_failed_handler@@Base+0x260>
    170fd:	74 12                	je     17111 <_obstack_memory_used@@Base+0x9a11>
@@ -19829,9 +19829,9 @@ Disassembly of section .text:
    171aa:	85 c0                	test   %eax,%eax
    171ac:	0f 85 b6 00 00 00    	jne    17268 <_obstack_memory_used@@Base+0x9b68>
    171b2:	48 8b 84 24 98 02 00 	mov    0x298(%rsp),%rax
-   171b9:	00
+   171b9:	00 
    171ba:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-   171c1:	00 00
+   171c1:	00 00 
    171c3:	0f 85 55 01 00 00    	jne    1731e <_obstack_memory_used@@Base+0x9c1e>
    171c9:	48 81 c4 a8 02 00 00 	add    $0x2a8,%rsp
    171d0:	5b                   	pop    %rbx
@@ -19847,7 +19847,7 @@ Disassembly of section .text:
    171f1:	c6 44 24 14 00       	movb   $0x0,0x14(%rsp)
    171f6:	48 8d 74 24 14       	lea    0x14(%rsp),%rsi
    171fb:	49 b8 cd cc cc cc cc 	movabs $0xcccccccccccccccd,%r8
-   17202:	cc cc cc
+   17202:	cc cc cc 
    17205:	0f 1f 00             	nopl   (%rax)
    17208:	48 89 c8             	mov    %rcx,%rax
    1720b:	48 83 ee 01          	sub    $0x1,%rsi
@@ -19883,7 +19883,7 @@ Disassembly of section .text:
    1727f:	0f 84 2d ff ff ff    	je     171b2 <_obstack_memory_used@@Base+0x9ab2>
    17285:	48 8b 15 44 aa 00 00 	mov    0xaa44(%rip),%rdx        # 21cd0 <_obstack_memory_used@@Base+0x145d0>
    1728c:	48 83 05 7c b0 00 00 	addq   $0x1,0xb07c(%rip)        # 22310 <obstack_alloc_failed_handler@@Base+0x270>
-   17293:	01
+   17293:	01 
    17294:	48 8b 3a             	mov    (%rdx),%rdi
    17297:	48 8b 57 28          	mov    0x28(%rdi),%rdx
    1729b:	48 3b 57 30          	cmp    0x30(%rdi),%rdx
@@ -19901,7 +19901,7 @@ Disassembly of section .text:
    172ce:	48 89 c1             	mov    %rax,%rcx
    172d1:	e9 65 fe ff ff       	jmp    1713b <_obstack_memory_used@@Base+0x9a3b>
    172d6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   172dd:	00 00 00
+   172dd:	00 00 00 
    172e0:	48 8d 3d d9 ad 00 00 	lea    0xadd9(%rip),%rdi        # 220c0 <obstack_alloc_failed_handler@@Base+0x20>
    172e7:	e8 e4 45 ff ff       	call   b8d0 <_obstack_begin@@Base-0x1bf0>
    172ec:	48 8d 3d 0d ae 00 00 	lea    0xae0d(%rip),%rdi        # 22100 <obstack_alloc_failed_handler@@Base+0x60>
@@ -19915,7 +19915,7 @@ Disassembly of section .text:
    17319:	e9 94 fe ff ff       	jmp    171b2 <_obstack_memory_used@@Base+0x9ab2>
    1731e:	ff 15 6c aa 00 00    	call   *0xaa6c(%rip)        # 21d90 <_obstack_memory_used@@Base+0x14690>
    17324:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-   1732b:	00 00 00
+   1732b:	00 00 00 
    1732e:	66 90                	xchg   %ax,%ax
    17330:	f3 0f 1e fa          	endbr64
    17334:	48 8b 15 cd ac 00 00 	mov    0xaccd(%rip),%rdx        # 22008 <_obstack_memory_used@@Base+0x14908>
