@@ -1,4 +1,4 @@
-
+'Instruction Processor Module'
 from dataclasses import dataclass
 from typing import Any, List, Dict
 
@@ -7,6 +7,7 @@ from global_definitions import Pattern, IGNORE_ARGS, MAX_PYTHON_INT
 
 @dataclass
 class InstructionProcessor:
+    'Instruction Processor'
     pattern: Pattern
     include_list: List[str] | None
     exclude_list: List[str] | None
@@ -18,16 +19,16 @@ class InstructionProcessor:
 
         if times_regex is None:
             return f"({inst_joined})"
-        else:
-            return f"({inst_joined}){times_regex}"
+
+        return f"({inst_joined}){times_regex}"
 
     def _generate_only_exclude(self, exclude_list_regex: List[str], times_regex: str | None) -> str:
         inst_joined = self._join_instructions(inst_list=exclude_list_regex)
 
         if times_regex is None:
             return f"((?!{inst_joined}){IGNORE_ARGS})"
-        else:
-            return f"((?!{inst_joined}){IGNORE_ARGS}){times_regex}"
+
+        return f"((?!{inst_joined}){IGNORE_ARGS}){times_regex}"
 
     @staticmethod
     def _remove_last_character(string: str) -> str:
@@ -63,6 +64,7 @@ class InstructionProcessor:
 
 
     def process(self) -> str:
+        'Main process function for all patterns'
         times_regex = self._get_min_max_regex()
 
         # $any case
@@ -89,11 +91,12 @@ class InstructionProcessor:
 
 
 class BasicInstructionProcessor(InstructionProcessor):
+    'Basic Instruction Processor'
     def __init__(self, basic_pattern: Dict) -> None:
         self.basic_pattern = basic_pattern
         self.include_list = self._get_mnemonic_from_basic_pattern()
         self.exclude_list = None
-        self._properties = self._get_Instruction_properties()
+        self._properties = self._get_instruction_properties()
         self.times = self._get_times()
         self.operands = self._get_operands()
 
@@ -106,7 +109,7 @@ class BasicInstructionProcessor(InstructionProcessor):
 
         return pattern_elems
 
-    def _get_Instruction_properties(self) -> Dict:
+    def _get_instruction_properties(self) -> Dict:
         if self.include_list is None:
             raise ValueError(
                 f"Some error happened and this basic instruction: {self.basic_pattern} doesn't have include_list")
@@ -121,12 +124,14 @@ class BasicInstructionProcessor(InstructionProcessor):
         return self._properties.get('operands', None)
 
     def process_basic_pattern(self) -> str:
+        'Process basic pattern'
         return InstructionProcessor(pattern=self.basic_pattern, include_list=self.include_list,
                             exclude_list=self.exclude_list, times=self.times,
                             operands=self.operands).process()
 
 
 class NotInstructionProcessor(InstructionProcessor):
+    '$not Instruction Processor'
     def __init__(self, not_pattern: Dict) -> None:
         self.not_pattern = not_pattern
         self.include_list = None
@@ -138,12 +143,14 @@ class NotInstructionProcessor(InstructionProcessor):
         return self.not_pattern.get('times', None)
 
     def process_not_pattern(self) -> str:
+        'Process $not pattern'
         return InstructionProcessor(pattern=self.not_pattern, include_list=self.include_list,
                                  exclude_list=self.exclude_list, times=self.times,
                                  operands=self.operands).process()
 
 
 class AnyInstructionProcessor(InstructionProcessor):
+    '$any Instruction Processor'
     def __init__(self, any_pattern: Dict,
                  include_list: List[str] | None = None,
                  exclude_list: List[str] | None = None,
@@ -151,17 +158,17 @@ class AnyInstructionProcessor(InstructionProcessor):
                  ) -> None:
 
         self.any_pattern = any_pattern
-        self.include_list = include_list or self._get_instruction_list(pattern=any_pattern, type='include_list')
-        self.exclude_list = exclude_list or self._get_instruction_list(pattern=any_pattern, type='exclude_list')
+        self.include_list = include_list or self._get_instruction_list(pattern=any_pattern, pattern_type='include_list')
+        self.exclude_list = exclude_list or self._get_instruction_list(pattern=any_pattern, pattern_type='exclude_list')
         self.times = times or self._get_times()
         self.operands = None
 
     @staticmethod
-    def _get_instruction_list(pattern: Pattern, type: str) -> List[str] | None:
+    def _get_instruction_list(pattern: Pattern, pattern_type: str) -> List[str] | None:
         if not isinstance(pattern, Dict):
             return None
 
-        type_list = pattern.get(type, None)
+        type_list = pattern.get(pattern_type, None)
         if not isinstance(type_list, Dict):
             return None
 
@@ -176,6 +183,7 @@ class AnyInstructionProcessor(InstructionProcessor):
 
 
     def process_any_pattern(self) -> str:
+        'Process $any pattern'
         return InstructionProcessor(pattern=self.any_pattern, include_list=self.include_list,
                                  exclude_list=self.exclude_list, times=self.times,
                                  operands=self.operands).process()
