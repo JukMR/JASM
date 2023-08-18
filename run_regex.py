@@ -1,17 +1,24 @@
 'Main entry module'
 import re
+import time
 import argparse
 from typing import List, Optional, Any
 
 from parsing.binary_parser import Parser, ParserImplementation, DissasembleImplementation
 from yaml2regex import Yaml2Regex
 
-from logging_config import enable_debugging, enable_info_level
+from logging_config import enable_debugging, enable_info_level, logger
 
 
 def run_regex_rule(regex_rule: str, stringify_binary: str) -> List[Any]:
     'Function to execute the regex pattern in the assembly'
+
+    start_time = time.time()
     result = re.findall(pattern=regex_rule, string=stringify_binary)
+    execution_time = time.time() - start_time
+
+    logger.debug("Finishing running regex in %4f", execution_time)
+
     return result
 
 
@@ -35,11 +42,8 @@ def parse_args_from_console() -> argparse.Namespace:
     return parsed_args
 
 
-def match(pattern_pathstr: str,
-          binary: Optional[str] = None,
-          assembly: Optional[str] = None,
-          debug: bool = False,
-          info: bool = True
+def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional[str] = None,
+          debug: bool = False, info: bool = True
           ) -> bool:
     'Main entry function'
 
@@ -50,7 +54,10 @@ def match(pattern_pathstr: str,
 
     regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
 
-    parser_implementation = Parser(parser=ParserImplementation(), disassembler=DissasembleImplementation())
+    parser_implementation = Parser(
+                                parser=ParserImplementation(),
+                                disassembler=DissasembleImplementation()
+                                )
 
     if assembly:
         stringify_binary = parser_implementation.parse(file=assembly)
@@ -61,6 +68,7 @@ def match(pattern_pathstr: str,
         raise ValueError("Some error occured")
 
     match_result = run_regex_rule(regex_rule=regex_rule, stringify_binary=stringify_binary)
+
 
     if len(match_result) == 0:
         print("RESULT: Pattern not found\n")
@@ -76,4 +84,5 @@ def match(pattern_pathstr: str,
 if __name__ == "__main__":
     args = parse_args_from_console()
     print("Starting execution... ")
-    match(pattern_pathstr=args.pattern, assembly=args.assembly, binary=args.binary, debug=args.debug)
+    match(pattern_pathstr=args.pattern, assembly=args.assembly, binary=args.binary,
+          debug=args.debug)
