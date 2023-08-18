@@ -5,7 +5,8 @@ import yaml
 
 
 from src.logging_config import logger
-from src.regex_generation.instruction_processor import AnyInstructionProcessor, NotInstructionProcessor, BasicInstructionProcessor
+from src.regex_generation.instruction_processor import AnyInstructionProcessor, NotInstructionProcessor
+from src.regex_generation.instruction_processor import BasicInstructionProcessor
 from src.global_definitions import IGNORE_ARGS, Pattern, PathStr
 
 
@@ -17,8 +18,8 @@ class Yaml2Regex:
     @staticmethod
     def read_yaml(file: PathStr) -> Any:
         'Read and return the parsed yaml'
-        with open(file=file, mode='r', encoding='utf-8') as f:
-            return yaml.load(stream=f.read(), Loader=yaml.Loader)
+        with open(file=file, mode='r', encoding='utf-8') as file_descriptor:
+            return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
     @staticmethod
     def process_dict_pattern(pattern) -> str:
@@ -38,11 +39,11 @@ class Yaml2Regex:
 
         if isinstance(pattern, dict):
             return self.process_dict_pattern(pattern)
-        elif isinstance(pattern, str):
+        if isinstance(pattern, str):
             return f"({pattern}{IGNORE_ARGS})"
-        else:
-            # TODO implementar excepcion para tipos no soportados por el programa
-            raise ValueError("Pattern type not valid")
+
+        # TODO implementar excepcion para tipos no soportados por el programa
+        raise ValueError("Pattern type not valid")
 
     def produce_regex(self) -> str:
         'Handle all patterns and returns the final string'
