@@ -1,6 +1,6 @@
 import re
 import argparse
-from typing import Optional
+from typing import List, Optional, Any
 
 from parsing.binary_parser import Parser, ParserImplementation, DissasembleImplementation
 from Yaml2Regex import Yaml2Regex
@@ -8,9 +8,9 @@ from Yaml2Regex import Yaml2Regex
 from logging_config import enable_debugging, enable_info_level
 
 
-def run_regex_rule(regex_rule: str, stringify_binary: str) -> bool:
+def run_regex_rule(regex_rule: str, stringify_binary: str) -> List[Any]:
     result = re.findall(pattern=regex_rule, string=stringify_binary)
-    return len(result) != 0
+    return result
 
 
 def parse_args_from_console() -> argparse.Namespace:
@@ -56,12 +56,20 @@ def match(pattern_pathStr: str,
     else:
         raise ValueError("Some error occured")
 
-    did_match = run_regex_rule(regex_rule=regex_rule, stringify_binary=stringify_binary)
-    print(did_match)
+    match_result = run_regex_rule(regex_rule=regex_rule, stringify_binary=stringify_binary)
 
-    return did_match
+    if len(match_result) == 0:
+        print("RESULT: Pattern not found\n")
+        return False
+
+    print("RESULT: Found a match:")
+    for matched_pattern in match_result:
+        print(f"Pattern: {matched_pattern}\n")
+    return True
+
 
 
 if __name__ == "__main__":
     args = parse_args_from_console()
+    print("Starting execution... ")
     match(pattern_pathStr=args.pattern, assembly=args.assembly, binary=args.binary, debug=args.debug)

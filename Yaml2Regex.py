@@ -44,6 +44,6 @@ class Yaml2Regex:
             output_regex += self.handle_pattern(pattern=com)
 
         # Log results
-        logger.info(msg=f"The output regex is:\n {output_regex}")
+        logger.info(msg=f"The output regex is:\n {output_regex}\n")
 
         return output_regex

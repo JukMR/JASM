@@ -1,0 +1,20 @@
+patterns:
+  - ret
+  - $any:
+      include_list:
+        inst:
+          - int3
+          - nop
+      times:
+        min: 0
+        max: 3
+  - call
+  - $any:
+      exclude_list:
+        inst:
+          - ret
+      times:
+        max: 8
+  - sub:
+      operands:
+        - rsp

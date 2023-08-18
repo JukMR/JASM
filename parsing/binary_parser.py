@@ -87,8 +87,7 @@ class ParserImplementation():
             instructions.append(inst)
 
         string_divided_by_bars = self._join_all_instructions(instructions)
-        logger.info(
-            f"The concatenated instructions are:\n {string_divided_by_bars}")
+        logger.info(f"The concatenated instructions are:\n {string_divided_by_bars}\n")
         return string_divided_by_bars
 
     def parse_binary(self, file: PathStr) -> None:
