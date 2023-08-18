@@ -24,9 +24,11 @@ def measure_performance(title=None):
             execution_time = end_time - start_time
 
             if title:
-                logger.debug("%s: Function '%s' took %f seconds to execute.", title, func.__name__, execution_time)
+                logger.debug("%s: Function '%s' took %f seconds to execute.",
+                              title, func.__name__, execution_time)
             else:
-                logger.debug("Function '%s' took %f seconds to execute.", func.__name__, execution_time)
+                logger.debug("Function '%s' took %f seconds to execute.",
+                              func.__name__, execution_time)
 
             return result
         return wrapper
@@ -35,44 +37,51 @@ def measure_performance(title=None):
 
 @dataclass
 class Instruction:
+    'Main instruction class for match patterns'
     mnemonic: str
     operands: List[str]
 
     def stringify(self) -> str:
+        'Method for returning instruction as a string'
         return self.mnemonic + ',' + ','.join(self.operands)
 
 
 class BinaryParser(ABC):
+    'Base class for Binary Parser'
     @abstractmethod
-    def parse(self) -> None:
-        pass
+    def parse(self, file: PathStr) -> None:
+        'Method for creating parsing assembly implementation'
 
     @abstractmethod
-    def dissasemble() -> None:
-        pass
+    def dissasemble(self, binary: str, output_path: PathStr) -> None:
+        'Method for generating assembly from a binary implementation'
 
 
 class Parser(BinaryParser):
+    'Main class to implement the BinaryParser'
     def __init__(self, parser: 'ParserImplementation', disassembler: 'DissasembleImplementation'):
         self.parser_implementation = parser
         self.disassembler_implementation = disassembler
 
-    def parse(self, file) -> str:
-        self.parser_implementation.parse_binary(file=file)
+    def parse(self, file: PathStr) -> str:
+        'Parse implementation'
+        self.parser_implementation.set_binary_and_parse_it(file=file)
 
         return self.parser_implementation.parse()
 
     def dissasemble(self, binary: str, output_path: PathStr) -> None:
-        self.disassembler_implementation.load_binary_and_output_path(binary=binary, output_path=output_path)
-        return self.disassembler_implementation.dissasemble()
+        'Dissasembler implementation'
+        self.disassembler_implementation.set_binary(binary=binary)
+        self.disassembler_implementation.set_output_path(output_path=output_path)
 
-    # def disassemble_and_parse(self, binary: str, temp_path_to_disassemble: str | Path) -> str:
-    #     self.disassemble(binary=binary, output_path=temp_path_to_disassemble)
-    #     return self.parse(file=temp_path_to_disassemble)
+        return self.disassembler_implementation.dissasemble()
 
 
 
 class ParserImplementation():
+    'Parse Implementation'
+    def __init__(self) -> None:
+        self.parsed_binary = None
 
     def _open_assembly(self, file: PathStr) -> str:
     # Read the binary file
@@ -107,7 +116,7 @@ class ParserImplementation():
             result += inst.stringify() + '|'
         return result
 
-    def _parse_Instruction(self, inst: ParserElement) -> Instruction:
+    def _parse_instruction(self, inst: ParserElement) -> Instruction:
         parsed_inst = inst.asList()[0]
         mnemonic = parsed_inst[0]
         operands = parsed_inst[1:]
@@ -115,49 +124,81 @@ class ParserImplementation():
 
     def _generate_string_divided_by_bars(self) -> str:
         instructions = []
+        if self.parsed_binary is None:
+            raise NotImplementedError("Error. Execute parse_binary() to setup a binary first")
+
         for elem in self.parsed_binary:
-            inst = self._parse_Instruction(elem)
+            inst = self._parse_instruction(elem)
             instructions.append(inst)
 
         string_divided_by_bars = self._join_all_instructions(instructions)
         logger.info("The concatenated instructions are:\n %s\n", string_divided_by_bars)
         return string_divided_by_bars
 
-    def parse_binary(self, file: PathStr) -> None:
+    def set_binary_and_parse_it(self, file: PathStr) -> None:
+        'Execute function to parse binary'
         self.parsed_binary = self._run_pyparsing(file=file)
 
     def parse(self):
+        'Main parse function'
         return self._generate_string_divided_by_bars()
 
 
 class DissasembleImplementation:
-    def load_binary_and_output_path(self, binary: str, output_path: PathStr):
+    'Dissasembler Implementation'
+    def __init__(self) -> None:
+        self.binary = None
+        self.output_path = None
+        self.dissasemble_program = None
+
+    def set_binary(self, binary: str) -> None:
+        'Set binary for DissasembleImplementation class'
         self.binary = binary
+
+    def set_output_path(self, output_path: PathStr) -> None:
+        'Set output_path for DissasembleImplementation class'
         self.output_path = output_path
 
     def _write_to_disk(self, data: str) -> None:
+        if self.output_path is None:
+            raise NotImplementedError('No path provided. Execute set_output_path() first')
+
         with open(self.output_path, 'w', encoding='utf-8') as file:
             file.write(data)
 
-    def _binary_dissasemble(self, program: str, flags: str) -> str | None:
+    def _binary_dissasemble(self, program: str, flags: str) -> None:
+        if self.binary is None:
+            raise NotImplementedError("binary is not set yet. Should call set_binary() first")
         try:
-            result = subprocess.run([program, flags, self.binary], capture_output=True, text=True)
+            result = subprocess.run([program, flags, self.binary],
+                                    capture_output=True, text=True, check=True)
 
             # Check the return code to see if the command executed successfully
             if result.returncode == 0:
                 self._write_to_disk(result.stdout)
+                print(f"File binary successfully dissasembled to {self.output_path}")
             else:
                 # Return the error message, if any
-                return f"Error: {result.stderr}"
+                raise ValueError(f"Error while dissasembling file. Error: {result.stderr}")
 
-        except FileNotFoundError:
-            return f"Error: program not found. Make sure you have {program} installed and in your system PATH."
+        except FileNotFoundError as exc:
+            raise ValueError(f"Error: program: {program} not found."
+                             + "Make sure you to have it installed"
+                             + "and in your system PATH.") from exc
 
-    def dissasemble_with_objdump(self):
-        return self._binary_dissasemble(program='objdump', flags='-d')
 
-    def dissasemble_with_llvm(self):
-        return self._binary_dissasemble(program='llvm-objdump', flags='-d')
+    def set_dissasemble_program(self, program: str) -> None:
+        """
+        Set dissasemble main program.
+        Currently objdump and llvm supported and tested
+        """
 
-    def dissasemble(self):
-        self.dissasemble_with_objdump()
+        self.dissasemble_program = program
+
+    def dissasemble(self) -> None:
+        'Dissasemble with objdump by_default'
+        if self.dissasemble_program is None:
+            raise NotImplementedError("dissasemble_program not set yet."
+                                      + "Should call set_dissasemble_program() first.")
+
+        return self._binary_dissasemble(program=self.dissasemble_program, flags='-d')
