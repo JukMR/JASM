@@ -3,7 +3,7 @@ from typing import Any
 
 
 from logging_config import logger
-from InstructionProcessor import AnyInstructionProcessor, NotInstructionProcessor, BasicInstructionProcessor
+from instruction_processor import AnyInstructionProcessor, NotInstructionProcessor, BasicInstructionProcessor
 from global_definitions import IGNORE_ARGS, Pattern, PathStr
 
 
