@@ -1,6 +1,5 @@
 'Instruction Processor Module'
 from dataclasses import dataclass
-from inspect import isroutine
 from typing import Any, List, Dict, Literal, Optional
 
 from src.global_definitions import IGNORE_ARGS, MAX_PYTHON_INT
@@ -65,6 +64,11 @@ class InstructionProcessor:
         return f"{{{min_amount},{max_amount}}}"
 
 
+    @staticmethod
+    def get_times(pattern: PatternDict) -> TimesType:
+        "Get `times` from pattern or None"
+        return pattern.get('times', None)
+
     def process(self) -> str:
         'Main process function for all patterns'
         times_regex = self._get_min_max_regex()
@@ -98,11 +102,11 @@ class BasicInstructionProcessor(InstructionProcessor):
     'Basic Instruction Processor'
     def __init__(self, basic_pattern: PatternDict) -> None:
         include_list = self._get_mnemonic_from_basic_pattern(pattern=basic_pattern)
-        self._properties = self._get_instruction_properties(include_list=include_list,
+        self._basic_properties = self._get_instruction_properties(include_list=include_list,
                                                             pattern=basic_pattern)
 
         super().__init__(pattern=basic_pattern, include_list=include_list,
-                         exclude_list=None, times= self._get_times(),
+                         exclude_list=None, times= super().get_times(basic_pattern),
                          operands=self._get_operands())
 
     @staticmethod
@@ -133,31 +137,20 @@ class BasicInstructionProcessor(InstructionProcessor):
 
         return instruction_properties
 
-    def _get_times(self) -> TimesType:
-        return self._properties.get('times', None)
 
     def _get_operands(self) -> OperandType:
-        return self._properties.get('operands', None)
-
-    def process_basic_pattern(self) -> str:
-        'Process basic pattern'
-        return self.process()
+        return self._basic_properties.get('operands', None)
 
 
 class NotInstructionProcessor(InstructionProcessor):
     '$not Instruction Processor'
     def __init__(self, not_pattern: PatternDict) -> None:
         exclude_list = not_pattern['inst']
-        times = self._get_times()
+        times = super().get_times(pattern=not_pattern)
+
         super().__init__(pattern=not_pattern, include_list=None, exclude_list=exclude_list,
                          times=times, operands=None)
 
-    def _get_times(self) -> TimesType:
-        return self.pattern.get('times', None)
-
-    def process_not_pattern(self) -> str:
-        'Process $not pattern'
-        return self.process()
 
 
 class AnyInstructionProcessor(InstructionProcessor):
@@ -165,7 +158,7 @@ class AnyInstructionProcessor(InstructionProcessor):
     def __init__(self, any_pattern: PatternDict) -> None:
         include_list = self._get_instruction_list(pattern=any_pattern, pattern_type='include_list')
         exclude_list = self._get_instruction_list(pattern=any_pattern, pattern_type='exclude_list')
-        times = self._get_times(pattern=any_pattern)
+        times = super().get_times(pattern=any_pattern)
 
         super().__init__(pattern=any_pattern, include_list=include_list,
                          exclude_list=exclude_list, times=times, operands=None)
@@ -188,12 +181,3 @@ class AnyInstructionProcessor(InstructionProcessor):
         if isinstance(type_list_inst, List):
             return type_list_inst
         raise ValueError(f"{type_list_inst} is not a List. It is: {type(type_list_inst)}")
-
-    @staticmethod
-    def _get_times( pattern: PatternDict) -> Optional[Any]:
-        return pattern.get('times', None)
-
-
-    def process_any_pattern(self) -> str:
-        'Process $any pattern'
-        return self.process()
