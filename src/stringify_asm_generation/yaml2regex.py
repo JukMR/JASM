@@ -27,12 +27,12 @@ class Yaml2Regex:
         match list(pattern.keys())[0]:
             case '$any':
                 pattern = pattern['$any']
-                return AnyInstructionProcessor(pattern).process_any_pattern()
+                return AnyInstructionProcessor(pattern).process()
             case '$not':
                 pattern = pattern['$not']
-                return NotInstructionProcessor(pattern).process_not_pattern()
+                return NotInstructionProcessor(pattern).process()
             case _:
-                return BasicInstructionProcessor(pattern).process_basic_pattern()
+                return BasicInstructionProcessor(pattern).process()
 
     def handle_pattern(self, pattern: Pattern) -> str:
         'Dispatch pattern based on its type: str or dict'
@@ -42,8 +42,9 @@ class Yaml2Regex:
         if isinstance(pattern, str):
             return f"({pattern}{IGNORE_ARGS})"
 
-        # TODO implementar excepcion para tipos no soportados por el programa
+        # TODO implementar excepcion para tipos no soportados por el programa  # pylint: disable=[w0511]
         raise ValueError("Pattern type not valid")
+
 
     def produce_regex(self) -> str:
         'Handle all patterns and returns the final string'
