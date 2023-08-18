@@ -44,7 +44,13 @@ class Parser(BinaryParser):
         'Parse implementation'
         self.parser_implementation.set_binary_and_parse_it(file=file)
 
-        return self.parser_implementation.parse()
+        stringify_binary = self.parser_implementation.parse()
+
+        if not isinstance(stringify_binary, str):
+            raise ValueError(f"Some error occured. stringify_binary is not a string {stringify_binary}"
+                             +f" It is of type: {type(stringify_binary)}")
+
+        return stringify_binary
 
     def dissasemble(self, binary: str, output_path: PathStr) -> None:
         'Dissasembler implementation'
