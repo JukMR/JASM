@@ -6,7 +6,7 @@ import yaml
 
 from src.logging_config import logger
 from src.regex_generation.instruction_processor import AnyInstructionProcessor, NotInstructionProcessor
-from src.regex_generation.instruction_processor import BasicInstructionProcessor
+from src.regex_generation.instruction_processor import SimpleInstructionProcessor
 from src.global_definitions import IGNORE_ARGS, Pattern, PathStr, PatternDict
 
 
@@ -32,7 +32,7 @@ class Yaml2Regex:
                 pattern = pattern['$not']
                 return NotInstructionProcessor(pattern).process()
             case _:
-                return BasicInstructionProcessor(pattern).process()
+                return SimpleInstructionProcessor(pattern).process()
 
     def handle_pattern(self, pattern: Pattern) -> str:
         'Dispatch pattern based on its type: str or dict'
