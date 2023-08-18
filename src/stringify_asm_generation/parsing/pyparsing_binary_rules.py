@@ -7,8 +7,8 @@ from pyparsing import printables, hexnums, line_end, python_style_comment, Optio
 # Set default whitespace
 # This is done to be able to parse the end of line '\n'
 # By default pyparsing will ignore newlines and whitespaces
-i_consider_whitespaces_to_be_only = ' '
-ParserElement.set_default_whitespace_chars(i_consider_whitespaces_to_be_only)
+I_CONSIDER_WHITESPACES_TO_BE_ONLY = ' '
+ParserElement.set_default_whitespace_chars(I_CONSIDER_WHITESPACES_TO_BE_ONLY)
 
 
 # Define the grammar for the binary file
@@ -74,4 +74,3 @@ parsed = (Start_of_file
           + text_section
           + fini_section
           )
-
