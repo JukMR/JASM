@@ -9,6 +9,7 @@ from src.global_definitions import PatternDict, IncludeListType, ExcludeListType
 @dataclass
 class InstructionProcessor:
     'Instruction Processor'
+
     pattern: PatternDict
     include_list: IncludeListType
     exclude_list: ExcludeListType
@@ -69,39 +70,48 @@ class InstructionProcessor:
         "Get `times` from pattern or None"
         return pattern.get('times', None)
 
+    def _process_any_case(self, times_regex: Optional[str],
+                          include_list: List[str],
+                          exclude_list: List[str]
+                          ) -> str:
+        exclude_list_regex = self._join_instructions(inst_list=exclude_list)
+        include_list_regex = self._join_instructions(inst_list=include_list)
+
+        if times_regex is not None:
+            return f"((?!{exclude_list_regex})({include_list_regex})){times_regex}"
+
+        return f"((?!{exclude_list_regex})({include_list_regex}))"
+
+
+    def _process_not_case(self, times_regex: Optional[str], exclude_list: List[str]) -> str:
+        return self._generate_only_exclude(exclude_list_regex=exclude_list, times_regex=times_regex)
+
+
+    def _process_simple_case(self, times_regex: Optional[str], include_list: List[str]) -> str:
+        return self._generate_only_include(include_list_regex=include_list, times_regex=times_regex)
+
+
     def process(self) -> str:
         'Main process function for all patterns'
-        times_regex = self._get_min_max_regex()
+        times_regex_str: Optional[str] = self._get_min_max_regex()
 
-        # $any case
         if self.exclude_list is not None and self.include_list is not None:
-
-            exclude_list_regex = self._join_instructions(inst_list=self.exclude_list)
-            include_list_regex = self._join_instructions(inst_list=self.include_list)
-
-            if times_regex is not None:
-                return f"((?!{exclude_list_regex})({include_list_regex})){times_regex}"
-
-            return f"((?!{exclude_list_regex})({include_list_regex}))"
-
-        # $not case
-        if self.exclude_list is not None and self.include_list is None:
-            return self._generate_only_exclude(exclude_list_regex=self.exclude_list,
-                                               times_regex=times_regex)
-
-        # Generic case
-        if self.exclude_list is None and self.include_list is not None:
-            return self._generate_only_include(include_list_regex=self.include_list,
-                                               times_regex=times_regex)
-
-        raise ValueError("Some error ocurred. "
-                         + f"Both include and exclude are empty for {self.pattern}")
+            return self._process_any_case(times_regex=times_regex_str,
+                                          include_list=self.include_list,
+                                          exclude_list=self.exclude_list)
+        if self.exclude_list is not None:
+            return self._process_not_case(times_regex=times_regex_str,
+                                          exclude_list=self.exclude_list)
+        if self.include_list is not None:
+            return self._process_simple_case(times_regex=times_regex_str,
+                                             include_list=self.include_list)
+        raise ValueError(f"Some error occurred. Include and exclude are empty for {self.pattern}")
 
 
-class BasicInstructionProcessor(InstructionProcessor):
+class SimpleInstructionProcessor(InstructionProcessor):
     'Basic Instruction Processor'
     def __init__(self, basic_pattern: PatternDict) -> None:
-        include_list = self._get_mnemonic_from_basic_pattern(pattern=basic_pattern)
+        include_list = self._get_mnemonic_from_simple_pattern(pattern=basic_pattern)
         self._basic_properties = self._get_instruction_properties(include_list=include_list,
                                                             pattern=basic_pattern)
 
@@ -110,7 +120,7 @@ class BasicInstructionProcessor(InstructionProcessor):
                          operands=self._get_operands())
 
     @staticmethod
-    def _get_mnemonic_from_basic_pattern(pattern: PatternDict) -> List[str]:
+    def _get_mnemonic_from_simple_pattern(pattern: PatternDict) -> List[str]:
         reserved_patterns = ['operand', 'times']
         pattern_elems = [command for command in list(pattern.keys())
                          if command not in reserved_patterns]
