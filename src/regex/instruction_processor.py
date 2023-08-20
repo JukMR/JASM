@@ -7,7 +7,7 @@ from src.global_definitions import PatternDict, IncludeListType, ExcludeListType
 
 
 @dataclass
-class InstructionProcessor:
+class DirectiveProcessor:
     'Instruction Processor'
 
     pattern: PatternDict
@@ -107,7 +107,7 @@ class InstructionProcessor:
         raise ValueError(f"Some error occurred. Include and exclude are empty for {self.pattern}")
 
 
-class SimpleInstructionProcessor(InstructionProcessor):
+class SingleInstructionProcessor(DirectiveProcessor):
     'Basic Instruction Processor'
     def __init__(self, basic_pattern: PatternDict) -> None:
         include_list = self._get_mnemonic_from_simple_pattern(pattern=basic_pattern)
@@ -130,6 +130,7 @@ class SimpleInstructionProcessor(InstructionProcessor):
 
         return pattern_elems
 
+
     @staticmethod
     def _get_instruction_properties(include_list: IncludeListType,
                                     pattern: PatternDict) -> Dict[str, Any]:
@@ -151,7 +152,7 @@ class SimpleInstructionProcessor(InstructionProcessor):
         return self._basic_properties.get('operands', None)
 
 
-class NotInstructionProcessor(InstructionProcessor):
+class NotInstructionProcessor(DirectiveProcessor):
     '$not Instruction Processor'
     def __init__(self, not_pattern: PatternDict) -> None:
         exclude_list = not_pattern['inst']
@@ -162,7 +163,7 @@ class NotInstructionProcessor(InstructionProcessor):
 
 
 
-class AnyInstructionProcessor(InstructionProcessor):
+class AnyInstructionProcessor(DirectiveProcessor):
     '$any Instruction Processor'
     def __init__(self, any_pattern: PatternDict) -> None:
         include_list = self._get_instruction_list(pattern=any_pattern, pattern_type='include_list')

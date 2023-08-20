@@ -48,18 +48,18 @@ operand = Word(printables, exclude_chars='#,') + Suppress(Optional(Literal(','))
 operation = Group(mnemonic + ZeroOrMore(operand))
 
 
-instruction_code = Group(OneOrMore(operation))
+instruction_code = Optional(Group(OneOrMore(operation)))
 
 
 inst = (
-        instruction_addr ("index*")
-        + hex_coding ("coding*")
-        + Optional(instruction_code) ("operation*")
-        + Optional(comment) ("comment*")
+        instruction_addr
+        + hex_coding
+        + instruction_code
+        + Optional(comment)
         + many_line_end
         )
 
-line = label("label") | inst ("inst")
+line = label | inst
 lines = OneOrMore(line)
 
 init_section = Optional(INIT + lines)

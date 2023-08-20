@@ -1,21 +1,23 @@
 'Main entry module'
-from pathlib import Path
 import re
 import time
 import argparse
+from pathlib import Path
 from typing import List, Optional, Any
 
-from src.stringify_asm_generation.parsing.binary_parser import Parser, ParserImplementation, DissasembleImplementation
-from src.stringify_asm_generation.yaml2regex import Yaml2Regex
+from src.stringify_asm.binary_parser import Parser, ParserImplementation, DissasembleImplementation
+from src.stringify_asm.binary_parser import InstructionObserver
+from src.observers_implementation import InstructionsAppender
+from src.regex.yaml2regex import Yaml2Regex
 from src.measure_performance import measure_performance
-
 from src.logging_config import enable_debugging, enable_info_level, add_log_file, logger
+
+
 
 @measure_performance(title="Run regex")
 def run_regex_rule(regex_rule: str, stringify_binary: str) -> List[Any]:
     'Function to execute the regex pattern in the assembly'
     result = re.findall(pattern=regex_rule, string=stringify_binary)
-
     return result
 
 
@@ -38,12 +40,14 @@ def parse_args_from_console() -> argparse.Namespace:
 
     return parsed_args
 
+
 def set_debugging_correct_levels(debug: bool, info: bool ) -> None:
     'Configure logger based on given log level'
     if info:
         enable_info_level()
     if debug:
         enable_debugging()
+
 
 def _set_match_results(match_result: List[str]) -> bool:
     if len(match_result) == 0:
@@ -54,6 +58,12 @@ def _set_match_results(match_result: List[str]) -> bool:
     for matched_pattern in match_result:
         logger.info("Pattern: %s\n", matched_pattern)
     return True
+
+
+def get_observer_list() -> List[InstructionObserver]:
+    'Get observers_list'
+    instruction_observers: List[InstructionObserver] = [InstructionsAppender()]
+    return instruction_observers
 
 
 def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional[str] = None,
@@ -67,12 +77,15 @@ def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional
     regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
 
     parser_implementation = Parser(parser=ParserImplementation(), disassembler=DissasembleImplementation())
+    instruction_observers = get_observer_list()
 
     if assembly:
-        stringify_binary = parser_implementation.parse(file=assembly)
+        stringify_binary = parser_implementation.parse(filename=assembly,
+                                                       instruction_observers=instruction_observers)
     elif binary:
         parser_implementation.dissasemble(binary=binary, output_path='tmp_dissasembly.s')
-        stringify_binary = parser_implementation.parse(file='tmp_dissasembly.s')
+        stringify_binary = parser_implementation.parse(filename='tmp_dissasembly.s',
+                                                       instruction_observers=instruction_observers)
     else:
         raise ValueError("Some error occured")
 

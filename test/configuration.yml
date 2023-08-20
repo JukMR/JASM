@@ -1,32 +1,32 @@
 test_configs:
   - yaml: 'yaml/9_calls.yml'
-    assembly: 'binary/binary_data.s'
+    assembly: 'assembly/binary_data.s'
     expected: True
 
   - yaml: 'yaml/10_calls.yml'
-    assembly: 'binary/binary_data.s'
+    assembly: 'assembly/binary_data.s'
     expected: False
 
   - yaml: 'yaml/exclude_list.yml'
-    assembly: 'binary/binary_data.s'
+    assembly: 'assembly/binary_data.s'
     expected: True
 
   - yaml: 'yaml/not_call.yml'
-    assembly: 'binary/binary_data.s'
+    assembly: 'assembly/binary_data.s'
     expected: True
 
   - yaml: 'yaml/include_and_include_list.yml'
-    assembly: 'binary/binary_data.s'
+    assembly: 'assembly/binary_data.s'
     expected: True
 
   - yaml: 'yaml/call_between_3_and_9.yml'
-    assembly: 'binary/binary_data.s'
+    assembly: 'assembly/binary_data.s'
     expected: True
 
   - yaml: 'yaml/moonbounce_regex_matcher.yaml'
-    assembly: 'binary/moonbounce_malware_truncated.s'
+    assembly: 'assembly/moonbounce_malware_truncated.s'
     expected: True
 
   - yaml: 'yaml/1_call.yml'
-    assembly: 'binary/binary_data.s'
+    assembly: 'assembly/binary_data.s'
     expected: True

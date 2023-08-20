@@ -8,6 +8,15 @@ patterns:
           - endbr64
           - nopw
         operands:
+          include_list:
+            inst:
+              - rx
+              - rd
+              - rax
+
+          exclude_list:
+
+
 
       exclude_list:
         inst:

@@ -2,32 +2,21 @@
 from abc import ABC, abstractmethod
 import subprocess
 from typing import List, Optional
-from dataclasses import dataclass
 from pyparsing import ParseResults, ParserElement
 
 from src.logging_config import logger
-from src.stringify_asm_generation.parsing.pyparsing_binary_rules import parsed
-from src.global_definitions import PathStr
+from src.stringify_asm.pyparsing_binary_rules import parsed
+from src.global_definitions import PathStr, InstructionObserver, Instruction
 from src.measure_performance import measure_performance
 
-
-
-@dataclass
-class Instruction:
-    'Main instruction class for match patterns'
-    mnemonic: str
-    operands: List[str]
-
-    def stringify(self) -> str:
-        'Method for returning instruction as a string'
-        return self.mnemonic + ',' + ','.join(self.operands)
 
 
 class BinaryParser(ABC):
     'Base class for Binary Parser'
     @abstractmethod
-    def parse(self, file: PathStr) -> str:
+    def parse(self, filename: PathStr, instruction_observers: List[InstructionObserver]) -> str:
         'Method for creating parsing assembly implementation'
+
 
     @abstractmethod
     def dissasemble(self, binary: str, output_path: PathStr) -> None:
@@ -36,13 +25,14 @@ class BinaryParser(ABC):
 
 class Parser(BinaryParser):
     'Main class to implement the BinaryParser'
-    def __init__(self, parser: 'ParserImplementation', disassembler: 'DissasembleImplementation'):
+    def __init__(self, parser: 'ParserImplementation', disassembler: 'DissasembleImplementation') -> None:
         self.parser_implementation = parser
         self.disassembler_implementation = disassembler
 
-    def parse(self, file: PathStr) -> str:
+    def parse(self, filename: PathStr, instruction_observers: List[InstructionObserver]) -> str:
         'Parse implementation'
-        self.parser_implementation.set_binary_and_parse_it(file=file)
+        self.parser_implementation.set_binary_and_parse_it(file=filename)
+        self.parser_implementation.set_observers(instruction_observers=instruction_observers)
 
         stringify_binary = self.parser_implementation.parse()
 
@@ -65,6 +55,7 @@ class ParserImplementation():
     'Parse Implementation'
     def __init__(self) -> None:
         self.parsed_binary: Optional[ParseResults] = None
+        self.instruction_observers: Optional[List[InstructionObserver]] = None
 
     def _open_assembly(self, file: PathStr) -> str:
     # Read the binary file
@@ -78,7 +69,6 @@ class ParserImplementation():
     def _execute_pyparsing(self, binary: str) -> ParseResults:
         parsed.parse_with_tabs()
         parsed_instructions = parsed.parse_string(binary)
-        logger.debug(parsed_instructions.as_dict())
 
         return parsed_instructions
 
@@ -91,33 +81,47 @@ class ParserImplementation():
         for inst in parsed_instructions:
             logger.debug("The parsed is: %s", inst)
 
-        if isinstance(parsed_instructions, ParseResults):
-            return parsed_instructions
+        if not isinstance(parsed_instructions, ParseResults):
+            raise ValueError(f"Return ParseResults are not of ParseResult type: {parsed_instructions}" +
+                             f"The type returned is {type(parsed_instructions)}")
 
-        raise ValueError(f"Return ParseResults: {parsed_instructions}")
+        return parsed_instructions
 
-    def _join_all_instructions(self, instruction_lst: List[Instruction]) -> str:
-        result = ''
-        for inst in instruction_lst:
-            result += inst.stringify() + '|'
-        return result
 
     def _parse_instruction(self, inst: ParserElement) -> Instruction:
-        parsed_inst = inst.as_list()[0] #type: ignore
+        parsed_inst = inst.as_list()[0] #type: ignore  // as_list() method is not recognized as method of ParseElement
         mnemonic = parsed_inst[0]
         operands = parsed_inst[1:]
         return Instruction(mnemonic=mnemonic, operands=operands)
 
+    def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
+        'Set a list of observers to be notified when an instruction is found'
+        self.instruction_observers = instruction_observers
+
+    def run_observers(self, instruction_list: List[Instruction]) -> str:
+        'Observe all instructions using all observers'
+
+        if self.instruction_observers is None:
+            raise NotImplementedError("instruction_observers not set yet. Call set_observers() first")
+
+
+        result_str = ''
+        for observer in self.instruction_observers:
+            for inst in instruction_list:
+                observer.observe_instruction(inst=inst)
+            result_str += observer.finalize()
+
+        return result_str
+
+
     def _generate_string_divided_by_bars(self) -> str:
-        instructions = []
         if self.parsed_binary is None:
-            raise NotImplementedError("Error. Execute parse_binary() to setup a binary first")
+            raise NotImplementedError("Error. Call parse_binary() to setup a binary first")
 
-        for elem in self.parsed_binary:
-            inst = self._parse_instruction(elem)
-            instructions.append(inst)
+        instruction_list = [self._parse_instruction(inst) for inst in self.parsed_binary]
 
-        string_divided_by_bars = self._join_all_instructions(instructions)
+        string_divided_by_bars = self.run_observers(instruction_list=instruction_list)
+
         logger.info("The concatenated instructions are:\n %s\n", string_divided_by_bars)
         return string_divided_by_bars
 
