@@ -3,10 +3,9 @@
 from typing import Any
 import yaml
 
-
 from src.logging_config import logger
-from src.regex_generation.instruction_processor import AnyInstructionProcessor, NotInstructionProcessor
-from src.regex_generation.instruction_processor import SimpleInstructionProcessor
+from src.regex.instruction_processor import AnyInstructionProcessor, NotInstructionProcessor
+from src.regex.instruction_processor import SingleInstructionProcessor
 from src.global_definitions import IGNORE_ARGS, Pattern, PathStr, PatternDict
 
 
@@ -21,6 +20,7 @@ class Yaml2Regex:
         with open(file=file, mode='r', encoding='utf-8') as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
+
     @staticmethod
     def process_dict_pattern(pattern: PatternDict) -> str:
         'Dispatch dict pattern. Resolve if pattern is $any, $not or $basic'
@@ -32,7 +32,8 @@ class Yaml2Regex:
                 pattern = pattern['$not']
                 return NotInstructionProcessor(pattern).process()
             case _:
-                return SimpleInstructionProcessor(pattern).process()
+                return SingleInstructionProcessor(pattern).process()
+
 
     def handle_pattern(self, pattern: Pattern) -> str:
         'Dispatch pattern based on its type: str or dict'
@@ -42,7 +43,6 @@ class Yaml2Regex:
         if isinstance(pattern, str):
             return f"({pattern}{IGNORE_ARGS})"
 
-        # TODO implementar excepcion para tipos no soportados por el programa  # pylint: disable=[w0511]
         raise ValueError("Pattern type not valid")
 
 
