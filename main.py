@@ -45,6 +45,16 @@ def set_debugging_correct_levels(debug: bool, info: bool ) -> None:
     if debug:
         enable_debugging()
 
+def _set_match_results(match_result: List[str]) -> bool:
+    if len(match_result) == 0:
+        logger.info("RESULT: Pattern not found\n")
+        return False
+
+    logger.info("RESULT: Found a match:")
+    for matched_pattern in match_result:
+        logger.info("Pattern: %s\n", matched_pattern)
+    return True
+
 
 def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional[str] = None,
           debug: bool = False, info: bool = True
@@ -69,14 +79,7 @@ def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional
 
     match_result = run_regex_rule(regex_rule=regex_rule, stringify_binary=stringify_binary)
 
-    if len(match_result) == 0:
-        logger.info("RESULT: Pattern not found\n")
-        return False
-
-    logger.info("RESULT: Found a match:")
-    for matched_pattern in match_result:
-        logger.info("Pattern: %s\n", matched_pattern)
-    return True
+    return _set_match_results(match_result=match_result)
 
 
 def _create_log_folder_if_not_exists() -> Path:

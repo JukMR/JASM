@@ -79,7 +79,6 @@ class InstructionProcessor:
 
         if times_regex is not None:
             return f"((?!{exclude_list_regex})({include_list_regex})){times_regex}"
-
         return f"((?!{exclude_list_regex})({include_list_regex}))"
 
 
