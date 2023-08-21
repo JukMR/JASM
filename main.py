@@ -13,16 +13,17 @@ from src.measure_performance import measure_performance
 from src.logging_config import enable_debugging, enable_info_level, add_log_file, logger
 
 
-
 @measure_performance(title="Run regex")
 def run_regex_rule(regex_rule: str, stringify_binary: str) -> List[Any]:
     'Function to execute the regex pattern in the assembly'
+
     result = re.findall(pattern=regex_rule, string=stringify_binary)
     return result
 
 
 def parse_args_from_console() -> argparse.Namespace:
     'Get and parse user arguments'
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--pattern', required=True, help='Input pattern for parsing')
     parser.add_argument('--debug', default=False, action='store_true', help='Set debugging level')
@@ -41,8 +42,9 @@ def parse_args_from_console() -> argparse.Namespace:
     return parsed_args
 
 
-def set_debugging_correct_levels(debug: bool, info: bool ) -> None:
+def set_debugging_correct_levels(debug: bool, info: bool) -> None:
     'Configure logger based on given log level'
+
     if info:
         enable_info_level()
     if debug:
@@ -61,6 +63,7 @@ def _set_match_results(match_result: List[str]) -> bool:
 
 
 def get_observer_list() -> List[InstructionObserver]:
+
     'Get observers_list'
     instruction_observers: List[InstructionObserver] = [InstructionsAppender()]
     return instruction_observers
@@ -96,6 +99,7 @@ def match(pattern_pathstr: str, binary: Optional[str] = None, assembly: Optional
 
 
 def _create_log_folder_if_not_exists() -> Path:
+
     'Create log folder'
     folder = Path('logs')
     folder.mkdir(parents=True, exist_ok=True)
@@ -108,6 +112,7 @@ def _get_current_date() -> str:
 
 if __name__ == "__main__":
     # Create log file
+
     date = _get_current_date()
     logs_folder = _create_log_folder_if_not_exists()
 

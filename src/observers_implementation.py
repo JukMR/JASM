@@ -4,6 +4,7 @@ from src.global_definitions import InstructionObserver, Instruction
 
 class InstructionsAppender(InstructionObserver):
     'InstructionObserver implementation that only concatenates instructions'
+
     def __init__(self) -> None:
         self.str_binary = ''
 

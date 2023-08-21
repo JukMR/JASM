@@ -1,6 +1,6 @@
 'Binary Parser module'
-from abc import ABC, abstractmethod
 import subprocess
+from abc import ABC, abstractmethod
 from typing import List, Optional
 from pyparsing import ParseResults, ParserElement
 
@@ -8,7 +8,6 @@ from src.logging_config import logger
 from src.stringify_asm.pyparsing_binary_rules import parsed
 from src.global_definitions import PathStr, InstructionObserver, Instruction
 from src.measure_performance import measure_performance
-
 
 
 class BinaryParser(ABC):
@@ -25,12 +24,14 @@ class BinaryParser(ABC):
 
 class Parser(BinaryParser):
     'Main class to implement the BinaryParser'
+
     def __init__(self, parser: 'ParserImplementation', disassembler: 'DissasembleImplementation') -> None:
         self.parser_implementation = parser
         self.disassembler_implementation = disassembler
 
     def parse(self, filename: PathStr, instruction_observers: List[InstructionObserver]) -> str:
         'Parse implementation'
+
         self.parser_implementation.set_binary_and_parse_it(file=filename)
         self.parser_implementation.set_observers(instruction_observers=instruction_observers)
 
@@ -44,24 +45,25 @@ class Parser(BinaryParser):
 
     def dissasemble(self, binary: str, output_path: PathStr) -> None:
         'Dissasembler implementation'
+
         self.disassembler_implementation.set_binary(binary=binary)
         self.disassembler_implementation.set_output_path(output_path=output_path)
 
         return self.disassembler_implementation.dissasemble()
 
 
-
 class ParserImplementation():
     'Parse Implementation'
+
     def __init__(self) -> None:
         self.parsed_binary: Optional[ParseResults] = None
         self.instruction_observers: Optional[List[InstructionObserver]] = None
 
     def _open_assembly(self, file: PathStr) -> str:
-    # Read the binary file
+        'Read the binary file'
+
         with open(file, "r", encoding='utf-8') as file_d:
             binary = file_d.read()
-            logger.debug(binary.encode('utf-8'))
 
         return binary
 
@@ -96,6 +98,7 @@ class ParserImplementation():
 
     def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
         'Set a list of observers to be notified when an instruction is found'
+
         self.instruction_observers = instruction_observers
 
     def run_observers(self, instruction_list: List[Instruction]) -> str:
@@ -137,6 +140,7 @@ class ParserImplementation():
 
 class DissasembleImplementation:
     'Dissasembler Implementation'
+
     def __init__(self) -> None:
         self.binary: Optional[str] = None
         self.output_path: Optional[PathStr] = None
@@ -188,6 +192,7 @@ class DissasembleImplementation:
 
     def dissasemble(self) -> None:
         'Dissasemble with objdump by_default'
+
         if self.dissasemble_program is None:
             raise NotImplementedError("dissasemble_program not set yet."
                                       + "Should call set_dissasemble_program() first.")

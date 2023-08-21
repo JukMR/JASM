@@ -14,6 +14,7 @@ logger.setLevel(logging.DEBUG)
 
 def add_log_file(filename: str) -> None:
     'Add a log file'
+
     handler = logging.FileHandler(f"{filename}.log")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
@@ -23,8 +24,10 @@ def add_log_file(filename: str) -> None:
 
 def enable_debugging() -> None:
     'Logger: Set DEBUG level'
+
     logger.setLevel(logging.DEBUG)
 
 def enable_info_level() -> None:
     'Logger: Set INFO level'
+
     logger.setLevel(logging.INFO)
