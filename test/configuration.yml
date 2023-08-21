@@ -1,25 +1,25 @@
 test_configs:
-  - yaml: "yaml/9_calls.yml"
+  - yaml: "yaml/9_calls.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/10_calls.yml"
+  - yaml: "yaml/10_calls.yaml"
     assembly: "assembly/binary_data.s"
     expected: False
 
-  - yaml: "yaml/exclude_list.yml"
+  - yaml: "yaml/exclude_list.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/not_call.yml"
+  - yaml: "yaml/not_call.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/include_and_include_list.yml"
+  - yaml: "yaml/include_and_include_list.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/call_between_3_and_9.yml"
+  - yaml: "yaml/call_between_3_and_9.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
@@ -27,7 +27,7 @@ test_configs:
     assembly: "assembly/moonbounce_malware_truncated.s"
     expected: True
 
-  - yaml: "yaml/1_call.yml"
+  - yaml: "yaml/1_call.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
