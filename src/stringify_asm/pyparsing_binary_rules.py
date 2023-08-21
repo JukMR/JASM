@@ -1,13 +1,28 @@
-
-'Pyparsing assembly matching rules'
-from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore
-from pyparsing import printables, hexnums, line_end, python_style_comment, Optional, alphanums
+"Pyparsing assembly matching rules"
+from pyparsing import (
+    Word,
+    Suppress,
+    ParserElement,
+    Group,
+    SkipTo,
+    Literal,
+    OneOrMore,
+    ZeroOrMore,
+)
+from pyparsing import (
+    printables,
+    hexnums,
+    line_end,
+    python_style_comment,
+    Optional,
+    alphanums,
+)
 
 
 # Set default whitespace
 # This is done to be able to parse the end of line '\n'
 # By default pyparsing will ignore newlines and whitespaces
-I_CONSIDER_WHITESPACES_TO_BE_ONLY = ' '
+I_CONSIDER_WHITESPACES_TO_BE_ONLY = " "
 ParserElement.set_default_whitespace_chars(I_CONSIDER_WHITESPACES_TO_BE_ONLY)
 
 
@@ -15,9 +30,9 @@ ParserElement.set_default_whitespace_chars(I_CONSIDER_WHITESPACES_TO_BE_ONLY)
 # GRAMMAR
 
 HEX = Word(hexnums)
-COLON = ':'
-LESS_THAN = '<'
-GREATER_THAN = '>'
+COLON = ":"
+LESS_THAN = "<"
+GREATER_THAN = ">"
 
 many_line_end = Suppress(OneOrMore(line_end))
 
@@ -33,17 +48,14 @@ FINI = Optional(Suppress(fini_section_title))
 
 comment = Suppress(python_style_comment)
 
-TAB = Suppress(Literal('\t'))
+TAB = Suppress(Literal("\t"))
 instruction_addr = Suppress(HEX + COLON) + TAB
 
 
-hex_coding = Suppress(Group(
-                OneOrMore(Word(hexnums, exact=2))
-                + Optional(TAB))
-                )
+hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 
 mnemonic = Word(alphanums)
-operand = Word(printables, exclude_chars='#,') + Suppress(Optional(Literal(',')))
+operand = Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 
 operation = Group(mnemonic + ZeroOrMore(operand))
 
@@ -51,13 +63,7 @@ operation = Group(mnemonic + ZeroOrMore(operand))
 instruction_code = Optional(Group(OneOrMore(operation)))
 
 
-inst = (
-        instruction_addr
-        + hex_coding
-        + instruction_code
-        + Optional(comment)
-        + many_line_end
-        )
+inst = instruction_addr + hex_coding + instruction_code + Optional(comment) + many_line_end
 
 line = label | inst
 lines = OneOrMore(line)
@@ -69,8 +75,4 @@ fini_section = Optional(FINI + lines)
 Start_of_file = Suppress(SkipTo(Literal("Disassembly")))
 
 # Parse the binary file
-parsed = (Start_of_file
-          + init_section
-          + text_section
-          + fini_section
-          )
+parsed = Start_of_file + init_section + text_section + fini_section
