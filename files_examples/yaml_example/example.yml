@@ -6,18 +6,26 @@ patterns:
         inst:
           - nop
           - int3
-      min: 0
-      max: 3
+      times:
+        min: 0
+        max: 3
   - $any:
       exclude_list:
         inst:
           - ret
-      min: 0
-      max: 4
+      times:
+        min: 0
+        max: 4
   - call
   - $not:
       - ret
   - mov:
       operands:
-        - esp
-        - $lit
+        include_list:
+          inst:
+            - esp
+            - $lit
+        exclude_list:
+          inst:
+            - rdx
+

@@ -8,6 +8,8 @@ patterns:
       times:
         min: 0
         max: 3
+      operands:
+
   - call
   - $any:
       exclude_list:
@@ -15,6 +17,10 @@ patterns:
           - ret
       times:
         max: 8
+      operands:
+
   - sub:
       operands:
-        - rsp
+        include_list:
+          inst:
+            - rsp
