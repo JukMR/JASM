@@ -89,9 +89,9 @@ def match(
     return _set_match_results(match_result=match_result)
 
 
-if __name__ == "__main__":
-    # Create log file
-
+@measure_performance(title="Main function")
+def main() -> None:
+    "Main function"
     args = parse_args_from_console()
 
     configure_logger(
@@ -103,3 +103,7 @@ if __name__ == "__main__":
 
     print("Starting execution... ")
     match(pattern_pathstr=args.pattern, assembly=args.assembly, binary=args.binary)
+
+
+if __name__ == "__main__":
+    main()
