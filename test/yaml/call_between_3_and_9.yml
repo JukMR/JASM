@@ -1,5 +1,13 @@
 ---
 patterns:
+  - push:
+      operands:
+        include_list:
+          inst:
+            - "%rax"
+        exclude_list:
+          inst:
+            - "%rex"
   - call:
       times:
         min: 3
@@ -32,3 +40,13 @@ patterns:
       times:
         min: 2
         max: 2
+      operands:
+        include_list:
+          inst:
+            - "%rsi"
+            - "%rbp"
+            - "%fs:0x28"
+            - "%rax"
+        exclude_list:
+          inst:
+            - "%rsd"

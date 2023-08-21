@@ -11,5 +11,5 @@ patterns:
   - call
   - $not:
       inst:
-      - call
+        - call
   - endbr64

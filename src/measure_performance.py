@@ -1,4 +1,4 @@
-'Performance measure wrapper module'
+"Performance measure wrapper module"
 
 from typing import Optional, Callable, Any
 import time
@@ -7,13 +7,13 @@ from src.logging_config import logger
 
 
 def measure_performance(title: Optional[str] = None) -> Callable[..., Any]:
-    'Function to test performance'
+    "Function to test performance"
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-        'Decorator to add a custom title to this function'
+        "Decorator to add a custom title to this function"
 
         def wrapper(*args: Any, **kwargs: Any) -> Any:
-            'Main wrapper to run perf'
+            "Main wrapper to run perf"
 
             start_time = time.time()
             result = func(*args, **kwargs)
@@ -26,5 +26,7 @@ def measure_performance(title: Optional[str] = None) -> Callable[..., Any]:
                 logger.info("Function '%s' took %f seconds to execute.", func.__name__, execution_time)
 
             return result
+
         return wrapper
+
     return decorator

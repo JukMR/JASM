@@ -1,3 +1,7 @@
 ---
 patterns:
-  - call
+  - call:
+      operands:
+        include_list:
+          inst:
+            - '\*0x1dc6b'

@@ -1,4 +1,4 @@
-'File2regex Yaml implementation module'
+"File2regex Yaml implementation module"
 
 from typing import Any
 from abc import ABC, abstractmethod
@@ -16,48 +16,48 @@ class File2Regex(ABC):
 
     @abstractmethod
     def load_file(self, file) -> Any:
-        'Base method to load a file'
+        "Base method to load a file"
 
     @abstractmethod
     def produce_regex(self):
-        'Main method to produce the regex'
+        "Main method to produce the regex"
 
 
 class Yaml2Regex(File2Regex):
-    'File2Regex class implementation with Yaml'
+    "File2Regex class implementation with Yaml"
 
     def __init__(self, pattern_pathstr: PathStr) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
 
     @staticmethod
     def _read_yaml(file: PathStr) -> Any:
-        'Read and return the parsed yaml'
+        "Read and return the parsed yaml"
 
-        with open(file=file, mode='r', encoding='utf-8') as file_descriptor:
+        with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
     def load_file(self, file) -> Any:
-        'Load file to Yaml2Regex'
+        "Load file to Yaml2Regex"
 
         return self._read_yaml(file=file)
 
     @staticmethod
     def _process_dict_dispatcher(pattern: PatternDict) -> str:
-        'Dispatch dict pattern. Resolve if pattern is $any, $not or $basic'
+        "Dispatch dict pattern. Resolve if pattern is $any, $not or $basic"
 
         dict_keys = pattern.keys()
         match list(dict_keys)[0]:
-            case '$any':
-                pattern = pattern['$any']
+            case "$any":
+                pattern = pattern["$any"]
                 return AnyDirectiveProcessor(pattern).process()
-            case '$not':
-                pattern = pattern['$not']
+            case "$not":
+                pattern = pattern["$not"]
                 return NotDirectiveProcessor(pattern).process()
             case _:
                 return SingleDirectiveProcessor(pattern).process()
 
     def _handle_pattern(self, pattern: Pattern) -> str:
-        'Dispatch pattern based on its type: str or dict'
+        "Dispatch pattern based on its type: str or dict"
 
         if isinstance(pattern, dict):
             return self._process_dict_dispatcher(pattern)
@@ -67,13 +67,13 @@ class Yaml2Regex(File2Regex):
         raise ValueError("Pattern type not valid")
 
     def produce_regex(self) -> str:
-        'Handle all patterns and returns the final regex string'
+        "Handle all patterns and returns the final regex string"
 
-        output_regex = ''
-        for com in self.loaded_file['patterns']:
+        output_regex = ""
+        for com in self.loaded_file["patterns"]:
             output_regex += self._handle_pattern(pattern=com)
 
         # Log regex results
-        logger.info(msg=f"The output regex is:\n {output_regex}\n")
+        logger.info("The output regex is:\n %s\n", output_regex)
 
         return output_regex

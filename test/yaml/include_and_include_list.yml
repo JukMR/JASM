@@ -16,8 +16,6 @@ patterns:
 
           exclude_list:
 
-
-
       exclude_list:
         inst:
           - not
