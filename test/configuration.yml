@@ -34,3 +34,11 @@ test_configs:
   - yaml: "yaml/moonbounce_regex_matcher.yaml"
     assembly: "assembly/moonbounce_malware_short.s"
     expected: True
+
+  - yaml: "yaml/smc.yaml"
+    assembly: "assembly/smc.s"
+    expected: True
+
+  # - yaml: "yaml/smc.yaml"
+  #   binary: "binary/smc"
+  #   expected: True

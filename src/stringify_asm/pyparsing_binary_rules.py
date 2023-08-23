@@ -1,14 +1,6 @@
 "Pyparsing assembly matching rules"
-from pyparsing import (
-    Word,
-    Suppress,
-    ParserElement,
-    Group,
-    SkipTo,
-    Literal,
-    OneOrMore,
-    ZeroOrMore,
-)
+from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore
+
 from pyparsing import (
     printables,
     hexnums,
@@ -36,15 +28,13 @@ GREATER_THAN = ">"
 
 many_line_end = Suppress(OneOrMore(line_end))
 
-init_section_title = "Disassembly of section .init:" + many_line_end
-text_section_title = "Disassembly of section .text:" + many_line_end
-fini_section_title = "Disassembly of section .fini:" + many_line_end
+section_name = Word(printables, exclude_chars=":") + ":"
+section_title = "Disassembly of section" + section_name + many_line_end
+
 
 label = Suppress(HEX + LESS_THAN + Word(printables, exclude_chars=GREATER_THAN) + GREATER_THAN + COLON + line_end)
 
-INIT = Optional(Suppress(init_section_title))
-TEXT = Optional(Suppress(text_section_title))
-FINI = Optional(Suppress(fini_section_title))
+SECTION_HEADER = Optional(Suppress(section_title))
 
 comment = Suppress(python_style_comment)
 
@@ -68,11 +58,9 @@ inst = instruction_addr + hex_coding + instruction_code + Optional(comment) + ma
 line = label | inst
 lines = OneOrMore(line)
 
-init_section = Optional(INIT + lines)
-text_section = Optional(TEXT + lines)
-fini_section = Optional(FINI + lines)
+section = SECTION_HEADER + lines
 
 Start_of_file = Suppress(SkipTo(Literal("Disassembly")))
 
 # Parse the binary file
-parsed = Start_of_file + init_section + text_section + fini_section
+parsed = Start_of_file + OneOrMore(section)
