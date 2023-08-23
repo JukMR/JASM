@@ -1,0 +1,7 @@
+---
+patterns:
+  - movb:
+      operands:
+        include_list:
+          inst:
+            - "%rip"
