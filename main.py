@@ -11,7 +11,7 @@ from src.stringify_asm.observer_abstract import InstructionObserver
 from src.stringify_asm.observers_implementation import InstructionsAppender
 
 
-@measure_performance(title="Run regex")
+@measure_performance(perf_title="Run regex")
 def run_regex_rule(regex_rule: str, stringify_binary: str) -> List[Any]:
     "Function to execute the regex pattern in the assembly"
 
@@ -89,7 +89,7 @@ def match(
     return _set_match_results(match_result=match_result)
 
 
-@measure_performance(title="Main function")
+@measure_performance(perf_title="Main function")
 def main() -> None:
     "Main function"
     args = parse_args_from_console()

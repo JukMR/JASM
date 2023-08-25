@@ -25,7 +25,7 @@ class ParserImplementation:
 
         return binary
 
-    @measure_performance(title="Pyparsing")
+    @measure_performance(perf_title="Pyparsing")
     def _execute_pyparsing(self, binary: str) -> ParseResults:
         parsed.parse_with_tabs()
         parsed_instructions = parsed.parse_string(binary)
@@ -90,7 +90,7 @@ class ParserImplementation:
 
         self.parsed_binary = self._run_pyparsing(file=file)
 
-    @measure_performance(title="Parse Instructions")
+    @measure_performance(perf_title="Parse Instructions")
     def parse(self) -> str:
         "Main parse function"
 
