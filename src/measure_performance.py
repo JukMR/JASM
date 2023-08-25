@@ -6,7 +6,7 @@ import time
 from src.logging_config import logger
 
 
-def measure_performance(title: Optional[str] = None) -> Callable[..., Any]:
+def measure_performance(perf_title: Optional[str] = None) -> Callable[..., Any]:
     "Function to test performance"
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -14,6 +14,8 @@ def measure_performance(title: Optional[str] = None) -> Callable[..., Any]:
 
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             "Main wrapper to run perf"
+
+            title = kwargs.pop("_measure_performance_title", perf_title)
 
             start_time = time.time()
             result = func(*args, **kwargs)
