@@ -1,44 +1,44 @@
 test_configs:
-  - yaml: "yaml/9_calls.yaml"
+  - yaml: "yamls/9_calls.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/10_calls.yaml"
+  - yaml: "yamls/10_calls.yaml"
     assembly: "assembly/binary_data.s"
     expected: False
 
-  - yaml: "yaml/exclude_list.yaml"
+  - yaml: "yamls/exclude_list.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/not_call.yaml"
+  - yaml: "yamls/not_call.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/include_and_include_list.yaml"
+  - yaml: "yamls/include_and_include_list.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/call_between_3_and_9.yaml"
+  - yaml: "yamls/call_between_3_and_9.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/moonbounce_regex_matcher.yaml"
+  - yaml: "yamls/moonbounce_regex_matcher.yaml"
     assembly: "assembly/moonbounce_malware_truncated.s"
     expected: True
 
-  - yaml: "yaml/1_call.yaml"
+  - yaml: "yamls/1_call.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - yaml: "yaml/moonbounce_regex_matcher.yaml"
+  - yaml: "yamls/moonbounce_regex_matcher.yaml"
     assembly: "assembly/moonbounce_malware_short.s"
     expected: True
 
-  - yaml: "yaml/smc.yaml"
+  - yaml: "yamls/smc.yaml"
     assembly: "assembly/smc.s"
     expected: True
 
-  # - yaml: "yaml/smc.yaml"
+  # - yaml: "yamls/smc.yaml"
   #   binary: "binary/smc"
   #   expected: True
