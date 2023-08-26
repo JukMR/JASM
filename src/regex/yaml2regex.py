@@ -1,6 +1,6 @@
 "File2regex Yaml implementation module"
 
-from typing import Any
+from typing import Any, Dict
 from abc import ABC, abstractmethod
 import yaml
 
@@ -48,10 +48,10 @@ class Yaml2Regex(File2Regex):
         dict_keys = pattern.keys()
         match list(dict_keys)[0]:
             case "$any":
-                pattern = pattern["$any"]
+                pattern: Dict[str, Any] = pattern["$any"]
                 return AnyDirectiveProcessor(pattern).process()
             case "$not":
-                pattern = pattern["$not"]
+                pattern: Dict[str, Any] = pattern["$not"]
                 return NotDirectiveProcessor(pattern).process()
             case _:
                 return SingleDirectiveProcessor(pattern).process()

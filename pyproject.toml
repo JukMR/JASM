@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "jasm-regex-generator"
+version = "0.5.0"
+description = "Juli Asm regex generator"
+authors = ["Julian Merida <julianmr97@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^7.4.0"
+pyparsing = "^3.1.1"
+pathlib = "^1.0.1"
+logging = "^0.4.9.6"
+argparse = "^1.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
