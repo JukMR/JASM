@@ -39,6 +39,6 @@ test_configs:
     assembly: "assembly/smc.s"
     expected: True
 
-  # - yaml: "yamls/smc.yaml"
-  #   binary: "binary/smc"
-  #   expected: True
+  - yaml: "yamls/smc.yaml"
+    binary: "binary/smc"
+    expected: True

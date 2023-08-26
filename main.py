@@ -25,6 +25,7 @@ def parse_args_from_console() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--pattern", required=True, help="Input pattern for parsing")
     parser.add_argument("--debug", default=False, action="store_true", help="Set debugging level")
+    parser.add_argument("--dissasemble_program", default="objdump", help="Set the program to use as dissasembler")
     parser.add_argument("--info", default=True, action="store_true", help="Set info level")
     parser.add_argument(
         "--disable_logging_to_file", default=False, action="store_true", help="Disable logging to logfile"
@@ -64,6 +65,7 @@ def get_observer_list() -> List[InstructionObserver]:
 
 def match(
     pattern_pathstr: str,
+    dissasemble_program: str,
     binary: Optional[str] = None,
     assembly: Optional[str] = None,
 ) -> bool:
@@ -77,7 +79,7 @@ def match(
     if assembly:
         stringify_binary = parser_implementation.parse(filename=assembly, instruction_observers=instruction_observers)
     elif binary:
-        parser_implementation.dissasemble(binary=binary, output_path="tmp_dissasembly.s")
+        parser_implementation.dissasemble(binary=binary, output_path="tmp_dissasembly.s", program=dissasemble_program)
         stringify_binary = parser_implementation.parse(
             filename="tmp_dissasembly.s", instruction_observers=instruction_observers
         )
@@ -102,7 +104,12 @@ def main() -> None:
     )
 
     print("Starting execution... ")
-    match(pattern_pathstr=args.pattern, assembly=args.assembly, binary=args.binary)
+    match(
+        pattern_pathstr=args.pattern,
+        assembly=args.assembly,
+        binary=args.binary,
+        dissasemble_program=args.dissasemble_program,
+    )
 
 
 if __name__ == "__main__":
