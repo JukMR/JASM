@@ -43,10 +43,11 @@ class Parser(BinaryParser):
 
         return stringify_binary
 
-    def dissasemble(self, binary: str, output_path: PathStr) -> None:
+    def dissasemble(self, binary: str, output_path: PathStr, program: str) -> None:
         "Dissasembler implementation"
 
         self.disassembler_implementation.set_binary(binary=binary)
         self.disassembler_implementation.set_output_path(output_path=output_path)
+        self.disassembler_implementation.set_dissasemble_program(program=program)
 
         return self.disassembler_implementation.dissasemble()
