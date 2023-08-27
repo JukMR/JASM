@@ -23,4 +23,4 @@ patterns:
       operands:
         include_list:
           inst:
-            - '%rsp'
+            - "rsp"
