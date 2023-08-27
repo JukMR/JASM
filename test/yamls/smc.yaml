@@ -4,4 +4,4 @@ patterns:
       operands:
         include_list:
           inst:
-            - "%rip"
+            - "rip"
