@@ -4,10 +4,10 @@ patterns:
       operands:
         include_list:
           inst:
-            - "%rax"
+            - "rax"
         exclude_list:
           inst:
-            - "%rex"
+            - "rex"
   - call:
       times:
         min: 3
@@ -43,10 +43,10 @@ patterns:
       operands:
         include_list:
           inst:
-            - "%rsi"
-            - "%rbp"
-            - "%fs:0x28"
-            - "%rax"
+            - "rsi"
+            - "rbp"
+            - "fs:0x28"
+            - "rax"
         exclude_list:
           inst:
-            - "%rsd"
+            - "rsd"
