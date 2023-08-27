@@ -45,7 +45,7 @@ instruction_addr = Suppress(HEX + COLON) + TAB
 hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 
 mnemonic = Word(alphanums)
-operand = Suppress(Optional("%")) + Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
+operand = Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 
 operation = Group(mnemonic + ZeroOrMore(operand))
 
