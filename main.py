@@ -79,6 +79,8 @@ def match(
     if assembly:
         stringify_binary = parser_implementation.parse(filename=assembly, instruction_observers=instruction_observers)
     elif binary:
+        if dissasemble_program is None:
+            raise ValueError("Dissasemble program not set")
         parser_implementation.dissasemble(binary=binary, output_path="tmp_dissasembly.s", program=dissasemble_program)
         stringify_binary = parser_implementation.parse(
             filename="tmp_dissasembly.s", instruction_observers=instruction_observers
