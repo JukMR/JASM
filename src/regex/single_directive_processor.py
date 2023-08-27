@@ -2,7 +2,7 @@
 
 from typing import List, Dict, Any
 from src.regex.directive_processor import DirectiveProcessor
-from src.global_definitions import PatternDict, IncludeExcludeListType, OperandType
+from src.global_definitions import PatternDict, IncludeExcludeListType, OperandListType
 
 
 class SingleDirectiveProcessor(DirectiveProcessor):
@@ -44,5 +44,5 @@ class SingleDirectiveProcessor(DirectiveProcessor):
 
         return instruction_properties
 
-    def _get_operands(self) -> OperandType:
+    def _get_operands(self) -> OperandListType:
         return self._basic_properties.get("operands", None)

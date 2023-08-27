@@ -8,7 +8,7 @@ from src.global_definitions import (
     PatternDict,
     IncludeExcludeListType,
     TimesType,
-    OperandType,
+    OperandListType,
 )
 from src.regex.common_functions import join_instructions
 from src.regex.operands_handler import OperandsHandler
@@ -22,7 +22,7 @@ class DirectiveProcessor:
     include_list: IncludeExcludeListType
     exclude_list: IncludeExcludeListType
     times: TimesType
-    operands: OperandType
+    operands: OperandListType
 
     @staticmethod
     def _generate_only_include(include_list_regex: List[str], times_regex: Optional[str], operands: str) -> str:
