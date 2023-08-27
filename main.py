@@ -25,7 +25,7 @@ def parse_args_from_console() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--pattern", required=True, help="Input pattern for parsing")
     parser.add_argument("--debug", default=False, action="store_true", help="Set debugging level")
-    parser.add_argument("--dissasemble_program", default="objdump", help="Set the program to use as dissasembler")
+    parser.add_argument("--dissasemble-program", default="objdump", help="Set the program to use as dissasembler")
     parser.add_argument("--info", default=True, action="store_true", help="Set info level")
     parser.add_argument(
         "--disable_logging_to_file", default=False, action="store_true", help="Disable logging to logfile"
@@ -65,9 +65,9 @@ def get_observer_list() -> List[InstructionObserver]:
 
 def match(
     pattern_pathstr: str,
-    dissasemble_program: str,
-    binary: Optional[str] = None,
-    assembly: Optional[str] = None,
+    dissasemble_program: Optional[str],
+    binary: Optional[str],
+    assembly: Optional[str],
 ) -> bool:
     "Main entry function"
 
