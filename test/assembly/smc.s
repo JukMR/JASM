@@ -87,7 +87,7 @@ Disassembly of section .text:
     10ef:	ff 15 e3 2e 00 00    	call   *0x2ee3(%rip)        # 3fd8 <__libc_start_main@GLIBC_2.34>
     10f5:	f4                   	hlt
     10f6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    10fd:	00 00 00 
+    10fd:	00 00 00
 
 0000000000001100 <deregister_tm_clones>:
     1100:	48 8d 3d 09 2f 00 00 	lea    0x2f09(%rip),%rdi        # 4010 <__TMC_END__>
@@ -126,7 +126,7 @@ Disassembly of section .text:
     117b:	75 2b                	jne    11a8 <__do_global_dtors_aux+0x38>
     117d:	55                   	push   %rbp
     117e:	48 83 3d 72 2e 00 00 	cmpq   $0x0,0x2e72(%rip)        # 3ff8 <__cxa_finalize@GLIBC_2.2.5>
-    1185:	00 
+    1185:	00
     1186:	48 89 e5             	mov    %rsp,%rbp
     1189:	74 0c                	je     1197 <__do_global_dtors_aux+0x27>
     118b:	48 8b 3d 76 2e 00 00 	mov    0x2e76(%rip),%rdi        # 4008 <__dso_handle>
@@ -181,7 +181,7 @@ Disassembly of section .text:
     121f:	41 5c                	pop    %r12
     1221:	c3                   	ret
     1222:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
-    1229:	00 00 00 00 
+    1229:	00 00 00 00
     122d:	0f 1f 00             	nopl   (%rax)
 
 0000000000001230 <change_page_permissions_of_address>:
@@ -223,7 +223,7 @@ Disassembly of section .text:
     1290:	b8 01 00 00 00       	mov    $0x1,%eax
     1295:	c3                   	ret
     1296:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-    129d:	00 00 00 
+    129d:	00 00 00
     12a0:	31 c0                	xor    %eax,%eax
     12a2:	c3                   	ret
 

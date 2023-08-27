@@ -15,4 +15,5 @@ PathStr: TypeAlias = str | Path
 
 IncludeExcludeListType: TypeAlias = Optional[List[str]]
 TimesType: TypeAlias = Optional[Dict[str, int]]
+OperandListType: TypeAlias = Optional[List[Any]]
 OperandType: TypeAlias = Optional[Dict[str, Any]]
