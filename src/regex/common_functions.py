@@ -28,8 +28,8 @@ def join_operands(operand_list: List[str], operand_ignore_number: str) -> str:
     if len(operand_list) == 0:
         raise ValueError("There are no operands to join")
 
-    regex_operands = [rf"[^\|]*{operand}{operand_ignore_number}" for operand in operand_list]
+    regex_operands = [rf"[^\|,]*{operand}{operand_ignore_number}" for operand in operand_list]
 
     joined_by_bar_operands = r"\||".join(regex_operands)
 
-    return joined_by_bar_operands + r"\|"
+    return joined_by_bar_operands
