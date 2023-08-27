@@ -1,6 +1,8 @@
 "Parser Implementation module"
 
-from typing import List, Optional
+from multiprocessing import Value
+import re
+from typing import List, Optional, Type
 from pyparsing import ParseResults, ParserElement
 
 from src.logging_config import logger
@@ -43,17 +45,61 @@ class ParserImplementation:
 
         if not isinstance(parsed_instructions, ParseResults):
             raise ValueError(
-                f"Return ParseResults are not of ParseResult type: {parsed_instructions}"
-                + f"The type returned is {type(parsed_instructions)}"
+                f"Return ParseResults are not of ParseResult type: {parsed_instructions}, {type(parsed_instructions)}"
             )
 
         return parsed_instructions
+
+    def _process_operand_elem(self, operand_elem: str) -> str:
+        "Process operand element"
+
+        if operand_elem[0] == "(" and operand_elem[-1] == ")":
+            return operand_elem
+
+        if "(" in operand_elem and ")" in operand_elem:
+            registry = re.findall(r"\([^\)]*\)", operand_elem)
+            if len(registry) != 1:
+                raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+
+            inmediate = operand_elem.replace(registry[0], "")
+
+            return f"{registry[0]}+{inmediate}"
+
+        if operand_elem[0] == "$" or operand_elem[0] == "%":
+            return operand_elem
+
+        if isinstance(operand_elem, List):
+            return f"{''.join(operand_elem[1])}+{operand_elem[0]}"
+        try:
+            int(operand_elem)
+            return operand_elem
+        except ValueError:
+            pass
+        except TypeError:
+            pass
+
+        if operand_elem[0] == "<" and operand_elem[-1] == ">":
+            return operand_elem
+
+        if operand_elem[0] == "*" and operand_elem[1] == "%":
+            return operand_elem
+
+        raise ValueError("Error in processing operand")
+
+    def parse_operands(self, operands: List[str]) -> List[str]:
+        "Parse operands"
+
+        return [self._process_operand_elem(operand_elem=operand) for operand in operands]
 
     def _parse_instruction(self, inst: ParserElement) -> Instruction:
         parsed_inst = inst.as_list()[0]  # type: ignore  // as_list() method is not recognized as method of ParseElement
         mnemonic = parsed_inst[0]
         operands = parsed_inst[1:]
-        return Instruction(mnemonic=mnemonic, operands=operands)
+
+        if len(operands) > 0:
+            operands_list = self.parse_operands(operands)
+            return Instruction(mnemonic=mnemonic, operands=operands_list)
+        return Instruction(mnemonic=mnemonic, operands=[])
 
     def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
         "Set a list of observers to be notified when an instruction is found"

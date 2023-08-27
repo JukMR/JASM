@@ -9,7 +9,7 @@ patterns:
           - nopw
         operands:
           include_list:
-            inst:
+            ops:
               - rx
               - rd
               - rax

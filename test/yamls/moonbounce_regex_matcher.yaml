@@ -21,6 +21,7 @@ patterns:
 
   - sub:
       operands:
-        include_list:
-          inst:
-            - "rsp"
+        - $any:
+          include_list:
+            ops:
+              - "rsp"

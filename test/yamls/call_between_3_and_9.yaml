@@ -2,12 +2,13 @@
 patterns:
   - push:
       operands:
-        include_list:
-          inst:
-            - "rax"
-        exclude_list:
-          inst:
-            - "rex"
+        - $any:
+            include_list:
+              ops:
+                - "%rax"
+            exclude_list:
+              ops:
+                - "%rex"
   - call:
       times:
         min: 3
@@ -41,12 +42,13 @@ patterns:
         min: 2
         max: 2
       operands:
-        include_list:
-          inst:
-            - "rsi"
-            - "rbp"
-            - "fs:0x28"
-            - "rax"
-        exclude_list:
-          inst:
-            - "rsd"
+        - $any:
+            include_list:
+              ops:
+                - "%rsi"
+                - "%rbp"
+                - "%fs:0x28"
+                - "%rax"
+            exclude_list:
+              ops:
+                - "%rsd"

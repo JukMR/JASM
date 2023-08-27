@@ -2,6 +2,7 @@
 patterns:
   - call:
       operands:
-        include_list:
-          inst:
-            - "0x1dc6b"
+        - $any:
+            include_list:
+              ops:
+                - "0x1dc6b"
