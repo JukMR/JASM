@@ -2,7 +2,7 @@
 
 from typing import List
 
-from src.global_definitions import SKIP_TO_ANY_OPERAND_CHARS, SKIP_TO_START_OF_OPERAND
+from src.global_definitions import SKIP_TO_ANY_OPERAND_CHARS
 
 
 def list_without_last_character(string: str) -> str:
@@ -31,19 +31,6 @@ def join_operands(operand_list: List[str], operand_ignore_number: str) -> str:
         raise ValueError("There are no operands to join")
 
     regex_operands = [f"{SKIP_TO_ANY_OPERAND_CHARS}{operand}{operand_ignore_number}" for operand in operand_list]
-
-    joined_by_bar_operands = "|".join(regex_operands)
-
-    return f"{joined_by_bar_operands}"
-
-
-def join_any_operands(operand_list: List[str], operand_ignore_number: str) -> str:
-    "Join operands from list using operand_ignore_number to generate regex"
-
-    if len(operand_list) == 0:
-        raise ValueError("There are no operands to join")
-
-    regex_operands = [f"{operand_ignore_number}{operand}{operand_ignore_number}" for operand in operand_list]
 
     joined_by_bar_operands = "|".join(regex_operands)
 

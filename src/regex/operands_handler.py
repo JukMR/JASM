@@ -8,7 +8,7 @@ from src.global_definitions import (
     OperandListType,
     OperandType,
 )
-from src.regex.common_functions import join_operands, join_any_operands
+from src.regex.common_functions import join_operands
 
 
 class OperandsHandler:
