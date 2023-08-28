@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional
 from src.global_definitions import (
     IGNORE_OPERANDS_NUMBER,
     IGNORE_ARGS,
+    SKIP_TO_END_COMMAND,
     IncludeExcludeListType,
     OperandListType,
     OperandType,
@@ -87,7 +88,7 @@ class OperandsHandler:
         if isinstance(operand_elem, str):
             if operand_elem == "$any":
                 return IGNORE_OPERANDS_NUMBER
-            return rf"([^,|]*{operand_elem}){{1}}[^,|]*,"
+            return rf"([^,|]*{operand_elem}{SKIP_TO_END_COMMAND}){{1}}"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
     def get_regex(self) -> str:
@@ -99,6 +100,6 @@ class OperandsHandler:
 
         operand_regex = [self._process_operand_elem(operand) for operand in self.operands]
 
-        operand_regex_str = "".join(operand_regex) + "[^|]*" + r"\|"
+        operand_regex_str = "".join(operand_regex)
 
         return operand_regex_str
