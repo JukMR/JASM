@@ -29,7 +29,7 @@ test_configs:
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - title: "moonbounce_regex_matcher"
+  - title: "moonbounce_regex_matcher_truncated"
     yaml: "yamls/moonbounce_regex_matcher.yaml"
     assembly: "assembly/moonbounce_malware_truncated.s"
     expected: True
@@ -39,7 +39,7 @@ test_configs:
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - title: "moonbounce_regex_matcher"
+  - title: "moonbounce_regex_matcher_short"
     yaml: "yamls/moonbounce_regex_matcher.yaml"
     assembly: "assembly/moonbounce_malware_short.s"
     expected: True

@@ -23,6 +23,6 @@ patterns:
   - sub:
       operands:
         - $any:
-          include_list:
-            ops:
-              - "rsp"
+            include_list:
+              ops:
+                - rsp
