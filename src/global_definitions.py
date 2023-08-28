@@ -6,6 +6,8 @@ from pathlib import Path
 
 IGNORE_ARGS = r"[^\|]*\|"
 IGNORE_OPERANDS_NUMBER = "[^,]*,"
+SKIP_TO_END_COMMAND = "[^|]*" + r"\|"
+
 
 MAX_PYTHON_INT = sys.maxsize * 2
 
