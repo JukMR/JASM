@@ -70,7 +70,7 @@ class OperandsHandler:
         return only_exclude_regex
 
     def _process_op_basic(self, operand_elem) -> str:
-        only_single_op_regex = rf"([^,\|]*{operand_elem}){{1}}[^,|]*,"
+        only_single_op_regex = rf"([^,|]*{operand_elem}){{1}}[^,|]*,"
         return only_single_op_regex
 
     def _process_operand_elem(self, operand_elem: OperandType) -> str:
@@ -87,7 +87,7 @@ class OperandsHandler:
         if isinstance(operand_elem, str):
             if operand_elem == "$any":
                 return IGNORE_OPERANDS_NUMBER
-            return rf"([^,\|]*{operand_elem}){{1}}[^,|]*,"
+            return rf"([^,|]*{operand_elem}){{1}}[^,|]*,"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
     def get_regex(self) -> str:
@@ -99,6 +99,6 @@ class OperandsHandler:
 
         operand_regex = [self._process_operand_elem(operand) for operand in self.operands]
 
-        operand_regex_str = "".join(operand_regex) + r"\|"
+        operand_regex_str = "".join(operand_regex) + "[^|]*" + r"\|"
 
         return operand_regex_str

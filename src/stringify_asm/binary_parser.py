@@ -16,7 +16,7 @@ class BinaryParser(ABC):
         "Method for creating parsing assembly implementation"
 
     @abstractmethod
-    def dissasemble(self, binary: str, output_path: PathStr) -> None:
+    def dissasemble(self, binary: str, output_path: PathStr, program: str) -> None:
         "Method for generating assembly from a binary implementation"
 
 
