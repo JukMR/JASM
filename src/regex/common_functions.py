@@ -30,6 +30,6 @@ def join_operands(operand_list: List[str], operand_ignore_number: str) -> str:
 
     regex_operands = [rf"[^\|,]*{operand}{operand_ignore_number}" for operand in operand_list]
 
-    joined_by_bar_operands = r"\||".join(regex_operands)
+    joined_by_bar_operands = "|".join(regex_operands)
 
     return joined_by_bar_operands

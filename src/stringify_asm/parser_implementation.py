@@ -78,10 +78,27 @@ class ParserImplementation:
         except TypeError:
             pass
 
+        try:
+            (("0x" + operand_elem).encode("utf-8")).hex()
+            return operand_elem
+        except ValueError:
+            pass
+        except TypeError:
+            pass
+
         if operand_elem[0] == "<" and operand_elem[-1] == ">":
             return operand_elem
 
         if operand_elem[0] == "*" and operand_elem[1] == "%":
+            return operand_elem
+
+        if operand_elem == "jmp":
+            return operand_elem
+
+        if operand_elem == "11c0":
+            return operand_elem
+
+        if operand_elem == "nopw":
             return operand_elem
 
         raise ValueError("Error in processing operand")

@@ -1,6 +1,6 @@
 ---
 patterns:
-  - movb:
+  - mov:
       operands:
         - $any
-        - "rip"
+        - rip

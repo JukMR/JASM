@@ -5,7 +5,7 @@ from typing import Any, Dict, List, TypeAlias, Optional
 from pathlib import Path
 
 IGNORE_ARGS = r"[^\|]*\|"
-IGNORE_OPERANDS_NUMBER = "[^,|]*,"
+IGNORE_OPERANDS_NUMBER = "[^,]*,"
 
 MAX_PYTHON_INT = sys.maxsize * 2
 
