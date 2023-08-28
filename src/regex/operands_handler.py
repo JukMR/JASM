@@ -2,14 +2,13 @@
 
 from typing import Any, Dict, List, Optional
 from src.global_definitions import (
-    IGNORE_OPERANDS_NUMBER,
-    IGNORE_ARGS,
-    SKIP_TO_END_COMMAND,
+    SKIP_TO_END_OF_OPERAND,
+    SKIP_TO_END_OF_COMMAND,
     IncludeExcludeListType,
     OperandListType,
     OperandType,
 )
-from src.regex.common_functions import join_operands
+from src.regex.common_functions import join_operands, join_any_operands
 
 
 class OperandsHandler:
@@ -27,12 +26,12 @@ class OperandsHandler:
         if not isinstance(operand_list, List):
             raise ValueError(f"operand_list : '{operand_list}' is not a List. It is a {type(operand_list)}")
 
-        joined_operand_include_list = join_operands(
-            operand_list=operand_list, operand_ignore_number=IGNORE_OPERANDS_NUMBER
+        joined_operand_include_list_str = join_operands(
+            operand_list=operand_list, operand_ignore_number=SKIP_TO_END_OF_OPERAND
         )
-        return joined_operand_include_list
+        return joined_operand_include_list_str
 
-    def _process_op_any(self, operand_elem: Dict[str, Any]):
+    def _process_op_any(self, operand_elem: Dict[str, Any]) -> str:
         operand_include_list = operand_elem.get("include_list", None)
         operand_exclude_list = operand_elem.get("exclude_list", None)
 
@@ -48,7 +47,7 @@ class OperandsHandler:
         # Both None
         if operand_include_list_regex is None and operand_exclude_list_regex is None:
             # No operands. Probably should be enough checking for self.operands not to be None but just in case
-            return f"{IGNORE_ARGS}"
+            return f"{SKIP_TO_END_OF_COMMAND}"
 
         # Only include
         if operand_include_list_regex is not None and operand_exclude_list_regex is None:
@@ -58,16 +57,16 @@ class OperandsHandler:
         # Only exclude
         if operand_include_list_regex is None and operand_exclude_list_regex is not None:
             # Only exclude operands
-            return f"(?!{operand_exclude_list_regex}){IGNORE_ARGS}"
+            return f"(?!{operand_exclude_list_regex}){SKIP_TO_END_OF_COMMAND}"
 
         # No none
         return f"(?!{operand_exclude_list_regex})({operand_include_list_regex})"
 
-    def _process_not_any(self, operand_elem) -> str:
+    def _process_op_not(self, operand_elem) -> str:
         operand_exclude_list = operand_elem.get("exclude_list", None)
         operand_exclude_list_regex = self._get_operand_list_or_regex(operand_exclude_list)
 
-        only_exclude_regex = f"(?!{operand_exclude_list_regex}){IGNORE_ARGS}"
+        only_exclude_regex = f"(?!{operand_exclude_list_regex}){SKIP_TO_END_OF_COMMAND}"
         return only_exclude_regex
 
     def _process_op_basic(self, operand_elem) -> str:
@@ -80,14 +79,16 @@ class OperandsHandler:
             if keys == ["$any"]:
                 return self._process_op_any(operand_elem["$any"])
             if keys == ["$not"]:
-                return self._process_not_any(operand_elem["$not"])
+                return self._process_op_not(operand_elem["$not"])
             if isinstance(keys[0], str):
+                if isinstance(operand_elem, Dict):
+                    raise ValueError(f"operand_elem is of type Dict: {operand_elem}")
                 return self._process_op_basic(operand_elem)
             raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
         if isinstance(operand_elem, str):
             if operand_elem == "$any":
-                return IGNORE_OPERANDS_NUMBER
+                return SKIP_TO_END_OF_OPERAND
             return rf"([^,|]*{operand_elem}){{1}}"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
@@ -96,10 +97,10 @@ class OperandsHandler:
 
         if self.operands is None:
             # If there's no operands specified then we assume it will be any number of them (including none).
-            return IGNORE_ARGS
+            return SKIP_TO_END_OF_COMMAND
 
         operand_regex = [self._process_operand_elem(operand) for operand in self.operands]
 
-        operand_regex_str = "".join(operand_regex) + SKIP_TO_END_COMMAND
+        operand_regex_str = "".join(operand_regex) + SKIP_TO_END_OF_COMMAND
 
         return operand_regex_str

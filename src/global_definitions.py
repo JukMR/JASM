@@ -4,10 +4,10 @@ import sys
 from typing import Any, Dict, List, TypeAlias, Optional
 from pathlib import Path
 
-IGNORE_ARGS = r"[^\|]*\|"
-IGNORE_OPERANDS_NUMBER = "[^,]*,"
-SKIP_TO_END_COMMAND = "[^|]*" + r"\|"
-
+SKIP_TO_END_OF_OPERAND = "[^,]*,"
+SKIP_TO_END_OF_COMMAND = "[^|]*" + r"\|"
+SKIP_TO_START_OF_OPERAND = "[^|,]*"
+SKIP_TO_ANY_OPERAND_CHARS = "[^|]*"
 
 MAX_PYTHON_INT = sys.maxsize * 2
 

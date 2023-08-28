@@ -8,7 +8,7 @@ from src.logging_config import logger
 from src.regex.any_directive_processor import AnyDirectiveProcessor
 from src.regex.not_directive_processor import NotDirectiveProcessor
 from src.regex.single_directive_processor import SingleDirectiveProcessor
-from src.global_definitions import IGNORE_ARGS, Pattern, PathStr, PatternDict
+from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
 
 
 class File2Regex(ABC):
@@ -42,19 +42,19 @@ class Yaml2Regex(File2Regex):
         return self._read_yaml(file=file)
 
     @staticmethod
-    def _process_dict_dispatcher(pattern: PatternDict) -> str:
+    def _process_dict_dispatcher(pattern_arg: PatternDict) -> str:
         "Dispatch dict pattern. Resolve if pattern is $any, $not or $basic"
 
-        dict_keys = pattern.keys()
+        dict_keys = pattern_arg.keys()
         match list(dict_keys)[0]:
             case "$any":
-                pattern: Dict[str, Any] = pattern["$any"]
+                pattern: Dict[str, Any] = pattern_arg["$any"]
                 return AnyDirectiveProcessor(pattern).process()
             case "$not":
-                pattern: Dict[str, Any] = pattern["$not"]
+                pattern: Dict[str, Any] = pattern_arg["$not"]
                 return NotDirectiveProcessor(pattern).process()
             case _:
-                return SingleDirectiveProcessor(pattern).process()
+                return SingleDirectiveProcessor(pattern_arg).process()
 
     def _handle_pattern(self, pattern: Pattern) -> str:
         "Dispatch pattern based on its type: str or dict"
@@ -62,7 +62,7 @@ class Yaml2Regex(File2Regex):
         if isinstance(pattern, dict):
             return self._process_dict_dispatcher(pattern)
         if isinstance(pattern, str):
-            return f"({pattern}{IGNORE_ARGS})"
+            return f"({pattern}{SKIP_TO_END_OF_COMMAND})"
 
         raise ValueError("Pattern type not valid")
 
