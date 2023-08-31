@@ -49,6 +49,7 @@ mnemonic = Word(alphanums)
 special_operand_inst = Group(
     Word(printables, exclude_chars=",(")
     + Group("(" + Word(printables, exclude_chars=",)") + "," + Word(printables, exclude_chars=")") + ")")
+    + "\n"
 )
 operand = Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 
