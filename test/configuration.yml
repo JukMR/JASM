@@ -54,3 +54,8 @@ test_configs:
     binary: "binary/smc"
     dissasembler: "objdump"
     expected: True
+
+test_parsing_lines:
+  - title: "smc_assembly"
+    assembly: "assembly/binary_data.s"
+    number_of_lines: 33
