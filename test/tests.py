@@ -1,21 +1,16 @@
 "Main test file"
 from typing import Optional
+from pathlib import Path
 import pytest
 import yaml
-from pathlib import Path
 
 
-import sys
-
-
-sys.path.append("..")
-
-from src.logging_config import logger
 from main import get_observer_list, match
 
-from src.stringify_asm.dissasembler_implementation import DissasembleImplementation
+from src.logging_config import logger
 from src.stringify_asm.parser_implementation import ParserImplementation
 from src.stringify_asm.binary_parser import Parser
+from src.stringify_asm.dissasembler_implementation import DissasembleImplementation
 
 
 def load_test_configs(file_path: str | Path, yaml_config_field: str):
