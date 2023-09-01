@@ -1,22 +1,27 @@
 "Main test file"
-from pyparsing import Optional
 from typing import Optional
 import pytest
 import yaml
+from pathlib import Path
 
 
 import sys
 
+
 sys.path.append("..")
 
 from src.logging_config import logger
-from main import match
+from main import get_observer_list, match
+
+from src.stringify_asm.dissasembler_implementation import DissasembleImplementation
+from src.stringify_asm.parser_implementation import ParserImplementation
+from src.stringify_asm.binary_parser import Parser
 
 
-def load_test_configs(file_path):
+def load_test_configs(file_path: str | Path, yaml_config_field: str):
     """Load test configurations from a YAML file."""
     with open(file_path, "r", encoding="utf-8") as file_descriptor:
-        return yaml.safe_load(file_descriptor)["test_configs"]
+        return yaml.safe_load(file_descriptor)[yaml_config_field]
 
 
 def run_match_test(
@@ -31,8 +36,12 @@ def run_match_test(
     assert result == expected_result
 
 
-@pytest.mark.parametrize("config", load_test_configs("configuration.yml"), ids=lambda config: config["title"])
-def test(config):
+@pytest.mark.parametrize(
+    "config",
+    load_test_configs(file_path="configuration.yml", yaml_config_field="test_configs"),
+    ids=lambda config: config["title"],
+)
+def test_all_patterns(config):
     """Test function for all configurations in configuration.yml."""
     config_yaml = config["yaml"]
     expected_result = config["expected"]
@@ -47,3 +56,29 @@ def test(config):
         binary=binary,
         dissasembler=dissasembler,
     )
+
+
+def parse_file_and_get_number_of_lines(file: str) -> int:
+    """Parse file and return number of lines"""
+
+    parser_implementation = Parser(parser=ParserImplementation(), disassembler=DissasembleImplementation())
+    instruction_observers = get_observer_list()
+
+    stringify_binary = parser_implementation.parse(filename=file, instruction_observers=instruction_observers)
+
+    return stringify_binary.count("|")
+
+
+@pytest.mark.parametrize(
+    "config",
+    load_test_configs(file_path="configuration.yml", yaml_config_field="test_parsing_lines"),
+    ids=lambda config: config["title"],
+)
+def test_parsing_number_of_lines(config):
+    "Test parsing number of lines for all configurations in configuration.yml."
+    assembly = config.get("assembly")
+    number_of_lines = config.get("number_of_lines")
+    logger.info("Testing assembly number of lines: %s with pattern: %s", assembly, number_of_lines)
+    parsed_number_of_lines = parse_file_and_get_number_of_lines(assembly)
+
+    assert number_of_lines == parsed_number_of_lines

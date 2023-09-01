@@ -1,8 +1,7 @@
 "Parser Implementation module"
 
-from multiprocessing import Value
 import re
-from typing import List, Optional, Type
+from typing import List, Optional
 from pyparsing import ParseResults, ParserElement
 
 from src.logging_config import logger
