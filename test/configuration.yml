@@ -56,6 +56,35 @@ test_configs:
     expected: True
 
 test_parsing_lines:
-  - title: "smc_assembly"
+  - title: "binary_data.s"
     assembly: "assembly/binary_data.s"
     number_of_lines: 33
+
+  - title: "moonbounce_malware_short.s"
+    assembly: "assembly/moonbounce_malware_short.s"
+    number_of_lines: 7
+
+  - title: "moonbounce_malware_truncated.s"
+    assembly: "assembly/moonbounce_malware_truncated.s"
+    number_of_lines: 10957
+
+test_correct_lines:
+  - title: "binary_data.s"
+    assembly: "assembly/binary_data.s"
+    number_of_lines: 33
+
+  - title: "moonbounce_malware_short.s"
+    assembly: "assembly/moonbounce_malware_short.s"
+    number_of_lines: 7
+
+  - title: "moonbounce_malware_truncated.s"
+    assembly: "assembly/moonbounce_malware_truncated.s"
+    number_of_lines: 10957
+
+  - title: "ls_asm.s"
+    assembly: "../files_examples/assembly_examples/ls_asm.s"
+    number_of_lines: 19184
+
+  - title: "moonbounce_malware.s"
+    assembly: "../files_examples/assembly_examples/moonbounce_malware.s"
+    number_of_lines: 107999
