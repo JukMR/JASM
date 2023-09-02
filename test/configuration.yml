@@ -87,3 +87,7 @@ test_parsing_lines:
   - title: "moonbounce_malware_bad_instruction.s"
     assembly: "assembly/moonbounce_malware_bad_instruction.s"
     number_of_lines: 26
+
+  - title: "moonbounce_malware_jo_pn_instruction.s"
+    assembly: "assembly/moonbounce_malware_jo_pn_instruction.s"
+    number_of_lines: 10
