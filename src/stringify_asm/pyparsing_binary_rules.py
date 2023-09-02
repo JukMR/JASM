@@ -33,7 +33,7 @@ section_title = "Disassembly of section" + Optional(section_name) + ":" + many_l
 
 
 label = Suppress(
-    HEX + LESS_THAN + Optional(Word(printables, exclude_chars=GREATER_THAN)) + GREATER_THAN + COLON + line_end
+    HEX + LESS_THAN + Optional(Word(printables, exclude_chars=GREATER_THAN)) + GREATER_THAN + COLON + many_line_end
 )
 
 SECTION_HEADER = Optional(Suppress(section_title))
