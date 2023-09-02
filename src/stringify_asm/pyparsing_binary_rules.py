@@ -61,7 +61,10 @@ inst = instruction_addr + hex_coding + instruction_code + Optional(comment) + ma
 
 ellipsis = Suppress(Literal("\t") + Literal("...") + many_line_end)
 
-line = label | inst | ellipsis
+bad = instruction_addr + hex_coding + Literal("(bad)") + Optional(comment) + many_line_end
+
+line = label | inst | ellipsis | bad
+
 lines = OneOrMore(line)
 
 section = SECTION_HEADER + lines
