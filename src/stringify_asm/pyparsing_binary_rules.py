@@ -1,5 +1,5 @@
 "Pyparsing assembly matching rules"
-from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore
+from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore, alphas
 
 from pyparsing import (
     printables,
@@ -46,13 +46,14 @@ instruction_addr = Suppress(HEX + COLON) + TAB
 
 hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 
-jo_pn = Literal("jo,pn").addParseAction(lambda t: "jo_pn")
+two_words_in_mnemonic = Word(alphas, min=1, max=4) + Literal(",") + Word(alphas, min=1, max=3)
+bad = Literal("(bad)").addParseAction(lambda t: "bad")
 mnemonic = Word(alphanums)
 
 
 operand = Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 
-operation = Group((jo_pn | mnemonic) + ZeroOrMore(operand))
+operation = Group((two_words_in_mnemonic | bad | mnemonic) + ZeroOrMore(operand))
 
 
 instruction_code = Optional(Group(OneOrMore(operation)))
