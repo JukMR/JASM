@@ -67,7 +67,7 @@ def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
 
 @pytest.mark.parametrize(
     "config",
-    load_test_configs(file_path="configuration.yml", yaml_config_field="test_correct_lines"),
+    load_test_configs(file_path="configuration.yml", yaml_config_field="test_parsing_lines"),
     ids=lambda config: config["title"],
 )
 def test_correct_number_of_lines_with_regex(config) -> None:

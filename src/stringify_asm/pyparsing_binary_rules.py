@@ -28,11 +28,13 @@ GREATER_THAN = ">"
 
 many_line_end = Suppress(OneOrMore(line_end))
 
-section_name = Word(printables, exclude_chars=":") + ":"
-section_title = "Disassembly of section" + section_name + many_line_end
+section_name = Word(printables, exclude_chars=":")
+section_title = "Disassembly of section" + Optional(section_name) + ":" + many_line_end
 
 
-label = Suppress(HEX + LESS_THAN + Word(printables, exclude_chars=GREATER_THAN) + GREATER_THAN + COLON + line_end)
+label = Suppress(
+    HEX + LESS_THAN + Optional(Word(printables, exclude_chars=GREATER_THAN)) + GREATER_THAN + COLON + line_end
+)
 
 SECTION_HEADER = Optional(Suppress(section_title))
 
@@ -46,10 +48,6 @@ hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 
 mnemonic = Word(alphanums)
 
-special_operand_inst = Group(
-    Word(printables, exclude_chars=",(")
-    + Group("(" + Word(printables, exclude_chars=",)") + "," + Word(printables, exclude_chars=")") + ")")
-)
 
 operand = Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 
@@ -61,7 +59,9 @@ instruction_code = Optional(Group(OneOrMore(operation)))
 
 inst = instruction_addr + hex_coding + instruction_code + Optional(comment) + many_line_end
 
-line = label | inst
+ellipsis = Suppress(Literal("\t") + Literal("...") + many_line_end)
+
+line = label | inst | ellipsis
 lines = OneOrMore(line)
 
 section = SECTION_HEADER + lines
