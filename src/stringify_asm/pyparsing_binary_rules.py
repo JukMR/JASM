@@ -61,9 +61,9 @@ inst = instruction_addr + hex_coding + instruction_code + Optional(comment) + ma
 
 ellipsis = Suppress(Literal("\t") + Literal("...") + many_line_end)
 
-bad = instruction_addr + hex_coding + Literal("(bad)") + Optional(comment) + many_line_end
+bad_instruction = instruction_addr + hex_coding + Literal("(bad)") + Optional(comment) + many_line_end
 
-line = label | inst | ellipsis | bad
+line = label | inst | ellipsis | bad_instruction
 
 lines = OneOrMore(line)
 
