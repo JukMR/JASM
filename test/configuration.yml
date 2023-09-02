@@ -68,6 +68,10 @@ test_parsing_lines:
     assembly: "assembly/moonbounce_malware_truncated.s"
     number_of_lines: 10957
 
+  - title: "moonbounce_malware_small_parsing_test.s"
+    assembly: "assembly/moonbounce_malware_small_parsing_test.s"
+    number_of_lines: 14
+
 test_correct_lines:
   - title: "binary_data.s"
     assembly: "assembly/binary_data.s"
@@ -88,3 +92,7 @@ test_correct_lines:
   - title: "moonbounce_malware.s"
     assembly: "../files_examples/assembly_examples/moonbounce_malware.s"
     number_of_lines: 107999
+
+  - title: "moonbounce_malware_small_parsing_test.s"
+    assembly: "assembly/moonbounce_malware_small_parsing_test.s"
+    number_of_lines: 14
