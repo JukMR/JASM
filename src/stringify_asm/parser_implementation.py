@@ -108,6 +108,9 @@ class ParserImplementation:
         return [self._process_operand_elem(operand_elem=operand) for operand in operands]
 
     def _parse_instruction(self, inst: ParserElement) -> Instruction:
+        if inst == "(bad)":
+            return Instruction(mnemonic="bad", operands=[])
+
         parsed_inst = inst.as_list()[0]  # type: ignore  // as_list() method is not recognized as method of ParseElement
         mnemonic = parsed_inst[0]
         operands = parsed_inst[1:]
