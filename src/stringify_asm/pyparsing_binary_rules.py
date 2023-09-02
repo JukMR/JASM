@@ -46,12 +46,13 @@ instruction_addr = Suppress(HEX + COLON) + TAB
 
 hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 
+jo_pn = Literal("jo,pn").addParseAction(lambda t: "jo_pn")
 mnemonic = Word(alphanums)
 
 
 operand = Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 
-operation = Group(mnemonic + ZeroOrMore(operand))
+operation = Group((jo_pn | mnemonic) + ZeroOrMore(operand))
 
 
 instruction_code = Optional(Group(OneOrMore(operation)))
