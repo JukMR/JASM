@@ -1,15 +1,15 @@
 test_configs:
-  - title: "9 calls"
+  - title: "9_calls"
     yaml: "yamls/9_calls.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
 
-  - title: "10 calls"
+  - title: "10_calls"
     yaml: "yamls/10_calls.yaml"
     assembly: "assembly/binary_data.s"
     expected: False
 
-  - title: "Exclude list"
+  - title: "exclude_list"
     yaml: "yamls/exclude_list.yaml"
     assembly: "assembly/binary_data.s"
     expected: True
