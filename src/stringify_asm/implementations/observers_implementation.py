@@ -1,6 +1,6 @@
 "Observers implementation module"
 
-from src.stringify_asm.observer_abstract import InstructionObserver, Instruction
+from src.stringify_asm.abstracts.observer_abstract import InstructionObserver, Instruction
 
 
 class InstructionsAppender(InstructionObserver):
