@@ -6,7 +6,7 @@ import pytest
 import yaml
 
 
-from main import get_observer_list, match
+from match import match, get_observer_list
 
 from src.logging_config import logger
 from src.stringify_asm.parser_implementation import ParserImplementation
