@@ -108,6 +108,14 @@ class ParserImplementation(Parser):
 
         return [self._process_operand_elem(operand_elem=operand) for operand in operands]
 
+    def remove_extra_tags_in_operands(self, operands_list: List[str]) -> List[str]:
+        "Remove extra tags in operands"
+
+        return [
+            operand.replace("$", "").replace("%", "").replace("*", "").replace("(", "").replace(")", "")
+            for operand in operands_list
+        ]
+
     def _parse_instruction(self, inst: ParserElement) -> Instruction:
         if inst == "(bad)":
             return Instruction(mnemonic="bad", operands=[])
@@ -118,7 +126,8 @@ class ParserImplementation(Parser):
 
         if len(operands) > 0:
             operands_list = self.parse_operands(operands)
-            return Instruction(mnemonic=mnemonic, operands=operands_list)
+            operands_list_no_tags = self.remove_extra_tags_in_operands(operands_list)
+            return Instruction(mnemonic=mnemonic, operands=operands_list_no_tags)
         return Instruction(mnemonic=mnemonic, operands=[])
 
     def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
