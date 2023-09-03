@@ -47,11 +47,14 @@ instruction_addr = Suppress(HEX + COLON) + TAB
 hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 
 two_words_in_mnemonic = Word(alphas, min=1, max=4) + Literal(",") + Word(alphas, min=1, max=3)
-bad = Literal("(bad)").addParseAction(lambda t: "bad")
+bad = Literal("(bad)")
 mnemonic = Word(alphanums)
 
+operand_tag_types = Literal("$") | Literal("*") | Literal("%")
 
-operand = Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
+operand = (
+    Suppress(Optional(operand_tag_types)) + Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
+)
 
 operation = Group((two_words_in_mnemonic | bad | mnemonic) + ZeroOrMore(operand))
 
