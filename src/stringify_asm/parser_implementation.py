@@ -1,7 +1,7 @@
 "Parser Implementation module"
 
 import re
-from typing import List, Optional
+from typing import List
 from pyparsing import ParseResults, ParserElement
 
 from src.logging_config import logger
@@ -10,33 +10,34 @@ from src.global_definitions import PathStr
 from src.stringify_asm.observer_abstract import InstructionObserver, Instruction
 from src.measure_performance import measure_performance
 
+from src.stringify_asm.parser_abstract import Parser
 
-class ParserImplementation:
+
+class ParserImplementation(Parser):
     "Parse Implementation"
 
-    def __init__(self) -> None:
-        self.parsed_binary: Optional[ParseResults] = None
-        self.instruction_observers: Optional[List[InstructionObserver]] = None
+    def __init__(self, assembly_pathstr: PathStr) -> None:
+        super().__init__(assembly_pathstr=assembly_pathstr)
+        self.assembly = self._open_assembly(self.assembly_pathstr)
+        self.instruction_list = [self._parse_instruction(inst) for inst in self._run_pyparsing()]
+        self.instruction_observers: List[InstructionObserver]
 
-    def _open_assembly(self, file: PathStr) -> str:
+    @staticmethod
+    def _open_assembly(file: PathStr) -> str:
         "Read the binary file"
 
         with open(file, "r", encoding="utf-8") as file_d:
-            binary = file_d.read()
-
-        return binary
+            return file_d.read()
 
     @measure_performance(perf_title="Pyparsing")
-    def _execute_pyparsing(self, binary: str) -> ParseResults:
+    def _execute_pyparsing(self) -> ParseResults:
         parsed.parse_with_tabs()
-        parsed_instructions = parsed.parse_string(binary)
+        parsed_instructions = parsed.parse_string(self.assembly)
 
         return parsed_instructions
 
-    def _run_pyparsing(self, file: PathStr) -> ParseResults:
-        binary = self._open_assembly(file)
-
-        parsed_instructions = self._execute_pyparsing(binary=binary)
+    def _run_pyparsing(self) -> ParseResults:
+        parsed_instructions = self._execute_pyparsing()
 
         # Print the instructions with their arguments
         for inst in parsed_instructions:
@@ -49,7 +50,8 @@ class ParserImplementation:
 
         return parsed_instructions
 
-    def _process_operand_elem(self, operand_elem: str) -> str:
+    @staticmethod
+    def _process_operand_elem(operand_elem: str) -> str:
         "Process operand element"
 
         if operand_elem[0] == "(" and operand_elem[-1] == ")":
@@ -140,20 +142,10 @@ class ParserImplementation:
         return result_str
 
     def _generate_string_divided_by_bars(self) -> str:
-        if self.parsed_binary is None:
-            raise NotImplementedError("Error. Call parse_binary() to setup a binary first")
-
-        instruction_list = [self._parse_instruction(inst) for inst in self.parsed_binary]
-
-        string_divided_by_bars = self.run_observers(instruction_list=instruction_list)
+        string_divided_by_bars = self.run_observers(instruction_list=self.instruction_list)
 
         logger.info("The concatenated instructions are:\n %s\n", string_divided_by_bars)
         return string_divided_by_bars
-
-    def set_binary_and_parse_it(self, file: PathStr) -> None:
-        "Execute function to parse binary"
-
-        self.parsed_binary = self._run_pyparsing(file=file)
 
     @measure_performance(perf_title="Parse Instructions")
     def parse(self) -> str:

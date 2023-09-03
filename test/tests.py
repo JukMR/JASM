@@ -10,8 +10,6 @@ from match import match, get_observer_list
 
 from src.logging_config import logger
 from src.stringify_asm.parser_implementation import ParserImplementation
-from src.stringify_asm.binary_parser import Parser
-from src.stringify_asm.dissasembler_implementation import DissasembleImplementation
 
 
 def load_test_configs(file_path: str | Path, yaml_config_field: str):
@@ -57,10 +55,10 @@ def test_all_patterns(config):
 def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
     """Parse file and return number of lines"""
 
-    parser_implementation = Parser(parser=ParserImplementation(), disassembler=DissasembleImplementation())
-    instruction_observers = get_observer_list()
+    parser_implementation = ParserImplementation(assembly_pathstr=file)
+    parser_implementation.set_observers(instruction_observers=get_observer_list())
 
-    stringify_binary = parser_implementation.parse(filename=file, instruction_observers=instruction_observers)
+    stringify_binary = parser_implementation.parse()
 
     return stringify_binary.count("|")
 
