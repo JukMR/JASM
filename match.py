@@ -6,10 +6,13 @@ from typing import List, Optional, Any
 from src.regex.yaml2regex import Yaml2Regex
 from src.measure_performance import measure_performance
 from src.logging_config import logger
-from src.stringify_asm.observer_abstract import InstructionObserver
-from src.stringify_asm.observers_implementation import InstructionsAppender
-from src.stringify_asm.dissasembler_implementation import DissasembleImplementation, ShellProgramDissasembler
-from src.stringify_asm.parser_implementation import ParserImplementation
+from src.stringify_asm.abstracts.observer_abstract import InstructionObserver
+from src.stringify_asm.implementations.observers_implementation import InstructionsAppender
+from src.stringify_asm.implementations.dissasembler_implementation import (
+    DissasembleImplementation,
+    ShellProgramDissasembler,
+)
+from src.stringify_asm.implementations.parser_implementation import ParserImplementation
 
 
 @measure_performance(perf_title="Run regex")

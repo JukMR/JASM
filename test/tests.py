@@ -9,7 +9,7 @@ import yaml
 from match import match, get_observer_list
 
 from src.logging_config import logger
-from src.stringify_asm.parser_implementation import ParserImplementation
+from src.stringify_asm.implementations.parser_implementation import ParserImplementation
 
 
 def load_test_configs(file_path: str | Path, yaml_config_field: str):
