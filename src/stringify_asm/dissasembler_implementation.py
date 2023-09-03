@@ -1,28 +1,18 @@
 "Dissasembler Implementation module"
 
 import subprocess
-from typing import Optional
-
 from src.global_definitions import PathStr
 
+from src.stringify_asm.dissasemble_abstract import Dissasembler, DissasembleMethod
 
-class DissasembleImplementation:
-    "Dissasembler Implementation"
 
-    def __init__(self) -> None:
-        self.binary: Optional[str] = None
-        self.output_path: Optional[PathStr] = None
-        self.dissasemble_program: Optional[str] = None
+class ShellProgramDissasembler(DissasembleMethod):
+    """Shell Program Dissasembler Implementation"""
 
-    def set_binary(self, binary: str) -> None:
-        "Set binary for DissasembleImplementation class"
-
-        self.binary = binary
-
-    def set_output_path(self, output_path: PathStr) -> None:
-        "Set output_path for DissasembleImplementation class"
-
-        self.output_path = output_path
+    def __init__(self, binary: str, output_path: str, program: str, flags: str) -> None:
+        super().__init__(binary=binary, output_path=output_path)
+        self.program = program
+        self.flags = flags
 
     def _write_to_disk(self, data: str) -> None:
         if self.output_path is None:
@@ -31,12 +21,13 @@ class DissasembleImplementation:
         with open(self.output_path, "w", encoding="utf-8") as file:
             file.write(data)
 
-    def _binary_dissasemble(self, program: str, flags: str) -> None:
+    def _run_program(self) -> None:
+        """Shell Program Dissasembler Implementation"""
         if self.binary is None:
             raise NotImplementedError("binary is not set yet. Should call set_binary() first")
         try:
             result = subprocess.run(
-                [program, flags, self.binary],
+                [self.program, self.flags, self.binary],
                 capture_output=True,
                 text=True,
                 check=True,
@@ -52,21 +43,28 @@ class DissasembleImplementation:
 
         except FileNotFoundError as exc:
             raise ValueError(
-                f"Error: program: {program} not found. Make sure you to have it installed and in your system PATH."
+                f"Error: program: {self.program} not found. Make sure you to have it installed and in your system PATH."
             ) from exc
 
-    def set_dissasemble_program(self, program: str) -> None:
-        """
-        Set dissasemble main program.
-        Currently objdump and llvm supported and tested
-        """
-
-        self.dissasemble_program = program
-
     def dissasemble(self) -> None:
+        if self.flags is None:
+            raise ValueError("flags not set yet. Should call set_flags() first")
+
+        self._run_program()
+
+
+class DissasembleImplementation(Dissasembler):
+    "Dissasembler Implementation"
+
+    def __init__(self, binary: PathStr, output_path: str, dissasemble_method: DissasembleMethod) -> None:
+        super().__init__(binary=binary, output_path=output_path)
+        self.dissasemble_method = dissasemble_method
+
+    def get_assembly(self) -> None:
         "Dissasemble with objdump by_default"
 
-        if self.dissasemble_program is None:
+        if self.dissasemble_method is None:
             raise NotImplementedError("dissasemble_program not set yet. Should call set_dissasemble_program() first.")
 
-        return self._binary_dissasemble(program=self.dissasemble_program, flags="-d")
+        # return self.dissasemble_program.dissasemble(program=self.dissasemble_program, flags="-d")
+        return self.dissasemble_method.dissasemble()

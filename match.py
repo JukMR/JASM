@@ -6,9 +6,10 @@ from typing import List, Optional, Any
 from src.regex.yaml2regex import Yaml2Regex
 from src.measure_performance import measure_performance
 from src.logging_config import logger
-from src.stringify_asm.binary_parser import Parser, ParserImplementation, DissasembleImplementation
 from src.stringify_asm.observer_abstract import InstructionObserver
 from src.stringify_asm.observers_implementation import InstructionsAppender
+from src.stringify_asm.dissasembler_implementation import DissasembleImplementation, ShellProgramDissasembler
+from src.stringify_asm.parser_implementation import ParserImplementation
 
 
 @measure_performance(perf_title="Run regex")
@@ -46,18 +47,28 @@ def match(
 
     regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
 
-    parser_implementation = Parser(parser=ParserImplementation(), disassembler=DissasembleImplementation())
     instruction_observers = get_observer_list()
 
     if assembly:
-        stringify_binary = parser_implementation.parse(filename=assembly, instruction_observers=instruction_observers)
+        parser = ParserImplementation(assembly_pathstr=assembly)
+        parser.set_observers(instruction_observers=instruction_observers)
+        stringify_binary = parser.parse()
     elif binary:
         if dissasemble_program is None:
             raise ValueError("Dissasemble program not set")
-        parser_implementation.dissasemble(binary=binary, output_path="tmp_dissasembly.s", program=dissasemble_program)
-        stringify_binary = parser_implementation.parse(
-            filename="tmp_dissasembly.s", instruction_observers=instruction_observers
+
+        dissasemble_method_implementation = ShellProgramDissasembler(
+            binary=binary, output_path="tmp_dissasembly.s", program=dissasemble_program, flags="-d"
         )
+
+        disassembler = DissasembleImplementation(
+            binary=binary, output_path="tmp_dissasembly.s", dissasemble_method=dissasemble_method_implementation
+        )
+
+        disassembler.get_assembly()
+        parser = ParserImplementation(assembly_pathstr="tmp_dissasembly.s")
+        parser.set_observers(instruction_observers=instruction_observers)
+        stringify_binary = parser.parse()
     else:
         raise ValueError("Some error occured")
 
