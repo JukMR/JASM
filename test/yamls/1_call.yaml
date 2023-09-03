@@ -4,5 +4,4 @@ patterns:
       operands:
         - $any:
             include_list:
-              ops:
-                - "0x1dc6b"
+              - "0x1dc6b"

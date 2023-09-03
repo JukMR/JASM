@@ -3,10 +3,9 @@ patterns:
   - call
   - $any:
       exclude_list:
-        inst:
-          - not
-          - mov
-          - call
+        - not
+        - mov
+        - call
       times:
         min: 1
         max: 1

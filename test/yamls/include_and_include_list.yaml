@@ -3,26 +3,21 @@ patterns:
   - call
   - $any:
       include_list:
-        inst:
-          - jmp
-          - endbr64
-          - nopw
-        operands:
-          include_list:
-            ops:
-              - rx
-              - rd
-              - rax
-
-          exclude_list:
+        - jmp
+        - endbr64
+        - nopw
+      operands:
+        include_list:
+          - rx
+          - rd
+          - rax
+        exclude_list:
 
       exclude_list:
-        inst:
-          - not
-          - mov
-          - call
-          - add
-        operands:
+        - not
+        - mov
+        - call
+        - add
 
       times:
         min: 1

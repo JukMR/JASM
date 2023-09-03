@@ -3,9 +3,8 @@ patterns:
   - ret
   - $any:
       include_list:
-        inst:
-          - int3
-          - nop
+        - int3
+        - nop
       times:
         min: 0
         max: 3
@@ -14,8 +13,7 @@ patterns:
   - call
   - $any:
       exclude_list:
-        inst:
-          - ret
+        - ret
       times:
         max: 8
       operands:
@@ -24,5 +22,4 @@ patterns:
       operands:
         - $any:
             include_list:
-              ops:
-                - rsp
+              - rsp

@@ -35,12 +35,6 @@ class OperandsHandler:
         operand_include_list = operand_elem.get("include_list", None)
         operand_exclude_list = operand_elem.get("exclude_list", None)
 
-        if operand_include_list is not None:
-            operand_include_list = operand_include_list.get("ops", None)
-
-        if operand_exclude_list is not None:
-            operand_exclude_list = operand_exclude_list.get("ops", None)
-
         operand_include_list_regex = self._get_operand_list_or_regex(operand_include_list)
         operand_exclude_list_regex = self._get_operand_list_or_regex(operand_exclude_list)
 

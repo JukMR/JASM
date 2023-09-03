@@ -30,13 +30,5 @@ class AnyDirectiveProcessor(DirectiveProcessor):
             return None
 
         type_list = pattern.get(pattern_type, None)
-        if not isinstance(type_list, Dict):
-            return None
-
-        type_list_inst = type_list.get("inst", None)
-        if type_list_inst is None:
-            return None
-
-        if isinstance(type_list_inst, List):
-            return type_list_inst
-        raise ValueError(f"{type_list_inst} is not a List. It is: {type(type_list_inst)}")
+        if isinstance(type_list, List):
+            return type_list
