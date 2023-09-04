@@ -1,0 +1,111 @@
+@startuml classes_myproj
+set namespaceSeparator none
+class ".Optional" as .Optional {
+}
+class ".Optional" as .Optional {
+}
+class ".Optional" as .Optional {
+}
+class "abc.ABC" as abc.ABC {
+}
+class "src.regex.any_directive_processor.AnyDirectiveProcessor" as src.regex.any_directive_processor.AnyDirectiveProcessor {
+}
+class "src.regex.directive_processor.DirectiveProcessor" as src.regex.directive_processor.DirectiveProcessor {
+  exclude_list
+  include_list
+  operands
+  pattern
+  times
+  get_times(pattern: PatternDict) -> TimesType
+  process() -> str
+}
+class "src.regex.not_directive_processor.NotDirectiveProcessor" as src.regex.not_directive_processor.NotDirectiveProcessor {
+}
+class "src.regex.operands_handler.OperandsHandler" as src.regex.operands_handler.OperandsHandler {
+  operands
+  get_regex() -> str
+}
+class "src.regex.single_directive_processor.SingleDirectiveProcessor" as src.regex.single_directive_processor.SingleDirectiveProcessor {
+}
+class "src.regex.yaml2regex.File2Regex" as src.regex.yaml2regex.File2Regex {
+  {abstract}load_file(file) -> Any
+  {abstract}produce_regex()
+}
+class "src.regex.yaml2regex.Yaml2Regex" as src.regex.yaml2regex.Yaml2Regex {
+  loaded_file
+  load_file(file) -> Any
+  produce_regex() -> str
+}
+class "src.stringify_asm.abstracts.dissasemble_abstract.DissasembleMethod" as src.stringify_asm.abstracts.dissasemble_abstract.DissasembleMethod {
+  binary
+  output_path : str
+  {abstract}dissasemble() -> None
+}
+class "src.stringify_asm.abstracts.dissasemble_abstract.Dissasembler" as src.stringify_asm.abstracts.dissasemble_abstract.Dissasembler {
+  binary
+  output_path : str
+  {abstract}get_assembly() -> str
+}
+class "src.stringify_asm.abstracts.observer_abstract.Instruction" as src.stringify_asm.abstracts.observer_abstract.Instruction {
+  mnemonic : str
+  operands : List[str]
+  stringify() -> str
+}
+class "src.stringify_asm.abstracts.observer_abstract.InstructionObserver" as src.stringify_asm.abstracts.observer_abstract.InstructionObserver {
+  {abstract}finalize() -> str
+  {abstract}observe_instruction(inst: Instruction) -> Optional[Instruction]
+}
+class "src.stringify_asm.abstracts.parser_abstract.Parser" as src.stringify_asm.abstracts.parser_abstract.Parser {
+  assembly_pathstr
+  {abstract}parse() -> str
+}
+class "src.stringify_asm.implementations.dissasembler_implementation.DissasembleImplementation" as src.stringify_asm.implementations.dissasembler_implementation.DissasembleImplementation {
+  dissasemble_method
+  get_assembly() -> None
+}
+class "src.stringify_asm.implementations.dissasembler_implementation.ShellProgramDissasembler" as src.stringify_asm.implementations.dissasembler_implementation.ShellProgramDissasembler {
+  flags : str
+  program : str
+  dissasemble() -> None
+}
+class "src.stringify_asm.implementations.observers_implementation.InstructionsAppender" as src.stringify_asm.implementations.observers_implementation.InstructionsAppender {
+  str_binary : str
+  finalize() -> str
+  observe_instruction(inst: Instruction) -> None
+}
+class "src.stringify_asm.implementations.parser_implementation.ParserImplementation" as src.stringify_asm.implementations.parser_implementation.ParserImplementation {
+  assembly
+  instruction_list
+  instruction_observers : List[InstructionObserver]
+  parse() -> str
+  parse_operands(operands: List[str]) -> List[str]
+  remove_extra_tags_in_operands(operands_list: List[str]) -> List[str]
+  run_observers(instruction_list: List[Instruction]) -> str
+  set_observers(instruction_observers: List[InstructionObserver]) -> None
+}
+class "typing.Dict" as typing.Dict {
+}
+src.regex.any_directive_processor.AnyDirectiveProcessor --|> src.regex.directive_processor.DirectiveProcessor
+src.regex.not_directive_processor.NotDirectiveProcessor --|> src.regex.directive_processor.DirectiveProcessor
+src.regex.single_directive_processor.SingleDirectiveProcessor --|> src.regex.directive_processor.DirectiveProcessor
+src.regex.yaml2regex.File2Regex --|> abc.ABC
+src.regex.yaml2regex.Yaml2Regex --|> src.regex.yaml2regex.File2Regex
+src.stringify_asm.abstracts.dissasemble_abstract.DissasembleMethod --|> abc.ABC
+src.stringify_asm.abstracts.dissasemble_abstract.Dissasembler --|> abc.ABC
+src.stringify_asm.abstracts.observer_abstract.InstructionObserver --|> abc.ABC
+src.stringify_asm.abstracts.parser_abstract.Parser --|> abc.ABC
+src.stringify_asm.implementations.dissasembler_implementation.DissasembleImplementation --|> src.stringify_asm.abstracts.dissasemble_abstract.Dissasembler
+src.stringify_asm.implementations.dissasembler_implementation.ShellProgramDissasembler --|> src.stringify_asm.abstracts.dissasemble_abstract.DissasembleMethod
+src.stringify_asm.implementations.observers_implementation.InstructionsAppender --|> src.stringify_asm.abstracts.observer_abstract.InstructionObserver
+src.stringify_asm.implementations.parser_implementation.ParserImplementation --|> src.stringify_asm.abstracts.parser_abstract.Parser
+.Optional --* src.regex.directive_processor.DirectiveProcessor : include_list
+.Optional --* src.regex.directive_processor.DirectiveProcessor : exclude_list
+.Optional --* src.regex.directive_processor.DirectiveProcessor : times
+.Optional --* src.regex.directive_processor.DirectiveProcessor : operands
+typing.Dict --* src.regex.directive_processor.DirectiveProcessor : pattern
+.Optional --o src.regex.operands_handler.OperandsHandler : operands
+src.stringify_asm.abstracts.dissasemble_abstract.DissasembleMethod --o src.stringify_asm.implementations.dissasembler_implementation.DissasembleImplementation : dissasemble_method
+
+src.stringify_asm.abstracts.observer_abstract.Instruction --o src.stringify_asm.abstracts.observer_abstract.InstructionObserver
+src.stringify_asm.abstracts.observer_abstract.Instruction --o src.stringify_asm.implementations.parser_implementation.ParserImplementation
+@enduml
