@@ -1,0 +1,100 @@
+@startuml packages_myproj
+set namespaceSeparator none
+package "main" as main {
+}
+package "match" as match {
+}
+package "parse_arguments" as parse_arguments {
+}
+package "src" as src {
+}
+package "src.global_definitions" as src.global_definitions {
+}
+package "src.logging_config" as src.logging_config {
+}
+package "src.measure_performance" as src.measure_performance {
+}
+package "src.regex" as src.regex {
+}
+package "src.regex.any_directive_processor" as src.regex.any_directive_processor {
+}
+package "src.regex.common_functions" as src.regex.common_functions {
+}
+package "src.regex.directive_processor" as src.regex.directive_processor {
+}
+package "src.regex.not_directive_processor" as src.regex.not_directive_processor {
+}
+package "src.regex.operands_handler" as src.regex.operands_handler {
+}
+package "src.regex.single_directive_processor" as src.regex.single_directive_processor {
+}
+package "src.regex.yaml2regex" as src.regex.yaml2regex {
+}
+package "src.stringify_asm" as src.stringify_asm {
+}
+package "src.stringify_asm.abstracts" as src.stringify_asm.abstracts {
+}
+package "src.stringify_asm.abstracts.dissasemble_abstract" as src.stringify_asm.abstracts.dissasemble_abstract {
+}
+package "src.stringify_asm.abstracts.observer_abstract" as src.stringify_asm.abstracts.observer_abstract {
+}
+package "src.stringify_asm.abstracts.parser_abstract" as src.stringify_asm.abstracts.parser_abstract {
+}
+package "src.stringify_asm.implementations" as src.stringify_asm.implementations {
+}
+package "src.stringify_asm.implementations.dissasembler_implementation" as src.stringify_asm.implementations.dissasembler_implementation {
+}
+package "src.stringify_asm.implementations.observers_implementation" as src.stringify_asm.implementations.observers_implementation {
+}
+package "src.stringify_asm.implementations.parser_implementation" as src.stringify_asm.implementations.parser_implementation {
+}
+package "src.stringify_asm.pyparsing_binary_rules" as src.stringify_asm.pyparsing_binary_rules {
+}
+package "test" as test {
+}
+package "test.tests" as test.tests {
+}
+main --> match
+main --> parse_arguments
+main --> src.logging_config
+main --> src.measure_performance
+match --> src.logging_config
+match --> src.measure_performance
+match --> src.regex.yaml2regex
+match --> src.stringify_asm.abstracts.observer_abstract
+match --> src.stringify_asm.implementations.dissasembler_implementation
+match --> src.stringify_asm.implementations.observers_implementation
+match --> src.stringify_asm.implementations.parser_implementation
+src.measure_performance --> src.logging_config
+src.regex.any_directive_processor --> src.global_definitions
+src.regex.any_directive_processor --> src.regex.directive_processor
+src.regex.common_functions --> src.global_definitions
+src.regex.directive_processor --> src.global_definitions
+src.regex.directive_processor --> src.regex.common_functions
+src.regex.directive_processor --> src.regex.operands_handler
+src.regex.not_directive_processor --> src.global_definitions
+src.regex.not_directive_processor --> src.regex.directive_processor
+src.regex.operands_handler --> src.global_definitions
+src.regex.operands_handler --> src.regex.common_functions
+src.regex.single_directive_processor --> src.global_definitions
+src.regex.single_directive_processor --> src.regex.directive_processor
+src.regex.yaml2regex --> src.global_definitions
+src.regex.yaml2regex --> src.logging_config
+src.regex.yaml2regex --> src.regex.any_directive_processor
+src.regex.yaml2regex --> src.regex.not_directive_processor
+src.regex.yaml2regex --> src.regex.single_directive_processor
+src.stringify_asm.abstracts.dissasemble_abstract --> src.global_definitions
+src.stringify_asm.abstracts.parser_abstract --> src.global_definitions
+src.stringify_asm.implementations.dissasembler_implementation --> src.global_definitions
+src.stringify_asm.implementations.dissasembler_implementation --> src.stringify_asm.abstracts.dissasemble_abstract
+src.stringify_asm.implementations.observers_implementation --> src.stringify_asm.abstracts.observer_abstract
+src.stringify_asm.implementations.parser_implementation --> src.global_definitions
+src.stringify_asm.implementations.parser_implementation --> src.logging_config
+src.stringify_asm.implementations.parser_implementation --> src.measure_performance
+src.stringify_asm.implementations.parser_implementation --> src.stringify_asm.abstracts.observer_abstract
+src.stringify_asm.implementations.parser_implementation --> src.stringify_asm.abstracts.parser_abstract
+src.stringify_asm.implementations.parser_implementation --> src.stringify_asm.pyparsing_binary_rules
+test.tests --> match
+test.tests --> src.logging_config
+test.tests --> src.stringify_asm.implementations.parser_implementation
+@enduml
