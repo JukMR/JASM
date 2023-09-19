@@ -8,7 +8,7 @@ from src.measure_performance import measure_performance
 from src.logging_config import logger
 from src.stringify_asm.abstracts.observer_abstract import InstructionObserver
 from src.stringify_asm.implementations.observers_implementation import InstructionsAppender
-from src.stringify_asm.implementations.dissasembler_implementation import (
+from src.stringify_asm.implementations.disassembler_implementation import (
     DissasembleImplementation,
     ShellProgramDissasembler,
 )

@@ -3,7 +3,7 @@
 import subprocess
 from src.global_definitions import PathStr
 
-from src.stringify_asm.abstracts.dissasemble_abstract import Dissasembler, DissasembleMethod
+from src.stringify_asm.abstracts.disassemble_abstract import Dissasembler, DissasembleMethod
 
 
 class ShellProgramDissasembler(DissasembleMethod):
