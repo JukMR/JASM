@@ -1,11 +1,12 @@
 "Single Directive Processor Implementation"
 
-from typing import List, Dict, Any
-from src.regex.directive_processor import DirectiveProcessor
+from typing import List, Dict, Any, Optional
+from src.regex.idirective_processor import IDirectiveProcessor
 from src.global_definitions import PatternDict, IncludeExcludeListType, OperandListType
+from src.regex.operands_handler import OperandsHandler
 
 
-class SingleDirectiveProcessor(DirectiveProcessor):
+class SingleDirectiveProcessor(IDirectiveProcessor):
     "Basic Instruction Processor"
 
     def __init__(self, basic_pattern: PatternDict) -> None:
@@ -20,6 +21,9 @@ class SingleDirectiveProcessor(DirectiveProcessor):
             times=times,
             operands=self._get_operands(),
         )
+
+        self.times_regex: Optional[str] = self._get_min_max_regex()
+        self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
 
     @staticmethod
     def _get_mnemonic_from_simple_pattern(pattern: PatternDict) -> List[str]:
@@ -46,3 +50,12 @@ class SingleDirectiveProcessor(DirectiveProcessor):
 
     def _get_operands(self) -> OperandListType:
         return self._basic_properties.get("operands", None)
+
+    def process(self) -> str:
+        assert self.include_list is not None
+        inst_joined = self.join_instructions(inst_list=self.include_list, operand=self.operand_regex)
+
+        if self.times_regex is None:
+            return f"({inst_joined})"
+
+        return f"({inst_joined}){self.times_regex}"

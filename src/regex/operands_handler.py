@@ -2,13 +2,13 @@
 
 from typing import Any, Dict, List, Optional
 from src.global_definitions import (
+    SKIP_TO_ANY_OPERAND_CHARS,
     SKIP_TO_END_OF_OPERAND,
     SKIP_TO_END_OF_COMMAND,
     IncludeExcludeListType,
     OperandListType,
     OperandType,
 )
-from src.regex.common_functions import join_operands
 
 
 class OperandsHandler:
@@ -26,7 +26,7 @@ class OperandsHandler:
         if not isinstance(operand_list, List):
             raise ValueError(f"operand_list : '{operand_list}' is not a List. It is a {type(operand_list)}")
 
-        joined_operand_include_list_str = join_operands(
+        joined_operand_include_list_str = self.join_operands(
             operand_list=operand_list, operand_ignore_number=SKIP_TO_END_OF_OPERAND
         )
         return joined_operand_include_list_str
@@ -85,6 +85,18 @@ class OperandsHandler:
                 return SKIP_TO_END_OF_OPERAND
             return rf"([^,|]*{operand_elem}){{1}}"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+
+    def join_operands(self, operand_list: List[str], operand_ignore_number: str) -> str:
+        "Join operands from list using operand_ignore_number to generate regex"
+
+        if len(operand_list) == 0:
+            raise ValueError("There are no operands to join")
+
+        regex_operands = [f"{SKIP_TO_ANY_OPERAND_CHARS}{operand}{operand_ignore_number}" for operand in operand_list]
+
+        joined_by_bar_operands = "|".join(regex_operands)
+
+        return f"{joined_by_bar_operands}"
 
     def get_regex(self) -> str:
         "Method to process operand and get operand regex"

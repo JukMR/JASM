@@ -1,10 +1,14 @@
 "Not Directive Processor Implementation"
 
-from src.regex.directive_processor import DirectiveProcessor
+
+from typing import Optional
 from src.global_definitions import PatternDict
 
+from src.regex.idirective_processor import IDirectiveProcessor
+from src.regex.operands_handler import OperandsHandler
 
-class NotDirectiveProcessor(DirectiveProcessor):
+
+class NotDirectiveProcessor(IDirectiveProcessor):
     "$not Instruction Processor"
 
     def __init__(self, not_pattern: PatternDict) -> None:
@@ -18,3 +22,15 @@ class NotDirectiveProcessor(DirectiveProcessor):
             times=times,
             operands=None,
         )
+
+        self.times_regex: Optional[str] = self._get_min_max_regex()
+        self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
+
+    def process(self) -> str:
+        assert self.exclude_list
+        inst_joined = self.join_instructions(inst_list=self.exclude_list, operand=self.operand_regex)
+
+        if self.times_regex:
+            return f"((?!{inst_joined}){self.operand_regex}){self.times_regex}"
+
+        return f"((?!{inst_joined}){self.operand_regex})"
