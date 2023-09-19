@@ -37,6 +37,7 @@ class AnyDirectiveProcessor(IDirectiveProcessor):
     def _get_instruction_list(
         pattern: PatternDict, pattern_type: Literal["include_list", "exclude_list"]
     ) -> Optional[List[str]]:
+        "Get `include_list` or `exclude_list` from `pattern`"
         if not isinstance(pattern, Dict):
             return None
 
@@ -44,20 +45,26 @@ class AnyDirectiveProcessor(IDirectiveProcessor):
         if isinstance(type_list, List):
             return type_list
 
-    def process(self) -> str:
-        if self.times_regex:
-            if self.exclude_list:
-                if self.include_list:
-                    return f"((?!{self.exclude_list_regex})({self.include_list_regex})){self.times_regex}"
-                return f"((?!{self.exclude_list_regex})({SKIP_TO_END_OF_COMMAND})){self.times_regex}"
-            if self.include_list:
-                return f"({self.include_list_regex}){self.times_regex}"
-            return f"({SKIP_TO_END_OF_COMMAND})"
-
+    def _process_with_times_regex(self, times_regex: str) -> str:
         if self.exclude_list:
-            if self.include_list:
-                return f"((?!{self.exclude_list_regex})({self.include_list_regex}))"
-            return f"((?!{self.exclude_list_regex})({SKIP_TO_END_OF_COMMAND}))"
+            return self._process_with_exclude_list() + times_regex
+        if self.include_list:
+            return f"({self.include_list_regex}){times_regex}"
+        return f"({SKIP_TO_END_OF_COMMAND}){times_regex}"
+
+    def _process_without_times_regex(self) -> str:
+        if self.exclude_list:
+            return self._process_with_exclude_list()
         if self.include_list:
             return f"({self.include_list_regex})"
         return f"({SKIP_TO_END_OF_COMMAND})"
+
+    def _process_with_exclude_list(self) -> str:
+        if self.include_list:
+            return f"((?!{self.exclude_list_regex})({self.include_list_regex}))"
+        return f"((?!{self.exclude_list_regex})({SKIP_TO_END_OF_COMMAND}))"
+
+    def process(self) -> str:
+        if self.times_regex:
+            return self._process_with_times_regex(self.times_regex)
+        return self._process_without_times_regex()
