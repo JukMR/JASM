@@ -1,93 +1,93 @@
 test_configs:
   - title: "9_calls"
-    yaml: "yamls/9_calls.yaml"
-    assembly: "assembly/binary_data.s"
+    yaml: "test/yamls/9_calls.yaml"
+    assembly: "test/assembly/binary_data.s"
     expected: True
 
   - title: "10_calls"
-    yaml: "yamls/10_calls.yaml"
-    assembly: "assembly/binary_data.s"
+    yaml: "test/yamls/10_calls.yaml"
+    assembly: "test/assembly/binary_data.s"
     expected: False
 
   - title: "exclude_list"
-    yaml: "yamls/exclude_list.yaml"
-    assembly: "assembly/binary_data.s"
+    yaml: "test/yamls/exclude_list.yaml"
+    assembly: "test/assembly/binary_data.s"
     expected: True
 
   - title: "not_call"
-    yaml: "yamls/not_call.yaml"
-    assembly: "assembly/binary_data.s"
+    yaml: "test/yamls/not_call.yaml"
+    assembly: "test/assembly/binary_data.s"
     expected: True
 
   - title: "include_and_include_list"
-    yaml: "yamls/include_and_include_list.yaml"
-    assembly: "assembly/binary_data.s"
+    yaml: "test/yamls/include_and_include_list.yaml"
+    assembly: "test/assembly/binary_data.s"
     expected: True
 
   - title: "call_between_3_and_9"
-    yaml: "yamls/call_between_3_and_9.yaml"
-    assembly: "assembly/binary_data.s"
+    yaml: "test/yamls/call_between_3_and_9.yaml"
+    assembly: "test/assembly/binary_data.s"
     expected: True
 
   - title: "moonbounce_regex_matcher_truncated"
-    yaml: "yamls/moonbounce_regex_matcher.yaml"
-    assembly: "assembly/moonbounce_malware_truncated.s"
+    yaml: "test/yamls/moonbounce_regex_matcher.yaml"
+    assembly: "test/assembly/moonbounce_malware_truncated.s"
     expected: True
 
   - title: "1_call"
-    yaml: "yamls/1_call.yaml"
-    assembly: "assembly/binary_data.s"
+    yaml: "test/yamls/1_call.yaml"
+    assembly: "test/assembly/binary_data.s"
     expected: True
 
   - title: "moonbounce_regex_matcher_short"
-    yaml: "yamls/moonbounce_regex_matcher.yaml"
-    assembly: "assembly/moonbounce_malware_short.s"
+    yaml: "test/yamls/moonbounce_regex_matcher.yaml"
+    assembly: "test/assembly/moonbounce_malware_short.s"
     expected: True
 
   - title: "smc_assembly"
-    yaml: "yamls/smc.yaml"
-    assembly: "assembly/smc.s"
+    yaml: "test/yamls/smc.yaml"
+    assembly: "test/assembly/smc.s"
     expected: True
 
   - title: "smc_binary"
-    yaml: "yamls/smc.yaml"
-    binary: "binary/smc"
+    yaml: "test/yamls/smc.yaml"
+    binary: "test/binary/smc"
     dissasembler: "objdump"
     expected: True
 
 test_parsing_lines:
   - title: "binary_data.s"
-    assembly: "assembly/binary_data.s"
+    assembly: "test/assembly/binary_data.s"
     number_of_lines: 33
 
   - title: "moonbounce_malware_short.s"
-    assembly: "assembly/moonbounce_malware_short.s"
+    assembly: "test/assembly/moonbounce_malware_short.s"
     number_of_lines: 7
 
   - title: "moonbounce_malware_truncated.s"
-    assembly: "assembly/moonbounce_malware_truncated.s"
+    assembly: "test/assembly/moonbounce_malware_truncated.s"
     number_of_lines: 10957
 
   - title: "ls_asm.s"
-    assembly: "../files_examples/assembly_examples/ls_asm.s"
+    assembly: "test/../files_examples/assembly_examples/ls_asm.s"
     number_of_lines: 19184
 
   - title: "moonbounce_malware.s"
-    assembly: "../files_examples/assembly_examples/moonbounce_malware.s"
+    assembly: "test/../files_examples/assembly_examples/moonbounce_malware.s"
     number_of_lines: 107999
 
   - title: "moonbounce_malware_small_parsing_test.s"
-    assembly: "assembly/moonbounce_malware_small_parsing_test.s"
+    assembly: "test/assembly/moonbounce_malware_small_parsing_test.s"
     number_of_lines: 14
 
   - title: "moonbounce_malware_short_section_test.s"
-    assembly: "assembly/moonbounce_malware_short_section_test.s"
+    assembly: "test/assembly/moonbounce_malware_short_section_test.s"
     number_of_lines: 18
 
   - title: "moonbounce_malware_bad_instruction.s"
-    assembly: "assembly/moonbounce_malware_bad_instruction.s"
+    assembly: "test/assembly/moonbounce_malware_bad_instruction.s"
     number_of_lines: 26
 
   - title: "moonbounce_malware_jo_pn_instruction.s"
-    assembly: "assembly/moonbounce_malware_jo_pn_instruction.s"
+    assembly: "test/assembly/moonbounce_malware_jo_pn_instruction.s"
     number_of_lines: 10

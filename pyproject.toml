@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "jasm-regex-generator"
+name = "src"
 version = "0.6.0"
 description = "Juli Asm regex generator"
 authors = ["Julian Merida <julianmr97@gmail.com>"]
