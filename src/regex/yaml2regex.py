@@ -9,6 +9,7 @@ from src.regex.any_directive_processor import AnyDirectiveProcessor
 from src.regex.not_directive_processor import NotDirectiveProcessor
 from src.regex.single_directive_processor import SingleDirectiveProcessor
 from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
+from src.regex.directive_processor import DirectiveProcessor
 
 
 class File2Regex(ABC):
@@ -49,12 +50,15 @@ class Yaml2Regex(File2Regex):
         match list(dict_keys)[0]:
             case "$any":
                 pattern: Dict[str, Any] = pattern_arg["$any"]
-                return AnyDirectiveProcessor(pattern).process()
+                processor = DirectiveProcessor(AnyDirectiveProcessor(pattern))
+                return processor.execute_strategy()
             case "$not":
                 pattern: Dict[str, Any] = pattern_arg["$not"]
-                return NotDirectiveProcessor(pattern).process()
+                processor = DirectiveProcessor(NotDirectiveProcessor(pattern))
+                return processor.execute_strategy()
             case _:
-                return SingleDirectiveProcessor(pattern_arg).process()
+                processor = DirectiveProcessor(SingleDirectiveProcessor(pattern_arg))
+                return processor.execute_strategy()
 
     def _handle_pattern(self, pattern: Pattern) -> str:
         "Dispatch pattern based on its type: str or dict"

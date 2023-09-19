@@ -3,10 +3,12 @@
 from typing import Literal, Optional, Dict, List
 
 from src.global_definitions import PatternDict
-from src.regex.directive_processor import DirectiveProcessor
+from src.regex.idirective_processor import IDirectiveProcessor
+from src.regex.operands_handler import OperandsHandler
+from src.global_definitions import SKIP_TO_END_OF_COMMAND
 
 
-class AnyDirectiveProcessor(DirectiveProcessor):
+class AnyDirectiveProcessor(IDirectiveProcessor):
     "$any Instruction Processor"
 
     def __init__(self, any_pattern: PatternDict) -> None:
@@ -22,6 +24,15 @@ class AnyDirectiveProcessor(DirectiveProcessor):
             operands=None,
         )
 
+        self.times_regex: Optional[str] = self._get_min_max_regex()
+        self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
+
+        if self.exclude_list:
+            self.exclude_list_regex = self.join_instructions(inst_list=self.exclude_list, operand=self.operand_regex)
+
+        if self.include_list:
+            self.include_list_regex = self.join_instructions(inst_list=self.include_list, operand=self.operand_regex)
+
     @staticmethod
     def _get_instruction_list(
         pattern: PatternDict, pattern_type: Literal["include_list", "exclude_list"]
@@ -32,3 +43,21 @@ class AnyDirectiveProcessor(DirectiveProcessor):
         type_list = pattern.get(pattern_type, None)
         if isinstance(type_list, List):
             return type_list
+
+    def process(self) -> str:
+        if self.times_regex:
+            if self.exclude_list:
+                if self.include_list:
+                    return f"((?!{self.exclude_list_regex})({self.include_list_regex})){self.times_regex}"
+                return f"((?!{self.exclude_list_regex})({SKIP_TO_END_OF_COMMAND})){self.times_regex}"
+            if self.include_list:
+                return f"({self.include_list_regex}){self.times_regex}"
+            return f"({SKIP_TO_END_OF_COMMAND})"
+
+        if self.exclude_list:
+            if self.include_list:
+                return f"((?!{self.exclude_list_regex})({self.include_list_regex}))"
+            return f"((?!{self.exclude_list_regex})({SKIP_TO_END_OF_COMMAND}))"
+        if self.include_list:
+            return f"({self.include_list_regex})"
+        return f"({SKIP_TO_END_OF_COMMAND})"
