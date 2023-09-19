@@ -30,21 +30,14 @@ class Yaml2Regex(File2Regex):
     def __init__(self, pattern_pathstr: PathStr) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
 
-    @staticmethod
-    def _read_yaml(file: PathStr) -> Any:
+    def load_file(self, file: PathStr) -> Any:
         "Read and return the parsed yaml"
-
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
-    def load_file(self, file) -> Any:
-        "Load file to Yaml2Regex"
-
-        return self._read_yaml(file=file)
-
     @staticmethod
-    def _process_dict_dispatcher(pattern_arg: PatternDict) -> str:
-        "Dispatch dict pattern. Resolve if pattern is $any, $not or $basic"
+    def _process_dict(pattern_arg: PatternDict) -> str:
+        "Process dict pattern. Resolve if pattern is $any, $not or $basic"
 
         dict_keys = pattern_arg.keys()
         match list(dict_keys)[0]:
@@ -61,10 +54,10 @@ class Yaml2Regex(File2Regex):
                 return processor.execute_strategy()
 
     def _handle_pattern(self, pattern: Pattern) -> str:
-        "Dispatch pattern based on its type: str or dict"
+        "Check if pattern is plain str or dict"
 
         if isinstance(pattern, dict):
-            return self._process_dict_dispatcher(pattern)
+            return self._process_dict(pattern)
         if isinstance(pattern, str):
             return f"({pattern}{SKIP_TO_END_OF_COMMAND})"
 

@@ -13,7 +13,7 @@ from src.global_definitions import (
 
 
 class IDirectiveProcessor(ABC):
-    "Instruction Processor"
+    """Interface Directive Processor for the Strategy Pattern"""
 
     def __init__(
         self,
@@ -61,4 +61,4 @@ class IDirectiveProcessor(ABC):
 
     @abstractmethod
     def process(self) -> str:
-        pass
+        "Method for parsing instruction from given assembly"
