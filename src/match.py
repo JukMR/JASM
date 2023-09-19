@@ -40,7 +40,7 @@ def get_observer_list() -> List[InstructionObserver]:
     return instruction_observers
 
 
-def match(
+def make_match(
     pattern_pathstr: str,
     dissasemble_program: Optional[str],
     binary: Optional[str],

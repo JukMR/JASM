@@ -6,15 +6,15 @@ import pytest
 import yaml
 
 
-from match import match, get_observer_list
-
+from src.match import make_match, get_observer_list
 from src.logging_config import logger
 from src.stringify_asm.implementations.parser_implementation import ParserImplementation
 
 
 def load_test_configs(file_path: str | Path, yaml_config_field: str):
     """Load test configurations from a YAML file."""
-    with open(file_path, "r", encoding="utf-8") as file_descriptor:
+    test_folder = Path("test")
+    with open(test_folder / file_path, "r", encoding="utf-8") as file_descriptor:
         return yaml.safe_load(file_descriptor)[yaml_config_field]
 
 
@@ -26,7 +26,9 @@ def run_match_test(
     if expected_result is None and binary is None:
         raise ValueError("Wrong error configuration. At least one argument should be given")
 
-    result = match(pattern_pathstr=pattern_pathstr, assembly=assembly, dissasemble_program=dissasembler, binary=binary)
+    result = make_match(
+        pattern_pathstr=pattern_pathstr, assembly=assembly, dissasemble_program=dissasembler, binary=binary
+    )
     assert result == expected_result
 
 

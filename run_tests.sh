@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cd test && pytest -k "$1" -v tests.py
+pytest -k "$1" -v test/tests.py

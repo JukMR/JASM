@@ -3,7 +3,7 @@ from parse_arguments import parse_args_from_console
 
 from src.measure_performance import measure_performance
 from src.logging_config import configure_logger
-from match import match
+from src.match import make_match
 
 
 @measure_performance(perf_title="Main function")
@@ -19,7 +19,7 @@ def main() -> None:
     )
 
     print("Starting execution... ")
-    match(
+    make_match(
         pattern_pathstr=args.pattern,
         assembly=args.assembly,
         binary=args.binary,
