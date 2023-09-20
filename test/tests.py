@@ -6,7 +6,7 @@ import pytest
 import yaml
 
 
-from src.match import make_match, get_observer_list
+from src.match import perform_matching, get_instruction_observers
 from src.logging_config import logger
 from src.stringify_asm.implementations.parser_implementation import ParserImplementation
 
@@ -26,8 +26,8 @@ def run_match_test(
     if expected_result is None and binary is None:
         raise ValueError("Wrong error configuration. At least one argument should be given")
 
-    result = make_match(
-        pattern_pathstr=pattern_pathstr, assembly=assembly, dissasemble_program=dissasembler, binary=binary
+    result = perform_matching(
+        pattern_pathstr=pattern_pathstr, assembly=assembly, disassemble_program=dissasembler, binary=binary
     )
     assert result == expected_result
 
@@ -58,7 +58,7 @@ def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
     """Parse file and return number of lines"""
 
     parser_implementation = ParserImplementation(assembly_pathstr=file)
-    parser_implementation.set_observers(instruction_observers=get_observer_list())
+    parser_implementation.set_observers(instruction_observers=get_instruction_observers())
 
     stringify_binary = parser_implementation.parse()
 
