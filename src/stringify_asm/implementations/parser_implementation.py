@@ -1,4 +1,6 @@
-"Parser Implementation module"
+"""
+Parser Implementation module
+"""
 
 import re
 from typing import List
@@ -12,33 +14,34 @@ from src.stringify_asm.abstracts.parser_abstract import Parser
 from src.measure_performance import measure_performance
 
 
+BAD_INSTRUCTION = "(bad)"
+
+
 class ParserImplementation(Parser):
-    "Parse Implementation"
+    """Implementation for parsing assembly instructions."""
 
     def __init__(self, assembly_pathstr: PathStr) -> None:
         super().__init__(assembly_pathstr=assembly_pathstr)
-        self.assembly = self._open_assembly(self.assembly_pathstr)
-        self.instruction_list = [self._parse_instruction(inst) for inst in self._run_pyparsing()]
+        self.assembly = self._read_assembly(self.assembly_pathstr)
+        self.instruction_list = [self._parse_instruction(inst) for inst in self._execute_pyparsing()]
         self.instruction_observers: List[InstructionObserver]
 
     @staticmethod
-    def _open_assembly(file: PathStr) -> str:
-        "Read the binary file"
-
+    def _read_assembly(file: PathStr) -> str:
+        """Read the assembly file."""
         with open(file, "r", encoding="utf-8") as file_d:
             return file_d.read()
 
     @measure_performance(perf_title="Pyparsing")
     def _execute_pyparsing(self) -> ParseResults:
+        """Execute pyparsing on the assembly."""
         parsed.parse_with_tabs()
-        parsed_instructions = parsed.parse_string(self.assembly)
+        return parsed.parse_string(self.assembly)
 
-        return parsed_instructions
-
-    def _run_pyparsing(self) -> ParseResults:
+    def _log_parsed_instructions(self) -> ParseResults:
+        """Log parsed instructions and ensure they are of type ParseResults."""
         parsed_instructions = self._execute_pyparsing()
 
-        # Print the instructions with their arguments
         for inst in parsed_instructions:
             logger.debug("The parsed is: %s", inst)
 
@@ -103,43 +106,41 @@ class ParserImplementation(Parser):
 
         raise ValueError("Error in processing operand")
 
-    def parse_operands(self, operands: List[str]) -> List[str]:
-        "Parse operands"
-
+    def _parse_operands(self, operands: List[str]) -> List[str]:
+        """Parse the operands of an instruction."""
         return [self._process_operand_elem(operand_elem=operand) for operand in operands]
 
-    def remove_extra_tags_in_operands(self, operands_list: List[str]) -> List[str]:
-        "Remove extra tags in operands"
-
+    def _remove_tags_from_operands(self, operands_list: List[str]) -> List[str]:
+        """Remove extra tags from operands."""
         return [
             operand.replace("$", "").replace("%", "").replace("*", "").replace("(", "").replace(")", "")
             for operand in operands_list
         ]
 
     def _parse_instruction(self, inst: ParserElement) -> Instruction:
-        if inst == "(bad)":
+        """Parse a single instruction."""
+        if inst == BAD_INSTRUCTION:
             return Instruction(mnemonic="bad", operands=[])
 
-        parsed_inst = inst.as_list()[0]  # type: ignore  // as_list() method is not recognized as method of ParseElement
+        parsed_inst = inst.as_list()[0]
         mnemonic = parsed_inst[0]
         operands = parsed_inst[1:]
 
-        if len(operands) > 0:
-            operands_list = self.parse_operands(operands)
-            operands_list_no_tags = self.remove_extra_tags_in_operands(operands_list)
+        if operands:
+            operands_list = self._parse_operands(operands)
+            operands_list_no_tags = self._remove_tags_from_operands(operands_list)
             return Instruction(mnemonic=mnemonic, operands=operands_list_no_tags)
+
         return Instruction(mnemonic=mnemonic, operands=[])
 
     def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
-        "Set a list of observers to be notified when an instruction is found"
-
+        """Set a list of observers to be notified when an instruction is found."""
         self.instruction_observers = instruction_observers
 
-    def run_observers(self, instruction_list: List[Instruction]) -> str:
-        "Observe all instructions using all observers"
-
-        if self.instruction_observers is None:
-            raise NotImplementedError("instruction_observers not set yet. Call set_observers() first")
+    def _notify_observers(self, instruction_list: List[Instruction]) -> str:
+        """Notify all observers with the provided instruction list."""
+        if not self.instruction_observers:
+            raise NotImplementedError("Observers not set. Call set_observers() first.")
 
         result_str = ""
         for observer in self.instruction_observers:
@@ -149,14 +150,13 @@ class ParserImplementation(Parser):
 
         return result_str
 
-    def _generate_string_divided_by_bars(self) -> str:
-        string_divided_by_bars = self.run_observers(instruction_list=self.instruction_list)
-
-        logger.info("The concatenated instructions are:\n %s\n", string_divided_by_bars)
-        return string_divided_by_bars
+    def _generate_assembly_string(self) -> str:
+        """Generate a string representation of the assembly."""
+        assembly_string = self._notify_observers(instruction_list=self.instruction_list)
+        logger.info("The concatenated instructions are:\n %s\n", assembly_string)
+        return assembly_string
 
     @measure_performance(perf_title="Parse Instructions")
     def parse(self) -> str:
-        "Main parse function"
-
-        return self._generate_string_divided_by_bars()
+        """Main function to parse the assembly."""
+        return self._generate_assembly_string()
