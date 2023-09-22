@@ -12,5 +12,5 @@ class Parser(ABC):
         self.assembly_pathstr = assembly_pathstr
 
     @abstractmethod
-    def parse(self) -> str:
+    def parse_assembly(self) -> str:
         "Method for parsing instruction from given assembly"

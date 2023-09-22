@@ -1,14 +1,17 @@
-from src.stringify_asm.implementations.shell_program_dissasembler_implementation import ShellProgramDissasembler
+from src.stringify_asm.implementations.shell_dissasembler_implementation import ShellDissasembler
+from src.stringify_asm.abstracts.parser_abstract import Parser
 
 
-class Llvm_Objdump(ShellProgramDissasembler):
-    """Llvm Objdump Implementation"""
+class LlvmObjdump:
+    """Class to disassemble a binary and parse an assembly using llvm-objdump."""
 
-    def __init__(self, binary: str, output_path: str, flags: str = "") -> None:
-        super().__init__(binary, output_path, program="llvm-objdump", flags=f"-d {flags}")
+    def __init__(self, dissasemble: ShellDissasembler, parser: Parser) -> None:
+        self.disassembler = dissasemble
+        self.parser = parser
 
     def disassemble(self) -> None:
-        return super().disassemble()
+        self.disassembler.disassemble()
 
     def parse_asssembly(self) -> str:
         """Implement parser"""
+        self.parser.parse_assembly()

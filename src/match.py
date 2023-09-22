@@ -4,14 +4,16 @@ Main match module
 
 import re
 from typing import List, Optional, Any
+from src.global_definitions import PathStr
 
 from src.regex.yaml2regex import Yaml2Regex
 from src.measure_performance import measure_performance
 from src.logging_config import logger
 from src.stringify_asm.abstracts.observer_abstract import InstructionObserver
 from src.stringify_asm.implementations.observers_implementation import InstructionsAppender
+from src.stringify_asm.implementations.parser_implementation import ObjdumpParser
 from src.stringify_asm.implementations.objdump_implementation import Objdump
-from src.stringify_asm.implementations.parser_implementation import ParserImplementation
+from src.stringify_asm.implementations.shell_dissasembler_implementation import ShellDissasembler
 
 TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
 DEFAULT_FLAGS = "-d"
@@ -40,6 +42,38 @@ def get_instruction_observers() -> List[InstructionObserver]:
     return [InstructionsAppender()]
 
 
+def parsing_from_assembly(assembly: PathStr) -> Objdump:
+    """Set objdump to start the process from an assembly."""
+    parser = ObjdumpParser(assembly_pathstr=assembly)
+
+    # Set a dump disassembler as it won't be needed
+    dump_disassembler = ShellDissasembler(binary="", output_path="", program="objdump", flags="")
+
+    objdump_instance = Objdump(dissasemble=dump_disassembler, parser=parser)
+    return objdump_instance
+
+
+def parsing_from_binary(binary: str) -> Objdump:
+    """Set objdump to start the process from a binary."""
+    objdump_disassembler = ShellDissasembler(
+        binary=binary, program="objdump", output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS
+    )
+    parser = ObjdumpParser(assembly_pathstr=TMP_ASSEMBLY_PATH)
+
+    objdump_instance = Objdump(dissasemble=objdump_disassembler, parser=parser)
+    objdump_instance.disassemble()
+    return objdump_instance
+
+
+def initialize_objdump_class(assembly: Optional[str], binary: Optional[str]) -> Objdump:
+    if assembly:
+        return parsing_from_assembly(assembly)
+    if binary:
+        return parsing_from_binary(binary)
+
+    raise ValueError("Either assembly or binary must be provided.")
+
+
 def perform_matching(
     pattern_pathstr: str,
     binary: Optional[str] = None,
@@ -47,22 +81,20 @@ def perform_matching(
 ) -> bool:
     """Main function to perform regex matching on assembly or binary."""
 
+    # Produce directive regex rule
     regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
+
+    # Get instruction observers
     instruction_observers = get_instruction_observers()
 
-    if assembly:
-        parser = ParserImplementation(assembly_pathstr=assembly)
-    elif binary:
-        disassembler = Objdump(binary=binary, output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS)
+    # Initialize objdump class
+    objdump_instance = initialize_objdump_class(assembly=assembly, binary=binary)
 
-        disassembler.disassemble()
-        parser = ParserImplementation(assembly_pathstr=TMP_ASSEMBLY_PATH)
-    else:
-        raise ValueError("Either assembly or binary must be provided.")
+    # Parse the assembly
+    objdump_instance.parser.set_observers(instruction_observers=instruction_observers)
+    assembly_string = objdump_instance.parser.parse_assembly()
 
-    parser.set_observers(instruction_observers=instruction_observers)
-    assembly_string = parser.parse()
-
+    # Get the results
     match_result = execute_regex_on_assembly(regex_rule=regex_rule, assembly_string=assembly_string)
 
     return log_match_results(match_result=match_result)
