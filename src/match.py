@@ -66,6 +66,7 @@ def parsing_from_binary(binary: str) -> Objdump:
 
 
 def initialize_objdump_class(assembly: Optional[str], binary: Optional[str]) -> Objdump:
+    """Decide"""
     if assembly:
         return parsing_from_assembly(assembly)
     if binary:
