@@ -10,8 +10,7 @@ from src.measure_performance import measure_performance
 from src.logging_config import logger
 from src.stringify_asm.abstracts.observer_abstract import InstructionObserver
 from src.stringify_asm.implementations.observers_implementation import InstructionsAppender
-from src.stringify_asm.implementations.disassembler_implementation import DissasembleImplementation
-from src.stringify_asm.implementations.shell_program_dissasembler_implementation import ShellProgramDissasembler
+from src.stringify_asm.implementations.objdump_implementation import Objdump
 from src.stringify_asm.implementations.parser_implementation import ParserImplementation
 
 TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
@@ -43,7 +42,6 @@ def get_instruction_observers() -> List[InstructionObserver]:
 
 def perform_matching(
     pattern_pathstr: str,
-    disassemble_program: Optional[str] = None,
     binary: Optional[str] = None,
     assembly: Optional[str] = None,
 ) -> bool:
@@ -55,18 +53,9 @@ def perform_matching(
     if assembly:
         parser = ParserImplementation(assembly_pathstr=assembly)
     elif binary:
-        if not disassemble_program:
-            raise ValueError("Disassemble program not provided.")
+        disassembler = Objdump(binary=binary, output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS)
 
-        disassemble_method = ShellProgramDissasembler(
-            binary=binary, output_path=TMP_ASSEMBLY_PATH, program=disassemble_program, flags=DEFAULT_FLAGS
-        )
-
-        disassembler = DissasembleImplementation(
-            binary=binary, output_path=TMP_ASSEMBLY_PATH, dissasemble_method=disassemble_method
-        )
-
-        disassembler.get_assembly()
+        disassembler.disassemble()
         parser = ParserImplementation(assembly_pathstr=TMP_ASSEMBLY_PATH)
     else:
         raise ValueError("Either assembly or binary must be provided.")

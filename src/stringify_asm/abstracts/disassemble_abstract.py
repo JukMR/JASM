@@ -13,5 +13,5 @@ class Disassembler(ABC):
         self.output_path = output_path
 
     @abstractmethod
-    def get_assembly(self) -> str:
+    def disassemble(self) -> str:
         "Method for generating assembly from a binary implementation"

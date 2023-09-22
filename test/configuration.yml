@@ -52,7 +52,6 @@ test_configs:
   - title: "smc_binary"
     yaml: "test/yamls/smc.yaml"
     binary: "test/binary/smc"
-    dissasembler: "objdump"
     expected: True
 
 test_parsing_lines:
