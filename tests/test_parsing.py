@@ -1,9 +1,9 @@
-import pytest
 import re
+import pytest
 
+from conftest import load_test_configs
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.logging_config import logger
-from conftest import load_test_configs
 from src.match import get_instruction_observers
 
 
