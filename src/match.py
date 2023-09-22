@@ -9,11 +9,11 @@ from src.global_definitions import PathStr
 from src.regex.yaml2regex import Yaml2Regex
 from src.measure_performance import measure_performance
 from src.logging_config import logger
-from src.stringify_asm.abstracts.observer_abstract import InstructionObserver
-from src.stringify_asm.implementations.observers_implementation import InstructionsAppender
-from src.stringify_asm.implementations.parser_implementation import ObjdumpParser
-from src.stringify_asm.implementations.objdump_implementation import Objdump
-from src.stringify_asm.implementations.shell_dissasembler_implementation import ShellDissasembler
+from src.stringify_asm.abstracts.abs_observer import InstructionObserver
+from src.stringify_asm.implementations.observers import InstructionsAppender
+from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
+from src.stringify_asm.implementations.objdump.objdump import Objdump
+from src.stringify_asm.implementations.shell_dissasembler import ShellDissasembler
 
 TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
 DEFAULT_FLAGS = "-d"

@@ -1,5 +1,5 @@
-from src.stringify_asm.implementations.shell_dissasembler_implementation import ShellDissasembler
-from src.stringify_asm.implementations.parser_implementation import ObjdumpParser
+from src.stringify_asm.implementations.shell_dissasembler import ShellDissasembler
+from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 
 
 class Objdump:
@@ -14,4 +14,4 @@ class Objdump:
 
     def parse_asssembly(self) -> str:
         """Implement parser"""
-        self.parser.parse_assembly()
+        return self.parser.parse_assembly()
