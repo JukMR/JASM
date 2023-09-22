@@ -18,17 +18,13 @@ def load_test_configs(file_path: str | Path, yaml_config_field: str):
         return yaml.safe_load(file_descriptor)[yaml_config_field]
 
 
-def run_match_test(
-    pattern_pathstr: str, assembly: str, expected_result: bool, dissasembler: Optional[str], binary: Optional[str]
-) -> None:
+def run_match_test(pattern_pathstr: str, assembly: str, expected_result: bool, binary: Optional[str]) -> None:
     """Run a single match test."""
 
-    if expected_result is None and binary is None:
+    if not assembly and not binary:
         raise ValueError("Wrong error configuration. At least one argument should be given")
 
-    result = perform_matching(
-        pattern_pathstr=pattern_pathstr, assembly=assembly, disassemble_program=dissasembler, binary=binary
-    )
+    result = perform_matching(pattern_pathstr=pattern_pathstr, assembly=assembly, binary=binary)
     assert result == expected_result
 
 
@@ -43,14 +39,12 @@ def test_all_patterns(config):
     expected_result = config["expected"]
     assembly = config.get("assembly", None)
     binary = config.get("binary", None)
-    dissasembler = config.get("dissasembler", None)
     logger.info("Testing assembly: %s with pattern: %s", assembly, config_yaml)
     run_match_test(
         pattern_pathstr=config_yaml,
         assembly=assembly,
         expected_result=expected_result,
         binary=binary,
-        dissasembler=dissasembler,
     )
 
 
