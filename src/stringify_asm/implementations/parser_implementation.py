@@ -17,7 +17,7 @@ from src.measure_performance import measure_performance
 BAD_INSTRUCTION = "(bad)"
 
 
-class ParserImplementation(Parser):
+class ObjdumpParser(Parser):
     """Implementation for parsing assembly instructions."""
 
     def __init__(self, assembly_pathstr: PathStr) -> None:
@@ -157,6 +157,6 @@ class ParserImplementation(Parser):
         return assembly_string
 
     @measure_performance(perf_title="Parse Instructions")
-    def parse(self) -> str:
+    def parse_assembly(self) -> str:
         """Main function to parse the assembly."""
         return self._generate_assembly_string()

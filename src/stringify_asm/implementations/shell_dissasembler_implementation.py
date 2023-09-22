@@ -2,7 +2,7 @@ import subprocess
 from src.stringify_asm.abstracts.disassemble_abstract import Disassembler
 
 
-class ShellProgramDissasembler(Disassembler):
+class ShellDissasembler(Disassembler):
     """A class to disassemble binaries using a shell program."""
 
     def __init__(self, binary: str, output_path: str, program: str, flags: str) -> None:
@@ -15,7 +15,7 @@ class ShellProgramDissasembler(Disassembler):
         with open(self.output_path, "w", encoding="utf-8") as fd:
             fd.write(data)
 
-    def _run_program(self) -> None:
+    def disassemble(self) -> None:
         """Run the shell program to disassemble the binary."""
         try:
             result = subprocess.run(
@@ -36,7 +36,3 @@ class ShellProgramDissasembler(Disassembler):
             raise ValueError(
                 f"Error: program '{self.program}' not found. Ensure it's installed and in your system PATH."
             ) from exc
-
-    def disassemble(self) -> None:
-        """Disassemble the binary using the provided flags and program."""
-        self._run_program()

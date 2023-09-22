@@ -8,7 +8,7 @@ import yaml
 
 from src.match import perform_matching, get_instruction_observers
 from src.logging_config import logger
-from src.stringify_asm.implementations.parser_implementation import ParserImplementation
+from src.stringify_asm.implementations.parser_implementation import ObjdumpParser
 
 
 def load_test_configs(file_path: str | Path, yaml_config_field: str):
@@ -51,10 +51,10 @@ def test_all_patterns(config):
 def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
     """Parse file and return number of lines"""
 
-    parser_implementation = ParserImplementation(assembly_pathstr=file)
+    parser_implementation = ObjdumpParser(assembly_pathstr=file)
     parser_implementation.set_observers(instruction_observers=get_instruction_observers())
 
-    stringify_binary = parser_implementation.parse()
+    stringify_binary = parser_implementation.parse_assembly()
 
     return stringify_binary.count("|")
 
