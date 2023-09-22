@@ -5,9 +5,9 @@ from abc import ABC, abstractmethod
 import yaml
 
 from src.logging_config import logger
-from src.regex.any_directive_processor import AnyDirectiveProcessor
-from src.regex.not_directive_processor import NotDirectiveProcessor
-from src.regex.single_directive_processor import SingleDirectiveProcessor
+from src.regex.directives_processors.any_processor import AnyDirectiveProcessor
+from src.regex.directives_processors.not_processor import NotDirectiveProcessor
+from src.regex.directives_processors.single_processor import SingleDirectiveProcessor
 from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
 from src.regex.directive_processor import DirectiveProcessor
 
