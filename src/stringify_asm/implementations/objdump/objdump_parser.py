@@ -7,11 +7,11 @@ from typing import List
 from pyparsing import ParseResults, ParserElement
 
 from src.logging_config import logger
-from src.stringify_asm.pyparsing_binary_rules import parsed
 from src.global_definitions import PathStr
-from src.stringify_asm.abstracts.abs_observer import InstructionObserver, Instruction
-from src.stringify_asm.abstracts.abs_parser import Parser
 from src.measure_performance import measure_performance
+from src.stringify_asm.pyparsing_binary_rules import parsed
+from src.stringify_asm.abstracts.abs_parser import Parser
+from src.stringify_asm.abstracts.abs_observer import InstructionObserver, Instruction
 
 
 BAD_INSTRUCTION = "(bad)"
