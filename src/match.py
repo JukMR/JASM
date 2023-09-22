@@ -10,10 +10,10 @@ from src.regex.yaml2regex import Yaml2Regex
 from src.measure_performance import measure_performance
 from src.logging_config import logger
 from src.stringify_asm.abstracts.abs_observer import InstructionObserver
+from src.stringify_asm.implementations.objdump.objdump_disassembler import ObjdumpDisassembler
 from src.stringify_asm.implementations.observers import InstructionsAppender
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.stringify_asm.implementations.objdump.objdump import Objdump
-from src.stringify_asm.implementations.shell_dissasembler import ShellDissasembler
 
 TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
 DEFAULT_FLAGS = "-d"
@@ -47,7 +47,7 @@ def parsing_from_assembly(assembly: PathStr) -> Objdump:
     parser = ObjdumpParser(assembly_pathstr=assembly)
 
     # Set a dump disassembler as it won't be needed
-    dump_disassembler = ShellDissasembler(binary="", output_path="", program="objdump", flags="")
+    dump_disassembler = ObjdumpDisassembler(binary="", output_path="", flags="")
 
     objdump_instance = Objdump(dissasemble=dump_disassembler, parser=parser)
     return objdump_instance
@@ -55,9 +55,7 @@ def parsing_from_assembly(assembly: PathStr) -> Objdump:
 
 def parsing_from_binary(binary: str) -> Objdump:
     """Set objdump to start the process from a binary."""
-    objdump_disassembler = ShellDissasembler(
-        binary=binary, program="objdump", output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS
-    )
+    objdump_disassembler = ObjdumpDisassembler(binary=binary, output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS)
     parser = ObjdumpParser(assembly_pathstr=TMP_ASSEMBLY_PATH)
 
     objdump_instance = Objdump(dissasemble=objdump_disassembler, parser=parser)
