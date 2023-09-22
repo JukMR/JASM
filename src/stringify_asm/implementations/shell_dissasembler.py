@@ -1,5 +1,5 @@
 import subprocess
-from src.stringify_asm.abstracts.disassemble_abstract import Disassembler
+from src.stringify_asm.abstracts.abs_disassemble import Disassembler
 
 
 class ShellDissasembler(Disassembler):

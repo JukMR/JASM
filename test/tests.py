@@ -8,7 +8,7 @@ import yaml
 
 from src.match import perform_matching, get_instruction_observers
 from src.logging_config import logger
-from src.stringify_asm.implementations.parser_implementation import ObjdumpParser
+from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 
 
 def load_test_configs(file_path: str | Path, yaml_config_field: str):
