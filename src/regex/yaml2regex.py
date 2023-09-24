@@ -4,12 +4,12 @@ from typing import Any, Dict
 import yaml
 
 from src.logging_config import logger
+from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
 from src.regex.file2regex import File2Regex
 from src.regex.directives_processors.any_processor import AnyDirectiveProcessor
 from src.regex.directives_processors.not_processor import NotDirectiveProcessor
 from src.regex.directives_processors.single_processor import SingleDirectiveProcessor
 from src.regex.directive_processor import DirectiveProcessor
-from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
 
 
 class Yaml2Regex(File2Regex):
@@ -27,8 +27,9 @@ class Yaml2Regex(File2Regex):
         dumb_pattern: PatternDict = {"": {}}
         return DirectiveProcessor(SingleDirectiveProcessor(dumb_pattern))
 
-    def load_file(self, file: PathStr) -> Any:
-        "Read and return the parsed yaml"
+    @staticmethod
+    def load_file(file: PathStr) -> Any:
+        "Read a yaml file and return the parsed content"
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
