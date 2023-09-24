@@ -40,6 +40,8 @@ class AnyDirectiveProcessor(IDirectiveProcessor):
         if isinstance(type_list, List):
             return type_list
 
+        raise ValueError("Pattern type not valid")
+
     def _process_with_times_regex(self, times_regex: str) -> str:
         if self.exclude_list:
             return self._process_with_exclude_list() + times_regex
