@@ -1,0 +1,54 @@
+@startuml sequence_diagram
+
+participant "Client" as Client
+participant "Yaml2Regex" as Yaml2Regex
+participant "DirectiveProcessor" as DirectiveProcessor
+participant "IDirectiveProcessor" as IDirectiveProcessor
+participant "Disassembler" as Disassembler
+participant "Parser" as Parser
+participant "InstructionObserver" as InstructionObserver
+participant "Matcher" as Matcher
+
+Client -> Yaml2Regex: load_file(file)
+activate Yaml2Regex
+
+loop for each directive in directive_list
+    Yaml2Regex -> DirectiveProcessor: set_strategy(strategy)
+    activate DirectiveProcessor
+    DirectiveProcessor -> IDirectiveProcessor: process()
+    activate IDirectiveProcessor
+    IDirectiveProcessor --> DirectiveProcessor: return processed_output
+    deactivate IDirectiveProcessor
+    DirectiveProcessor --> Yaml2Regex: return execute_strategy()
+    deactivate DirectiveProcessor
+end
+
+Yaml2Regex --> Client: return produce_regex()
+deactivate Yaml2Regex
+
+alt binary provided
+    Client -> Disassembler: disassemble(binary)
+    activate Disassembler
+    Disassembler --> Client: return assembly
+    deactivate Disassembler
+end
+
+Client -> Parser: parse_assembly(assembly)
+activate Parser
+
+loop for each observer in observer_list
+    Parser -> InstructionObserver: observe_instruction(inst)
+    activate InstructionObserver
+    InstructionObserver --> Parser: return observed_instruction
+    deactivate InstructionObserver
+end
+Parser --> Client: return parsed_instructions_string
+deactivate Parser
+
+Client -> Matcher: match(parsed_instructions_string, regex)
+activate Matcher
+Matcher --> Client: return match_result
+deactivate Matcher
+
+
+@enduml
