@@ -19,13 +19,7 @@ class Yaml2Regex(File2Regex):
         self.loaded_file = self.load_file(file=pattern_pathstr)
 
         # Get an empty DirectiveProcessor
-        self.directive_processor = self._get_empty_directive_processor()
-
-    def _get_empty_directive_processor(self) -> DirectiveProcessor:
-        "Get an empty DirectiveProcessor to start the DirectiveProcessor with any IDirectiveProcessor (SingleDirectiveProcessor in this case)"
-
-        dumb_pattern: PatternDict = {"": {}}
-        return DirectiveProcessor(SingleDirectiveProcessor(dumb_pattern))
+        self.directive_processor = DirectiveProcessor(strategy=None)
 
     @staticmethod
     def load_file(file: PathStr) -> Any:
