@@ -1,9 +1,15 @@
 @startuml diagram_class
 
-skinparam class {
-    ArrowColor DarkViolet
-}
+skinparam linetype polyline
+skinparam classFontName Helvetica
+skinparam ClassFontSize 14
+skinparam ArrowColor MidnightBlue
 skinparam groupInheritance 2
+
+
+skinparam class {
+
+}
 
 package "Stringify_Asm" {
     abstract class Disassembler {
@@ -99,9 +105,7 @@ package "Regex" {
         +execute_strategy(): str
     }
 
-    ' Abstract Classes and Interfaces '
-
-    interface "IDirectiveProcessor" {
+    interface IDirectiveProcessor {
     pattern : Dict
     include_list : Optional
     exclude_list : Optional
@@ -116,8 +120,7 @@ package "Regex" {
     }
 
 
-    ' Concrete Implementations '
-    class "AnyDirectiveProcessor" {
+    class AnyDirectiveProcessor {
     exclude_list_regex : str
     include_list_regex : str
     operand_regex : str
@@ -125,22 +128,16 @@ package "Regex" {
     process() -> str
     }
 
-    class "NotDirectiveProcessor" {
+    class NotDirectiveProcessor {
     operand_regex : str
     times_regex : Optional[str]
     process() -> str
     }
 
-    class "SingleDirectiveProcessor" {
+    class SingleDirectiveProcessor {
     operand_regex : str
     times_regex : Optional[str]
     process() -> str
-    }
-
-    class "DirectiveProcessor" {
-        -execute_strategy() -> str
-        +set_strategy(strategy: IDirectiveProcessor) -> None
-
     }
 
 
@@ -148,14 +145,18 @@ package "Regex" {
 }
 
 ' Strategy Pattern Relationships
-
-DirectiveProcessor::strategy -[#red,thickness=1]o IDirectiveProcessor: uses
+DirectiveProcessor -[#red,thickness=1]o IDirectiveProcessor: uses
 IDirectiveProcessor  <|-- AnyDirectiveProcessor
 IDirectiveProcessor  <|-- SingleDirectiveProcessor
 IDirectiveProcessor  <|-- NotDirectiveProcessor
 
+Yaml2Regex --up> AnyDirectiveProcessor : executes_strategy
+Yaml2Regex --up> SingleDirectiveProcessor : executes_strategy
+Yaml2Regex --up> NotDirectiveProcessor : executes_strategy
+Yaml2Regex --o DirectiveProcessor: has
 
-IDirectiveProcessor::operand_regex -o OperandsHandler
+
+IDirectiveProcessor -o OperandsHandler
 
 
 Instruction <- InstructionObserver : uses

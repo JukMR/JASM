@@ -2,7 +2,7 @@
 
 from typing import List, Dict, Any
 from src.regex.idirective_processor import IDirectiveProcessor
-from src.global_definitions import PatternDict, IncludeExcludeListType, OperandListType
+from src.global_definitions import PatternDict, IncludeExcludeListType
 
 
 class SingleDirectiveProcessor(IDirectiveProcessor):
@@ -10,15 +10,14 @@ class SingleDirectiveProcessor(IDirectiveProcessor):
 
     def __init__(self, basic_pattern: PatternDict) -> None:
         include_list = self._get_mnemonic_from_simple_pattern(pattern=basic_pattern)
-        self._basic_properties = self._get_instruction_properties(include_list=include_list, pattern=basic_pattern)
-        times = self._basic_properties.get("times", None)
+        basic_properties = self._get_instruction_properties(include_list=include_list, pattern=basic_pattern)
 
         super().__init__(
             pattern=basic_pattern,
             include_list=include_list,
             exclude_list=None,
-            times=times,
-            operands=self._get_operands(),
+            times=basic_properties.get("times", None),
+            operands=basic_properties.get("operands", None),
         )
 
     @staticmethod
@@ -43,9 +42,6 @@ class SingleDirectiveProcessor(IDirectiveProcessor):
             raise ValueError(f"Instruction properties: '{instruction_properties}' is not a Dict")
 
         return instruction_properties
-
-    def _get_operands(self) -> OperandListType:
-        return self._basic_properties.get("operands", None)
 
     def process(self) -> str:
         assert self.include_list is not None

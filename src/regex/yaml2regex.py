@@ -1,27 +1,15 @@
 "File2regex Yaml implementation module"
 
 from typing import Any, Dict
-from abc import ABC, abstractmethod
 import yaml
 
 from src.logging_config import logger
+from src.regex.file2regex import File2Regex
 from src.regex.directives_processors.any_processor import AnyDirectiveProcessor
 from src.regex.directives_processors.not_processor import NotDirectiveProcessor
 from src.regex.directives_processors.single_processor import SingleDirectiveProcessor
-from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
 from src.regex.directive_processor import DirectiveProcessor
-
-
-class File2Regex(ABC):
-    """Base class for file to regex converters"""
-
-    @abstractmethod
-    def load_file(self, file) -> Any:
-        "Base method to load a file"
-
-    @abstractmethod
-    def produce_regex(self):
-        "Main method to produce the regex"
+from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
 
 
 class Yaml2Regex(File2Regex):
@@ -30,28 +18,19 @@ class Yaml2Regex(File2Regex):
     def __init__(self, pattern_pathstr: PathStr) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
 
+        # Get an empty DirectiveProcessor
+        self.directive_processor = self._get_empty_directive_processor()
+
+    def _get_empty_directive_processor(self) -> DirectiveProcessor:
+        "Get an empty DirectiveProcessor to start the DirectiveProcessor with any IDirectiveProcessor (SingleDirectiveProcessor in this case)"
+
+        dumb_pattern: PatternDict = {"": {}}
+        return DirectiveProcessor(SingleDirectiveProcessor(dumb_pattern))
+
     def load_file(self, file: PathStr) -> Any:
         "Read and return the parsed yaml"
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
-
-    @staticmethod
-    def _process_dict(pattern_arg: PatternDict) -> str:
-        "Process dict pattern. Resolve if pattern is $any, $not or $basic"
-
-        dict_keys = pattern_arg.keys()
-        match list(dict_keys)[0]:
-            case "$any":
-                pattern: Dict[str, Any] = pattern_arg["$any"]
-                processor = DirectiveProcessor(AnyDirectiveProcessor(pattern))
-                return processor.execute_strategy()
-            case "$not":
-                pattern: Dict[str, Any] = pattern_arg["$not"]
-                processor = DirectiveProcessor(NotDirectiveProcessor(pattern))
-                return processor.execute_strategy()
-            case _:
-                processor = DirectiveProcessor(SingleDirectiveProcessor(pattern_arg))
-                return processor.execute_strategy()
 
     def _handle_pattern(self, pattern: Pattern) -> str:
         "Check if pattern is plain str or dict"
@@ -62,6 +41,23 @@ class Yaml2Regex(File2Regex):
             return f"({pattern}{SKIP_TO_END_OF_COMMAND})"
 
         raise ValueError("Pattern type not valid")
+
+    def _process_dict(self, pattern_arg: PatternDict) -> str:
+        "Process dict pattern. Resolve if pattern is $any, $not or $basic"
+
+        dict_keys = pattern_arg.keys()
+        match list(dict_keys)[0]:
+            case "$any":
+                pattern: Dict[str, Any] = pattern_arg["$any"]
+                self.directive_processor.set_strategy(AnyDirectiveProcessor(pattern))
+                return self.directive_processor.execute_strategy()
+            case "$not":
+                pattern: Dict[str, Any] = pattern_arg["$not"]
+                self.directive_processor.set_strategy(NotDirectiveProcessor(pattern))
+                return self.directive_processor.execute_strategy()
+            case _:
+                self.directive_processor.set_strategy(SingleDirectiveProcessor(pattern_arg))
+                return self.directive_processor.execute_strategy()
 
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"

@@ -2,9 +2,8 @@
 
 from typing import Literal, Optional, Dict, List
 
-from src.global_definitions import PatternDict
+from src.global_definitions import PatternDict, SKIP_TO_END_OF_COMMAND
 from src.regex.idirective_processor import IDirectiveProcessor
-from src.global_definitions import SKIP_TO_END_OF_COMMAND
 
 
 class AnyDirectiveProcessor(IDirectiveProcessor):
