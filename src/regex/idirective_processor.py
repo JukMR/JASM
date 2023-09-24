@@ -3,8 +3,10 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Optional
 
-from src.global_definitions import MAX_PYTHON_INT
+
+from src.regex.operands_handler import OperandsHandler
 from src.global_definitions import (
+    MAX_PYTHON_INT,
     PatternDict,
     IncludeExcludeListType,
     TimesType,
@@ -28,6 +30,9 @@ class IDirectiveProcessor(ABC):
         self.exclude_list = exclude_list
         self.times = times
         self.operands = operands
+
+        self.times_regex: Optional[str] = self._get_min_max_regex()
+        self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
 
     @staticmethod
     def get_times(pattern: PatternDict) -> TimesType:

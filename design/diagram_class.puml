@@ -1,0 +1,176 @@
+@startuml diagram_class
+
+skinparam class {
+    ArrowColor DarkViolet
+}
+skinparam groupInheritance 2
+
+package "Stringify_Asm" {
+    abstract class Disassembler {
+        -binary: PathStr
+        -output_path: str
+        +disassemble() -> str
+    }
+
+    class Instruction {
+        +mnemonic: str
+        +operands: List[str]
+        +stringify() -> str
+    }
+
+    class InstructionObserver {
+        +observe_instruction(inst: Instruction) : Optional[Instruction]
+        +finalize() -> str
+    }
+
+    abstract class Parser {
+        -assembly_pathstr: PathStr
+        +parse_assembly() -> str
+    }
+
+    class LLvmObjdumpDisassembler {
+        +disassemble() -> None
+    }
+
+    class LlvmObjdumpParser {
+        +parse_assembly() -> str
+    }
+
+    class LlvmObjdump {
+        -disassembler: ShellDissasembler
+        -parser: LlvmObjdumpParser
+        +disassemble() -> None
+        +parse_asssembly() -> str
+    }
+
+    class ObjdumpDisassembler {
+        +disassemble() -> None
+    }
+
+    class ObjdumpParser {
+        -assembly: str
+        -instruction_list: List[Instruction]
+        -instruction_observers: List[InstructionObserver]
+        +parse_assembly() -> str
+    }
+
+    class Objdump {
+        -disassembler: ShellDissasembler
+        -parser: ObjdumpParser
+        +disassemble() -> None
+        +parse_asssembly() -> str
+    }
+
+    class InstructionsAppender {
+        -str_binary: str
+        +observe_instruction(inst: Instruction) : None
+        +finalize() -> str
+    }
+
+    class ShellDissasembler {
+        -binary: str
+        -output_path: str
+        -program: str
+        -flags: str
+        +disassemble() -> None
+    }
+}
+
+package "Regex" {
+
+    abstract class File2Regex {
+        +load_file(file) : Any
+        +produce_regex()
+    }
+
+    class Yaml2Regex {
+        -loaded_file: Any
+        +load_file(file: PathStr) : Any
+        +produce_regex() -> str
+    }
+
+    class OperandsHandler {
+        -operands: OperandListType
+        +get_regex() -> str
+    }
+
+    class DirectiveProcessor {
+        -strategy: DirectiveStrategy
+        +execute_strategy(): str
+    }
+
+    ' Abstract Classes and Interfaces '
+
+    interface "IDirectiveProcessor" {
+    pattern : Dict
+    include_list : Optional
+    exclude_list : Optional
+    times : Optional
+    operands : Optional
+    times_regex: Optional[str]
+    operand_regex: str
+
+    join_instructions(inst_list: List[str], operand: str) -> str
+    get_times(pattern: PatternDict) -> TimesType
+    {abstract}process() -> str
+    }
+
+
+    ' Concrete Implementations '
+    class "AnyDirectiveProcessor" {
+    exclude_list_regex : str
+    include_list_regex : str
+    operand_regex : str
+    times_regex : Optional[str]
+    process() -> str
+    }
+
+    class "NotDirectiveProcessor" {
+    operand_regex : str
+    times_regex : Optional[str]
+    process() -> str
+    }
+
+    class "SingleDirectiveProcessor" {
+    operand_regex : str
+    times_regex : Optional[str]
+    process() -> str
+    }
+
+    class "DirectiveProcessor" {
+        -execute_strategy() -> str
+        +set_strategy(strategy: IDirectiveProcessor) -> None
+
+    }
+
+
+
+}
+
+' Strategy Pattern Relationships
+
+DirectiveProcessor::strategy -[#red,thickness=1]o IDirectiveProcessor: uses
+IDirectiveProcessor  <|-- AnyDirectiveProcessor
+IDirectiveProcessor  <|-- SingleDirectiveProcessor
+IDirectiveProcessor  <|-- NotDirectiveProcessor
+
+
+IDirectiveProcessor::operand_regex -o OperandsHandler
+
+
+Instruction <- InstructionObserver : uses
+File2Regex <|-- Yaml2Regex
+Parser <|--- LlvmObjdumpParser
+Parser <|--- ObjdumpParser
+InstructionObserver <|-- InstructionsAppender
+
+Objdump o-- ObjdumpDisassembler
+Objdump o-- ObjdumpParser
+
+LlvmObjdump o-- LlvmObjdumpParser
+LlvmObjdump o-- LLvmObjdumpDisassembler
+
+Disassembler <|-- ShellDissasembler
+ShellDissasembler <|-- ObjdumpDisassembler
+ShellDissasembler <|-- LLvmObjdumpDisassembler
+@enduml

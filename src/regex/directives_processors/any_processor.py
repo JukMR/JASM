@@ -4,7 +4,6 @@ from typing import Literal, Optional, Dict, List
 
 from src.global_definitions import PatternDict
 from src.regex.idirective_processor import IDirectiveProcessor
-from src.regex.operands_handler import OperandsHandler
 from src.global_definitions import SKIP_TO_END_OF_COMMAND
 
 
@@ -23,9 +22,6 @@ class AnyDirectiveProcessor(IDirectiveProcessor):
             times=times,
             operands=None,
         )
-
-        self.times_regex: Optional[str] = self._get_min_max_regex()
-        self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
 
         if self.exclude_list:
             self.exclude_list_regex = self.join_instructions(inst_list=self.exclude_list, operand=self.operand_regex)
