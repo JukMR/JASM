@@ -23,7 +23,7 @@ class ObjdumpParser(Parser):
     def __init__(self, assembly_pathstr: PathStr) -> None:
         super().__init__(assembly_pathstr=assembly_pathstr)
         self.assembly = self._read_assembly(self.assembly_pathstr)
-        self.instruction_list = [self._parse_instruction(inst) for inst in self._execute_pyparsing()]
+
         self.instruction_observers: List[InstructionObserver]
 
     @staticmethod
@@ -122,7 +122,7 @@ class ObjdumpParser(Parser):
         if inst == BAD_INSTRUCTION:
             return Instruction(mnemonic="bad", operands=[])
 
-        parsed_inst = inst.as_list()[0]
+        parsed_inst = inst.as_list()[0]  # type: ignore
         mnemonic = parsed_inst[0]
         operands = parsed_inst[1:]
 
@@ -142,21 +142,33 @@ class ObjdumpParser(Parser):
         if not self.instruction_observers:
             raise NotImplementedError("Observers not set. Call set_observers() first.")
 
-        result_str = ""
+        observed_instructions: List[Instruction] | str = instruction_list
         for observer in self.instruction_observers:
-            for inst in instruction_list:
+            for inst in observed_instructions:
+                if not isinstance(inst, Instruction):
+                    raise ValueError("Wrong type for observed_instructions")
                 observer.observe_instruction(inst=inst)
-            result_str += observer.finalize()
+                observed_instructions = observer.finalize()
 
-        return result_str
+        if isinstance(observed_instructions, str):
+            return observed_instructions
+        raise ValueError("Wrong type for observed_instructions")
 
-    def _generate_assembly_string(self) -> str:
+    def _call_observers_and_get_final_string(self, instruction_list: List[Instruction]) -> str:
         """Generate a string representation of the assembly."""
-        assembly_string = self._notify_observers(instruction_list=self.instruction_list)
+
+        # Notify the observers of the generated instructions
+        assembly_string = self._notify_observers(instruction_list=instruction_list)
         logger.info("The concatenated instructions are:\n %s\n", assembly_string)
         return assembly_string
 
     @measure_performance(perf_title="Parse Instructions")
     def parse_assembly(self) -> str:
         """Main function to parse the assembly."""
-        return self._generate_assembly_string()
+
+        # Parse the assembly and get the list of instructions
+        instruction_list = [self._parse_instruction(inst) for inst in self._execute_pyparsing()]
+
+        final_string = self._call_observers_and_get_final_string(instruction_list)
+
+        return final_string

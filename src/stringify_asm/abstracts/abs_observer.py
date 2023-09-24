@@ -26,6 +26,6 @@ class InstructionObserver(ABC):
         return inst
 
     @abstractmethod
-    def finalize(self) -> str:
+    def finalize(self) -> List[Instruction] | str:
         "Last method called after all visitors"
         return ""
