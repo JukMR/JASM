@@ -85,12 +85,13 @@ package "Stringify_Asm" {
 package "Regex" {
 
     abstract class File2Regex {
-        +load_file(file) : Any
-        +produce_regex()
+        {abstract} load_file(file) : Any
+        {abstract} produce_regex()
     }
 
     class Yaml2Regex {
         -loaded_file: Any
+        -directive_processor: DirectiveProcessor
         +load_file(file: PathStr) : Any
         +produce_regex() -> str
     }
@@ -101,7 +102,7 @@ package "Regex" {
     }
 
     class DirectiveProcessor {
-        -strategy: DirectiveStrategy
+        -strategy: IDirectiveStrategy
         +execute_strategy(): str
     }
 
@@ -125,19 +126,22 @@ package "Regex" {
     include_list_regex : str
     operand_regex : str
     times_regex : Optional[str]
-    process() -> str
+
+    +process() -> str
     }
 
     class NotDirectiveProcessor {
     operand_regex : str
     times_regex : Optional[str]
-    process() -> str
+
+    +process() -> str
     }
 
     class SingleDirectiveProcessor {
     operand_regex : str
     times_regex : Optional[str]
-    process() -> str
+
+    +process() -> str
     }
 
 

@@ -8,7 +8,8 @@ class File2Regex(ABC):
     """Base class for file to regex converters"""
 
     @abstractmethod
-    def load_file(self, file) -> Any:
+    @staticmethod
+    def load_file(file) -> Any:
         "Base method to load a file"
 
     @abstractmethod
