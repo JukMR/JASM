@@ -1,11 +1,8 @@
 "Not Directive Processor Implementation"
 
 
-from typing import Optional
 from src.global_definitions import PatternDict
-
 from src.regex.idirective_processor import IDirectiveProcessor
-from src.regex.operands_handler import OperandsHandler
 
 
 class NotDirectiveProcessor(IDirectiveProcessor):
@@ -22,9 +19,6 @@ class NotDirectiveProcessor(IDirectiveProcessor):
             times=times,
             operands=None,
         )
-
-        self.times_regex: Optional[str] = self._get_min_max_regex()
-        self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
 
     def process(self) -> str:
         assert self.exclude_list

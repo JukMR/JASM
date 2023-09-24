@@ -1,9 +1,8 @@
 "Single Directive Processor Implementation"
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from src.regex.idirective_processor import IDirectiveProcessor
 from src.global_definitions import PatternDict, IncludeExcludeListType, OperandListType
-from src.regex.operands_handler import OperandsHandler
 
 
 class SingleDirectiveProcessor(IDirectiveProcessor):
@@ -21,9 +20,6 @@ class SingleDirectiveProcessor(IDirectiveProcessor):
             times=times,
             operands=self._get_operands(),
         )
-
-        self.times_regex: Optional[str] = self._get_min_max_regex()
-        self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
 
     @staticmethod
     def _get_mnemonic_from_simple_pattern(pattern: PatternDict) -> List[str]:
