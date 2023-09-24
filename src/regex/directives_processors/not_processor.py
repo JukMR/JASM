@@ -9,14 +9,11 @@ class NotDirectiveProcessor(IDirectiveProcessor):
     "$not Instruction Processor"
 
     def __init__(self, not_pattern: PatternDict) -> None:
-        exclude_list = not_pattern["inst"]
-        times = super().get_times(pattern=not_pattern)
-
         super().__init__(
             pattern=not_pattern,
             include_list=None,
-            exclude_list=exclude_list,
-            times=times,
+            exclude_list=not_pattern["inst"],
+            times=super().get_times(pattern=not_pattern),
             operands=None,
         )
 
