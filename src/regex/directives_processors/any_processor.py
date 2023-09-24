@@ -40,7 +40,8 @@ class AnyDirectiveProcessor(IDirectiveProcessor):
         if isinstance(type_list, List):
             return type_list
 
-        raise ValueError("Pattern type not valid")
+        # No instruction list to return
+        return None
 
     def _process_with_times_regex(self, times_regex: str) -> str:
         if self.exclude_list:
