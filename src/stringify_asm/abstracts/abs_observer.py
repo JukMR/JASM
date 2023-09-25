@@ -15,7 +15,7 @@ class Instruction:
 
     def stringify(self) -> str:
         "Method for returning instruction as a string"
-        return self.addrs + "::" + self.mnemonic + "," + ",".join(self.operands)
+        return f"{self.addrs}::{self.mnemonic},{','.join(self.operands)}"
 
 
 class InstructionObserver(ABC):
@@ -24,9 +24,7 @@ class InstructionObserver(ABC):
     @abstractmethod
     def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:
         "Main observer method"
-        return inst
 
-    @abstractmethod
-    def finalize(self) -> List[Instruction] | str:
-        "Last method called after all visitors"
-        return ""
+    # @abstractmethod
+    # def finalize(self) -> List[Instruction] | str:
+    #     "Last method called after all visitors"

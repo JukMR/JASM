@@ -1,14 +1,8 @@
 "Pyparsing assembly matching rules"
-from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore, alphas
+from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore
+from pyparsing import printables, hexnums, line_end, python_style_comment, Optional, alphanums, alphas
 
-from pyparsing import (
-    printables,
-    hexnums,
-    line_end,
-    python_style_comment,
-    Optional,
-    alphanums,
-)
+ParserElement.enablePackrat()
 
 
 # Set default whitespace
@@ -51,13 +45,13 @@ hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 two_words_in_mnemonic = Word(alphas, min=1, max=4) + Literal(",") + Word(alphas, min=1, max=3)
 mnemonic = Word(alphanums)
 
-operand_tag_types = Literal("$") | Literal("*") | Literal("%")
+operand_tag_types = Literal("$") ^ Literal("*") ^ Literal("%")
 
 operand = (
     Suppress(Optional(operand_tag_types)) + Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 )
 
-operation = Group((two_words_in_mnemonic | BAD_INSTRUCTION | mnemonic) + ZeroOrMore(operand))
+operation = Group((two_words_in_mnemonic ^ BAD_INSTRUCTION ^ mnemonic) + ZeroOrMore(operand))
 
 
 instruction_code = Optional(Group(OneOrMore(operation)))
@@ -69,7 +63,7 @@ ellipsis = Suppress(Literal("\t") + Literal("...") + many_line_end)
 
 bad_instruction = instruction_addr + hex_coding + BAD_INSTRUCTION + Optional(comment) + many_line_end
 
-line = label | inst | ellipsis | bad_instruction
+line = label ^ inst ^ ellipsis ^ bad_instruction
 
 lines = OneOrMore(line)
 

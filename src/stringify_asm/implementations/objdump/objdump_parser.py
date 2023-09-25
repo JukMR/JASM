@@ -3,7 +3,9 @@ Parser Implementation module
 """
 
 import re
-from typing import List
+from typing import List, cast
+from multiprocessing import Pool
+from tqdm import tqdm
 from pyparsing import ParseException, ParseResults, ParserElement
 
 from src.logging_config import logger
@@ -35,6 +37,7 @@ class ObjdumpParser(Parser):
     def _execute_pyparsing(self) -> ParseResults:
         """Execute pyparsing on the assembly."""
         parsed.parse_with_tabs()
+        parsed.enable_packrat()
 
         try:
             # process the result if parsing is successful
@@ -154,22 +157,39 @@ class ObjdumpParser(Parser):
         """Set a list of observers to be notified when an instruction is found."""
         self.instruction_observers = instruction_observers
 
+    def _observe_single_instruction(self, observer, instruction):
+        return observer.observe_instruction(instruction)
+
+    def _finalize_string(self, list_inst: List[str]) -> str:
+        return ",|".join(list_inst) + ",|"
+
     def _notify_observers(self, instruction_list: List[Instruction]) -> str:
         """Notify all observers with the provided instruction list."""
         if not self.instruction_observers:
             raise NotImplementedError("Observers not set. Call set_observers() first.")
 
-        observed_instructions: List[Instruction] | str = instruction_list
-        for observer in self.instruction_observers:
-            for inst in observed_instructions:
-                if not isinstance(inst, Instruction):
-                    raise ValueError("Wrong type for observed_instructions")
-                observer.observe_instruction(inst=inst)
-                observed_instructions = observer.finalize()
+        observed_instructions: List[str] | List[Instruction]
+        observed_instructions = instruction_list
 
-        if isinstance(observed_instructions, str):
-            return observed_instructions
-        raise ValueError("Wrong type for observed_instructions")
+        for observer in self.instruction_observers:
+            # Create a Pool of processes
+            with Pool() as pool:
+                # Parallelize the observation of instructions by this observer
+                # Using tqdm to show progress
+                observed_instructions = list(
+                    tqdm(
+                        pool.starmap(
+                            self._observe_single_instruction,
+                            [(observer, inst) for inst in observed_instructions if inst],
+                        ),
+                        total=len(instruction_list),
+                        desc="Processing instructions",
+                        unit="inst",
+                    )
+                )
+        # Concatenate the list
+        observed_instructions = cast(List[str], observed_instructions)
+        return self._finalize_string(observed_instructions)
 
     def _call_observers_and_get_final_string(self, instruction_list: List[Instruction]) -> str:
         """Generate a string representation of the assembly."""
