@@ -2,4 +2,4 @@
 
 # pytest -k "$1" -v tests/tests.py
 
-pytest -k "$1" -v
+pytest -n 3 -k "$1" -v

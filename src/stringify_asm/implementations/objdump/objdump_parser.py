@@ -4,7 +4,7 @@ Parser Implementation module
 
 import re
 from typing import List
-from pyparsing import ParseResults, ParserElement
+from pyparsing import ParseException, ParseResults, ParserElement
 
 from src.logging_config import logger
 from src.global_definitions import PathStr
@@ -36,7 +36,17 @@ class ObjdumpParser(Parser):
         """Execute pyparsing on the assembly."""
         parsed.parse_with_tabs()
 
-        return parsed.parse_string(self.assembly)
+        try:
+            # process the result if parsing is successful
+            result = parsed.parse_string(self.assembly)
+            return result
+
+        except ParseException as pe:  # pylint: disable=invalid-name
+            print(f"Error parsing input at line {pe.lineno}, column {pe.col}, position {pe.loc}.")
+            print(pe.line)
+            print(" " * (pe.col - 1) + "^")
+            print(pe.msg)
+            raise
 
     def _log_parsed_instructions(self) -> ParseResults:
         """Log parsed instructions and ensure they are of type ParseResults."""
