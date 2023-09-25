@@ -9,6 +9,8 @@ SKIP_TO_END_OF_COMMAND = "[^|]*" + r"\|"
 SKIP_TO_START_OF_OPERAND = "[^|,]*"
 SKIP_TO_ANY_OPERAND_CHARS = "[^|]*"
 
+IGNORE_INST_ADDR = r"[\dabcedf]+::"
+
 MAX_PYTHON_INT = sys.maxsize * 2
 
 PatternDict: TypeAlias = Dict[str, Any]

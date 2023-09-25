@@ -4,7 +4,7 @@ from typing import Any, Dict
 import yaml
 
 from src.logging_config import logger
-from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict
+from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict, IGNORE_INST_ADDR
 from src.regex.file2regex import File2Regex
 from src.regex.directives_processors.any_processor import AnyDirectiveProcessor
 from src.regex.directives_processors.not_processor import NotDirectiveProcessor
@@ -33,7 +33,7 @@ class Yaml2Regex(File2Regex):
         if isinstance(pattern, dict):
             return self._process_dict(pattern)
         if isinstance(pattern, str):
-            return f"({pattern}{SKIP_TO_END_OF_COMMAND})"
+            return f"({IGNORE_INST_ADDR}{pattern}{SKIP_TO_END_OF_COMMAND})"
 
         raise ValueError("Pattern type not valid")
 

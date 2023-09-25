@@ -13,7 +13,6 @@ from src.stringify_asm.pyparsing_binary_rules import parsed
 from src.stringify_asm.abstracts.abs_parser import Parser
 from src.stringify_asm.abstracts.abs_observer import InstructionObserver, Instruction
 
-
 BAD_INSTRUCTION = "(bad)"
 
 
@@ -36,6 +35,7 @@ class ObjdumpParser(Parser):
     def _execute_pyparsing(self) -> ParseResults:
         """Execute pyparsing on the assembly."""
         parsed.parse_with_tabs()
+
         return parsed.parse_string(self.assembly)
 
     def _log_parsed_instructions(self) -> ParseResults:
@@ -76,9 +76,7 @@ class ObjdumpParser(Parser):
         try:
             int(operand_elem)
             return operand_elem
-        except ValueError:
-            pass
-        except TypeError:
+        except (ValueError, TypeError):
             pass
 
         try:
@@ -119,19 +117,28 @@ class ObjdumpParser(Parser):
 
     def _parse_instruction(self, inst: ParserElement) -> Instruction:
         """Parse a single instruction."""
-        if inst == BAD_INSTRUCTION:
-            return Instruction(mnemonic="bad", operands=[])
 
-        parsed_inst = inst.as_list()[0]  # type: ignore
-        mnemonic = parsed_inst[0]
-        operands = parsed_inst[1:]
+        instruction_parts_addr = inst.as_list()  # type: ignore
+
+        address = instruction_parts_addr[0]
+
+        if len(instruction_parts_addr) == 2:
+            return Instruction(addrs=address, mnemonic="empty", operands=[])
+
+        instruction_parts_command = instruction_parts_addr[2]
+
+        mnemonic = instruction_parts_command[0][0]
+        operands = instruction_parts_command[0][1:]
+
+        if inst == BAD_INSTRUCTION:
+            return Instruction(addrs=address, mnemonic="bad", operands=[])
 
         if operands:
             operands_list = self._parse_operands(operands)
             operands_list_no_tags = self._remove_tags_from_operands(operands_list)
-            return Instruction(mnemonic=mnemonic, operands=operands_list_no_tags)
+            return Instruction(addrs=address, mnemonic=mnemonic, operands=operands_list_no_tags)
 
-        return Instruction(mnemonic=mnemonic, operands=[])
+        return Instruction(addrs=address, mnemonic=mnemonic, operands=[])
 
     def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
         """Set a list of observers to be notified when an instruction is found."""

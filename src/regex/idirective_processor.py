@@ -7,6 +7,7 @@ from typing import List, Dict, Optional
 from src.regex.operands_handler import OperandsHandler
 from src.global_definitions import (
     MAX_PYTHON_INT,
+    IGNORE_INST_ADDR,
     PatternDict,
     IncludeExcludeListType,
     TimesType,
@@ -58,7 +59,7 @@ class IDirectiveProcessor(ABC):
 
         assert len(inst_list) != 0, "There are no instructions to join"
 
-        regex_instructions = [f"{elem},{operand}" for elem in inst_list]
+        regex_instructions = [f"{IGNORE_INST_ADDR}{elem},{operand}" for elem in inst_list]
 
         joined_by_bar_instructions = "|".join(regex_instructions)
 
