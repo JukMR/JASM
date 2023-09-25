@@ -9,12 +9,13 @@ from typing import List, Optional
 class Instruction:
     "Main instruction class for match patterns"
 
+    addrs: str
     mnemonic: str
     operands: List[str]
 
     def stringify(self) -> str:
         "Method for returning instruction as a string"
-        return self.mnemonic + "," + ",".join(self.operands)
+        return self.addrs + "::" + self.mnemonic + "," + ",".join(self.operands)
 
 
 class InstructionObserver(ABC):

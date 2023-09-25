@@ -11,7 +11,7 @@ from src.measure_performance import measure_performance
 from src.logging_config import logger
 from src.stringify_asm.abstracts.abs_observer import InstructionObserver
 from src.stringify_asm.implementations.objdump.objdump_disassembler import ObjdumpDisassembler
-from src.stringify_asm.implementations.observers import InstructionsAppender
+from src.stringify_asm.implementations.observers import InstructionsAppender, RemoveEmptyInstructions
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.stringify_asm.implementations.objdump.objdump import Objdump
 
@@ -39,7 +39,8 @@ def log_match_results(match_result: List[str]) -> bool:
 
 def get_instruction_observers() -> List[InstructionObserver]:
     """Retrieve a list of instruction observers."""
-    return [InstructionsAppender()]
+
+    return [RemoveEmptyInstructions(), InstructionsAppender()]
 
 
 def parsing_from_assembly(assembly: PathStr) -> Objdump:

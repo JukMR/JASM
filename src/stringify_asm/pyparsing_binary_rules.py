@@ -26,6 +26,9 @@ COLON = ":"
 LESS_THAN = "<"
 GREATER_THAN = ">"
 
+BAD_INSTRUCTION = Literal("(bad)")
+TAB = Suppress(Literal("\t"))
+
 many_line_end = Suppress(OneOrMore(line_end))
 
 section_name = Word(printables, exclude_chars=":")
@@ -40,14 +43,12 @@ SECTION_HEADER = Optional(Suppress(section_title))
 
 comment = Suppress(python_style_comment)
 
-TAB = Suppress(Literal("\t"))
-instruction_addr = Suppress(HEX + COLON) + TAB
+instruction_addr = HEX + COLON + TAB
 
 
 hex_coding = Suppress(Group(OneOrMore(Word(hexnums, exact=2)) + Optional(TAB)))
 
 two_words_in_mnemonic = Word(alphas, min=1, max=4) + Literal(",") + Word(alphas, min=1, max=3)
-bad = Literal("(bad)")
 mnemonic = Word(alphanums)
 
 operand_tag_types = Literal("$") | Literal("*") | Literal("%")
@@ -56,17 +57,17 @@ operand = (
     Suppress(Optional(operand_tag_types)) + Word(printables, exclude_chars="#,") + Suppress(Optional(Literal(",")))
 )
 
-operation = Group((two_words_in_mnemonic | bad | mnemonic) + ZeroOrMore(operand))
+operation = Group((two_words_in_mnemonic | BAD_INSTRUCTION | mnemonic) + ZeroOrMore(operand))
 
 
 instruction_code = Optional(Group(OneOrMore(operation)))
 
 
-inst = instruction_addr + hex_coding + instruction_code + Optional(comment) + many_line_end
+inst = Group(instruction_addr + hex_coding + instruction_code + Optional(comment) + many_line_end)
 
 ellipsis = Suppress(Literal("\t") + Literal("...") + many_line_end)
 
-bad_instruction = instruction_addr + hex_coding + Literal("(bad)") + Optional(comment) + many_line_end
+bad_instruction = instruction_addr + hex_coding + BAD_INSTRUCTION + Optional(comment) + many_line_end
 
 line = label | inst | ellipsis | bad_instruction
 
