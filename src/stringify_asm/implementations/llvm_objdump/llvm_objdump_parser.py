@@ -1,7 +1,4 @@
-from src.stringify_asm.abstracts.abs_parser import Parser
-
-
-class LlvmObjdumpParser(Parser):
+class LlvmObjdumpParser:
     """Parser implementation for the LlvmObjdump class"""
 
     def parse_assembly(self) -> str:

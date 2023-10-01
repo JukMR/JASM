@@ -4,13 +4,6 @@ from typing import Optional
 from src.stringify_asm.abstracts.abs_observer import InstructionObserver, Instruction
 
 
-class InstructionsAppender(InstructionObserver):
-    "InstructionObserver implementation that only concatenates instructions"
-
-    def observe_instruction(self, inst: Instruction) -> str:
-        return inst.stringify()
-
-
 class TagOutofAddrsRangeJumps(InstructionObserver):
     "InstructionObserver implementation that only concatenates instructions"
 
@@ -60,6 +53,3 @@ class RemoveEmptyInstructions(InstructionObserver):
         if not inst.mnemonic == "empty":
             return inst
         return None
-
-
-0

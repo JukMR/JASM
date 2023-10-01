@@ -22,9 +22,5 @@ class InstructionObserver(ABC):
     "Base abstract class for Instruction Observers"
 
     @abstractmethod
-    def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:
+    def observe_instruction(self, inst: Optional[Instruction]) -> Optional[Instruction]:
         "Main observer method"
-
-    # @abstractmethod
-    # def finalize(self) -> List[Instruction] | str:
-    #     "Last method called after all visitors"

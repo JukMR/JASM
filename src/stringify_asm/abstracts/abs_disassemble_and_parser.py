@@ -2,15 +2,14 @@
 
 from abc import ABC, abstractmethod
 
-from src.global_definitions import PathStr
 
-
-class Parser(ABC):
+class MainDisassembleParser(ABC):
     "Main parser base abstract class"
-
-    def __init__(self, assembly_pathstr: PathStr) -> None:
-        self.assembly_pathstr = assembly_pathstr
 
     @abstractmethod
     def parse_assembly(self) -> str:
         "Method for parsing instruction from given assembly"
+
+    @abstractmethod
+    def get_assembly(self) -> str:
+        "Method for disassembling instruction from given assembly"

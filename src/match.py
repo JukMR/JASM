@@ -11,9 +11,9 @@ from src.measure_performance import measure_performance
 from src.logging_config import logger
 from src.stringify_asm.abstracts.abs_observer import InstructionObserver
 from src.stringify_asm.implementations.objdump.objdump_disassembler import ObjdumpDisassembler
-from src.stringify_asm.implementations.observers import InstructionsAppender, RemoveEmptyInstructions
+from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
-from src.stringify_asm.implementations.objdump.objdump import Objdump
+from src.stringify_asm.implementations.objdump.GNUobjdump import GNUObjdump
 
 TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
 DEFAULT_FLAGS = "-d"
@@ -40,31 +40,31 @@ def log_match_results(match_result: List[str]) -> bool:
 def get_instruction_observers() -> List[InstructionObserver]:
     """Retrieve a list of instruction observers."""
 
-    return [RemoveEmptyInstructions(), InstructionsAppender()]
+    return [RemoveEmptyInstructions()]
 
 
-def parsing_from_assembly(assembly: PathStr) -> Objdump:
+def parsing_from_assembly(assembly: PathStr) -> GNUObjdump:
     """Set objdump to start the process from an assembly."""
     parser = ObjdumpParser(assembly_pathstr=assembly)
 
     # Set a dump disassembler as it won't be needed
     dump_disassembler = ObjdumpDisassembler(binary="", output_path="", flags="")
 
-    objdump_instance = Objdump(dissasemble=dump_disassembler, parser=parser)
+    objdump_instance = GNUObjdump(dissasemble=dump_disassembler, parser=parser)
     return objdump_instance
 
 
-def parsing_from_binary(binary: str) -> Objdump:
+def parsing_from_binary(binary: str) -> GNUObjdump:
     """Set objdump to start the process from a binary."""
     objdump_disassembler = ObjdumpDisassembler(binary=binary, output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS)
     parser = ObjdumpParser(assembly_pathstr=TMP_ASSEMBLY_PATH)
 
-    objdump_instance = Objdump(dissasemble=objdump_disassembler, parser=parser)
-    objdump_instance.disassemble()
+    objdump_instance = GNUObjdump(dissasemble=objdump_disassembler, parser=parser)
+    objdump_instance.get_assembly()
     return objdump_instance
 
 
-def initialize_objdump_class(assembly: Optional[str], binary: Optional[str]) -> Objdump:
+def initialize_objdump_class(assembly: Optional[str], binary: Optional[str]) -> GNUObjdump:
     """Decide"""
     if assembly:
         return parsing_from_assembly(assembly)
