@@ -6,13 +6,13 @@ from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpPars
 class GNUObjdump(MainDisassembleParser):
     """Class to disassemble a binary and parse an assembly using objdump."""
 
-    def __init__(self, dissasemble: ShellDissasembler, parser: ObjdumpParser) -> None:
-        self.disassembler = dissasemble
+    def __init__(self, get_assembly: ShellDissasembler, parser: ObjdumpParser) -> None:
+        self.disassembler = get_assembly
         self.parser = parser
 
     def get_assembly(self) -> None:
         self.disassembler.disassemble()
 
-    def parse_asssembly(self) -> str:
+    def parse_assembly(self) -> str:
         """Implement parser"""
         return self.parser.parse_assembly()
