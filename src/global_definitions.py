@@ -2,7 +2,6 @@
 
 import sys
 from typing import Any, Dict, List, TypeAlias, Optional
-from pathlib import Path
 
 SKIP_TO_END_OF_OPERAND = "[^,]*,"
 SKIP_TO_END_OF_COMMAND = "[^|]*" + r"\|"
@@ -15,7 +14,6 @@ MAX_PYTHON_INT = sys.maxsize * 2
 
 PatternDict: TypeAlias = Dict[str, Any]
 Pattern: TypeAlias = List[Any] | PatternDict
-PathStr: TypeAlias = str | Path
 
 IncludeExcludeListType: TypeAlias = Optional[List[str]]
 TimesType: TypeAlias = Optional[Dict[str, int]]

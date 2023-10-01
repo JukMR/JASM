@@ -1,21 +1,17 @@
 import subprocess
 
+from src.logging_config import logger
+
 
 class ShellDissasembler:
     """A class to disassemble binaries using a shell program."""
 
-    def __init__(self, binary: str, output_path: str, program: str, flags: str) -> None:
+    def __init__(self, binary: str, program: str, flags: str) -> None:
         self.binary = binary
-        self.output_path = output_path
         self.program = program
         self.flags = flags
 
-    def _write_to_disk(self, data: str) -> None:
-        """Write the provided data to the output path."""
-        with open(self.output_path, "w", encoding="utf-8") as fd:
-            fd.write(data)
-
-    def disassemble(self) -> None:
+    def disassemble(self) -> str:
         """Run the shell program to disassemble the binary."""
         try:
             result = subprocess.run(
@@ -27,12 +23,14 @@ class ShellDissasembler:
 
             # Check the command executed correctly
             if result.returncode == 0:
-                self._write_to_disk(result.stdout)
-                print(f"File binary successfully disassembled to {self.output_path}")
-            else:
-                raise ValueError(f"Error while disassembling file. Return code error: {result.stderr}")
+                logger.info("File binary successfully disassembled")
+                return result.stdout
+            raise ValueError(f"Error while disassembling file. Return code error: {result.stderr}")
 
         except FileNotFoundError as exc:
             raise ValueError(
                 f"Error: program '{self.program}' not found. Ensure it's installed and in your system PATH."
             ) from exc
+
+        except Exception as exc:
+            raise ValueError("Error while disassembling file.") from exc
