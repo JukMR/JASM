@@ -4,7 +4,7 @@ from typing import Any, Dict
 import yaml
 
 from src.logging_config import logger
-from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PathStr, PatternDict, IGNORE_INST_ADDR
+from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PatternDict, IGNORE_INST_ADDR
 from src.regex.file2regex import File2Regex
 from src.regex.directives_processors.any_processor import AnyDirectiveProcessor
 from src.regex.directives_processors.not_processor import NotDirectiveProcessor
@@ -15,14 +15,14 @@ from src.regex.directive_processor import DirectiveProcessor
 class Yaml2Regex(File2Regex):
     "File2Regex class implementation with Yaml"
 
-    def __init__(self, pattern_pathstr: PathStr) -> None:
+    def __init__(self, pattern_pathstr: str) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
 
         # Get an empty DirectiveProcessor
         self.directive_processor = DirectiveProcessor(strategy=None)
 
     @staticmethod
-    def load_file(file: PathStr) -> Any:
+    def load_file(file: str) -> Any:
         "Read a yaml file and return the parsed content"
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)

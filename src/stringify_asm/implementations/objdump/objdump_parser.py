@@ -7,7 +7,6 @@ from typing import List, Optional
 from pyparsing import ParseException, ParseResults, ParserElement
 
 from src.logging_config import logger
-from src.global_definitions import PathStr
 from src.measure_performance import measure_performance
 from src.stringify_asm.pyparsing_binary_rules import parsed
 from src.stringify_asm.abstracts.abs_observer import InstructionObserver, Instruction
@@ -18,16 +17,10 @@ BAD_INSTRUCTION = "(bad)"
 class ObjdumpParser:
     """Implementation for parsing assembly instructions."""
 
-    def __init__(self, assembly_pathstr: PathStr) -> None:
-        self.assembly = self._read_assembly(assembly_pathstr)
+    def __init__(self, assembly: str) -> None:
+        self.assembly = assembly
 
         self.instruction_observers: List[InstructionObserver]
-
-    @staticmethod
-    def _read_assembly(file: PathStr) -> str:
-        """Read the assembly file."""
-        with open(file, "r", encoding="utf-8") as file_d:
-            return file_d.read()
 
     @measure_performance(perf_title="Pyparsing")
     def _execute_pyparsing(self) -> ParseResults:

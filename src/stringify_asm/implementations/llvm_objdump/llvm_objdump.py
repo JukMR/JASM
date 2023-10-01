@@ -10,7 +10,7 @@ class LlvmObjdump(MainDisassembleParser):
         self.disassembler = dissasemble
         self.parser = parser
 
-    def get_assembly(self) -> None:
+    def get_assembly(self) -> str:
         self.disassembler.disassemble()
 
     def parse_asssembly(self) -> str:

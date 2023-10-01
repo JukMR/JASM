@@ -1,9 +1,8 @@
 import yaml
-from src.global_definitions import PathStr
 from pathlib import Path
 
 
-def load_test_configs(file_path: PathStr, yaml_config_field: str):
+def load_test_configs(file_path: str, yaml_config_field: str):
     """Load test configurations from a YAML file."""
     test_folder = Path("tests")
     with open(test_folder / file_path, "r", encoding="utf-8") as file_descriptor:

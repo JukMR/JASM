@@ -9,7 +9,10 @@ from src.match import get_instruction_observers
 
 def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
     """Parse file and return number of lines"""
-    parser_implementation = ObjdumpParser(assembly_pathstr=file)
+
+    with open(file, "r", encoding="utf-8") as file_descriptor:
+        readed_file = file_descriptor.read()
+    parser_implementation = ObjdumpParser(assembly=readed_file)
     parser_implementation.set_observers(instruction_observers=get_instruction_observers())
     stringify_binary = parser_implementation.parse_assembly()
     return stringify_binary.count("|")

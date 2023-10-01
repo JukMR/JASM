@@ -4,7 +4,6 @@ Main match module
 
 import re
 from typing import List, Optional, Any
-from src.global_definitions import PathStr
 
 from src.regex.yaml2regex import Yaml2Regex
 from src.measure_performance import measure_performance
@@ -43,27 +42,6 @@ def get_instruction_observers() -> List[InstructionObserver]:
     return [RemoveEmptyInstructions()]
 
 
-def parsing_from_assembly(assembly: PathStr) -> GNUObjdump:
-    """Set objdump to start the process from an assembly."""
-    parser = ObjdumpParser(assembly_pathstr=assembly)
-
-    # Set a dump disassembler as it won't be needed
-    dump_disassembler = ObjdumpDisassembler(binary="", output_path="", flags="")
-
-    objdump_instance = GNUObjdump(get_assembly=dump_disassembler, parser=parser)
-    return objdump_instance
-
-
-def parsing_from_binary(binary: str) -> GNUObjdump:
-    """Set objdump to start the process from a binary."""
-    objdump_disassembler = ObjdumpDisassembler(binary=binary, output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS)
-    parser = ObjdumpParser(assembly_pathstr=TMP_ASSEMBLY_PATH)
-
-    objdump_instance = GNUObjdump(get_assembly=objdump_disassembler, parser=parser)
-    objdump_instance.get_assembly()
-    return objdump_instance
-
-
 def initialize_objdump_class(assembly: Optional[str], binary: Optional[str]) -> GNUObjdump:
     """Decide"""
     if assembly:
@@ -72,6 +50,31 @@ def initialize_objdump_class(assembly: Optional[str], binary: Optional[str]) -> 
         return parsing_from_binary(binary)
 
     raise ValueError("Either assembly or binary must be provided.")
+
+
+def parsing_from_assembly(assembly: str) -> GNUObjdump:
+    """Set objdump to start the process from an assembly."""
+
+    # Read file from disk
+    with open(assembly, "r", encoding="utf-8") as f:
+        assembly_read = f.read()
+
+    parser = ObjdumpParser(assembly=assembly_read)
+
+    objdump_instance = GNUObjdump(get_assembly=None, parser=parser)
+    return objdump_instance
+
+
+def parsing_from_binary(binary: str) -> GNUObjdump:
+    """Set objdump to start the process from a binary."""
+
+    objdump_disassembler = ObjdumpDisassembler(binary=binary, flags=DEFAULT_FLAGS)
+    assembly = objdump_disassembler.disassemble()
+
+    parser = ObjdumpParser(assembly=assembly)
+    objdump_instance = GNUObjdump(get_assembly=objdump_disassembler, parser=parser)
+
+    return objdump_instance
 
 
 def perform_matching(

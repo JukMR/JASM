@@ -26,7 +26,7 @@ package "Stringify_Asm" {
 
     abstract class MainDisassembleParser {
         {abstract} get_assembly() -> None
-        {abstract} parse_asssembly() -> str
+        {abstract} parse_assembly() -> str
     }
 
     class LLvmObjdumpDisassembler {
