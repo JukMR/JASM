@@ -12,11 +12,6 @@ skinparam class {
 }
 
 package "Stringify_Asm" {
-    abstract class Disassembler {
-        -binary: PathStr
-        -output_path: str
-        +disassemble() -> str
-    }
 
     class Instruction {
         +mnemonic: str
@@ -29,9 +24,9 @@ package "Stringify_Asm" {
         +finalize() -> str
     }
 
-    abstract class Parser {
-        -assembly_pathstr: PathStr
-        +parse_assembly() -> str
+    abstract class MainDisassembleParser {
+        {abstract} get_assembly() -> None
+        {abstract} parse_asssembly() -> str
     }
 
     class LLvmObjdumpDisassembler {
@@ -60,7 +55,7 @@ package "Stringify_Asm" {
         +parse_assembly() -> str
     }
 
-    class Objdump {
+    class GNUObjdump {
         -disassembler: ShellDissasembler
         -parser: ObjdumpParser
         +disassemble() -> None
@@ -163,19 +158,18 @@ Yaml2Regex --o DirectiveProcessor: has
 IDirectiveProcessor -o OperandsHandler
 
 
+MainDisassembleParser <|-- GNUObjdump
+MainDisassembleParser <|-- LlvmObjdump
 Instruction <- InstructionObserver : uses
 File2Regex <|-- Yaml2Regex
-Parser <|--- LlvmObjdumpParser
-Parser <|--- ObjdumpParser
 InstructionObserver <|-- InstructionsAppender
 
-Objdump o-- ObjdumpDisassembler
-Objdump o-- ObjdumpParser
+GNUObjdump o-- ObjdumpDisassembler
+GNUObjdump o-- ObjdumpParser
 
 LlvmObjdump o-- LlvmObjdumpParser
 LlvmObjdump o-- LLvmObjdumpDisassembler
 
-Disassembler <|-- ShellDissasembler
 ShellDissasembler <|-- ObjdumpDisassembler
 ShellDissasembler <|-- LLvmObjdumpDisassembler
 @enduml

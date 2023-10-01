@@ -1,12 +1,12 @@
 import subprocess
-from src.stringify_asm.abstracts.abs_disassemble import Disassembler
 
 
-class ShellDissasembler(Disassembler):
+class ShellDissasembler:
     """A class to disassemble binaries using a shell program."""
 
     def __init__(self, binary: str, output_path: str, program: str, flags: str) -> None:
-        super().__init__(binary=binary, output_path=output_path)
+        self.binary = binary
+        self.output_path = output_path
         self.program = program
         self.flags = flags
 

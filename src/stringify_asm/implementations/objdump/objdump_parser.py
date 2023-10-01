@@ -3,27 +3,23 @@ Parser Implementation module
 """
 
 import re
-from typing import List, cast
-from multiprocessing import Pool
-from tqdm import tqdm
+from typing import List, Optional
 from pyparsing import ParseException, ParseResults, ParserElement
 
 from src.logging_config import logger
 from src.global_definitions import PathStr
 from src.measure_performance import measure_performance
 from src.stringify_asm.pyparsing_binary_rules import parsed
-from src.stringify_asm.abstracts.abs_parser import Parser
 from src.stringify_asm.abstracts.abs_observer import InstructionObserver, Instruction
 
 BAD_INSTRUCTION = "(bad)"
 
 
-class ObjdumpParser(Parser):
+class ObjdumpParser:
     """Implementation for parsing assembly instructions."""
 
     def __init__(self, assembly_pathstr: PathStr) -> None:
-        super().__init__(assembly_pathstr=assembly_pathstr)
-        self.assembly = self._read_assembly(self.assembly_pathstr)
+        self.assembly = self._read_assembly(assembly_pathstr)
 
         self.instruction_observers: List[InstructionObserver]
 
@@ -157,55 +153,55 @@ class ObjdumpParser(Parser):
         """Set a list of observers to be notified when an instruction is found."""
         self.instruction_observers = instruction_observers
 
-    def _observe_single_instruction(self, observer, instruction):
-        return observer.observe_instruction(instruction)
-
-    def _finalize_string(self, list_inst: List[str]) -> str:
-        return ",|".join(list_inst) + ",|"
-
-    def _notify_observers(self, instruction_list: List[Instruction]) -> str:
+    def _notify_observers(self, instruction_list: List[Instruction]) -> List[Optional[Instruction]]:
         """Notify all observers with the provided instruction list."""
         if not self.instruction_observers:
             raise NotImplementedError("Observers not set. Call set_observers() first.")
 
-        observed_instructions: List[str] | List[Instruction]
-        observed_instructions = instruction_list
+        observed_instructions: List[Optional[Instruction]] = instruction_list
 
         for observer in self.instruction_observers:
-            # Create a Pool of processes
-            with Pool() as pool:
-                # Parallelize the observation of instructions by this observer
-                # Using tqdm to show progress
-                observed_instructions = list(
-                    tqdm(
-                        pool.starmap(
-                            self._observe_single_instruction,
-                            [(observer, inst) for inst in observed_instructions if inst],
-                        ),
-                        total=len(instruction_list),
-                        desc="Processing instructions",
-                        unit="inst",
-                    )
-                )
-        # Concatenate the list
-        observed_instructions = cast(List[str], observed_instructions)
-        return self._finalize_string(observed_instructions)
+            observed_instructions = [
+                observer.observe_instruction(inst)
+                for inst in observed_instructions
+                if observer.observe_instruction(inst)
+            ]
 
-    def _call_observers_and_get_final_string(self, instruction_list: List[Instruction]) -> str:
+        return observed_instructions
+
+    def _call_observers(self, instruction_list: List[Instruction]) -> List[Optional[Instruction]]:
         """Generate a string representation of the assembly."""
 
         # Notify the observers of the generated instructions
-        assembly_string = self._notify_observers(instruction_list=instruction_list)
-        logger.info("The concatenated instructions are:\n %s\n", assembly_string)
-        return assembly_string
+        return self._notify_observers(instruction_list=instruction_list)
 
     @measure_performance(perf_title="Parse Instructions")
     def parse_assembly(self) -> str:
         """Main function to parse the assembly."""
 
         # Parse the assembly and get the list of instructions
+
         instruction_list = [self._parse_instruction(inst) for inst in self._execute_pyparsing()]
 
-        final_string = self._call_observers_and_get_final_string(instruction_list)
+        observed_instructions = self._call_observers(instruction_list)
 
-        return final_string
+        concatenated_stringified_instruction_list = InstructionsAppender(observed_instructions).finalize()
+
+        return concatenated_stringified_instruction_list
+
+
+class InstructionsAppender:
+    "InstructionObserver implementation that only concatenates instructions"
+
+    def __init__(self, inst_list: List[Instruction]) -> None:
+        self.inst_list = inst_list
+
+    def stringify_inst_list(self) -> List[str]:
+        return [inst.stringify() for inst in self.inst_list if inst]
+
+    @staticmethod
+    def join_inst_list_into_string(list_inst: List[str]) -> str:
+        return ",|".join(list_inst) + ",|"
+
+    def finalize(self) -> str:
+        return self.join_inst_list_into_string(self.stringify_inst_list())
