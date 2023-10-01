@@ -193,7 +193,7 @@ class ObjdumpParser:
 class InstructionsAppender:
     "InstructionObserver implementation that only concatenates instructions"
 
-    def __init__(self, inst_list: List[Instruction]) -> None:
+    def __init__(self, inst_list: List[Optional[Instruction]]) -> None:
         self.inst_list = inst_list
 
     def stringify_inst_list(self) -> List[str]:

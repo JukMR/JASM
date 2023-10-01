@@ -50,7 +50,7 @@ def parsing_from_assembly(assembly: PathStr) -> GNUObjdump:
     # Set a dump disassembler as it won't be needed
     dump_disassembler = ObjdumpDisassembler(binary="", output_path="", flags="")
 
-    objdump_instance = GNUObjdump(dissasemble=dump_disassembler, parser=parser)
+    objdump_instance = GNUObjdump(get_assembly=dump_disassembler, parser=parser)
     return objdump_instance
 
 
@@ -59,7 +59,7 @@ def parsing_from_binary(binary: str) -> GNUObjdump:
     objdump_disassembler = ObjdumpDisassembler(binary=binary, output_path=TMP_ASSEMBLY_PATH, flags=DEFAULT_FLAGS)
     parser = ObjdumpParser(assembly_pathstr=TMP_ASSEMBLY_PATH)
 
-    objdump_instance = GNUObjdump(dissasemble=objdump_disassembler, parser=parser)
+    objdump_instance = GNUObjdump(get_assembly=objdump_disassembler, parser=parser)
     objdump_instance.get_assembly()
     return objdump_instance
 
