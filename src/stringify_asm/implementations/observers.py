@@ -23,9 +23,9 @@ class TagOutofAddrsRangeJumps(InstructionObserver):
 class CheckAddrRangeJumpsNearBadInstruction(InstructionObserver):
     "InstructionObserver implementation that only concatenates instructions"
 
-    def __init__(self, livehood: int) -> None:
+    def __init__(self, distance: int) -> None:
         # Set number of instructions the bad instruction may affect until alignment
-        self.livehood = livehood
+        self.livehood = distance
         self.current_instructions_index = 0
 
     def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:

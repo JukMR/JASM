@@ -14,7 +14,7 @@ activate Yaml2Regex
 Yaml2Regex --> Main: return produce_regex()
 deactivate Yaml2Regex
 
-alt binary provided
+opt binary provided
     Main -> Disassembler: disassemble(binary)
     activate Disassembler
     Disassembler --> Main: return assembly
