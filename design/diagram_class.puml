@@ -24,7 +24,7 @@ package "Stringify_Asm" {
         +finalize() -> str
     }
 
-    abstract class MainDisassembleParser {
+    abstract class Disassembler {
         {abstract} get_assembly() -> None
         {abstract} parse_assembly() -> str
     }
@@ -158,8 +158,8 @@ Yaml2Regex --o DirectiveProcessor: has
 IDirectiveProcessor -o OperandsHandler
 
 
-MainDisassembleParser <|-- GNUObjdump
-MainDisassembleParser <|-- LlvmObjdump
+Disassembler <|-- GNUObjdump
+Disassembler <|-- LlvmObjdump
 Instruction <- InstructionObserver : uses
 File2Regex <|-- Yaml2Regex
 InstructionObserver <|-- InstructionsAppender
