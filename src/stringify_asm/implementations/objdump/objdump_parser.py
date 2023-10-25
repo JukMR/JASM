@@ -180,6 +180,10 @@ class ObjdumpParser:
 
         concatenated_stringified_instruction_list = InstructionsAppender(observed_instructions).finalize()
 
+        logger.debug(
+            "The concatenated stringified instruction list is: \n%s", concatenated_stringified_instruction_list
+        )
+
         return concatenated_stringified_instruction_list
 
 

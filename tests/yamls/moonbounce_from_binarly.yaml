@@ -1,0 +1,60 @@
+---
+patterns:
+  - movb:
+      operands:
+        - "0x48"
+        - rax
+  - movl
+  - mov:
+      operands:
+        - rsp
+        - rax
+
+  - pushf
+  - push:
+      operands:
+        - rbx
+  - push:
+      operands:
+        - rcx
+  - push:
+      operands:
+        - rdx
+  - push:
+      operands:
+        - r8
+  - push:
+      operands:
+        - r9
+  - push:
+      operands:
+        - rsi
+  - push:
+      operands:
+        - rdi
+
+  - $any:
+      include_list:
+        - sub
+        - call
+        - xor
+      operands:
+        - rsp
+        - 38h
+        - rsp
+        - 48h
+        - ecx
+  - inc:
+      operands:
+        - ecx
+  - cmp:
+      operands:
+        - "0x158878"
+        - ecx
+  - jg
+  - cmpl:
+      operands:
+        - "0xcb485541"
+        - eax
+        - ecx
+        - 1
