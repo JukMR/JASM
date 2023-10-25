@@ -80,10 +80,10 @@ class OperandsHandler:
                 return self._process_op_basic(operand_elem)
             raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
-        if isinstance(operand_elem, str) or isinstance(operand_elem, int):
+        if isinstance(operand_elem, (int, str)):
             if operand_elem == "$any":
                 return SKIP_TO_END_OF_OPERAND
-            return rf"([^,|]*{operand_elem}){{1}}"
+            return rf"([^,|]*{operand_elem}){{1}}[^,]*,"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
     def join_operands(self, operand_list: List[str], operand_ignore_number: str) -> str:
