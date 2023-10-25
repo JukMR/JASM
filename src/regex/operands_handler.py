@@ -83,7 +83,7 @@ class OperandsHandler:
         if isinstance(operand_elem, (int, str)):
             if operand_elem == "$any":
                 return SKIP_TO_END_OF_OPERAND
-            return rf"([^,|]*{operand_elem}){{1}}[^,]*,"
+            return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
     def join_operands(self, operand_list: List[str], operand_ignore_number: str) -> str:
