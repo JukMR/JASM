@@ -33,7 +33,7 @@ patterns:
       operands:
         - rdi
 
-  - $any:
+  - $or:
       include_list:
         - sub
         - call
