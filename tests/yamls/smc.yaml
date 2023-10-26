@@ -2,5 +2,5 @@
 patterns:
   - movb:
       operands:
-        - $any
+        - $or
         - rip
