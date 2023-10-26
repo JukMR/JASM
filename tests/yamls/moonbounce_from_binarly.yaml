@@ -1,8 +1,12 @@
 ---
-patterns:
+config:
+  style: "intel"
+  plugins:
+
+patterns: # change this to pattern
   - movb:
       operands:
-        - "0x48"
+        - 48h
         - rax
   - movl
   - mov:
@@ -12,49 +16,35 @@ patterns:
 
   - pushf
   - push:
-      operands:
-        - rbx
-  - push:
-      operands:
-        - rcx
-  - push:
-      operands:
-        - rdx
-  - push:
-      operands:
-        - r8
-  - push:
-      operands:
-        - r9
-  - push:
-      operands:
-        - rsi
-  - push:
-      operands:
-        - rdi
-
+      times:
+        # 8 deberia soportar el 8 aca
+        min: 8
+        max: 8
   - $or:
       include_list:
-        - sub
-        - call
-        - xor
-      operands:
-        - rsp
-        - 38h
-        - rsp
-        - 48h
-        - ecx
+        - sub:
+            operands:
+              - eax
+              - ecx
+        - call:
+            operands:
+              - +5
+        - xor:
+            operands:
+              - ecx
+              - ecx
+
   - inc:
       operands:
         - ecx
   - cmp:
       operands:
-        - "0x158878"
+        - 158878h
         - ecx
   - jg
   - cmpl:
       operands:
-        - "0xcb485541"
+        - cb485541h
         - eax
         - ecx
         - 1
