@@ -16,8 +16,10 @@ pattern:
 
   - pushf
   - push:
-      times: 8
-
+      times:
+        # 8 deberia soportar el 8 aca
+        min: 8
+        max: 8
   - $and:
       include_list:
         - sub:
