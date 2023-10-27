@@ -6,8 +6,8 @@ from src.global_definitions import PatternDict, SKIP_TO_END_OF_COMMAND
 from src.regex.idirective_processor import IDirectiveProcessor
 
 
-class OrDirectiveProcessor(IDirectiveProcessor):
-    "$or Instruction Processor"
+class AndDirectiveProcessor(IDirectiveProcessor):
+    "$and Instruction Processor"
 
     def __init__(self, any_pattern: PatternDict) -> None:
         include_list = self._get_instruction_list(pattern=any_pattern, pattern_type="include_list")

@@ -20,7 +20,7 @@ patterns: # change this to pattern
         # 8 deberia soportar el 8 aca
         min: 8
         max: 8
-  - $or:
+  - $and:
       include_list:
         - sub:
             operands:
