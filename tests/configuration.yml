@@ -1,4 +1,4 @@
-test_configs:
+test_matching:
   - title: "9_calls"
     yaml: "tests/yamls/9_calls.yaml"
     assembly: "tests/assembly/binary_data.s"
@@ -52,6 +52,11 @@ test_configs:
   - title: "smc_binary"
     yaml: "tests/yamls/smc.yaml"
     binary: "tests/binary/smc"
+    expected: True
+
+  - title: "smc_binary_eko"
+    yaml: "tests/yamls/smc.yaml"
+    binary: "tests/binary/smc_eko.bin"
     expected: True
 
 test_parsing_lines:
