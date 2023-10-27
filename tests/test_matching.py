@@ -16,7 +16,7 @@ def run_match_test(pattern_pathstr: str, assembly: str, expected_result: bool, b
 
 @pytest.mark.parametrize(
     "config",
-    load_test_configs(file_path="configuration.yml", yaml_config_field="test_configs"),
+    load_test_configs(file_path="configuration.yml", yaml_config_field="test_matching"),
     ids=lambda config: config["title"],
 )
 def test_all_patterns(config):
