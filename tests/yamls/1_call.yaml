@@ -2,6 +2,6 @@
 patterns:
   - call:
       operands:
-        - $or:
+        - $and:
             include_list:
               - "0x1dc6b"

@@ -1,7 +1,7 @@
 ---
 patterns:
   - call
-  - $or:
+  - $and:
       exclude_list:
         - not
         - mov

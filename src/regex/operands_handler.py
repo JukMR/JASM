@@ -70,8 +70,8 @@ class OperandsHandler:
     def _process_operand_elem(self, operand_elem: OperandType) -> str:
         if isinstance(operand_elem, Dict):
             keys = list(operand_elem.keys())
-            if keys == ["$or"]:
-                return self._process_op_any(operand_elem["$or"])
+            if keys == ["$and"]:
+                return self._process_op_any(operand_elem["$and"])
             if keys == ["$not"]:
                 return self._process_op_not(operand_elem["$not"])
             if isinstance(keys[0], str):
@@ -81,7 +81,7 @@ class OperandsHandler:
             raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
         if isinstance(operand_elem, (int, str)):
-            if operand_elem == "$or":
+            if operand_elem == "$and":
                 return SKIP_TO_END_OF_OPERAND
             return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
