@@ -1,5 +1,5 @@
 ---
-patterns:
+pattern:
   - call
   - call
   - call

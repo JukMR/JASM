@@ -3,7 +3,7 @@ config:
   style: "intel"
   plugins:
 
-patterns: # change this to pattern
+pattern: # change this to pattern
   - movb:
       operands:
         - 48h
