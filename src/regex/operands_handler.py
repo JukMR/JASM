@@ -81,7 +81,8 @@ class OperandsHandler:
             raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
         if isinstance(operand_elem, (int, str)):
-            if operand_elem == "$and":
+            # Match any operand
+            if operand_elem == "$any":
                 return SKIP_TO_END_OF_OPERAND
             return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
