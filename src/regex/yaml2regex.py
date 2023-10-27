@@ -58,7 +58,7 @@ class Yaml2Regex(File2Regex):
         "Handle all patterns and returns the final regex string"
 
         output_regex = ""
-        for com in self.loaded_file["patterns"]:
+        for com in self.loaded_file["pattern"]:
             output_regex += self._handle_pattern(pattern=com)
 
         # Log regex results
