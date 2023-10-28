@@ -1,6 +1,10 @@
 ---
-patterns:
+config:
+  - style: intel
+plugins:
+
+pattern:
   - movb:
       operands:
-        - $or
+        - $any
         - rip

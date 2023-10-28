@@ -1,7 +1,7 @@
 ---
-patterns:
+pattern:
   - call:
       operands:
-        - $or:
+        - $any:
             include_list:
               - "0x1dc6b"

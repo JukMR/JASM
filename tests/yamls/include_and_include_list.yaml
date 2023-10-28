@@ -1,7 +1,7 @@
 ---
-patterns:
+pattern:
   - call
-  - $or:
+  - $any:
       include_list:
         - jmp
         - endbr64

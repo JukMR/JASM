@@ -1,7 +1,7 @@
 ---
-patterns:
+pattern:
   - ret
-  - $or:
+  - $and:
       include_list:
         inst:
           - nop
@@ -9,7 +9,7 @@ patterns:
       times:
         min: 0
         max: 3
-  - $or:
+  - $and:
       exclude_list:
         inst:
           - ret
@@ -28,4 +28,3 @@ patterns:
         exclude_list:
           inst:
             - rdx
-
