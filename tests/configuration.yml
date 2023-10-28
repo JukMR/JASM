@@ -1,4 +1,4 @@
-test_configs:
+test_matching:
   - title: "9_calls"
     yaml: "tests/yamls/9_calls.yaml"
     assembly: "tests/assembly/binary_data.s"
@@ -51,7 +51,22 @@ test_configs:
 
   - title: "smc_binary"
     yaml: "tests/yamls/smc.yaml"
-    binary: "tests/binary/smc"
+    binary: "tests/binary/smc.bin"
+    expected: True
+
+  - title: "smc_binary_eko"
+    yaml: "tests/yamls/smc.yaml"
+    binary: "tests/binary/smc_eko.bin"
+    expected: True
+
+  - title: "moonbounce_eko"
+    yaml: "tests/yamls/moonbounce_from_binarly_clean.yaml"
+    binary: "tests/binary/moonbounce.bin"
+    expected: True
+
+  - title: "moonbounce_eko_small"
+    yaml: "tests/yamls/moonbounce_from_binarly_clean.yaml"
+    assembly: "tests/assembly/moonbounce_binarly_bad_small.s"
     expected: True
 
 test_parsing_lines:

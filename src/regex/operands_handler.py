@@ -20,7 +20,7 @@ class OperandsHandler:
     def _get_operand_list_or_regex(self, operand_list: IncludeExcludeListType) -> Optional[str]:
         "Returns the regex that matches all the posible operands"
 
-        if operand_list is None:
+        if not operand_list:
             return None
 
         if not isinstance(operand_list, List):
@@ -70,8 +70,8 @@ class OperandsHandler:
     def _process_operand_elem(self, operand_elem: OperandType) -> str:
         if isinstance(operand_elem, Dict):
             keys = list(operand_elem.keys())
-            if keys == ["$or"]:
-                return self._process_op_any(operand_elem["$or"])
+            if keys == ["$any"]:
+                return self._process_op_any(operand_elem["$any"])
             if keys == ["$not"]:
                 return self._process_op_not(operand_elem["$not"])
             if isinstance(keys[0], str):
@@ -80,16 +80,41 @@ class OperandsHandler:
                 return self._process_op_basic(operand_elem)
             raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
-        if isinstance(operand_elem, (int, str)):
-            if operand_elem == "$or":
-                return SKIP_TO_END_OF_OPERAND
+        if isinstance(operand_elem, int):
             return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
+
+        if isinstance(operand_elem, str):
+            # Match any operand
+            if operand_elem == "$any":
+                return SKIP_TO_END_OF_OPERAND
+
+            def _is_hex_operand(operand_elem: str) -> bool:
+                if operand_elem.endswith("h"):
+                    tmp = operand_elem.removesuffix("h")
+                    try:
+                        int(tmp, 16)
+                        return True
+                    except ValueError:
+                        return False
+                return False
+
+            if _is_hex_operand(operand_elem):
+
+                def _process_hex_operand(hex_operand_elem: str) -> str:
+                    operand_elem = "0x" + hex_operand_elem.removesuffix("h")
+                    return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
+
+                # Match hex operand
+                return _process_hex_operand(operand_elem)
+
+            return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
+
         raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
 
     def join_operands(self, operand_list: List[str], operand_ignore_number: str) -> str:
         "Join operands from list using operand_ignore_number to generate regex"
 
-        if len(operand_list) == 0:
+        if not operand_list:
             raise ValueError("There are no operands to join")
 
         regex_operands = [f"{SKIP_TO_ANY_OPERAND_CHARS}{operand}{operand_ignore_number}" for operand in operand_list]
