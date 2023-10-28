@@ -92,7 +92,7 @@ class OperandsHandler:
                 if operand_elem.endswith("h"):
                     tmp = operand_elem.removesuffix("h")
                     try:
-                        int(tmp)
+                        int(tmp, 16)
                         return True
                     except ValueError:
                         return False

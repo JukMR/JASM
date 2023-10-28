@@ -1,8 +1,9 @@
 "Any Directive Processor Implementation"
 
-from typing import Literal, Optional, Dict, List
+from typing import Literal, Optional, Dict, List, cast
 
 from src.global_definitions import PatternDict, SKIP_TO_END_OF_COMMAND
+from src.regex.directives_processors.any_elements import RuleElement
 from src.regex.idirective_processor import IDirectiveProcessor
 
 
@@ -26,7 +27,47 @@ class AnyDirectiveProcessor(IDirectiveProcessor):
             self.exclude_list_regex = self.join_instructions(inst_list=self.exclude_list, operand=self.operand_regex)
 
         if self.include_list:
-            self.include_list_regex = self.join_instructions(inst_list=self.include_list, operand=self.operand_regex)
+            self.include_list_regex = self.get_include_list()
+
+    def get_include_list(self) -> str:
+        if self.is_include_list_elems_plain():
+            return self.join_instructions(inst_list=cast(List[str], self.include_list), operand=self.operand_regex)
+
+        if self.is_include_list_elems_have_operands():
+            return self.get_include_list_with_nested_elements()
+
+        raise ValueError("Wrong include_list")
+
+    def get_include_list_with_nested_elements(self) -> str:
+        assert self.include_list
+
+        rule_elements: List[RuleElement] = []
+        for entry in self.include_list:
+            assert isinstance(entry, Dict)
+            for entry_name, operands in entry.items():
+                assert isinstance(operands, Dict)
+                operands_list = operands.get("operands", None)
+
+                rule_elements.append(RuleElement(mnemonic=entry_name, operands=operands_list))
+
+        def form_regex_from_rule_elements(rule_elements: List[RuleElement]) -> str:
+            return "|".join(elem.get_regex() for elem in rule_elements)
+
+        return form_regex_from_rule_elements(rule_elements)
+
+    def is_include_list_elems_plain(self) -> bool:
+        assert self.include_list
+        for entry in self.include_list:
+            if isinstance(entry, str):
+                return True
+        return False
+
+    def is_include_list_elems_have_operands(self) -> bool:
+        assert self.include_list
+        for entry in self.include_list:
+            if isinstance(entry, Dict):
+                return True
+        return False
 
     @staticmethod
     def _get_instruction_list(
@@ -54,7 +95,7 @@ class AnyDirectiveProcessor(IDirectiveProcessor):
         if self.exclude_list:
             return self._process_with_exclude_list()
         if self.include_list:
-            return f"({self.include_list_regex})"
+            return f"({self.include_list_regex}{SKIP_TO_END_OF_COMMAND})"
         return f"({SKIP_TO_END_OF_COMMAND})"
 
     def _process_with_exclude_list(self) -> str:
