@@ -6,7 +6,7 @@ import yaml
 from src.logging_config import logger
 from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PatternDict, IGNORE_INST_ADDR
 from src.regex.file2regex import File2Regex
-from src.regex.directives_processors.and_processor import AndDirectiveProcessor
+from src.regex.directives_processors.and_processor import AnyDirectiveProcessor
 from src.regex.directives_processors.not_processor import NotDirectiveProcessor
 from src.regex.directives_processors.single_processor import SingleDirectiveProcessor
 from src.regex.directive_processor import DirectiveProcessor
@@ -42,9 +42,9 @@ class Yaml2Regex(File2Regex):
 
         dict_keys = pattern_arg.keys()
         match list(dict_keys)[0]:
-            case "$and":
-                pattern: Dict[str, Any] = pattern_arg["$and"]
-                self.directive_processor.set_strategy(AndDirectiveProcessor(pattern))
+            case "$any":
+                pattern: Dict[str, Any] = pattern_arg["$any"]
+                self.directive_processor.set_strategy(AnyDirectiveProcessor(pattern))
                 return self.directive_processor.execute_strategy()
             case "$not":
                 pattern: Dict[str, Any] = pattern_arg["$not"]
