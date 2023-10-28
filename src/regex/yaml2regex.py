@@ -62,6 +62,6 @@ class Yaml2Regex(File2Regex):
             output_regex += self._handle_pattern(pattern=com)
 
         # Log regex results
-        logger.info("The output regex is:\n %s\n", output_regex)
+        logger.info("The output regex is:\n%s\n", output_regex)
 
         return output_regex
