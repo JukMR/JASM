@@ -16,9 +16,9 @@ pattern:
 
   - pushf
   - push:
-      times: 8
+      times: 7
 
-  - $and:
+  - $any:
       include_list:
         - sub:
             operands:

@@ -6,7 +6,7 @@ import yaml
 from src.logging_config import logger
 from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PatternDict, IGNORE_INST_ADDR
 from src.regex.file2regex import File2Regex
-from src.regex.directives_processors.and_processor import AnyDirectiveProcessor
+from src.regex.directives_processors.any_processor import AnyDirectiveProcessor
 from src.regex.directives_processors.not_processor import NotDirectiveProcessor
 from src.regex.directives_processors.single_processor import SingleDirectiveProcessor
 from src.regex.directive_processor import DirectiveProcessor
