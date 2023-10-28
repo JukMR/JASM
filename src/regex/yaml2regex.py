@@ -38,7 +38,7 @@ class Yaml2Regex(File2Regex):
         raise ValueError("Pattern type not valid")
 
     def _process_dict(self, pattern_arg: PatternDict) -> str:
-        "Process dict pattern. Resolve if pattern is $and, $not or $basic"
+        "Process dict pattern. Resolve if pattern is $any, $not or $basic"
 
         dict_keys = pattern_arg.keys()
         match list(dict_keys)[0]:
