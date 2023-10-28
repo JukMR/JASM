@@ -44,6 +44,9 @@ class IDirectiveProcessor(ABC):
         if self.times is None:
             return None
 
+        if isinstance(self.times, int):
+            return f"{{{self.times}}}"
+
         assert isinstance(self.times, Dict), f"times property inside {self.pattern} is not a Dict"
 
         min_amount = self.times.get("min", 1)
@@ -57,7 +60,7 @@ class IDirectiveProcessor(ABC):
     def join_instructions(inst_list: List[str], operand: str) -> str:
         "Join instructions from list using operand to generate regex"
 
-        assert len(inst_list) != 0, "There are no instructions to join"
+        assert inst_list, "There are no instructions to join"
 
         regex_instructions = [f"{IGNORE_INST_ADDR}{elem},{operand}" for elem in inst_list]
 
