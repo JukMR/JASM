@@ -70,8 +70,8 @@ class OperandsHandler:
     def _process_operand_elem(self, operand_elem: OperandType) -> str:
         if isinstance(operand_elem, Dict):
             keys = list(operand_elem.keys())
-            if keys == ["$and"]:
-                return self._process_op_any(operand_elem["$and"])
+            if keys == ["$any"]:
+                return self._process_op_any(operand_elem["$any"])
             if keys == ["$not"]:
                 return self._process_op_not(operand_elem["$not"])
             if isinstance(keys[0], str):

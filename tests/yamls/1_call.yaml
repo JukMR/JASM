@@ -2,6 +2,6 @@
 pattern:
   - call:
       operands:
-        - $and:
+        - $any:
             include_list:
               - "0x1dc6b"

@@ -2,7 +2,7 @@
 pattern:
   - push:
       operands:
-        - $and:
+        - $any:
             include_list:
               - rax
             exclude_list:
@@ -19,7 +19,7 @@ pattern:
       times:
         min: 1
         max: 10
-  - $and:
+  - $any:
       include_list:
         - push
         - call
@@ -34,11 +34,9 @@ pattern:
       inst:
         - push
   - mov:
-      times:
-        min: 2
-        max: 2
+      times: 2
       operands:
-        - $and:
+        - $any:
             include_list:
               - rsi
               - rbp

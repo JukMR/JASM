@@ -61,7 +61,7 @@ test_matching:
 
   - title: "moonbounce_eko"
     yaml: "tests/yamls/moonbounce_from_binarly_clean.yaml"
-    binary: "tests/binary/moounbounce.bin"
+    binary: "tests/binary/moonbounce.bin"
     expected: True
 
   - title: "moonbounce_eko_small"
