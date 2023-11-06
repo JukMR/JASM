@@ -6,8 +6,9 @@ import yaml
 
 from src.global_definitions import IGNORE_INST_ADDR, SKIP_TO_END_OF_COMMAND, Pattern, PatternDict
 from src.logging_config import logger
-from src.regex.directive_processor import DirectiveProcessor
-from src.regex.directives_processors.any_processor import AnyDirectiveProcessor
+from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PatternDict, IGNORE_INST_ADDR
+from src.regex.file2regex import File2Regex
+from src.regex.directives_processors.or_processor import OrDirectiveProcessor
 from src.regex.directives_processors.not_processor import NotDirectiveProcessor
 from src.regex.directives_processors.single_processor import SingleDirectiveProcessor
 from src.regex.file2regex import File2Regex
@@ -42,13 +43,22 @@ class Yaml2Regex(File2Regex):
         "Process dict pattern. Resolve if pattern is $any, $not or $basic"
 
         dict_keys = pattern_arg.keys()
+        pattern: Dict[str, Any]
         match list(dict_keys)[0]:
-            case "$any":
-                pattern: Dict[str, Any] = pattern_arg["$any"]
-                self.directive_processor.set_strategy(AnyDirectiveProcessor(pattern))
+            case "$or":
+                pattern = pattern_arg["$any"]
+                self.directive_processor.set_strategy(OrDirectiveProcessor(pattern))
+                return self.directive_processor.execute_strategy()
+            case "$and":
+                pattern = pattern_arg["$and"]
+                self.directive_processor.set_strategy(AndDirectiveProcessor(pattern))
+                return self.directive_processor.execute_strategy()
+            case "$perm":
+                pattern = pattern_arg["$perm"]
+                self.directive_processor.set_strategy(PermDirectiveProcessor(pattern))
                 return self.directive_processor.execute_strategy()
             case "$not":
-                pattern: Dict[str, Any] = pattern_arg["$not"]
+                pattern = pattern_arg["$not"]
                 self.directive_processor.set_strategy(NotDirectiveProcessor(pattern))
                 return self.directive_processor.execute_strategy()
             case _:
