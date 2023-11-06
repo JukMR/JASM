@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from re import S
 from typing import List
 
 from src.global_definitions import IGNORE_INST_ADDR, SKIP_TO_END_OF_COMMAND, SKIP_TO_END_OF_OPERAND

@@ -1,0 +1,45 @@
+---
+config:
+  style: intel
+  plugins:
+
+pattern:
+  - movb:
+      - 48h
+      - rax
+  - movl
+  - mov:
+      - rsp
+      - rax
+
+  - pushf
+  - push:
+      times: 7
+
+  - $or:
+      - $and:
+          - sub:
+              - eax
+              - ecx
+            times:
+              min: 1
+              max: 2
+          - call:
+              - +5
+            times: 2
+
+      - xor:
+          - ecx
+          - ecx
+
+  - inc:
+      - ecx
+  - cmp:
+      - 158878h
+      - ecx
+  - jg
+  - cmpl:
+      - cb485541h
+      - eax
+      - ecx
+      - 1

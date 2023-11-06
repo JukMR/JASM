@@ -7,7 +7,7 @@ from src.regex.directives_processors.any_elements import RuleElement
 from src.regex.idirective_processor import IDirectiveProcessor
 
 
-class AnyDirectiveProcessor(IDirectiveProcessor):
+class OrDirectiveProcessor(IDirectiveProcessor):
     "$any Instruction Processor"
 
     def __init__(self, any_pattern: PatternDict) -> None:
