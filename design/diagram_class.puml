@@ -14,66 +14,69 @@ skinparam class {
 package "Stringify_Asm" {
 
     class Instruction {
-        +mnemonic: str
-        +operands: List[str]
-        +stringify() -> str
+        + mnemonic: str
+        + operands: List[str]
+        + stringify() -> str
     }
 
     class InstructionObserver {
-        +observe_instruction(inst: Instruction) : Optional[Instruction]
-        +finalize() -> str
+        + observe_instruction(inst: Instruction) : Optional[Instruction]
     }
 
     abstract class Disassembler {
-        {abstract} get_assembly() -> None
-        {abstract} parse_assembly() -> str
+        {abstract} binary: str
+        {abstract} disassemble() -> str
+    }
+
+    class GNUObjdumpDisassembler {
+        + program
     }
 
     class LLvmObjdumpDisassembler {
-        +disassemble() -> None
+        + program
+    }
+
+    class NullDisassembler {
+        + disassemble() -> str
+    }
+
+    abstract class AsmParser {
+        + assembly: str
+        {abstract} parse(file, IConsumer) -> List[Instruction]
     }
 
     class LlvmObjdumpParser {
-        +parse_assembly() -> str
+        + parse(file, IConsumer) -> List[Instruction]
     }
 
-    class LlvmObjdump {
-        -disassembler: ShellDissasembler
-        -parser: LlvmObjdumpParser
-        +disassemble() -> None
-        +parse_asssembly() -> str
+    abstract class IInstructionsProducer {
+        {abstract} process_file(file, IConsumer) -> List[Instruction]
     }
 
-    class ObjdumpDisassembler {
-        +disassemble() -> None
+    class ComposableProducer {
+        + disassembler: Disassembler
+        + parser: AsmParser
+        + process_file(file, IConsumer) -> List[Instruction]
     }
 
-    class ObjdumpParser {
-        -assembly: str
-        -instruction_list: List[Instruction]
-        -instruction_observers: List[InstructionObserver]
-        +parse_assembly() -> str
-    }
-
-    class GNUObjdump {
-        -disassembler: ShellDissasembler
-        -parser: ObjdumpParser
-        +disassemble() -> None
-        +parse_asssembly() -> str
-    }
-
-    class InstructionsAppender {
-        -str_binary: str
-        +observe_instruction(inst: Instruction) : None
-        +finalize() -> str
+    class GNUObjdumpParser {
+        + parse(file, IConsumer) -> List[Instruction]
     }
 
     class ShellDissasembler {
-        -binary: str
-        -output_path: str
-        -program: str
-        -flags: str
-        +disassemble() -> None
+        - binary: str
+        - output_path: str
+        - program: str
+        - flags: str
+        + disassemble() -> None
+    }
+
+    class InstConsumer {
+        + finalize() -> str
+    }
+
+    class InstProducerFactory {
+
     }
 }
 
@@ -85,58 +88,58 @@ package "Regex" {
     }
 
     class Yaml2Regex {
-        -loaded_file: Any
-        -directive_processor: DirectiveProcessor
-        +load_file(file: PathStr) : Any
-        +produce_regex() -> str
+        - loaded_file: Any
+        - directive_processor: DirectiveProcessor
+        + load_file(file: PathStr) : Any
+        + produce_regex() -> str
     }
 
     class OperandsHandler {
-        -operands: OperandListType
-        +get_regex() -> str
+        - operands: OperandListType
+        + get_regex() -> str
     }
 
     class DirectiveProcessor {
-        -strategy: IDirectiveStrategy
-        +execute_strategy(): str
+        - strategy: IDirectiveStrategy
+        + execute_strategy(): str
     }
 
     interface IDirectiveProcessor {
-    pattern : Dict
-    include_list : Optional
-    exclude_list : Optional
-    times : Optional
-    operands : Optional
-    times_regex: Optional[str]
-    operand_regex: str
+        pattern : Dict
+        include_list : Optional
+        exclude_list : Optional
+        times : Optional
+        operands : Optional
+        times_regex: Optional[str]
+        operand_regex: str
 
-    join_instructions(inst_list: List[str], operand: str) -> str
-    get_times(pattern: PatternDict) -> TimesType
-    {abstract}process() -> str
+        join_instructions(inst_list: List[str], operand: str) -> str
+        get_times(pattern: PatternDict) -> TimesType
+        {abstract}process() -> str
     }
 
 
     class AnyDirectiveProcessor {
-    exclude_list_regex : str
-    include_list_regex : str
-    operand_regex : str
-    times_regex : Optional[str]
+        exclude_list_regex : str
+        include_list_regex : str
+        operand_regex : str
+        times_regex : Optional[str]
 
-    +process() -> str
+        + process() -> str
     }
 
     class NotDirectiveProcessor {
-    operand_regex : str
-    times_regex : Optional[str]
+        operand_regex : str
+        times_regex : Optional[str]
 
-    +process() -> str
+        + process() -> str
     }
 
     class SingleDirectiveProcessor {
-    operand_regex : str
-    times_regex : Optional[str]
+        operand_regex : str
+        times_regex : Optional[str]
 
-    +process() -> str
+        process() -> str
     }
 
 
@@ -158,18 +161,26 @@ Yaml2Regex --o DirectiveProcessor: has
 IDirectiveProcessor -o OperandsHandler
 
 
-Disassembler <|-- GNUObjdump
-Disassembler <|-- LlvmObjdump
-Instruction <- InstructionObserver : uses
 File2Regex <|-- Yaml2Regex
-InstructionObserver <|-- InstructionsAppender
 
-GNUObjdump o-- ObjdumpDisassembler
-GNUObjdump o-- ObjdumpParser
 
-LlvmObjdump o-- LlvmObjdumpParser
-LlvmObjdump o-- LLvmObjdumpDisassembler
 
-ShellDissasembler <|-- ObjdumpDisassembler
+AsmParser <|--- GNUObjdumpParser
+AsmParser <|--- LlvmObjdumpParser
+
+Disassembler <|-- ShellDissasembler
+ShellDissasembler <|-- GNUObjdumpDisassembler
 ShellDissasembler <|-- LLvmObjdumpDisassembler
+Disassembler <|--- NullDisassembler
+
+IInstructionsProducer <|-- ComposableProducer
+ComposableProducer --o Disassembler
+ComposableProducer --o AsmParser
+
+IInstructionsProducer <.. InstProducerFactory :creates
+
+
+ComposableProducer -> InstConsumer : Instruction Stream
+
+InstConsumer --> InstructionObserver : calls many
 @enduml
