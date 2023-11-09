@@ -180,7 +180,7 @@ ComposableProducer --o AsmParser
 IInstructionsProducer <.. InstProducerFactory :creates
 
 
-ComposableProducer -> InstConsumer : Instruction Stream
+IInstructionsProducer -> InstConsumer : Instruction Stream
 
 InstConsumer --> InstructionObserver : calls many
 @enduml
