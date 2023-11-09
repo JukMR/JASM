@@ -63,7 +63,7 @@ package "Stringify_Asm" {
         + parse(file, IConsumer) -> List[Instruction]
     }
 
-    class ShellDissasembler {
+    class ShellDisassembler {
         - binary: str
         - output_path: str
         - program: str
@@ -168,9 +168,9 @@ File2Regex <|-- Yaml2Regex
 AsmParser <|--- GNUObjdumpParser
 AsmParser <|--- LlvmObjdumpParser
 
-Disassembler <|-- ShellDissasembler
-ShellDissasembler <|-- GNUObjdumpDisassembler
-ShellDissasembler <|-- LLvmObjdumpDisassembler
+Disassembler <|-- ShellDisassembler
+ShellDisassembler <|-- GNUObjdumpDisassembler
+ShellDisassembler <|-- LLvmObjdumpDisassembler
 Disassembler <|--- NullDisassembler
 
 IInstructionsProducer <|-- ComposableProducer

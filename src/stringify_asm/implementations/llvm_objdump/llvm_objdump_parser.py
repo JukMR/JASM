@@ -1,8 +1,13 @@
-class LlvmObjdumpParser:
+from typing import List
+from src.stringify_asm.abstracts.abs_observer import Instruction
+from src.stringify_asm.abstracts.asm_parser import AsmParser
+
+
+class LlvmObjdumpParser(AsmParser):
     """Parser implementation for the LlvmObjdump class"""
 
-    def parse_assembly(self) -> str:
+    def parse(self, file: str) -> List[Instruction]:
         "Method for parsing instruction from given assembly"
 
-        # Implement this
-        return ""
+        # TODO: Implement this
+        return []
