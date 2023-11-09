@@ -1,10 +1,11 @@
 import re
-import pytest
 
+import pytest
 from conftest import load_test_configs
+from src.consumer import Consumer
+from src.match import InstructionCleaner
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.logging_config import logger
-from src.match import get_instruction_observers
 
 
 def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
@@ -12,10 +13,22 @@ def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
 
     with open(file, "r", encoding="utf-8") as file_descriptor:
         readed_file = file_descriptor.read()
-    parser_implementation = ObjdumpParser(assembly=readed_file)
-    parser_implementation.set_observers(instruction_observers=get_instruction_observers())
-    stringify_binary = parser_implementation.parse_assembly()
-    return stringify_binary.count("|")
+    parser_implementation = ObjdumpParser()
+
+    instruction_list = parser_implementation.parse(file=readed_file)
+    instruction_list_cleaned = InstructionCleaner().clean_instructions(instruction_list)
+
+    # Set consumer without any observers
+    consumer = Consumer(inst_list=instruction_list_cleaned)
+    assembly_string = consumer.finalize()
+
+    return assembly_string.count("|")
+
+
+def open_file(file_name) -> str:
+    """Open file and return its content"""
+    with open(file_name, "r", encoding="utf-8") as file_descriptor:
+        return file_descriptor.read()
 
 
 @pytest.mark.parametrize(
@@ -27,8 +40,7 @@ def test_correct_number_of_lines_with_regex(config) -> None:
     """Parse file and return number of lines"""
     number_of_lines = config.get("number_of_lines")
     assembly = config.get("assembly")
-    with open(assembly, "r", encoding="utf-8") as file_descriptor:
-        readed_file = file_descriptor.read()
+    readed_file = open_file(assembly)
     matched_lines = len(re.findall(r" [\dabcdef]+:\t([\dabcdef]{2} )* *\t\w*", readed_file))
     assert matched_lines == number_of_lines
 

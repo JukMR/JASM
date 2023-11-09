@@ -1,7 +1,7 @@
 """File2Regex module"""
 
-from typing import Any
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class File2Regex(ABC):

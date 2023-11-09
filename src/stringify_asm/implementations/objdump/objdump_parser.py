@@ -3,34 +3,29 @@ Parser Implementation module
 """
 
 import re
-from typing import List, Optional
-from pyparsing import ParseException, ParseResults, ParserElement
+from typing import List
 
-from src.logging_config import logger
+from pyparsing import ParseException, ParserElement, ParseResults
 from src.measure_performance import measure_performance
+from src.stringify_asm.abstracts.abs_observer import Instruction
+from src.stringify_asm.abstracts.asm_parser import AsmParser
 from src.stringify_asm.pyparsing_binary_rules import parsed
-from src.stringify_asm.abstracts.abs_observer import InstructionObserver, Instruction
 
 BAD_INSTRUCTION = "(bad)"
 
 
-class ObjdumpParser:
+class ObjdumpParser(AsmParser):
     """Implementation for parsing assembly instructions."""
 
-    def __init__(self, assembly: str) -> None:
-        self.assembly = assembly
-
-        self.instruction_observers: List[InstructionObserver]
-
     @measure_performance(perf_title="Pyparsing")
-    def _execute_pyparsing(self) -> ParseResults:
+    def _execute_pyparsing(self, assembly: str) -> ParseResults:
         """Execute pyparsing on the assembly."""
         parsed.parse_with_tabs()
         parsed.enable_packrat()
 
         try:
             # process the result if parsing is successful
-            result = parsed.parse_string(self.assembly)
+            result = parsed.parse_string(assembly)
             return result
 
         except ParseException as pe:  # pylint: disable=invalid-name
@@ -39,20 +34,6 @@ class ObjdumpParser:
             print(" " * (pe.col - 1) + "^")
             print(pe.msg)
             raise
-
-    def _log_parsed_instructions(self) -> ParseResults:
-        """Log parsed instructions and ensure they are of type ParseResults."""
-        parsed_instructions = self._execute_pyparsing()
-
-        for inst in parsed_instructions:
-            logger.debug("The parsed is: %s", inst)
-
-        if not isinstance(parsed_instructions, ParseResults):
-            raise ValueError(
-                f"Return ParseResults are not of ParseResult type: {parsed_instructions}, {type(parsed_instructions)}"
-            )
-
-        return parsed_instructions
 
     @staticmethod
     def _process_operand_elem(operand_elem: str) -> str:
@@ -142,63 +123,12 @@ class ObjdumpParser:
 
         return Instruction(addrs=address, mnemonic=mnemonic, operands=[])
 
-    def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
-        """Set a list of observers to be notified when an instruction is found."""
-        self.instruction_observers = instruction_observers
-
-    def _notify_observers(self, instruction_list: List[Instruction]) -> List[Optional[Instruction]]:
-        """Notify all observers with the provided instruction list."""
-        if not self.instruction_observers:
-            raise NotImplementedError("Observers not set. Call set_observers() first.")
-
-        observed_instructions: List[Optional[Instruction]] = instruction_list
-
-        for observer in self.instruction_observers:
-            observed_instructions = [
-                observer.observe_instruction(inst)
-                for inst in observed_instructions
-                if observer.observe_instruction(inst)
-            ]
-
-        return observed_instructions
-
-    def _call_observers(self, instruction_list: List[Instruction]) -> List[Optional[Instruction]]:
-        """Generate a string representation of the assembly."""
-
-        # Notify the observers of the generated instructions
-        return self._notify_observers(instruction_list=instruction_list)
-
     @measure_performance(perf_title="Parse Instructions")
-    def parse_assembly(self) -> str:
+    def parse(self, file: str) -> List[Instruction]:
         """Main function to parse the assembly."""
 
         # Parse the assembly and get the list of instructions
 
-        instruction_list = [self._parse_instruction(inst) for inst in self._execute_pyparsing()]
+        instruction_list = [self._parse_instruction(inst) for inst in self._execute_pyparsing(assembly=file)]
 
-        observed_instructions = self._call_observers(instruction_list)
-
-        concatenated_stringified_instruction_list = InstructionsAppender(observed_instructions).finalize()
-
-        logger.debug(
-            "The concatenated stringified instruction list is: \n%s", concatenated_stringified_instruction_list
-        )
-
-        return concatenated_stringified_instruction_list
-
-
-class InstructionsAppender:
-    "InstructionObserver implementation that only concatenates instructions"
-
-    def __init__(self, inst_list: List[Optional[Instruction]]) -> None:
-        self.inst_list = inst_list
-
-    def stringify_inst_list(self) -> List[str]:
-        return [inst.stringify() for inst in self.inst_list if inst]
-
-    @staticmethod
-    def join_inst_list_into_string(list_inst: List[str]) -> str:
-        return ",|".join(list_inst) + ",|"
-
-    def finalize(self) -> str:
-        return self.join_inst_list_into_string(self.stringify_inst_list())
+        return instruction_list

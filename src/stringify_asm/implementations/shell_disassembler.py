@@ -1,21 +1,21 @@
 import subprocess
 
 from src.logging_config import logger
+from src.stringify_asm.abstracts.disassembler import Disassembler
 
 
-class ShellDissasembler:
+class ShellDisassembler(Disassembler):
     """A class to disassemble binaries using a shell program."""
 
-    def __init__(self, binary: str, program: str, flags: str) -> None:
-        self.binary = binary
+    def __init__(self, program: str, flags: str) -> None:
         self.program = program
         self.flags = flags
 
-    def disassemble(self) -> str:
+    def disassemble(self, binary) -> str:
         """Run the shell program to disassemble the binary."""
         try:
             result = subprocess.run(
-                [self.program, self.flags, self.binary],
+                [self.program, self.flags, binary],
                 capture_output=True,
                 text=True,
                 check=True,

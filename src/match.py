@@ -3,16 +3,20 @@ Main match module
 """
 
 import re
-from typing import List, Optional, Any
+from typing import Any, List, Optional, Sequence
 
-from src.regex.yaml2regex import Yaml2Regex
-from src.measure_performance import measure_performance
+from src.consumer import Consumer
 from src.logging_config import logger
-from src.stringify_asm.abstracts.abs_observer import InstructionObserver
+from src.measure_performance import measure_performance
+from src.regex.yaml2regex import Yaml2Regex
+from src.stringify_asm.abstracts.abs_observer import Instruction, InstructionObserver
+from src.stringify_asm.abstracts.asm_parser import AsmParser
+from src.stringify_asm.abstracts.disassembler import Disassembler
+from src.stringify_asm.implementations.null_disassembler import NullDisassembler
+from src.stringify_asm.implementations.objdump.ComposableProducer import ComposableProducer
 from src.stringify_asm.implementations.objdump.objdump_disassembler import ObjdumpDisassembler
-from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
-from src.stringify_asm.implementations.objdump.GNUobjdump import GNUObjdump
+from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
 
 TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
 DEFAULT_FLAGS = "-d"
@@ -39,42 +43,42 @@ def log_match_results(match_result: List[str]) -> bool:
 def get_instruction_observers() -> List[InstructionObserver]:
     """Retrieve a list of instruction observers."""
 
-    return [RemoveEmptyInstructions()]
+    return []
 
 
-def initialize_objdump_class(assembly: Optional[str], binary: Optional[str]) -> GNUObjdump:
+def process_file(assembly: Optional[str], binary: Optional[str]) -> List[Instruction]:
     """Decide"""
+
+    disassembler: Disassembler
+    parser: AsmParser
     if assembly:
-        return parsing_from_assembly(assembly)
+        with open(assembly, "r", encoding="utf-8") as f:
+            assembly_read = f.read()
+
+        disassembler = NullDisassembler()
+        parser = ObjdumpParser()
+        return ComposableProducer(disassembler=disassembler, parser=parser).process_file(file=assembly_read)
+
     if binary:
-        return parsing_from_binary(binary)
+        disassembler = ObjdumpDisassembler(flags=DEFAULT_FLAGS)
+        parser = ObjdumpParser()
+        return ComposableProducer(disassembler=disassembler, parser=parser).process_file(file=binary)
 
-    raise ValueError("Either assembly or binary must be provided.")
-
-
-def parsing_from_assembly(assembly: str) -> GNUObjdump:
-    """Set objdump to start the process from an assembly."""
-
-    # Read file from disk
-    with open(assembly, "r", encoding="utf-8") as f:
-        assembly_read = f.read()
-
-    parser = ObjdumpParser(assembly=assembly_read)
-
-    objdump_instance = GNUObjdump(get_assembly=None, parser=parser)
-    return objdump_instance
+    raise ValueError("Either assembly or binary must be provided")
 
 
-def parsing_from_binary(binary: str) -> GNUObjdump:
-    """Set objdump to start the process from a binary."""
+class InstructionCleaner:
+    def __init__(self) -> None:
+        self.cleaner_observer = RemoveEmptyInstructions()
 
-    objdump_disassembler = ObjdumpDisassembler(binary=binary, flags=DEFAULT_FLAGS)
-    assembly = objdump_disassembler.disassemble()
+    def clean_instructions(self, instruction_list: List[Instruction]) -> Sequence[Optional[Instruction]]:
+        """Notify all observers with the provided instruction list."""
 
-    parser = ObjdumpParser(assembly=assembly)
-    objdump_instance = GNUObjdump(get_assembly=objdump_disassembler, parser=parser)
-
-    return objdump_instance
+        return [
+            self.cleaner_observer.observe_instruction(inst)
+            for inst in instruction_list
+            if self.cleaner_observer.observe_instruction(inst)
+        ]
 
 
 def perform_matching(
@@ -87,15 +91,19 @@ def perform_matching(
     # Produce directive regex rule
     regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
 
-    # Get instruction observers
-    instruction_observers = get_instruction_observers()
-
     # Initialize objdump class
-    objdump_instance = initialize_objdump_class(assembly=assembly, binary=binary)
+    instruction_list = process_file(assembly=assembly, binary=binary)
 
-    # Parse the assembly
-    objdump_instance.parser.set_observers(instruction_observers=instruction_observers)
-    assembly_string = objdump_instance.parser.parse_assembly()
+    # Remove empty instructions
+
+    instruction_list_cleaned = InstructionCleaner().clean_instructions(instruction_list)
+
+    # Consumer call observers
+    consumer = Consumer(inst_list=instruction_list_cleaned)
+
+    observer_list = get_instruction_observers()
+    consumer.set_observers(instruction_observers=observer_list)
+    assembly_string = consumer.finalize()
 
     # Get the results
     match_result = execute_regex_on_assembly(regex_rule=regex_rule, assembly_string=assembly_string)
