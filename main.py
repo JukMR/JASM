@@ -19,8 +19,11 @@ def main() -> None:
     )
 
     print("Starting execution... ")
-    # TODO: determine this from the args
-    input_file_type = InputFileType.assembly
+
+    if args.assembly:
+        input_file_type = InputFileType.assembly
+    elif args.binary:
+        input_file_type = InputFileType.binary
 
     perform_matching(pattern_pathstr=args.pattern, input_file=args.input_file, input_file_type=input_file_type)
 

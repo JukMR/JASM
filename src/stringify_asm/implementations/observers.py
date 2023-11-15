@@ -10,7 +10,7 @@ class TagOutofAddrsRangeJumps(IConsumer):
     def __init__(self, max_addr: str) -> None:
         self.max_addr = max_addr
 
-    def _process_instruction(self, inst: Instruction) -> Optional[Instruction]:
+    def consume_instruction(self, inst: Instruction) -> None:
         if inst.addrs > self.max_addr:
             return self.deal_with_instruction_out_of_range(inst)
         return inst
@@ -28,7 +28,7 @@ class CheckAddrRangeJumpsNearBadInstruction(IConsumer):
         self.livehood = distance
         self.current_instructions_index = 0
 
-    def _process_instruction(self, inst: Instruction) -> Optional[Instruction]:
+    def consume_instruction(self, inst: Instruction) -> None:
         # Check instructions
 
         # Instructions in the range of a bad instruction
