@@ -1,48 +1,68 @@
-from typing import List, Optional, Sequence
+from abc import abstractmethod
+import re
+from typing import Final, List, Optional
+from src import regex, stringify_asm
 
 from src.logging_config import logger
-from src.stringify_asm.abstracts.abs_observer import Instruction, InstructionObserver
+from src.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
 
 
-class InstructionsAppender:
-    "InstructionObserver implementation that only concatenates instructions"
+class InstructionObserverConsumer(IConsumer):
+    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver) -> None:
+        super().__init__(matched_observer=matched_observer)
+        self.instruction_observers: List[IInstructionObserver] = []
+        self.inst_list: List[Instruction]
+        self._regex_rule: Final = regex_rule
 
-    def __init__(self, inst_list: Sequence[Optional[Instruction]]) -> None:
-        self.inst_list = inst_list
+    def add_observer(self, instruction_observer: IInstructionObserver) -> None:
+        self.instruction_observers.append(instruction_observer)
 
-    def stringify_inst_list(self) -> List[str]:
-        return [inst.stringify() for inst in self.inst_list if inst]
-
-    @staticmethod
-    def join_inst_list_into_string(list_inst: List[str]) -> str:
-        return ",|".join(list_inst) + ",|"
-
-    def finalize(self) -> str:
-        return self.join_inst_list_into_string(self.stringify_inst_list())
-
-
-class Consumer:
-    def __init__(self, inst_list: Sequence[Instruction]) -> None:
-        self.inst_list = inst_list
-        self.instruction_observers: List[InstructionObserver]
-
-    def set_observers(self, instruction_observers: List[InstructionObserver]) -> None:
-        self.instruction_observers = instruction_observers
-
-    def execute_observers(self) -> Sequence[Optional[Instruction]]:
-        observed_instructions: Sequence[Optional[Instruction]] = self.inst_list
-
+    # @override
+    def _process_instruction(self, inst: Instruction) -> Optional[Instruction]:
+        observed_instruction: Optional[Instruction] = inst
         for observer in self.instruction_observers:
-            observed_instructions = [
-                observer.observe_instruction(inst)
-                for inst in observed_instructions
-                if observer.observe_instruction(inst)
-            ]
+            observed_instruction = observer.observe_instruction(inst)
+            if not observed_instruction:
+                break
+        return observed_instruction
 
-        return observed_instructions
+    # @override
+    def finalize(self) -> None:
+        return self._matched_observer.finalize()
 
-    def finalize(self) -> str:
-        instruction_list_concatenated_strings = InstructionsAppender(self.inst_list).finalize()
-        logger.debug("The concatenated stringified instruction list is: \n%s", instruction_list_concatenated_strings)
 
-        return instruction_list_concatenated_strings
+class CompleteConsumer(InstructionObserverConsumer):
+    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver) -> None:
+        super().__init__(
+            regex_rule=regex_rule,
+            matched_observer=matched_observer,
+        )
+        self._all_instructions: str = ""
+
+    # @override
+    def consume_instruction(self, inst: Instruction) -> None:
+        processed_inst = self._process_instruction(inst)
+        if processed_inst:
+            self._all_instructions += processed_inst.stringify() + ",|"
+
+    # @override
+    def finalize(self) -> None:
+        if re.search(pattern=self._regex_rule, string=self._all_instructions):
+            # TODO: pass the addr
+            # addr = get_addr_from_regex_result()
+            self._matched_observer.regex_matched("")
+        logger.debug("Finalized with instructions: %s", self._all_instructions)
+        super().finalize()
+
+
+class StreamConsumer(InstructionObserverConsumer):
+    # @override
+    def consume_instruction(self, inst: Instruction) -> None:
+        processed_inst = self._process_instruction(inst)
+        if processed_inst:
+            # Evaluate the instruction in the streaming regex engine
+            # TODO:
+            # regex_engine.process(processed_inst)
+            # if regex_engine.matched:
+            #     self._matched_observer.regex_matched(processed_inst.addrs)
+            pass
