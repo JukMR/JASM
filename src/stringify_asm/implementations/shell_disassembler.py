@@ -1,5 +1,7 @@
 import subprocess
 
+# from typing import override
+
 from src.logging_config import logger
 from src.stringify_asm.abstracts.disassembler import Disassembler
 
@@ -11,11 +13,12 @@ class ShellDisassembler(Disassembler):
         self.program = program
         self.flags = flags
 
-    def disassemble(self, binary) -> str:
+    # @override
+    def disassemble(self, input_file: str) -> str:
         """Run the shell program to disassemble the binary."""
         try:
             result = subprocess.run(
-                [self.program, self.flags, binary],
+                [self.program, self.flags, input_file],
                 capture_output=True,
                 text=True,
                 check=True,

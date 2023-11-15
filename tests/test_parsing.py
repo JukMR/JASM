@@ -2,7 +2,7 @@ import re
 
 import pytest
 from conftest import load_test_configs
-from src.consumer import Consumer
+from src.consumer import IConsumer
 from src.match import InstructionCleaner
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.logging_config import logger
@@ -19,7 +19,7 @@ def parse_file_and_get_number_of_lines_with_pyparsing(file: str) -> int:
     instruction_list_cleaned = InstructionCleaner().clean_instructions(instruction_list)
 
     # Set consumer without any observers
-    consumer = Consumer(inst_list=instruction_list_cleaned)
+    consumer = IConsumer(inst_list=instruction_list_cleaned)
     assembly_string = consumer.finalize()
 
     return assembly_string.count("|")

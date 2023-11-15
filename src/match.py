@@ -2,18 +2,19 @@
 Main match module
 """
 
+from enum import Enum, auto
 import re
 from typing import Any, List, Optional, Sequence
 
-from src.consumer import Consumer
+from src.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
 from src.logging_config import logger
 from src.measure_performance import measure_performance
 from src.regex.yaml2regex import Yaml2Regex
-from src.stringify_asm.abstracts.abs_observer import Instruction, InstructionObserver
+from src.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
 from src.stringify_asm.abstracts.asm_parser import AsmParser
 from src.stringify_asm.abstracts.disassembler import Disassembler
 from src.stringify_asm.implementations.null_disassembler import NullDisassembler
-from src.stringify_asm.implementations.objdump.ComposableProducer import ComposableProducer
+from src.stringify_asm.implementations.objdump.ComposableProducer import ComposableProducer, IInstructionProducer
 from src.stringify_asm.implementations.objdump.objdump_disassembler import ObjdumpDisassembler
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
@@ -28,84 +29,90 @@ def execute_regex_on_assembly(regex_rule: str, assembly_string: str) -> List[Any
     return re.findall(pattern=regex_rule, string=assembly_string)
 
 
-def log_match_results(match_result: List[str]) -> bool:
-    """Log the match results and return a boolean indicating if a match was found."""
-    if not match_result:
-        logger.info("RESULT: Pattern not found\n")
-        return False
-
-    logger.info("RESULT: Found a match:")
-    for matched_pattern in match_result:
-        logger.info("Pattern: %s\n", matched_pattern)
-    return True
-
-
-def get_instruction_observers() -> List[InstructionObserver]:
+def get_instruction_observers() -> List[IInstructionObserver]:
     """Retrieve a list of instruction observers."""
 
-    return []
+    # TODO: add the observers from the user
+    # user_observers = get_user_observer()
+
+    return [RemoveEmptyInstructions()]
 
 
-def process_file(assembly: Optional[str], binary: Optional[str]) -> List[Instruction]:
+class InputFileType(Enum):
+    binary = auto()
+    assembly = auto()
+
+
+def create_producer(file_type: InputFileType) -> IInstructionProducer:
     """Decide"""
 
     disassembler: Disassembler
-    parser: AsmParser
-    if assembly:
-        with open(assembly, "r", encoding="utf-8") as f:
-            assembly_read = f.read()
+    parser: AsmParser = ObjdumpParser()
 
-        disassembler = NullDisassembler()
-        parser = ObjdumpParser()
-        return ComposableProducer(disassembler=disassembler, parser=parser).process_file(file=assembly_read)
+    match file_type:
+        case InputFileType.binary:
+            disassembler = ObjdumpDisassembler(flags=DEFAULT_FLAGS)
+        case InputFileType.assembly:
+            disassembler = NullDisassembler()
 
-    if binary:
-        disassembler = ObjdumpDisassembler(flags=DEFAULT_FLAGS)
-        parser = ObjdumpParser()
-        return ComposableProducer(disassembler=disassembler, parser=parser).process_file(file=binary)
+        case _:
+            raise ValueError("Either assembly or binary must be provided")
 
-    raise ValueError("Either assembly or binary must be provided")
+    return ComposableProducer(disassembler=disassembler, parser=parser)
 
 
-class InstructionCleaner:
+class MatchedObserver(IMatchedObserver):
     def __init__(self) -> None:
-        self.cleaner_observer = RemoveEmptyInstructions()
+        self._matched = False
 
-    def clean_instructions(self, instruction_list: List[Instruction]) -> Sequence[Optional[Instruction]]:
-        """Notify all observers with the provided instruction list."""
+    @property
+    def matched(self) -> bool:
+        return self._matched
 
-        return [
-            self.cleaner_observer.observe_instruction(inst)
-            for inst in instruction_list
-            if self.cleaner_observer.observe_instruction(inst)
-        ]
+    """Observer that logs the matched address"""
+
+    # @override
+    def regex_matched(self, addr: str) -> None:
+        self._matched = True
+        logger.info("Matched address: %s", addr)
+
+    # @override
+    def finalize(self) -> None:
+        if not self._matched:
+            logger.info("RESULT: Pattern not found\n")
+
+
+def create_consumer(regex_rule: str, iMatchedObserver: IMatchedObserver) -> InstructionObserverConsumer:
+    """Decide"""
+
+    # TODO: implement the decision from the user for which consumer to use
+    return CompleteConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
 
 
 def perform_matching(
     pattern_pathstr: str,
-    binary: Optional[str] = None,
-    assembly: Optional[str] = None,
+    input_file: str,
+    input_file_type: InputFileType,
 ) -> bool:
     """Main function to perform regex matching on assembly or binary."""
 
     # Produce directive regex rule
     regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
 
-    # Initialize objdump class
-    instruction_list = process_file(assembly=assembly, binary=binary)
-
-    # Remove empty instructions
-
-    instruction_list_cleaned = InstructionCleaner().clean_instructions(instruction_list)
+    matched_observer = MatchedObserver()
+    # TODO: enable user to choose between stream and complete
+    consumer = create_consumer(regex_rule=regex_rule, iMatchedObserver=matched_observer)
 
     # Consumer call observers
-    consumer = Consumer(inst_list=instruction_list_cleaned)
-
     observer_list = get_instruction_observers()
-    consumer.set_observers(instruction_observers=observer_list)
-    assembly_string = consumer.finalize()
 
-    # Get the results
-    match_result = execute_regex_on_assembly(regex_rule=regex_rule, assembly_string=assembly_string)
+    for obs in observer_list:
+        consumer.add_observer(instruction_observer=obs)
 
-    return log_match_results(match_result=match_result)
+    # Create producer
+    producer = create_producer(file_type=input_file_type)
+
+    # Do the processing
+    producer.process_file(file=input_file, iConsumer=consumer)
+
+    return matched_observer.matched
