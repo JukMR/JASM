@@ -1,5 +1,5 @@
-from logging import DEBUG, ERROR, INFO, WARNING, Formatter, StreamHandler, Filter, getLevelName, getLogger
 from datetime import datetime
+from logging import DEBUG, ERROR, INFO, WARNING, Filter, Formatter, StreamHandler, getLevelName, getLogger
 from pathlib import Path
 
 

@@ -1,9 +1,9 @@
 import subprocess
 
-# from typing import override
-
 from src.logging_config import logger
 from src.stringify_asm.abstracts.disassembler import Disassembler
+
+# from typing import override
 
 
 class ShellDisassembler(Disassembler):

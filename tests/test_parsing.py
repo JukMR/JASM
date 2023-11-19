@@ -16,9 +16,12 @@ def get_stringify_instructions() -> str:
 def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_file_type: InputFileType) -> int:
     """Parse file and return number of lines"""
 
-    do_matching_and_get_result(regex_rule="", input_file=input_file, input_file_type=input_file_type)
+    all_instructions = do_matching_and_get_result(
+        regex_rule="", input_file=input_file, input_file_type=input_file_type, return_bool_result=False
+    )
 
-    all_instructions = get_stringify_instructions()
+    if isinstance(all_instructions, bool):
+        raise ValueError("Result should not be bool")
 
     return all_instructions.count("|")
 
@@ -44,21 +47,18 @@ def test_correct_number_of_lines_with_regex(config) -> None:
     assert matched_lines == number_of_lines
 
 
-# TODO: implement instructions stringified and then uncomment this
+@pytest.mark.parametrize(
+    "config",
+    load_test_configs(file_path="configuration.yml", yaml_config_field="test_parsing_lines"),
+    ids=lambda config: config["title"],
+)
+def test_parsing_number_of_lines(config) -> None:
+    "Test parsing number of lines for all configurations in configuration.yml."
 
-
-# @pytest.mark.parametrize(
-#     "config",
-#     load_test_configs(file_path="configuration.yml", yaml_config_field="test_parsing_lines"),
-#     ids=lambda config: config["title"],
-# )
-# def test_parsing_number_of_lines(config) -> None:
-#     "Test parsing number of lines for all configurations in configuration.yml."
-
-#     assembly = config.get("assembly")
-#     number_of_lines = config.get("number_of_lines")
-#     logger.info("Testing assembly number of lines: %s with pattern: %s", assembly, number_of_lines)
-#     parsed_number_of_lines = parse_file_and_get_number_of_lines_with_pyparsing(
-#         input_file=assembly, input_file_type=InputFileType.assembly
-#     )
-#     assert number_of_lines == parsed_number_of_lines
+    assembly = config.get("assembly")
+    number_of_lines = config.get("number_of_lines")
+    logger.info("Testing assembly number of lines: %s with pattern: %s", assembly, number_of_lines)
+    parsed_number_of_lines = parse_file_and_get_number_of_lines_with_pyparsing(
+        input_file=assembly, input_file_type=InputFileType.assembly
+    )
+    assert number_of_lines == parsed_number_of_lines

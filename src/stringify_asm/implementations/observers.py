@@ -1,6 +1,7 @@
 "Observers implementation module"
 
 from typing import Optional
+
 from src.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, Instruction
 
 
