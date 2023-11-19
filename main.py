@@ -1,7 +1,8 @@
 "Main entry module"
 from argparse import Namespace
 from parse_arguments import parse_args_from_console
-
+from src.logging_config import configure_logger
+from src.match import InputFileType, perform_matching
 from src.measure_performance import measure_performance
 from src.logging_config import configure_logger
 from src.match import perform_matching, InputFileType

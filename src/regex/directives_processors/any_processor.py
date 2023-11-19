@@ -1,8 +1,8 @@
 "Any Directive Processor Implementation"
 
-from typing import Literal, Optional, Dict, List, cast
+from typing import Dict, List, Literal, Optional, cast
 
-from src.global_definitions import PatternDict, SKIP_TO_END_OF_COMMAND
+from src.global_definitions import SKIP_TO_END_OF_COMMAND, PatternDict
 from src.regex.directives_processors.any_elements import RuleElement
 from src.regex.idirective_processor import IDirectiveProcessor
 
