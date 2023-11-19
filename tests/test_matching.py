@@ -1,8 +1,9 @@
 import pytest
-
-from src.match import InputFileType, perform_matching
-from src.logging_config import logger
 from conftest import load_test_configs
+
+from src.global_definitions import InputFileType
+from src.logging_config import logger
+from src.match import perform_matching
 
 
 def run_match_test(

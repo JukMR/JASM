@@ -2,6 +2,7 @@
 
 import sys
 from typing import Any, Dict, List, TypeAlias, Optional
+from enum import Enum, auto
 
 SKIP_TO_END_OF_OPERAND = "[^,]*,"
 SKIP_TO_END_OF_COMMAND = "[^|]*" + r"\|"
@@ -19,3 +20,8 @@ IncludeExcludeListType: TypeAlias = Optional[List[str]]
 TimesType: TypeAlias = Optional[Dict[str, int]]
 OperandListType: TypeAlias = Optional[List[Any]]
 OperandType: TypeAlias = Optional[Dict[str, Any]]
+
+
+class InputFileType(Enum):
+    binary = auto()
+    assembly = auto()
