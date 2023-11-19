@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+
 from src.consumer import IConsumer
 from src.stringify_asm.abstracts.abs_observer import IConsumer
 from src.stringify_asm.abstracts.asm_parser import AsmParser

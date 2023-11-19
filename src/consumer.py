@@ -1,10 +1,9 @@
-from abc import abstractmethod
 import re
 from typing import Final, List, Optional
-from src import regex, stringify_asm
 
 from src.logging_config import logger
 from src.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
+from src.tester import TESTER
 
 
 class InstructionObserverConsumer(IConsumer):
@@ -53,6 +52,13 @@ class CompleteConsumer(InstructionObserverConsumer):
             self._matched_observer.regex_matched("")
         logger.debug("Finalized with instructions: %s", self._all_instructions)
         super().finalize()
+
+        # Send the results to test
+        if TESTER:
+            # pylint: disable=import-outside-toplevel
+            from main import tester_stringify_inst
+
+            tester_stringify_inst.send(self._all_instructions)
 
 
 class StreamConsumer(InstructionObserverConsumer):
