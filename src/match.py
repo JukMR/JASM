@@ -2,15 +2,15 @@
 Main match module
 """
 
-from enum import Enum, auto
 import re
-from typing import Any, List, Optional, Sequence
+from enum import Enum, auto
+from typing import Any, List
 
-from src.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
+from src.consumer import CompleteConsumer, InstructionObserverConsumer
 from src.logging_config import logger
 from src.measure_performance import measure_performance
 from src.regex.yaml2regex import Yaml2Regex
-from src.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
+from src.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
 from src.stringify_asm.abstracts.asm_parser import AsmParser
 from src.stringify_asm.abstracts.disassembler import Disassembler
 from src.stringify_asm.implementations.null_disassembler import NullDisassembler
@@ -62,14 +62,14 @@ def create_producer(file_type: InputFileType) -> IInstructionProducer:
 
 
 class MatchedObserver(IMatchedObserver):
+    """Observer that logs the matched address"""
+
     def __init__(self) -> None:
         self._matched = False
 
     @property
     def matched(self) -> bool:
         return self._matched
-
-    """Observer that logs the matched address"""
 
     # @override
     def regex_matched(self, addr: str) -> None:
