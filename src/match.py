@@ -8,7 +8,6 @@ from typing import Any, List
 
 from src.consumer import CompleteConsumer, InstructionObserverConsumer
 from src.logging_config import logger
-from src.measure_performance import measure_performance
 from src.regex.yaml2regex import Yaml2Regex
 from src.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
 from src.stringify_asm.abstracts.asm_parser import AsmParser
@@ -19,14 +18,7 @@ from src.stringify_asm.implementations.objdump.objdump_disassembler import Objdu
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
 
-TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
 DEFAULT_FLAGS = "-d"
-
-
-@measure_performance(perf_title="Run regex")
-def execute_regex_on_assembly(regex_rule: str, assembly_string: str) -> List[Any]:
-    """Execute the regex pattern on the provided assembly string."""
-    return re.findall(pattern=regex_rule, string=assembly_string)
 
 
 def get_instruction_observers() -> List[IInstructionObserver]:

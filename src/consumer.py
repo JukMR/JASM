@@ -1,6 +1,8 @@
 import re
 from typing import Final, List, Optional
 
+from main import TESTER
+from src import tester
 from src.logging_config import logger
 from src.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
 from src.tester import TESTER
@@ -51,6 +53,9 @@ class CompleteConsumer(InstructionObserverConsumer):
             # addr = get_addr_from_regex_result()
             self._matched_observer.regex_matched("")
         logger.debug("Finalized with instructions: %s", self._all_instructions)
+
+        if TESTER:
+            tester.set(self._all_instructions)
         super().finalize()
 
         # Send the results to test

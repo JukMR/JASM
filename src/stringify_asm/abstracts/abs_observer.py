@@ -1,12 +1,8 @@
 "Instruction and Instruction Observer module"
 
 from abc import ABC, abstractmethod
-import abc
 from dataclasses import dataclass
-from enum import Enum, auto
 from typing import Final, List, Optional
-
-from src.logging_config import logger
 
 
 @dataclass

@@ -33,7 +33,7 @@ class LazyFileHandler(StreamHandler):
     The file is only opened when a log record is emitted, preventing the creation of empty log files.
     """
 
-    def __init__(self, filename, mode="a", encoding=None, delay=False):
+    def __init__(self, filename, mode="a", encoding=None):
         self.base_filename = filename
         self.mode = mode
         self.encoding = encoding
