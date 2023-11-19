@@ -1,8 +1,8 @@
 "Global definition file"
 
 import sys
-from typing import Any, Dict, List, TypeAlias, Optional
 from enum import Enum, auto
+from typing import Any, Dict, List, Optional, TypeAlias
 
 SKIP_TO_END_OF_OPERAND = "[^,]*,"
 SKIP_TO_END_OF_COMMAND = "[^|]*" + r"\|"

@@ -3,7 +3,6 @@ from typing import Final, List, Optional
 
 from src.logging_config import logger
 from src.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
-from src.tester import TESTER, Tester
 
 
 class InstructionObserverConsumer(IConsumer):
@@ -46,6 +45,11 @@ class CompleteConsumer(InstructionObserverConsumer):
 
     # @override
     def finalize(self) -> None:
+        # TODO: find the right way to do this
+        # Add instructions to the observer to test them
+
+        self._matched_observer.stringified_instructions = self._all_instructions
+
         if re.search(pattern=self._regex_rule, string=self._all_instructions):
             # TODO: pass the addr
             # addr = get_addr_from_regex_result()
@@ -53,11 +57,6 @@ class CompleteConsumer(InstructionObserverConsumer):
         logger.debug("Finalized with instructions: %s", self._all_instructions)
 
         super().finalize()
-
-        # Send the results to test
-        if TESTER:
-            tester_stringify_inst = Tester()
-            tester_stringify_inst.send(self._all_instructions)
 
 
 class StreamConsumer(InstructionObserverConsumer):

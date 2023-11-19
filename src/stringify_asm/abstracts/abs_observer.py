@@ -1,6 +1,6 @@
 "Instruction and Instruction Observer module"
 
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 from dataclasses import dataclass
 from typing import Final, List, Optional
 
@@ -20,6 +20,16 @@ class Instruction:
 
 class IMatchedObserver(ABC):
     "Observes a match event"
+
+    @property
+    @abstractmethod
+    def matched(self) -> bool:
+        "Matched property for observer"
+
+    @property
+    @abstractmethod
+    def stringified_instructions(self) -> str:
+        "Stringified instructions"
 
     @abstractmethod
     def regex_matched(self, addr: str) -> None:
