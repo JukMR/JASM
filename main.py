@@ -1,26 +1,14 @@
 "Main entry module"
 from argparse import Namespace
-from parse_arguments import parse_args_from_console
-from src.logging_config import configure_logger
-from src.match import InputFileType, perform_matching
-from src.measure_performance import measure_performance
-from src.logging_config import configure_logger
-from src.match import perform_matching, InputFileType
-from src.tester import Tester
 
-tester_stringify_inst: Tester
+from parse_arguments import parse_args_from_console
+from src.global_definitions import InputFileType
+from src.logging_config import configure_logger
+from src.match import perform_matching
+from src.measure_performance import measure_performance
 
 
 def start_configurations() -> Namespace:
-    # Enable tester flag for test_parsing file
-
-    # pylint: disable=global-statement
-    global TESTER
-    TESTER = True
-    if TESTER:
-        global tester_stringify_inst  # pylint: disable=global-statement
-        tester_stringify_inst = Tester()
-
     # Parse user args
     args: Namespace = parse_args_from_console()
 

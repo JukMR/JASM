@@ -5,8 +5,6 @@
 
 from typing import Optional
 
-
-# Enable parsing test or not
 TESTER: bool = True
 
 

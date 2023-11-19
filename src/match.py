@@ -2,11 +2,10 @@
 Main match module
 """
 
-import re
-from enum import Enum, auto
-from typing import Any, List
+from typing import List
 
 from src.consumer import CompleteConsumer, InstructionObserverConsumer
+from src.global_definitions import InputFileType
 from src.logging_config import logger
 from src.regex.yaml2regex import Yaml2Regex
 from src.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
@@ -28,11 +27,6 @@ def get_instruction_observers() -> List[IInstructionObserver]:
     # user_observers = get_user_observer()
 
     return [RemoveEmptyInstructions()]
-
-
-class InputFileType(Enum):
-    binary = auto()
-    assembly = auto()
 
 
 def create_producer(file_type: InputFileType) -> IInstructionProducer:
@@ -61,6 +55,7 @@ class MatchedObserver(IMatchedObserver):
 
     @property
     def matched(self) -> bool:
+        "Matched property for observer"
         return self._matched
 
     # @override
@@ -81,15 +76,23 @@ def create_consumer(regex_rule: str, iMatchedObserver: IMatchedObserver) -> Inst
     return CompleteConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
 
 
-def perform_matching(
-    pattern_pathstr: str,
-    input_file: str,
-    input_file_type: InputFileType,
-) -> bool:
+def perform_matching(pattern_pathstr: str, input_file: str, input_file_type: InputFileType) -> bool:
     """Main function to perform regex matching on assembly or binary."""
 
-    # Produce directive regex rule
-    regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
+    regex_rule = get_regex_rule(pattern_pathstr=pattern_pathstr)
+
+    return do_matching_and_get_result(regex_rule=regex_rule, input_file=input_file, input_file_type=input_file_type)
+
+
+def get_regex_rule(pattern_pathstr: str) -> str:
+    """Retrieve the regex rule from the pattern file"""
+    regex_rule = Yaml2Regex(pattern_pathstr).produce_regex()
+
+    return regex_rule
+
+
+def do_matching_and_get_result(regex_rule: str, input_file: str, input_file_type: InputFileType) -> bool:
+    """Main function to perform regex matching on assembly or binary."""
 
     matched_observer = MatchedObserver()
     # TODO: enable user to choose between stream and complete
@@ -99,7 +102,7 @@ def perform_matching(
     observer_list = get_instruction_observers()
 
     for obs in observer_list:
-        consumer.add_observer(instruction_observer=obs)
+        consumer.add_observer(obs)
 
     # Create producer
     producer = create_producer(file_type=input_file_type)
