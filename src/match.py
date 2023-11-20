@@ -2,9 +2,10 @@
 Main match module
 """
 
+from enum import Enum, auto
 from typing import List
 
-from src.consumer import CompleteConsumer, InstructionObserverConsumer
+from src.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
 from src.global_definitions import InputFileType
 from src.matched_observers import MatchedObserver
 from src.regex.yaml2regex import Yaml2Regex
@@ -47,11 +48,23 @@ def create_producer(file_type: InputFileType) -> IInstructionProducer:
     return ComposableProducer(disassembler=disassembler, parser=parser)
 
 
-def create_consumer(regex_rule: str, iMatchedObserver: IMatchedObserver) -> InstructionObserverConsumer:
-    """Decide"""
+class ConsumerType(Enum):
+    """Enum for the consumer type."""
 
-    # TODO: implement the decision from the user for which consumer to use
-    return CompleteConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
+    complete = auto()
+    stream = auto()
+
+
+def create_consumer(
+    regex_rule: str, iMatchedObserver: IMatchedObserver, consumer_type: ConsumerType
+) -> InstructionObserverConsumer:
+    """Decide which consumer to create"""
+
+    match consumer_type:
+        case ConsumerType.complete:
+            return CompleteConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
+        case ConsumerType.stream:
+            return StreamConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
 
 
 def perform_matching(pattern_pathstr: str, input_file: str, input_file_type: InputFileType) -> bool | str:
@@ -82,7 +95,9 @@ def do_matching_and_get_result(
     matched_observer = MatchedObserver()
 
     # TODO: enable user to choose between stream and complete
-    consumer = create_consumer(regex_rule=regex_rule, iMatchedObserver=matched_observer)
+    consumer = create_consumer(
+        regex_rule=regex_rule, iMatchedObserver=matched_observer, consumer_type=ConsumerType.complete
+    )
 
     # Consumer call observers
     observer_list = get_instruction_observers()
