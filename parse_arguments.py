@@ -7,6 +7,7 @@ def parse_args_from_console() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--pattern", required=True, help="Input pattern for parsing")
+    parser.add_argument("-i", "--input_file", required=True, help="Input file for parsing")
     parser.add_argument("--debug", default=False, action="store_true", help="Set debugging level")
     parser.add_argument("--dissasemble-program", default="objdump", help="Set the program to use as dissasembler")
     parser.add_argument("--info", default=True, action="store_true", help="Set info level")
@@ -19,8 +20,10 @@ def parse_args_from_console() -> argparse.Namespace:
     group = parser.add_mutually_exclusive_group(required=True)
 
     # Add the two arguments to the group
-    group.add_argument("-b", "--binary", help="Input binary for parsing")
-    group.add_argument("-s", "--assembly", help="Input assembly for parsing")
+    group.add_argument("-b", "--binary", action="store_true", help="Input binary for parsing")
+    group.add_argument("-s", "--assembly", action="store_true", help="Input assembly for parsing")
+
+    # Return only a file_type argument
 
     parsed_args = parser.parse_args()
 

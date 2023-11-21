@@ -1,16 +1,16 @@
 import pytest
-from typing import Optional
-
-from src.match import perform_matching
-from src.logging_config import logger
 from conftest import load_test_configs
 
+from src.global_definitions import InputFileType
+from src.logging_config import logger
+from src.match import perform_matching
 
-def run_match_test(pattern_pathstr: str, assembly: str, expected_result: bool, binary: Optional[str]) -> None:
+
+def run_match_test(
+    pattern_pathstr: str, input_file: str, input_file_type: InputFileType, expected_result: bool
+) -> None:
     """Run a single match test."""
-    if not assembly and not binary:
-        raise ValueError("Wrong error configuration. At least one argument should be given")
-    result = perform_matching(pattern_pathstr=pattern_pathstr, assembly=assembly, binary=binary)
+    result = perform_matching(pattern_pathstr=pattern_pathstr, input_file=input_file, input_file_type=input_file_type)
     assert result == expected_result
 
 
@@ -26,9 +26,19 @@ def test_all_patterns(config):
     assembly = config.get("assembly", None)
     binary = config.get("binary", None)
     logger.info("Testing assembly: %s with pattern: %s", assembly, config_yaml)
+
+    if assembly:
+        input_file = assembly
+        input_file_type = InputFileType.assembly
+    elif binary:
+        input_file = binary
+        input_file_type = InputFileType.binary
+    else:
+        raise ValueError("Either assembly or binary must be provided")
+
     run_match_test(
         pattern_pathstr=config_yaml,
-        assembly=assembly,
+        input_file=input_file,
+        input_file_type=input_file_type,
         expected_result=expected_result,
-        binary=binary,
     )

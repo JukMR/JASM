@@ -7,7 +7,7 @@ from typing import List
 
 from pyparsing import ParseException, ParserElement, ParseResults
 from src.measure_performance import measure_performance
-from src.stringify_asm.abstracts.abs_observer import Instruction
+from src.stringify_asm.abstracts.abs_observer import IConsumer, Instruction
 from src.stringify_asm.abstracts.asm_parser import AsmParser
 from src.stringify_asm.pyparsing_binary_rules import parsed
 
@@ -123,12 +123,12 @@ class ObjdumpParser(AsmParser):
 
         return Instruction(addrs=address, mnemonic=mnemonic, operands=[])
 
+    # @override
     @measure_performance(perf_title="Parse Instructions")
-    def parse(self, file: str) -> List[Instruction]:
+    def parse(self, file: str, iConsumer: IConsumer) -> None:
         """Main function to parse the assembly."""
 
-        # Parse the assembly and get the list of instructions
+        # Parse the assembly and provide instruction to the consumer
 
-        instruction_list = [self._parse_instruction(inst) for inst in self._execute_pyparsing(assembly=file)]
-
-        return instruction_list
+        for parse_element in self._execute_pyparsing(assembly=file):
+            iConsumer.consume_instruction(self._parse_instruction(parse_element))

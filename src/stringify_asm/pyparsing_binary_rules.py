@@ -1,6 +1,21 @@
 "Pyparsing assembly matching rules"
-from pyparsing import Word, Suppress, ParserElement, Group, SkipTo, Literal, OneOrMore, ZeroOrMore
-from pyparsing import printables, hexnums, line_end, python_style_comment, Optional, alphanums, alphas
+from pyparsing import (
+    Group,
+    Literal,
+    OneOrMore,
+    Optional,
+    ParserElement,
+    SkipTo,
+    Suppress,
+    Word,
+    ZeroOrMore,
+    alphanums,
+    alphas,
+    hexnums,
+    line_end,
+    printables,
+    python_style_comment,
+)
 
 ParserElement.enablePackrat()
 
