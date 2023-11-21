@@ -21,13 +21,18 @@ from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
 DEFAULT_FLAGS = "-d"
 
 
+def get_user_observer() -> List[IInstructionObserver]:
+    """Retrieve a list of user defined observers."""
+    return []
+
+
 def get_instruction_observers() -> List[IInstructionObserver]:
     """Retrieve a list of instruction observers."""
 
-    # TODO: add the observers from the user
-    # user_observers = get_user_observer()
+    observers: List[IInstructionObserver] = [RemoveEmptyInstructions()]
+    observers.extend(get_user_observer())
 
-    return [RemoveEmptyInstructions()]
+    return observers
 
 
 def create_producer(file_type: InputFileType) -> IInstructionProducer:
