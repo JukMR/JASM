@@ -50,10 +50,16 @@ class CompleteConsumer(InstructionObserverConsumer):
 
         self._matched_observer.stringified_instructions = self._all_instructions
 
-        if re.search(pattern=self._regex_rule, string=self._all_instructions):
-            # TODO: pass the addr
-            # addr = get_addr_from_regex_result()
-            self._matched_observer.regex_matched("")
+        match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
+
+        if match_result:
+
+            def get_first_addr_from_regex_result(regex_result: str) -> str:
+                regex_result = regex_result.split("::")[0]
+                return regex_result
+
+            addr = get_first_addr_from_regex_result(match_result.group(0))
+            self._matched_observer.regex_matched(addr)
         logger.debug("Finalized with instructions: %s", self._all_instructions)
 
         super().finalize()
