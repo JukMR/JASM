@@ -46,7 +46,7 @@ class CompleteConsumer(InstructionObserverConsumer):
     # @override
     def finalize(self) -> None:
         # TODO: find the right way to do this
-        # Add instructions to the observer to test them
+        # Add stringified instructions to the observer to test them in test_parsing
 
         self._matched_observer.stringified_instructions = self._all_instructions
 
@@ -71,7 +71,7 @@ class StreamConsumer(InstructionObserverConsumer):
         processed_inst = self._process_instruction(inst)
         if processed_inst:
             # Evaluate the instruction in the streaming regex engine
-            # TODO:
+            # TODO: implement this
             # regex_engine.process(processed_inst)
             # if regex_engine.matched:
             #     self._matched_observer.regex_matched(processed_inst.addrs)
