@@ -2,110 +2,115 @@
 Main match module
 """
 
-import re
-from typing import Any, List, Optional, Sequence
+from enum import Enum, auto
+from typing import List
 
-from src.consumer import Consumer
-from src.logging_config import logger
-from src.measure_performance import measure_performance
+from src.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
+from src.global_definitions import InputFileType
+from src.matched_observers import MatchedObserver
 from src.regex.yaml2regex import Yaml2Regex
-from src.stringify_asm.abstracts.abs_observer import Instruction, InstructionObserver
+from src.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
 from src.stringify_asm.abstracts.asm_parser import AsmParser
 from src.stringify_asm.abstracts.disassembler import Disassembler
 from src.stringify_asm.implementations.null_disassembler import NullDisassembler
-from src.stringify_asm.implementations.objdump.ComposableProducer import ComposableProducer
+from src.stringify_asm.implementations.objdump.composable_producer import ComposableProducer, IInstructionProducer
 from src.stringify_asm.implementations.objdump.objdump_disassembler import ObjdumpDisassembler
 from src.stringify_asm.implementations.objdump.objdump_parser import ObjdumpParser
 from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
 
-TMP_ASSEMBLY_PATH = "tmp_dissasembly.s"
 DEFAULT_FLAGS = "-d"
 
 
-@measure_performance(perf_title="Run regex")
-def execute_regex_on_assembly(regex_rule: str, assembly_string: str) -> List[Any]:
-    """Execute the regex pattern on the provided assembly string."""
-    return re.findall(pattern=regex_rule, string=assembly_string)
-
-
-def log_match_results(match_result: List[str]) -> bool:
-    """Log the match results and return a boolean indicating if a match was found."""
-    if not match_result:
-        logger.info("RESULT: Pattern not found\n")
-        return False
-
-    logger.info("RESULT: Found a match:")
-    for matched_pattern in match_result:
-        logger.info("Pattern: %s\n", matched_pattern)
-    return True
-
-
-def get_instruction_observers() -> List[InstructionObserver]:
+def get_instruction_observers() -> List[IInstructionObserver]:
     """Retrieve a list of instruction observers."""
 
-    return []
+    # TODO: add the observers from the user
+    # user_observers = get_user_observer()
+
+    return [RemoveEmptyInstructions()]
 
 
-def process_file(assembly: Optional[str], binary: Optional[str]) -> List[Instruction]:
+def create_producer(file_type: InputFileType) -> IInstructionProducer:
     """Decide"""
 
     disassembler: Disassembler
-    parser: AsmParser
-    if assembly:
-        with open(assembly, "r", encoding="utf-8") as f:
-            assembly_read = f.read()
+    parser: AsmParser = ObjdumpParser()
 
-        disassembler = NullDisassembler()
-        parser = ObjdumpParser()
-        return ComposableProducer(disassembler=disassembler, parser=parser).process_file(file=assembly_read)
+    match file_type:
+        case InputFileType.binary:
+            disassembler = ObjdumpDisassembler(flags=DEFAULT_FLAGS)
+        case InputFileType.assembly:
+            disassembler = NullDisassembler()
 
-    if binary:
-        disassembler = ObjdumpDisassembler(flags=DEFAULT_FLAGS)
-        parser = ObjdumpParser()
-        return ComposableProducer(disassembler=disassembler, parser=parser).process_file(file=binary)
+        case _:
+            raise ValueError("Either assembly or binary must be provided")
 
-    raise ValueError("Either assembly or binary must be provided")
+    return ComposableProducer(disassembler=disassembler, parser=parser)
 
 
-class InstructionCleaner:
-    def __init__(self) -> None:
-        self.cleaner_observer = RemoveEmptyInstructions()
+class ConsumerType(Enum):
+    """Enum for the consumer type."""
 
-    def clean_instructions(self, instruction_list: List[Instruction]) -> Sequence[Optional[Instruction]]:
-        """Notify all observers with the provided instruction list."""
-
-        return [
-            self.cleaner_observer.observe_instruction(inst)
-            for inst in instruction_list
-            if self.cleaner_observer.observe_instruction(inst)
-        ]
+    complete = auto()
+    stream = auto()
 
 
-def perform_matching(
-    pattern_pathstr: str,
-    binary: Optional[str] = None,
-    assembly: Optional[str] = None,
-) -> bool:
+def create_consumer(
+    regex_rule: str, iMatchedObserver: IMatchedObserver, consumer_type: ConsumerType
+) -> InstructionObserverConsumer:
+    """Decide which consumer to create"""
+
+    match consumer_type:
+        case ConsumerType.complete:
+            return CompleteConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
+        case ConsumerType.stream:
+            return StreamConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
+
+
+def perform_matching(pattern_pathstr: str, input_file: str, input_file_type: InputFileType) -> bool | str:
     """Main function to perform regex matching on assembly or binary."""
 
-    # Produce directive regex rule
-    regex_rule = Yaml2Regex(pattern_pathstr=pattern_pathstr).produce_regex()
+    regex_rule = get_regex_rule(pattern_pathstr=pattern_pathstr)
 
-    # Initialize objdump class
-    instruction_list = process_file(assembly=assembly, binary=binary)
+    return do_matching_and_get_result(
+        regex_rule=regex_rule, input_file=input_file, input_file_type=input_file_type, return_bool_result=True
+    )
 
-    # Remove empty instructions
 
-    instruction_list_cleaned = InstructionCleaner().clean_instructions(instruction_list)
+def get_regex_rule(pattern_pathstr: str) -> str:
+    """Retrieve the regex rule from the pattern file"""
+    regex_rule = Yaml2Regex(pattern_pathstr).produce_regex()
+
+    return regex_rule
+
+
+def do_matching_and_get_result(
+    regex_rule: str,
+    input_file: str,
+    input_file_type: InputFileType,
+    return_bool_result: bool = True,
+) -> bool | str:
+    """Main function to perform regex matching on assembly or binary."""
+
+    matched_observer = MatchedObserver()
+
+    # TODO: enable user to choose between stream and complete
+    consumer = create_consumer(
+        regex_rule=regex_rule, iMatchedObserver=matched_observer, consumer_type=ConsumerType.complete
+    )
 
     # Consumer call observers
-    consumer = Consumer(inst_list=instruction_list_cleaned)
-
     observer_list = get_instruction_observers()
-    consumer.set_observers(instruction_observers=observer_list)
-    assembly_string = consumer.finalize()
 
-    # Get the results
-    match_result = execute_regex_on_assembly(regex_rule=regex_rule, assembly_string=assembly_string)
+    for obs in observer_list:
+        consumer.add_observer(obs)
 
-    return log_match_results(match_result=match_result)
+    # Create producer
+    producer = create_producer(file_type=input_file_type)
+
+    # Do the processing
+    producer.process_file(file=input_file, iConsumer=consumer)
+
+    if return_bool_result:
+        return matched_observer.matched
+    return matched_observer.stringified_instructions
