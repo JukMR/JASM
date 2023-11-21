@@ -99,7 +99,6 @@ def do_matching_and_get_result(
 
     matched_observer = MatchedObserver()
 
-    # TODO: enable user to choose between stream and complete
     consumer = create_consumer(
         regex_rule=regex_rule, iMatchedObserver=matched_observer, consumer_type=ConsumerType.complete
     )
