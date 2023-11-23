@@ -8,11 +8,6 @@ from src.logging_config import logger
 from src.match import do_matching_and_get_result
 
 
-def get_stringify_instructions() -> str:
-    # TODO: implement this
-    return ""
-
-
 def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_file_type: InputFileType) -> int:
     """Parse file and return number of lines"""
 

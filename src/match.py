@@ -21,13 +21,18 @@ from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
 DEFAULT_FLAGS = "-d"
 
 
+def get_user_observer() -> List[IInstructionObserver]:
+    """Retrieve a list of user defined observers."""
+    return []
+
+
 def get_instruction_observers() -> List[IInstructionObserver]:
     """Retrieve a list of instruction observers."""
 
-    # TODO: add the observers from the user
-    # user_observers = get_user_observer()
+    observers: List[IInstructionObserver] = [RemoveEmptyInstructions()]
+    observers.extend(get_user_observer())
 
-    return [RemoveEmptyInstructions()]
+    return observers
 
 
 def create_producer(file_type: InputFileType) -> IInstructionProducer:
@@ -94,7 +99,6 @@ def do_matching_and_get_result(
 
     matched_observer = MatchedObserver()
 
-    # TODO: enable user to choose between stream and complete
     consumer = create_consumer(
         regex_rule=regex_rule, iMatchedObserver=matched_observer, consumer_type=ConsumerType.complete
     )
