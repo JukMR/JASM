@@ -4,9 +4,9 @@ config:
   plugins:
 
 pattern:
-  - movb
-    #   - 48h
-    #   - rax
+  - movb:
+      - 48h
+      - rax
 #   - movl
 #   - mov:
 #       - rsp
