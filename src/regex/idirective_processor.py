@@ -32,7 +32,7 @@ class IDirectiveProcessor(ABC):
         self.times = times
         self.operands = operands
 
-        self.times_regex: Optional[str] = self._get_min_max_regex()
+        self.times_regex: Optional[str] = self.get_min_max_regex(times=times, pattern=pattern)
         self.operand_regex = OperandsHandler(operands=self.operands).get_regex()
 
     @staticmethod
@@ -40,17 +40,18 @@ class IDirectiveProcessor(ABC):
         "Get `times` from pattern or None"
         return pattern.get("times", None)
 
-    def _get_min_max_regex(self) -> Optional[str]:
-        if self.times is None:
+    @staticmethod
+    def get_min_max_regex(times: TimesType, pattern: PatternDict) -> Optional[str]:
+        if times:
             return None
 
-        if isinstance(self.times, int):
-            return f"{{{self.times}}}"
+        if isinstance(times, int):
+            return f"{{{times}}}"
 
-        assert isinstance(self.times, Dict), f"times property inside {self.pattern} is not a Dict"
+        assert isinstance(times, Dict), f"times property inside {pattern} is not a Dict"
 
-        min_amount = self.times.get("min", 1)
-        max_amount = self.times.get("max", MAX_PYTHON_INT)
+        min_amount = times.get("min", 1)
+        max_amount = times.get("max", MAX_PYTHON_INT)
 
         assert min_amount <= max_amount, f"Wrong min:{min_amount} or max:{max_amount} in directive"
 

@@ -6,9 +6,9 @@ from src.global_definitions import (
     SKIP_TO_ANY_OPERAND_CHARS,
     SKIP_TO_END_OF_COMMAND,
     SKIP_TO_END_OF_OPERAND,
+    Command,
     IncludeExcludeListType,
     OperandListType,
-    OperandType,
 )
 
 
@@ -68,7 +68,7 @@ class OperandsHandler:
         only_single_op_regex = rf"([^,|]*{operand_elem}){{1}}[^,|]*,"
         return only_single_op_regex
 
-    def _process_operand_elem(self, operand_elem: OperandType) -> str:
+    def _process_operand_elem(self, operand_elem: Command) -> str:
         if isinstance(operand_elem, Dict):
             keys = list(operand_elem.keys())
             if keys == ["$any"]:
@@ -93,7 +93,7 @@ class OperandsHandler:
                 if operand_elem.endswith("h"):
                     tmp = operand_elem.removesuffix("h")
                     try:
-                        int(tmp, 16)
+                        int(tmp, base=16)
                         return True
                     except ValueError:
                         return False
