@@ -1,16 +1,12 @@
 "File2regex Yaml implementation module"
 
-from typing import Any, Dict
+from typing import Any
 
 import yaml
 
-from src.global_definitions import IGNORE_INST_ADDR, SKIP_TO_END_OF_COMMAND, Pattern, PatternDict
+from src.global_definitions import Command
 from src.logging_config import logger
-from src.global_definitions import SKIP_TO_END_OF_COMMAND, Pattern, PatternDict, IGNORE_INST_ADDR
-from src.regex.file2regex import File2Regex
-from src.regex.directives_processors.or_processor import OrDirectiveProcessor
-from src.regex.directives_processors.not_processor import NotDirectiveProcessor
-from src.regex.directives_processors.single_processor import SingleDirectiveProcessor
+from src.regex.directives_processors.tree_builder import CommandBuilder
 from src.regex.file2regex import File2Regex
 
 
@@ -20,57 +16,24 @@ class Yaml2Regex(File2Regex):
     def __init__(self, pattern_pathstr: str) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
 
-        # Get an empty DirectiveProcessor
-        self.directive_processor = DirectiveProcessor(strategy=None)
-
     @staticmethod
     def load_file(file: str) -> Any:
         "Read a yaml file and return the parsed content"
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
-    def _handle_pattern(self, pattern: Pattern) -> str:
-        "Check if pattern is plain str or dict"
-
-        if isinstance(pattern, dict):
-            return self._process_dict(pattern)
-        if isinstance(pattern, str):
-            return f"({IGNORE_INST_ADDR}{pattern}{SKIP_TO_END_OF_COMMAND})"
-
-        raise ValueError("Pattern type not valid")
-
-    def _process_dict(self, pattern_arg: PatternDict) -> str:
-        "Process dict pattern. Resolve if pattern is $any, $not or $basic"
-
-        dict_keys = pattern_arg.keys()
-        pattern: Dict[str, Any]
-        match list(dict_keys)[0]:
-            case "$or":
-                pattern = pattern_arg["$any"]
-                self.directive_processor.set_strategy(OrDirectiveProcessor(pattern))
-                return self.directive_processor.execute_strategy()
-            case "$and":
-                pattern = pattern_arg["$and"]
-                self.directive_processor.set_strategy(AndDirectiveProcessor(pattern))
-                return self.directive_processor.execute_strategy()
-            case "$perm":
-                pattern = pattern_arg["$perm"]
-                self.directive_processor.set_strategy(PermDirectiveProcessor(pattern))
-                return self.directive_processor.execute_strategy()
-            case "$not":
-                pattern = pattern_arg["$not"]
-                self.directive_processor.set_strategy(NotDirectiveProcessor(pattern))
-                return self.directive_processor.execute_strategy()
-            case _:
-                self.directive_processor.set_strategy(SingleDirectiveProcessor(pattern_arg))
-                return self.directive_processor.execute_strategy()
-
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
 
-        output_regex = ""
-        for com in self.loaded_file["pattern"]:
-            output_regex += self._handle_pattern(pattern=com)
+        patterns = self.loaded_file.get("pattern", None)
+
+        form_dict = {"$and": patterns}
+        # Create rule tree
+        rule_tree: Command = CommandBuilder(form_dict).build()
+
+        # Process the rule tree and generate the regex
+
+        output_regex = rule_tree.get_regex(rule_tree)
 
         # Log regex results
         logger.info("The output regex is:\n%s\n", output_regex)
