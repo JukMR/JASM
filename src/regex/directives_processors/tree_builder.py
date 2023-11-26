@@ -7,19 +7,14 @@ class CommandBuilder:
     def __init__(self, command_dict: dict_node | str | int) -> None:
         self.command = command_dict
 
-        # Check if is instance of str or int
-        if isinstance(command_dict, int):
-            self.name = command_dict
-            self.times = TimeType(min=1, max=1)
-            self.children = None
-            return
-        elif isinstance(command_dict, str):
+        # Check if is instance of int or str
+        if isinstance(command_dict, (int, str)):
             self.name = command_dict
             self.times = TimeType(min=1, max=1)
             self.children = None
             return
 
-        elif isinstance(command_dict, dict):
+        if isinstance(command_dict, dict):
             self.name = self._get_name(command_dict)
             self.times = self._get_times(command_dict)
             self.children = self.get_children(name=self.name, command=command_dict)

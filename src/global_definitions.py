@@ -54,21 +54,44 @@ class Command:
     def is_leaf(self) -> bool:
         if isinstance(self.command_dict, int):
             return True
-        if self.name == "pattern":
-            return False
 
         return not self.name.startswith("$")
 
     def process_leaf(self, com: "Command") -> str:
-        return self.form_regex_from_leaf(name=com.name, operands=com.children, times=com.times)
+        return f"({self.form_regex_from_leaf(name=com.name, operands=com.children, times=com.times)})"
 
     def form_regex_from_leaf(self, name: str, operands: List[str], times: TimeType) -> str:
+        if not operands:
+            # Probably is an operand
+            return self.sanitize_operand_name(name)
+
         operands_regex: str = self.get_operand_regex(operands)
         times_regex: str = self.get_min_max_regex(times)
 
         if operands_regex:
-            return f"(({IGNORE_INST_ADDR}{name}{operands_regex}){times_regex})"
-        return f"(({IGNORE_INST_ADDR}{name}{SKIP_TO_END_OF_OPERAND}){times_regex})"
+            return f"(({IGNORE_INST_ADDR}{name},({operands_regex})){times_regex})"
+        return f"(({IGNORE_INST_ADDR}{name},{SKIP_TO_END_OF_OPERAND}){times_regex})"
+
+    def sanitize_operand_name(self, name: str) -> str:
+        def _is_hex_operand(name: str) -> bool:
+            if name.endswith("h"):
+                tmp = name.removesuffix("h")
+                try:
+                    int(tmp, base=16)
+                    return True
+                except ValueError:
+                    return False
+            return False
+
+        if _is_hex_operand(name):
+
+            def _process_hex_operand(hex_operand_elem: str) -> str:
+                operand_elem = "0x" + hex_operand_elem.removesuffix("h")
+                return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
+
+            # Match hex operand
+            return _process_hex_operand(operand_elem)
+        return name
 
     def process_branch(self, command: "Command") -> str:
         child_regexes = self.process_children(command)
@@ -78,13 +101,15 @@ class Command:
             # Match case where command.name is and or pattern
 
             case "$and":
-                return process_and(child_regexes, command=command, timex_regex=timex_regex)
+                return process_and(child_regexes, timex_regex=timex_regex)
             case "$or":
-                return process_or(child_regexes, command=command, timex_regex=timex_regex)
+                return process_or(child_regexes, timex_regex=timex_regex)
             case "$not":
-                return process_not(child_regexes, command=command, timex_regex=timex_regex)
+                return process_not(child_regexes, timex_regex=timex_regex)
             # case "$perm":
-            #     return process_perm(child_regexes, command=command, timex_regex=timex_regex)
+            #     return process_perm(child_regexes, timex_regex=timex_regex)
+            # case "$no_order":
+            #     return process_perm(child_regexes, timex_regex=timex_regex)
             case _:
                 raise ValueError("Unknown command type")
 
@@ -97,14 +122,14 @@ class Command:
     def get_operand_regex(self, operands: Optional[List["Command"]] = None) -> Optional[str]:
         if not operands:
             return None
-        return "".join(operand.get_regex(operand) for operand in operands)
+        return ",".join(operand.get_regex(operand) for operand in operands)
 
 
-def process_and(child_regexes: List[str], command: Command, timex_regex: str) -> str:
+def process_and(child_regexes: List[str], timex_regex: str) -> str:
     return f"({''.join(child_regexes)}){timex_regex}"
 
 
-def process_or(child_regexes: List[str], command: Command, timex_regex: str) -> str:
+def process_or(child_regexes: List[str], timex_regex: str) -> str:
     return f"({join_instructions(child_regexes)}){timex_regex}"
 
 
@@ -121,10 +146,8 @@ def join_instructions(inst_list: List[str]) -> str:
     return joined_by_bar_instructions
 
 
-def process_not(child_regexes: List[str], command: Command, timex_regex: str) -> str:
-    times_regex: str = CommandProcessor().get_min_max_regex(times=command.times)
-
-    return f"((?!{timex_regex}){SKIP_TO_END_OF_COMMAND}){times_regex}"
+def process_not(child_regexes: List[str], timex_regex: str) -> str:
+    return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND}){timex_regex}"
 
 
 # def process_perm(child_regexes: List[str], command: Command, timex_regex: str) -> str:
