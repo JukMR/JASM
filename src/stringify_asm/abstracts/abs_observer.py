@@ -1,6 +1,6 @@
 "Instruction and Instruction Observer module"
 
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Final, List, Optional
 
