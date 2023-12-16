@@ -33,10 +33,11 @@ class IMatchedObserver(ABC):
 
     @abstractmethod
     def regex_matched(self, addr: str) -> None:
-        """"""
+        """Report there was a match event"""
 
     @abstractmethod
     def finalize(self) -> None:
+        """Report that the process was finished"""
         pass
 
 
