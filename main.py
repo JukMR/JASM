@@ -9,6 +9,8 @@ from src.measure_performance import measure_performance
 
 
 def start_configurations() -> Namespace:
+    "Main function to parse user args and start logger"
+
     # Parse user args
     args: Namespace = parse_args_from_console()
 
