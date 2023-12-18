@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-from src.consumer import IConsumer
 from src.stringify_asm.abstracts.abs_observer import IConsumer
 from src.stringify_asm.abstracts.asm_parser import AsmParser
 from src.stringify_asm.abstracts.disassembler import Disassembler

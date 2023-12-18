@@ -38,7 +38,6 @@ class IMatchedObserver(ABC):
     @abstractmethod
     def finalize(self) -> None:
         """Report that the process was finished"""
-        pass
 
 
 class IConsumer(ABC):
@@ -53,7 +52,7 @@ class IConsumer(ABC):
 
     @abstractmethod
     def finalize(self) -> None:
-        pass
+        "Finalize consumer"
 
 
 class IInstructionObserver(ABC):
