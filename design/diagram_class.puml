@@ -221,22 +221,19 @@ Yaml2Regex --up> SingleDirectiveProcessor : executes_strategy
 Yaml2Regex --up> NotDirectiveProcessor : executes_strategy
 Yaml2Regex --o DirectiveProcessor: has
 
-
 IDirectiveProcessor -o OperandsHandler
-
 
 File2Regex <|-- Yaml2Regex
 
+
 ' Stringify_Asm
 
+' Use this hidden element to display producer at left and consumer at right
+IConsumer -[hidden]> IInstructionProducer :uses
+IInstructionProducer -right> IConsumer :uses
+
+' Producer
 IInstructionProducer <|-- ComposableProducer
-IMatchedObserver <|-- MatchedObserver
-
-InstructionObserverConsumer -o IMatchedObserver
-InstructionObserverConsumer <|-- CompleteConsumer
-InstructionObserverConsumer <|-- StreamConsumer
-IConsumer <|-- InstructionObserverConsumer
-
 
 AsmParser <|--- GNUObjdumpParser
 AsmParser <|--- LlvmObjdumpParser
@@ -249,11 +246,16 @@ Disassembler <|--- NullDisassembler
 ComposableProducer --o Disassembler
 ComposableProducer --o AsmParser
 
-' Use this hidden element to display producer at left and consumer at right
-IConsumer -[hidden]> IInstructionProducer :uses
+
+' Consumer
+InstructionObserverConsumer -o IMatchedObserver
+InstructionObserverConsumer <|-- CompleteConsumer
+InstructionObserverConsumer <|-- StreamConsumer
+IMatchedObserver <|-- MatchedObserver
+IConsumer <|-- InstructionObserverConsumer
 
 
-IInstructionProducer -right> IConsumer :uses
+
 
 ' Observers
 
