@@ -11,6 +11,8 @@ skinparam class {
 
 }
 
+' PACKAGES AND ELEMENTS DEFINITIONS
+
 package "Stringify_Asm" {
 
     class Instruction {
@@ -20,11 +22,20 @@ package "Stringify_Asm" {
         + stringify() -> str
     }
 
+    interface IInstructionProducer {
+        {abstract} + process_file(file: str, iConsumer: IConsumer) -> None
+    }
 
     abstract class Disassembler {
         {abstract} + disassemble(input_file: str) -> str
     }
 
+    class ComposableProducer {
+        + disassembler: Disassembler
+        + parser: AsmParser
+        + __init__(disassembler: Disassembler, parser: AsmParser) -> None
+        + process_file(file: str, iConsumer: IConsumer) -> None
+    }
 
     class GNUObjdumpDisassembler {
         + __init__(flags: str) -> None
@@ -50,17 +61,6 @@ package "Stringify_Asm" {
     }
 
 
-    interface IInstructionProducer {
-        {abstract} + process_file(file: str, iConsumer: IConsumer) -> None
-    }
-
-    class ComposableProducer {
-        + disassembler: Disassembler
-        + parser: AsmParser
-        + __init__(disassembler: Disassembler, parser: AsmParser) -> None
-        + process_file(file: str, iConsumer: IConsumer) -> None
-    }
-
     class GNUObjdumpParser {
         + parse(file: str, iConsumer: IConsumer) -> None
      }
@@ -71,8 +71,6 @@ package "Stringify_Asm" {
         + __init__(program: str, flags: str) -> None
         + disassemble(input_file: str) -> str
     }
-
-
 
 
     interface IMatchedObserver {
@@ -88,10 +86,6 @@ package "Stringify_Asm" {
         {abstract} + finalize() -> None
     }
 
-
-    class AsmParser {
-
-    }
     class InstructionObserverConsumer {
         - matchedObserver: IMatchedObserver
         - observedInstructions: List[Instruction]
@@ -214,7 +208,9 @@ package "Observers" {
 }
 
 
-' Strategy Pattern Relationships
+' RELATIONS
+
+' Regex
 DirectiveProcessor -[#red,thickness=1]o IDirectiveProcessor: uses
 IDirectiveProcessor  <|-- AnyDirectiveProcessor
 IDirectiveProcessor  <|-- SingleDirectiveProcessor
@@ -231,13 +227,16 @@ IDirectiveProcessor -o OperandsHandler
 
 File2Regex <|-- Yaml2Regex
 
-IMatchedObserver <|-- MatchedObserver
-IInstructionProducer <|-- ComposableProducer
+' Stringify_Asm
 
-IConsumer <|-- InstructionObserverConsumer
+IInstructionProducer <|-- ComposableProducer
+IMatchedObserver <|-- MatchedObserver
+
 InstructionObserverConsumer -o IMatchedObserver
 InstructionObserverConsumer <|-- CompleteConsumer
 InstructionObserverConsumer <|-- StreamConsumer
+IConsumer <|-- InstructionObserverConsumer
+
 
 AsmParser <|--- GNUObjdumpParser
 AsmParser <|--- LlvmObjdumpParser
@@ -249,6 +248,14 @@ Disassembler <|--- NullDisassembler
 
 ComposableProducer --o Disassembler
 ComposableProducer --o AsmParser
+
+' Use this hidden element to display producer at left and consumer at right
+IConsumer -[hidden]> IInstructionProducer :uses
+
+
+IInstructionProducer -right> IConsumer :uses
+
+' Observers
 
 
 @enduml
