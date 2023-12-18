@@ -14,70 +14,118 @@ skinparam class {
 package "Stringify_Asm" {
 
     class Instruction {
+        + addrs: str
         + mnemonic: str
         + operands: List[str]
         + stringify() -> str
     }
 
-    class InstructionObserver {
-        + observe_instruction(inst: Instruction) : Optional[Instruction]
-    }
 
     abstract class Disassembler {
-        {abstract} binary: str
-        {abstract} disassemble() -> str
+        {abstract} + disassemble(input_file: str) -> str
     }
 
+
     class GNUObjdumpDisassembler {
-        + program
+        + __init__(flags: str) -> None
+
     }
 
     class LLvmObjdumpDisassembler {
-        + program
+        + __init__(flags: str) -> None
     }
 
     class NullDisassembler {
-        + disassemble() -> str
+        + disassemble(input_file: str) -> str
     }
 
+
     abstract class AsmParser {
-        + assembly: str
-        {abstract} parse(file, IConsumer) -> List[Instruction]
+        {abstract} parse(file: str, iConsumer: IConsumer) -> None:
+
     }
 
     class LlvmObjdumpParser {
-        + parse(file, IConsumer) -> List[Instruction]
+        + parse(file: str, iConsumer: IConsumer) -> None
     }
 
-    abstract class IInstructionsProducer {
-        {abstract} process_file(file, IConsumer) -> List[Instruction]
+
+    interface IInstructionProducer {
+        {abstract} + process_file(file: str, iConsumer: IConsumer) -> None
     }
 
     class ComposableProducer {
         + disassembler: Disassembler
         + parser: AsmParser
-        + process_file(file, IConsumer) -> List[Instruction]
+        + __init__(disassembler: Disassembler, parser: AsmParser) -> None
+        + process_file(file: str, iConsumer: IConsumer) -> None
     }
 
     class GNUObjdumpParser {
-        + parse(file, IConsumer) -> List[Instruction]
-    }
+        + parse(file: str, iConsumer: IConsumer) -> None
+     }
 
     class ShellDisassembler {
-        - binary: str
-        - output_path: str
         - program: str
         - flags: str
-        + disassemble() -> None
+        + __init__(program: str, flags: str) -> None
+        + disassemble(input_file: str) -> str
     }
 
-    class InstConsumer {
-        + finalize() -> str
+
+
+
+    interface IMatchedObserver {
+        {abstract} + matched: bool
+        {abstract} + stringified_instructions: str
+        {abstract} + regex_matched(addr: str) -> None
+        {abstract} + finalize() -> None
     }
 
-    class InstProducerFactory {
+    interface IConsumer {
+        + __init__(matched_observer: IMatchedObserver) -> None
+        {abstract} + consume_instruction(inst: Instruction) -> None
+        {abstract} + finalize() -> None
+    }
+
+
+    class AsmParser {
 
     }
+    class InstructionObserverConsumer {
+        - matchedObserver: IMatchedObserver
+        - observedInstructions: List[Instruction]
+        + __init__(matchedObserver: IMatchedObserver) -> None
+        + consume_instruction(inst: Instruction) -> None
+        + observe_instruction(inst: Instruction) -> Optional[Instruction]
+        + finalize() -> None
+    }
+
+    class CompleteConsumer {
+        - matchedObserver: IMatchedObserver
+        - instructions: List[Instruction]
+        + __init__(matchedObserver: IMatchedObserver) -> None
+        + consume_instruction(inst: Instruction) -> None
+        + finalize() -> None
+    }
+
+    class StreamConsumer {
+        - matchedObserver: IMatchedObserver
+        - streamBuffer: StreamBuffer
+        + __init__(matchedObserver: IMatchedObserver) -> None
+        + consume_instruction(inst: Instruction) -> None
+        + finalize() -> None
+    }
+
+    class MatchedObserver {
+        - isMatched: bool
+        - instructions: List[Instruction]
+        + regex_matched(addr: str) -> None
+        + finalize() -> None
+        + matched: bool
+        + stringified_instructions: str
+    }
+
 }
 
 package "Regex" {
@@ -142,9 +190,29 @@ package "Regex" {
         process() -> str
     }
 
-
-
 }
+
+package "Observers" {
+        class TagOutofAddrsRangeJumps {
+        - max_addr: str
+        + __init__(max_addr: str) -> None
+        + consume_instruction(inst: Instruction) -> None
+        + deal_with_instruction_out_of_range(inst: Instruction) -> Instruction
+    }
+
+    class CheckAddrRangeJumpsNearBadInstruction {
+        - livehood: int
+        - current_instructions_index: int
+        + __init__(distance: int) -> None
+        + consume_instruction(inst: Instruction) -> None
+        + tag_instruction(inst: Instruction) -> Instruction
+    }
+
+    class RemoveEmptyInstructions {
+        + observe_instruction(inst: Instruction) -> Optional[Instruction]
+    }
+}
+
 
 ' Strategy Pattern Relationships
 DirectiveProcessor -[#red,thickness=1]o IDirectiveProcessor: uses
@@ -163,7 +231,13 @@ IDirectiveProcessor -o OperandsHandler
 
 File2Regex <|-- Yaml2Regex
 
+IMatchedObserver <|-- MatchedObserver
+IInstructionProducer <|-- ComposableProducer
 
+IConsumer <|-- InstructionObserverConsumer
+InstructionObserverConsumer -o IMatchedObserver
+InstructionObserverConsumer <|-- CompleteConsumer
+InstructionObserverConsumer <|-- StreamConsumer
 
 AsmParser <|--- GNUObjdumpParser
 AsmParser <|--- LlvmObjdumpParser
@@ -173,14 +247,8 @@ ShellDisassembler <|-- GNUObjdumpDisassembler
 ShellDisassembler <|-- LLvmObjdumpDisassembler
 Disassembler <|--- NullDisassembler
 
-IInstructionsProducer <|-- ComposableProducer
 ComposableProducer --o Disassembler
 ComposableProducer --o AsmParser
 
-IInstructionsProducer <.. InstProducerFactory :creates
 
-
-IInstructionsProducer -> InstConsumer : Instruction Stream
-
-InstConsumer --> InstructionObserver : calls many
 @enduml
