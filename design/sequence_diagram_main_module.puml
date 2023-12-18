@@ -1,0 +1,41 @@
+@startuml main sequence diagram
+actor User
+participant "main()" as Main
+participant "start_configurations()" as StartConfig
+participant "parse_args_from_console()" as ParseArgs
+participant "configure_logger()" as ConfigLogger
+participant "decide_assembly_or_binary()" as DecideType
+participant "perform_matching()" as PerformMatching
+
+User -> Main: Executes program and pass arguments
+activate Main
+
+Main -> StartConfig: start_configurations()
+activate StartConfig
+
+StartConfig -> ParseArgs: parse_args_from_console()
+activate ParseArgs
+ParseArgs -> StartConfig: args
+deactivate ParseArgs
+
+StartConfig -> ConfigLogger: configure_logger(args)
+activate ConfigLogger
+ConfigLogger -> StartConfig: Logger configured
+deactivate ConfigLogger
+
+StartConfig -> Main: args
+deactivate StartConfig
+
+Main -> DecideType: decide_assembly_or_binary(args)
+activate DecideType
+DecideType -> Main: input_file_type
+deactivate DecideType
+
+Main -> PerformMatching: perform_matching(args.pattern, args.input_file, input_file_type)
+activate PerformMatching
+PerformMatching -> Main: Matching result
+deactivate PerformMatching
+
+Main -> User: Execution ends
+deactivate Main
+@enduml

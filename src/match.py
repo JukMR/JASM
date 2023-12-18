@@ -39,11 +39,14 @@ def get_instruction_observers() -> List[IInstructionObserver]:
 
 
 def create_producer(file_type: InputFileType) -> IInstructionProducer:
-    """Decide"""
+    """Create a producer based on the file type."""
 
-    disassembler: Disassembler
+    # Logic for choosing diferent type of parser should be here
+
     parser: AsmParser = ObjdumpParser()
+    disassembler: Disassembler
 
+    # Logic for choosing diferent type of disassembler should be here
     match file_type:
         case InputFileType.binary:
             disassembler = GNUObjdumpDisassembler(flags=DEFAULT_FLAGS)
