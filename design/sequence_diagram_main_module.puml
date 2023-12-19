@@ -1,4 +1,4 @@
-@startuml main sequence diagram
+@startuml main_sequence_diagram
 actor User
 participant "main()" as Main
 participant "start_configurations()" as StartConfig

@@ -1,4 +1,4 @@
-@startuml matching component diagram
+@startuml matching_component_diagram
 actor "main module" as Main
 participant "perform_matching()" as PerformMatching
 participant "get_regex_rule()" as GetRegexRule
@@ -59,8 +59,7 @@ GetObservers -> DoMatching: return observer_list
 deactivate GetObservers
 
 loop for observer in observer_list
-    DoMatching -> Consumer: add_observer(Observer)
-    Consumer -> DoMatching: observer added
+    DoMatching -> Consumer: add_observer(observer)
 end
 
 DoMatching -> CreateProducer: create_producer(input_file_type)
