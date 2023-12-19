@@ -9,6 +9,8 @@ participant "create_consumer()" as CreateConsumer
 participant "CompleteConsumer" as CompleteCons
 participant "StreamConsumer" as StreamCons
 participant "get_instruction_observers()" as GetObservers
+participant "Consumer" as Consumer
+participant "Producer" as Producer
 participant "create_producer()" as CreateProducer
 participant "ComposableProducer" as Producer
 
@@ -73,9 +75,9 @@ deactivate CreateProducer
 DoMatching -> Producer: process_file(input_file, Consumer)
 activate Producer
 Producer -> Producer: parser.parse()
-Producer -> Producer: iConsumer.finalize()
-Producer -> MatchedObs: update state based on processing
+Producer -> Consumer: finalize()
 deactivate Producer
+Consumer -> MatchedObs: finalize()
 MatchedObs -> DoMatching: finalize()
 DoMatching -> PerformMatching: return result
 deactivate DoMatching
