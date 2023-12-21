@@ -48,7 +48,6 @@ class Command:
     def get_regex(self, command: "Command") -> str:
         if command.is_leaf():
             return self.process_leaf(command)
-
         return self.process_branch(command)
 
     def is_leaf(self) -> bool:
@@ -58,19 +57,14 @@ class Command:
         return not self.name.startswith("$")
 
     def process_leaf(self, com: "Command") -> str:
-        return f"({self.form_regex_from_leaf(name=com.name, operands=com.children, times=com.times)})"
+        return f"{self.form_regex_from_leaf(name=com.name, operands=com.children, times=com.times)}"
 
-    def form_regex_from_leaf(self, name: str, operands: List[str], times: TimeType) -> str:
+    def form_regex_from_leaf(self, name: str, operands: Optional[List["Command"]], times: TimeType) -> str:
         if not operands:
             # Probably is an operand
             return self.sanitize_operand_name(name)
 
-        operands_regex: str = self.get_operand_regex(operands)
-        times_regex: str = self.get_min_max_regex(times)
-
-        if operands_regex:
-            return f"(({IGNORE_INST_ADDR}{name},({operands_regex})){times_regex})"
-        return f"(({IGNORE_INST_ADDR}{name},{SKIP_TO_END_OF_OPERAND}){times_regex})"
+        return RegexWithOperandsCreator(name=name, operands=operands, times=times).generate_regex()
 
     def sanitize_operand_name(self, name: str) -> str:
         def _is_hex_operand(name: str) -> bool:
@@ -87,68 +81,113 @@ class Command:
 
             def _process_hex_operand(hex_operand_elem: str) -> str:
                 operand_elem = "0x" + hex_operand_elem.removesuffix("h")
-                return rf"([^,|]*{operand_elem}){{1}}{SKIP_TO_END_OF_OPERAND}"
+                return rf"([^,|]*{operand_elem}){SKIP_TO_END_OF_OPERAND}"
 
             # Match hex operand
-            return _process_hex_operand(operand_elem)
+            return _process_hex_operand(name)
         return name
 
     def process_branch(self, command: "Command") -> str:
         child_regexes = self.process_children(command)
-        timex_regex: str = self.get_min_max_regex(times=command.times)
+        times_regex: Optional[str] = global_get_min_max_regex(times=command.times)
 
         match command.name:
             # Match case where command.name is and or pattern
 
             case "$and":
-                return process_and(child_regexes, timex_regex=timex_regex)
+                return BranchProcessor().process_and(child_regexes, times_regex=times_regex)
             case "$or":
-                return process_or(child_regexes, timex_regex=timex_regex)
+                return BranchProcessor().process_or(child_regexes, times_regex=times_regex)
             case "$not":
-                return process_not(child_regexes, timex_regex=timex_regex)
-            # case "$perm":
-            #     return process_perm(child_regexes, timex_regex=timex_regex)
-            # case "$no_order":
-            #     return process_perm(child_regexes, timex_regex=timex_regex)
+                return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
+            case "$perm":
+                return BranchProcessor().process_perm(child_regexes, times_regex=times_regex)
+            case "$no_order":
+                return BranchProcessor().process_no_order(child_regexes, times_regex=times_regex)
             case _:
                 raise ValueError("Unknown command type")
 
     def process_children(self, command: "Command") -> List[str]:
-        return [self.get_regex(child) for child in command.children]
+        if command.children:
+            return [self.get_regex(child) for child in command.children]
+        raise ValueError("Children list is empty")
 
-    def get_min_max_regex(self, times: TimeType) -> str:
-        return f"{{{times.min},{times.max}}}"
 
-    def get_operand_regex(self, operands: Optional[List["Command"]] = None) -> Optional[str]:
-        if not operands:
+class RegexWithOperandsCreator:
+    def __init__(self, name: str, operands: List[Command], times: Optional[TimeType]) -> None:
+        self.name = name
+        self.operands = operands
+        self.times = times
+
+    def generate_regex(self) -> str:
+        operands_regex: Optional[str] = self.get_operand_regex()
+        times_regex: Optional[str] = self.get_min_max_regex()
+
+        if times_regex:
+            return self._form_regex_with_time(operands_regex=operands_regex, times_regex=times_regex)
+        return self._form_regex_without_time(operands_regex=operands_regex)
+
+    def get_operand_regex(self) -> Optional[str]:
+        return "".join(operand.get_regex(operand) for operand in self.operands)
+
+    def get_min_max_regex(self) -> Optional[str]:
+        if not self.times:
             return None
-        return ",".join(operand.get_regex(operand) for operand in operands)
+        return global_get_min_max_regex(times=self.times)
+
+    def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
+        if operands_regex:
+            return f"(({IGNORE_INST_ADDR}{self.name},({operands_regex})){times_regex})"
+        return f"(({IGNORE_INST_ADDR}{self.name},{SKIP_TO_END_OF_OPERAND}){times_regex})"
+
+    def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
+        if operands_regex:
+            return f"({IGNORE_INST_ADDR}{self.name},({operands_regex}))"
+        return f"({IGNORE_INST_ADDR}{self.name},{SKIP_TO_END_OF_OPERAND})"
 
 
-def process_and(child_regexes: List[str], timex_regex: str) -> str:
-    return f"({''.join(child_regexes)}){timex_regex}"
+class BranchProcessor:
+    @staticmethod
+    def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
+        if times_regex:
+            return f"({''.join(child_regexes)}){times_regex}"
+        return f"{''.join(child_regexes)}"
+
+    def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
+        if times_regex:
+            return f"({self.join_instructions(child_regexes)}){times_regex}"
+        return f"({self.join_instructions(child_regexes)})"
+
+    @staticmethod
+    def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
+        if times_regex:
+            return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND}){times_regex}"
+        return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND})"
+
+    @staticmethod
+    def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:
+        # TODO: implement this
+        return ""
+
+    @staticmethod
+    def process_no_order(child_regexes: List[str], times_regex: Optional[str]) -> str:
+        # TODO: implement this
+        return ""
+
+    @staticmethod
+    def join_instructions(inst_list: List[str]) -> str:
+        "Join instructions from list using operand to generate regex"
+
+        assert inst_list, "There are no instructions to join"
+
+        regex_instructions = [f"{IGNORE_INST_ADDR}{elem}," for elem in inst_list]
+
+        joined_by_bar_instructions = "|".join(regex_instructions)
+
+        return joined_by_bar_instructions
 
 
-def process_or(child_regexes: List[str], timex_regex: str) -> str:
-    return f"({join_instructions(child_regexes)}){timex_regex}"
-
-
-@staticmethod
-def join_instructions(inst_list: List[str]) -> str:
-    "Join instructions from list using operand to generate regex"
-
-    assert inst_list, "There are no instructions to join"
-
-    regex_instructions = [f"{IGNORE_INST_ADDR}{elem}," for elem in inst_list]
-
-    joined_by_bar_instructions = "|".join(regex_instructions)
-
-    return joined_by_bar_instructions
-
-
-def process_not(child_regexes: List[str], timex_regex: str) -> str:
-    return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND}){timex_regex}"
-
-
-# def process_perm(child_regexes: List[str], command: Command, timex_regex: str) -> str:
-#     return join_perm(regex)
+def global_get_min_max_regex(times: TimeType) -> Optional[str]:
+    if times.min == 1 and times.max == 1:
+        return None
+    return f"{{{times.min},{times.max}}}"
