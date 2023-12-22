@@ -4,7 +4,7 @@ from typing import Any
 
 import yaml
 
-from src.global_definitions import Command
+from src.global_definitions import Command, CommandTypes, TimeType
 from src.logging_config import logger
 from src.regex.directives_processors.tree_builder import CommandBuilder
 from src.regex.file2regex import File2Regex
@@ -22,14 +22,26 @@ class Yaml2Regex(File2Regex):
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
+    @staticmethod
+    def form_top_node(patterns: dict) -> Command:
+        return Command(
+            command_dict=patterns,
+            name="$TOP",
+            times=TimeType(min=1, max=1),
+            children=patterns,
+            command_type=CommandTypes.node,
+            parent=None,
+        )
+
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
 
         patterns = self.loaded_file.get("pattern", None)
 
-        form_dict = {"$and": patterns}
+        top_node = self.form_top_node(patterns)
+
         # Create rule tree
-        rule_tree: Command = CommandBuilder(form_dict).build()
+        rule_tree: Command = CommandBuilder(command_dict=patterns, parent=top_node).build()
 
         # Process the rule tree and generate the regex
 

@@ -7,7 +7,7 @@ pattern:
   - movb:
       - 48h
       - rax
-#   - movl
+  - movl
 #   - mov:
 #       - rsp
 #       - rax

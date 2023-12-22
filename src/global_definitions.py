@@ -36,14 +36,28 @@ class TimeType:
 dict_node: TypeAlias = Dict[str, Any] | str
 
 
+class CommandTypes(Enum):
+    node = auto()
+    operand = auto()
+    mnemonic = auto()
+
+
 class Command:
     def __init__(
-        self, command_dict: dict_node, name: str, times: TimeType, children: Optional[List["Command"]]
+        self,
+        command_dict: dict_node,
+        name: str,
+        times: TimeType,
+        children: Optional[dict],
+        command_type: CommandTypes,
+        parent: Optional["Command"],
     ) -> None:
         self.command_dict = command_dict
         self.name = name
         self.times = times
         self.children = children
+        self.command_type = command_type
+        self.parent = parent
 
     def get_regex(self, command: "Command") -> str:
         if command.is_leaf():
@@ -57,14 +71,14 @@ class Command:
         return not self.name.startswith("$")
 
     def process_leaf(self, com: "Command") -> str:
-        return f"{self.form_regex_from_leaf(name=com.name, operands=com.children, times=com.times)}"
+        return f"{self.form_regex_from_leaf(name=com.name, children=com.children, times=com.times)}"
 
-    def form_regex_from_leaf(self, name: str, operands: Optional[List["Command"]], times: TimeType) -> str:
-        if not operands:
+    def form_regex_from_leaf(self, name: str, children: Optional[dict], times: TimeType) -> str:
+        if not children:
             # Probably is an operand
             return self.sanitize_operand_name(name)
 
-        return RegexWithOperandsCreator(name=name, operands=operands, times=times).generate_regex()
+        return RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
 
     def sanitize_operand_name(self, name: str) -> str:
         def _is_hex_operand(name: str) -> bool:
@@ -114,7 +128,7 @@ class Command:
 
 
 class RegexWithOperandsCreator:
-    def __init__(self, name: str, operands: List[Command], times: Optional[TimeType]) -> None:
+    def __init__(self, name: str, operands: dict, times: Optional[TimeType]) -> None:
         self.name = name
         self.operands = operands
         self.times = times
