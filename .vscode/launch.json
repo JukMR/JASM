@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "JASM: moonbounce example",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/moonbounce_from_binarly.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/moonbounce_binarly_bad_small.s"
+            ]
+        },
+        {
+            "name": "include and exclude list",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/include_and_include_list.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
+        }
+    ]
+}
