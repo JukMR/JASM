@@ -31,10 +31,7 @@ class InstructionObserverConsumer(IConsumer):
 
 class CompleteConsumer(InstructionObserverConsumer):
     def __init__(self, regex_rule: str, matched_observer: IMatchedObserver) -> None:
-        super().__init__(
-            regex_rule=regex_rule,
-            matched_observer=matched_observer,
-        )
+        super().__init__(regex_rule=regex_rule, matched_observer=matched_observer)
         self._all_instructions: str = ""
 
     # @override
