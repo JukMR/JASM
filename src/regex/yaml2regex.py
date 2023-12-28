@@ -9,7 +9,7 @@ from src.logging_config import logger
 from src.regex.directives_processors.tree_builder import (
     CommandBuilderNoParents,
     CommandParentsBuilder,
-    CommandsTypeFormer,
+    CommandsTypeBuilder,
 )
 from src.regex.file2regex import File2Regex
 
@@ -54,7 +54,7 @@ class Yaml2Regex(File2Regex):
         rule_tree: Command = CommandBuilderNoParents(command_dict=form_dict).build()
 
         CommandParentsBuilder(rule_tree).build()
-        CommandsTypeFormer(rule_tree).build()
+        CommandsTypeBuilder(rule_tree).build()
 
         # Process the rule tree and generate the regex
 
