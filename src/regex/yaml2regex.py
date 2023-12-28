@@ -1,10 +1,10 @@
 "File2regex Yaml implementation module"
 
-from typing import Any, List
+from typing import Any
 
 import yaml
 
-from src.global_definitions import Command, CommandTypes, TimeType
+from src.global_definitions import Command
 from src.logging_config import logger
 from src.regex.directives_processors.tree_builder import (
     CommandBuilderNoParents,
