@@ -26,27 +26,10 @@ class Yaml2Regex(File2Regex):
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
-    @staticmethod
-    def form_top_node(patterns: dict) -> Command:
-        return Command(
-            command_dict=patterns,
-            name="$TOP",
-            times=TimeType(min=1, max=1),
-            children=patterns,
-            command_type=CommandTypes.node,
-            parent=None,
-        )
-
-    @staticmethod
-    def form_top_node_with_dict(patterns: dict) -> dict:
-        return patterns
-
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
 
         patterns = self.loaded_file.get("pattern", None)
-
-        top_node = self.form_top_node_with_dict(patterns)
 
         form_dict = {"$and": patterns}
 
