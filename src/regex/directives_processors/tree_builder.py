@@ -74,7 +74,7 @@ class CommandParentsBuilder:
             self.set_parent(self.command, self.command.children)
 
 
-class CommandsTypeFormer:
+class CommandsTypeBuilder:
     def __init__(self, parent: Command) -> None:
         self.command = parent
 
@@ -105,4 +105,4 @@ class CommandsTypeFormer:
         self.set_type()
         if self.command.children:
             for child in self.command.children:
-                CommandsTypeFormer(child).build()
+                CommandsTypeBuilder(child).build()
