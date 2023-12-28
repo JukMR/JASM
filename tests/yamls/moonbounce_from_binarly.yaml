@@ -8,9 +8,9 @@ pattern:
       - 48h
       - rax
   - movl
-  # - mov:
-  #     - rsp
-  #     - rax
+  - mov:
+      - rsp
+      - rax
 
   # - pushf
   # - push:
