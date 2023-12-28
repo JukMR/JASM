@@ -5,8 +5,9 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, List, Optional, TypeAlias
 
+INSTRUCTION_SEPARATOR = r"\|"
 SKIP_TO_END_OF_OPERAND = "[^,]*,"
-SKIP_TO_END_OF_COMMAND = "[^|]*" + r"\|"
+SKIP_TO_END_OF_COMMAND = "[^|]*" + INSTRUCTION_SEPARATOR
 SKIP_TO_START_OF_OPERAND = "[^|,]*"
 SKIP_TO_ANY_OPERAND_CHARS = "[^|]*"
 
@@ -48,8 +49,8 @@ class Command:
         command_dict: dict_node,
         name: str,
         times: TimeType,
-        children: Optional[dict],
-        command_type: CommandTypes,
+        children: Optional[dict | List["Command"]],
+        command_type: Optional[CommandTypes],
         parent: Optional["Command"],
     ) -> None:
         self.command_dict = command_dict
@@ -60,24 +61,23 @@ class Command:
         self.parent = parent
 
     def get_regex(self, command: "Command") -> str:
-        if command.is_leaf():
+        if command.command_type in [CommandTypes.mnemonic, CommandTypes.operand]:
             return self.process_leaf(command)
         return self.process_branch(command)
 
-    def is_leaf(self) -> bool:
-        if isinstance(self.command_dict, int):
-            return True
-
-        return not self.name.startswith("$")
-
     def process_leaf(self, com: "Command") -> str:
-        return f"{self.form_regex_from_leaf(name=com.name, children=com.children, times=com.times)}"
+        return f"{self.form_regex_from_leaf(com)}"
 
-    def form_regex_from_leaf(self, name: str, children: Optional[dict], times: TimeType) -> str:
+    def form_regex_from_leaf(self, com: "Command") -> str:
+        name = com.name
+        children = com.children
+        times = com.times
         if not children:
-            # Probably is an operand
-            return self.sanitize_operand_name(name)
+            if com.command_type == CommandTypes.operand:
+                # Probably is an operand
+                return self.sanitize_operand_name(name)
 
+        assert (isinstance(children, List)) or (not children), "Children must be a list or None"
         return RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
 
     def sanitize_operand_name(self, name: str) -> str:
@@ -128,7 +128,7 @@ class Command:
 
 
 class RegexWithOperandsCreator:
-    def __init__(self, name: str, operands: dict, times: Optional[TimeType]) -> None:
+    def __init__(self, name: str, operands: Optional[List[Command]], times: Optional[TimeType]) -> None:
         self.name = name
         self.operands = operands
         self.times = times
@@ -142,7 +142,9 @@ class RegexWithOperandsCreator:
         return self._form_regex_without_time(operands_regex=operands_regex)
 
     def get_operand_regex(self) -> Optional[str]:
-        return "".join(operand.get_regex(operand) for operand in self.operands)
+        if not self.operands:
+            return None
+        return "".join(operand.get_regex(operand) for operand in self.operands) + SKIP_TO_END_OF_COMMAND
 
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
@@ -165,12 +167,12 @@ class BranchProcessor:
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
             return f"({''.join(child_regexes)}){times_regex}"
-        return f"{''.join(child_regexes)}"
+        return "".join(child_regexes)
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
             return f"({self.join_instructions(child_regexes)}){times_regex}"
-        return f"({self.join_instructions(child_regexes)})"
+        return self.join_instructions(child_regexes)
 
     @staticmethod
     def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:

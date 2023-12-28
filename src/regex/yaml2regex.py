@@ -1,12 +1,16 @@
 "File2regex Yaml implementation module"
 
-from typing import Any
+from typing import Any, List
 
 import yaml
 
 from src.global_definitions import Command, CommandTypes, TimeType
 from src.logging_config import logger
-from src.regex.directives_processors.tree_builder import CommandBuilder
+from src.regex.directives_processors.tree_builder import (
+    CommandBuilderNoParents,
+    CommandParentsBuilder,
+    CommandsTypeFormer,
+)
 from src.regex.file2regex import File2Regex
 
 
@@ -33,15 +37,24 @@ class Yaml2Regex(File2Regex):
             parent=None,
         )
 
+    @staticmethod
+    def form_top_node_with_dict(patterns: dict) -> dict:
+        return patterns
+
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
 
         patterns = self.loaded_file.get("pattern", None)
 
-        top_node = self.form_top_node(patterns)
+        top_node = self.form_top_node_with_dict(patterns)
+
+        form_dict = {"$and": patterns}
 
         # Create rule tree
-        rule_tree: Command = CommandBuilder(command_dict=patterns, parent=top_node).build()
+        rule_tree: Command = CommandBuilderNoParents(command_dict=form_dict).build()
+
+        CommandParentsBuilder(rule_tree).build()
+        CommandsTypeFormer(rule_tree).build()
 
         # Process the rule tree and generate the regex
 
