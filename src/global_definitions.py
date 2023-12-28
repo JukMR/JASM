@@ -41,6 +41,7 @@ class CommandTypes(Enum):
     node = auto()
     operand = auto()
     mnemonic = auto()
+    times = auto()
 
 
 class Command:
@@ -166,7 +167,7 @@ class BranchProcessor:
     @staticmethod
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"({''.join(child_regexes)}){times_regex}"
+            return f"({SKIP_TO_END_OF_COMMAND.join(child_regexes) + SKIP_TO_END_OF_COMMAND}){times_regex}"
         return SKIP_TO_END_OF_COMMAND.join(child_regexes) + SKIP_TO_END_OF_COMMAND
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
