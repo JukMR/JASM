@@ -1,6 +1,6 @@
 "File2regex Yaml implementation module"
 
-from typing import Any
+from typing import Any, List
 
 import yaml
 
@@ -26,18 +26,23 @@ class Yaml2Regex(File2Regex):
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
+    def generate_rule_tree(self, patterns: List[str]) -> Command:
+        "Generate the rule tree from the patterns"
+        form_dict = {"$and": patterns}
+
+        rule_tree: Command = CommandBuilderNoParents(command_dict=form_dict).build()
+
+        CommandParentsBuilder(rule_tree).build()
+        CommandsTypeBuilder(rule_tree).build()
+
+        return rule_tree
+
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
 
         patterns = self.loaded_file.get("pattern", None)
 
-        form_dict = {"$and": patterns}
-
-        # Create rule tree
-        rule_tree: Command = CommandBuilderNoParents(command_dict=form_dict).build()
-
-        CommandParentsBuilder(rule_tree).build()
-        CommandsTypeBuilder(rule_tree).build()
+        rule_tree = self.generate_rule_tree(patterns=patterns)
 
         # Process the rule tree and generate the regex
 
