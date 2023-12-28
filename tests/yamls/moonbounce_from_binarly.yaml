@@ -12,9 +12,9 @@ pattern:
       - rsp
       - rax
 
-  # - pushf
-  # - push:
-  #     times: 7
+  - pushf
+  - push:
+      times: 7
 
   # - $or:
   #     - $and:

@@ -27,13 +27,17 @@ class CommandBuilderNoParents:
     @staticmethod
     def _get_times(command_dict: dict_node) -> TimeType:
         assert isinstance(command_dict, dict)
-        times = command_dict.get("times", None)
+        command_name = list(command_dict)[0]
+        times_dict = command_dict[command_name]
 
-        if isinstance(times, int):
-            return TimeType(min=times, max=times)
+        if isinstance(times_dict, dict) and "times" in times_dict.keys():
+            times = times_dict.get("times", None)
 
-        if isinstance(times, dict):
-            return TimeType(min=times.get("min", 1), max=times.get("max", 1))
+            if isinstance(times, int):
+                return TimeType(min=times, max=times)
+
+            if isinstance(times, dict):
+                return TimeType(min=times.get("min", 1), max=times.get("max", 1))
 
         return TimeType(min=1, max=1)
 
@@ -81,6 +85,9 @@ class CommandsTypeBuilder:
     def _get_type(self) -> CommandTypes:
         if not getattr(self.command, "name", None):
             raise ValueError("Name is not defined")
+
+        if self.command.name == "times":
+            return CommandTypes.times
 
         if isinstance(self.command.name, int) or self.is_father_is_mnemonic():
             return CommandTypes.operand
