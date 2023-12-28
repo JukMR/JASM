@@ -6,7 +6,7 @@ from enum import Enum, auto
 from typing import Any, Dict, List, Optional, TypeAlias
 
 INSTRUCTION_SEPARATOR = r"\|"
-SKIP_TO_END_OF_OPERAND = "[^,]*,"
+SKIP_TO_END_OF_OPERAND = "[^,|]*,"
 SKIP_TO_END_OF_COMMAND = "[^|]*" + INSTRUCTION_SEPARATOR
 SKIP_TO_START_OF_OPERAND = "[^|,]*"
 SKIP_TO_ANY_OPERAND_CHARS = "[^|]*"
@@ -74,7 +74,7 @@ class Command:
         times = com.times
         if not children:
             if com.command_type == CommandTypes.operand:
-                # Probably is an operand
+                # Is an operand
                 return self.sanitize_operand_name(name)
 
         assert (isinstance(children, List)) or (not children), "Children must be a list or None"
@@ -95,7 +95,7 @@ class Command:
 
             def _process_hex_operand(hex_operand_elem: str) -> str:
                 operand_elem = "0x" + hex_operand_elem.removesuffix("h")
-                return rf"([^,|]*{operand_elem}){SKIP_TO_END_OF_OPERAND}"
+                return operand_elem
 
             # Match hex operand
             return _process_hex_operand(name)
@@ -144,7 +144,7 @@ class RegexWithOperandsCreator:
     def get_operand_regex(self) -> Optional[str]:
         if not self.operands:
             return None
-        return "".join(operand.get_regex(operand) for operand in self.operands) + SKIP_TO_END_OF_COMMAND
+        return SKIP_TO_END_OF_OPERAND.join(operand.get_regex(operand) for operand in self.operands)
 
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
@@ -167,7 +167,7 @@ class BranchProcessor:
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
             return f"({''.join(child_regexes)}){times_regex}"
-        return "".join(child_regexes)
+        return SKIP_TO_END_OF_COMMAND.join(child_regexes) + SKIP_TO_END_OF_COMMAND
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
