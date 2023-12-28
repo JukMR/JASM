@@ -32,7 +32,10 @@ class Yaml2Regex(File2Regex):
 
         rule_tree: Command = CommandBuilderNoParents(command_dict=form_dict).build()
 
+        # Transform parents of all nodes to commands
         CommandParentsBuilder(rule_tree).build()
+
+        # Add the command_type to each node
         CommandsTypeBuilder(rule_tree).build()
 
         return rule_tree
@@ -45,7 +48,6 @@ class Yaml2Regex(File2Regex):
         rule_tree = self.generate_rule_tree(patterns=patterns)
 
         # Process the rule tree and generate the regex
-
         output_regex = rule_tree.get_regex(rule_tree)
 
         # Log regex results
