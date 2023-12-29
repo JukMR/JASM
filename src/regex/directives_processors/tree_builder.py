@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from src.global_definitions import Command, CommandTypes, TimeType, dict_node
 
@@ -11,7 +11,7 @@ class CommandBuilderNoParents:
         # Check if is instance of int or str
         if isinstance(command_dict, (int, str)):
             self.name = command_dict
-            self.times = TimeType(min=1, max=1)
+            self.times = TimeType(min_times=1, max_times=1)
             self.children = None
 
         elif isinstance(command_dict, dict):
@@ -24,20 +24,34 @@ class CommandBuilderNoParents:
         assert isinstance(command_dict, dict)
         return list(command_dict.keys())[0]
 
-    @staticmethod
-    def _get_times(command_dict: dict_node) -> TimeType:
+    def _get_times(self, command_dict: dict_node) -> TimeType:
         assert isinstance(command_dict, dict)
 
-        if isinstance(command_dict, dict) and "times" in command_dict.keys():
-            times = command_dict.get("times")
+        if isinstance(command_dict, dict):
+            times = self._get_time_object(command_dict)
 
             if isinstance(times, int):
-                return TimeType(min=times, max=times)
+                return TimeType(min_times=times, max_times=times)
 
             if isinstance(times, dict):
-                return TimeType(min=times.get("min", 1), max=times.get("max", 1))
+                min_time = times.get("min", 1)
+                max_time = times.get("max", 1)
+                return TimeType(min_times=min_time, max_times=max_time)
 
-        return TimeType(min=1, max=1)
+        return TimeType(min_times=1, max_times=1)
+
+    @staticmethod
+    def _get_time_object(command_dict: dict) -> Optional[dict]:
+        command_name = list(command_dict.keys())[0]
+
+        # Command has no operands, only a time
+        if "times" in command_dict.keys():
+            return command_dict.get("times")
+
+        # Command has operands and a time
+        if "times" in command_dict[command_name]:
+            return command_dict[command_name].get("times")
+        return None
 
     def _get_children(self, name: str, command: dict_node) -> List[Command]:
         assert isinstance(command, dict)

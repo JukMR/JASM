@@ -33,8 +33,8 @@ class InputFileType(Enum):
 
 @dataclass
 class TimeType:
-    min: int
-    max: int
+    min_times: int
+    max_times: int
 
 
 class CommandTypes(Enum):
@@ -208,6 +208,8 @@ class BranchProcessor:
 
 
 def global_get_min_max_regex(times: TimeType) -> Optional[str]:
-    if times.min == 1 and times.max == 1:
+    if times.min_times == 1 and times.max_times == 1:
         return None
-    return f"{{{times.min},{times.max}}}"
+    if times.min_times == times.max_times:
+        return f"{{{times.min_times}}}"
+    return f"{{{times.min_times},{times.max_times}}}"
