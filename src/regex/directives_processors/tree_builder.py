@@ -27,11 +27,9 @@ class CommandBuilderNoParents:
     @staticmethod
     def _get_times(command_dict: dict_node) -> TimeType:
         assert isinstance(command_dict, dict)
-        command_name = list(command_dict)[0]
-        times_dict = command_dict[command_name]
 
-        if isinstance(times_dict, dict) and "times" in times_dict.keys():
-            times = times_dict.get("times", None)
+        if isinstance(command_dict, dict) and "times" in command_dict.keys():
+            times = command_dict.get("times")
 
             if isinstance(times, int):
                 return TimeType(min=times, max=times)
