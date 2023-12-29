@@ -32,16 +32,16 @@ pattern:
         - ecx
         - ecx
 
-  # - inc:
-  #     - ecx
-  # - cmp:
-  #     - 158878h
-  #     - ecx
-  # - jg
-  # - cmpl:
-  #     - cb485541h
-  #     - eax
-  #     - ecx
-  #     - $or:
-  #       - 1
-  #       - 2
+  - inc:
+      - ecx
+  - cmp:
+      - 158878h
+      - ecx
+  - jg
+  - cmpl:
+      - cb485541h
+      - eax
+      - ecx
+      # - $or:
+      #   - 1
+      #   - 2
