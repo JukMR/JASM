@@ -6,6 +6,7 @@ from enum import Enum, auto
 from typing import Any, Dict, List, Optional, TypeAlias
 
 INSTRUCTION_SEPARATOR = r"\|"
+COMMA = ","
 SKIP_TO_END_OF_OPERAND = "[^,|]*,"
 SKIP_TO_END_OF_COMMAND = "[^|]*" + INSTRUCTION_SEPARATOR
 SKIP_TO_START_OF_OPERAND = "[^|,]*"
@@ -22,6 +23,8 @@ IncludeExcludeListType: TypeAlias = Optional[List[str]]
 OperandListType: TypeAlias = Optional[List[Any]]
 OperandType: TypeAlias = Optional[Dict[str, Any]]
 
+dict_node: TypeAlias = Dict[str, Any] | str
+
 
 class InputFileType(Enum):
     binary = auto()
@@ -34,14 +37,10 @@ class TimeType:
     max: int
 
 
-dict_node: TypeAlias = Dict[str, Any] | str
-
-
 class CommandTypes(Enum):
     node = auto()
     operand = auto()
     mnemonic = auto()
-    times = auto()
 
 
 class Command:
@@ -77,8 +76,10 @@ class Command:
             if com.command_type == CommandTypes.operand:
                 # Is an operand
                 return self.sanitize_operand_name(name)
+            # Is a mnemonic with no operands
+            print(f"Found a mnemonic with no operands: {com.name}")
 
-        assert (isinstance(children, List)) or (not children), "Children must be a list or None"
+        assert isinstance(children, List) or (not children), "Children must be a list or None"
         return RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
 
     def sanitize_operand_name(self, name: str) -> str:
@@ -111,14 +112,14 @@ class Command:
 
             case "$and":
                 return BranchProcessor().process_and(child_regexes, times_regex=times_regex)
-            case "$or":
-                return BranchProcessor().process_or(child_regexes, times_regex=times_regex)
-            case "$not":
-                return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
-            case "$perm":
-                return BranchProcessor().process_perm(child_regexes, times_regex=times_regex)
-            case "$no_order":
-                return BranchProcessor().process_no_order(child_regexes, times_regex=times_regex)
+            # case "$or":
+            #     return BranchProcessor().process_or(child_regexes, times_regex=times_regex)
+            # case "$not":
+            #     return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
+            # case "$perm":
+            #     return BranchProcessor().process_perm(child_regexes, times_regex=times_regex)
+            # case "$no_order":
+            #     return BranchProcessor().process_no_order(child_regexes, times_regex=times_regex)
             case _:
                 raise ValueError("Unknown command type")
 
@@ -154,13 +155,13 @@ class RegexWithOperandsCreator:
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         if operands_regex:
-            return f"(({IGNORE_INST_ADDR}{self.name},({operands_regex})){times_regex})"
-        return f"(({IGNORE_INST_ADDR}{self.name},{SKIP_TO_END_OF_OPERAND}){times_regex})"
+            return f"(({IGNORE_INST_ADDR}{self.name}{COMMA}({operands_regex})){times_regex})"
+        return f"(({IGNORE_INST_ADDR}{self.name}{COMMA}{SKIP_TO_END_OF_COMMAND}){times_regex})"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
         if operands_regex:
-            return f"({IGNORE_INST_ADDR}{self.name},({operands_regex}))"
-        return f"({IGNORE_INST_ADDR}{self.name},{SKIP_TO_END_OF_OPERAND})"
+            return f"({IGNORE_INST_ADDR}{self.name}{COMMA}({operands_regex}))"
+        return f"({IGNORE_INST_ADDR}{self.name}{COMMA}{SKIP_TO_END_OF_OPERAND})"
 
 
 class BranchProcessor:
@@ -168,28 +169,28 @@ class BranchProcessor:
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
             return f"({SKIP_TO_END_OF_COMMAND.join(child_regexes) + SKIP_TO_END_OF_COMMAND}){times_regex}"
-        return SKIP_TO_END_OF_COMMAND.join(child_regexes) + SKIP_TO_END_OF_COMMAND
+        return SKIP_TO_END_OF_COMMAND.join(child_regexes)
 
-    def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
-        if times_regex:
-            return f"({self.join_instructions(child_regexes)}){times_regex}"
-        return self.join_instructions(child_regexes)
+    # def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
+    #     if times_regex:
+    #         return f"({self.join_instructions(child_regexes)}){times_regex}"
+    #     return self.join_instructions(child_regexes)
 
-    @staticmethod
-    def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
-        if times_regex:
-            return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND}){times_regex}"
-        return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND})"
+    # @staticmethod
+    # def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
+    #     if times_regex:
+    #         return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND}){times_regex}"
+    #     return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND})"
 
-    @staticmethod
-    def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:
-        # TODO: implement this
-        return ""
+    # @staticmethod
+    # def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:
+    #     # TODO: implement this
+    #     return ""
 
-    @staticmethod
-    def process_no_order(child_regexes: List[str], times_regex: Optional[str]) -> str:
-        # TODO: implement this
-        return ""
+    # @staticmethod
+    # def process_no_order(child_regexes: List[str], times_regex: Optional[str]) -> str:
+    #     # TODO: implement this
+    #     return ""
 
     @staticmethod
     def join_instructions(inst_list: List[str]) -> str:
@@ -197,7 +198,7 @@ class BranchProcessor:
 
         assert inst_list, "There are no instructions to join"
 
-        regex_instructions = [f"{IGNORE_INST_ADDR}{elem}," for elem in inst_list]
+        regex_instructions = [f"{IGNORE_INST_ADDR}{elem}{COMMA}" for elem in inst_list]
 
         joined_by_bar_instructions = "|".join(regex_instructions)
 
