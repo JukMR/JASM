@@ -174,7 +174,7 @@ class BranchProcessor:
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
             return f"({''.join(child_regexes) + SKIP_TO_END_OF_COMMAND}){times_regex}"
-        return "".join(child_regexes)
+        return f"({''.join(child_regexes)})"
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
