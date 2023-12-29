@@ -5,19 +5,22 @@ from src.global_definitions import Command, CommandTypes, TimeType, dict_node
 
 class CommandBuilderNoParents:
     def __init__(self, command_dict: dict_node | str | int) -> None:
-        self.command = command_dict
-        self.parent = None
+        self.command: dict_node | str
+        if isinstance(command_dict, int):
+            self.command = str(command_dict)
+        else:
+            self.command = command_dict
 
         # Check if is instance of int or str
-        if isinstance(command_dict, (int, str)):
-            self.name = command_dict
+        if isinstance(self.command, (int, str)):
+            self.name = self.command
             self.times = TimeType(min_times=1, max_times=1)
             self.children = None
 
-        elif isinstance(command_dict, dict):
-            self.name = self._get_name(command_dict)
-            self.times = self._get_times(command_dict)
-            self.children = self._get_children(name=self.name, command=command_dict)
+        elif isinstance(self.command, dict):
+            self.name = self._get_name(self.command)
+            self.times = self._get_times(self.command)
+            self.children = self._get_children(name=self.name, command=self.command)
 
     @staticmethod
     def _get_name(command_dict: dict_node) -> str:
@@ -27,8 +30,20 @@ class CommandBuilderNoParents:
     def _get_times(self, command_dict: dict_node) -> TimeType:
         assert isinstance(command_dict, dict)
 
+        def _get_time_object(command_dict: dict) -> Optional[dict]:
+            command_name = list(command_dict.keys())[0]
+
+            # Command has no operands, only a time
+            if "times" in command_dict.keys():
+                return command_dict.get("times")
+
+            # Command has operands and a time
+            if "times" in command_dict[command_name]:
+                return command_dict[command_name].get("times")
+            return None
+
         if isinstance(command_dict, dict):
-            times = self._get_time_object(command_dict)
+            times = _get_time_object(command_dict)
 
             if isinstance(times, int):
                 return TimeType(min_times=times, max_times=times)
@@ -41,34 +56,21 @@ class CommandBuilderNoParents:
         return TimeType(min_times=1, max_times=1)
 
     @staticmethod
-    def _get_time_object(command_dict: dict) -> Optional[dict]:
-        command_name = list(command_dict.keys())[0]
-
-        # Command has no operands, only a time
-        if "times" in command_dict.keys():
-            return command_dict.get("times")
-
-        # Command has operands and a time
-        if "times" in command_dict[command_name]:
-            return command_dict[command_name].get("times")
-        return None
-
-    def _get_children(self, name: str, command: dict_node) -> List[Command]:
+    def _get_children(name: str, command: dict_node) -> List[Command]:
         assert isinstance(command, dict)
-        assert isinstance(self.command, dict)
 
         return [CommandBuilderNoParents(com).build() for com in command[name] if com != "times"]
 
     def build(self) -> Command:
         assert isinstance(self.name, (str, int))
-        # assert not isinstance(self.command, int)
+        assert isinstance(self.command, (dict, str))
 
         return Command(
             command_dict=self.command,
-            name=self.name,
+            name=str(self.name),
             times=self.times,
             children=self.children,
-            parent=self.parent,
+            parent=None,
             command_type=None,
         )
 
