@@ -16,21 +16,21 @@ pattern:
   - push:
       times: 7
 
-  # - $or:
-  #     - $and:
-  #         - sub:
-  #           - eax
-  #           - ecx
-  #           times:
-  #             min: 1
-  #             max: 2
-  #         - call:
-  #             - +5
-  #           times: 2
+  - $or:
+      - $and:
+          - sub:
+            - eax
+            - ecx
+            times:
+              min: 1
+              max: 2
+          - call:
+              - +5
+            times: 2
 
-  #     - xor:
-  #       - ecx
-  #       - ecx
+      - xor:
+        - ecx
+        - ecx
 
   # - inc:
   #     - ecx
