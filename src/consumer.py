@@ -57,7 +57,7 @@ class CompleteConsumer(InstructionObserverConsumer):
 
             addr = get_first_addr_from_regex_result(match_result.group(0))
             self._matched_observer.regex_matched(addr)
-        logger.debug("Finalized with instructions: %s", self._all_instructions)
+        logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
         super().finalize()
 
