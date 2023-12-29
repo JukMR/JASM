@@ -45,7 +45,7 @@ class CommandBuilderNoParents:
         assert isinstance(command, dict)
         assert isinstance(self.command, dict)
 
-        return [CommandBuilderNoParents(com).build() for com in command[name]]
+        return [CommandBuilderNoParents(com).build() for com in command[name] if com != "times"]
 
     def build(self) -> Command:
         assert isinstance(self.name, str)
@@ -86,14 +86,15 @@ class CommandsTypeBuilder:
         if not getattr(self.command, "name", None):
             raise ValueError("Name is not defined")
 
-        if self.command.name == "times":
-            return CommandTypes.times
-
+        # Is operand
         if isinstance(self.command.name, int) or self.is_father_is_mnemonic():
             return CommandTypes.operand
 
+        # Is node
         if self.command.name.startswith("$"):
             return CommandTypes.node
+
+        # Else is mnemonic
         return CommandTypes.mnemonic
 
     def set_type(self) -> Command:
