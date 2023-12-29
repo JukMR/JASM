@@ -148,7 +148,10 @@ class RegexWithOperandsCreator:
     def get_operand_regex(self) -> Optional[str]:
         if not self.operands:
             return None
-        return SKIP_TO_END_OF_OPERAND.join(operand.get_regex(operand) for operand in self.operands)
+        return (
+            SKIP_TO_END_OF_OPERAND.join(operand.get_regex(operand) for operand in self.operands)
+            + SKIP_TO_END_OF_OPERAND
+        )
 
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
@@ -162,16 +165,16 @@ class RegexWithOperandsCreator:
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
         if operands_regex:
-            return f"({IGNORE_INST_ADDR}{self.name}{COMMA}{operands_regex}{SKIP_TO_END_OF_OPERAND})"
-        return f"({IGNORE_INST_ADDR}{self.name}{COMMA}{SKIP_TO_END_OF_OPERAND})"
+            return f"({IGNORE_INST_ADDR}{self.name}{COMMA}{operands_regex}{SKIP_TO_END_OF_COMMAND})"
+        return f"({IGNORE_INST_ADDR}{self.name}{COMMA}{SKIP_TO_END_OF_COMMAND})"
 
 
 class BranchProcessor:
     @staticmethod
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"({SKIP_TO_END_OF_COMMAND.join(child_regexes) + SKIP_TO_END_OF_COMMAND}){times_regex}"
-        return SKIP_TO_END_OF_COMMAND.join(child_regexes)
+            return f"({''.join(child_regexes) + SKIP_TO_END_OF_COMMAND}){times_regex}"
+        return "".join(child_regexes)
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
