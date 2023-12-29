@@ -5,11 +5,7 @@ from src.global_definitions import Command, CommandTypes, TimeType, dict_node
 
 class CommandBuilderNoParents:
     def __init__(self, command_dict: dict_node | str | int) -> None:
-        self.command: dict_node | str
-        if isinstance(command_dict, int):
-            self.command = str(command_dict)
-        else:
-            self.command = command_dict
+        self.command = command_dict
 
         # Check if is instance of int or str
         if isinstance(self.command, (int, str)):
@@ -63,11 +59,10 @@ class CommandBuilderNoParents:
 
     def build(self) -> Command:
         assert isinstance(self.name, (str, int))
-        assert isinstance(self.command, (dict, str))
 
         return Command(
             command_dict=self.command,
-            name=str(self.name),
+            name=self.name,
             times=self.times,
             children=self.children,
             parent=None,
@@ -100,13 +95,19 @@ class CommandsTypeBuilder:
         if not getattr(self.command, "name", None):
             raise ValueError("Name is not defined")
 
+        name = self.command.name
+
         # Is operand
-        if isinstance(self.command.name, int) or self.is_father_is_mnemonic():
+
+        if isinstance(name, int):
             return CommandTypes.operand
 
         # Is node
-        if self.command.name.startswith("$"):
+        if name.startswith("$"):
             return CommandTypes.node
+
+        if self.is_father_is_mnemonic():
+            return CommandTypes.operand
 
         # Else is mnemonic
         return CommandTypes.mnemonic

@@ -23,7 +23,7 @@ IncludeExcludeListType: TypeAlias = Optional[List[str]]
 OperandListType: TypeAlias = Optional[List[Any]]
 OperandType: TypeAlias = Optional[Dict[str, Any]]
 
-dict_node: TypeAlias = Dict[str, Any] | str
+dict_node: TypeAlias = Dict[str, Any] | str | int
 
 
 class InputFileType(Enum):
@@ -47,7 +47,7 @@ class Command:
     def __init__(
         self,
         command_dict: dict_node,
-        name: str,
+        name: str | int,
         times: TimeType,
         children: Optional[dict | List["Command"]],
         command_type: Optional[CommandTypes],
