@@ -83,7 +83,9 @@ class Command:
         return RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
 
     def sanitize_operand_name(self, name: str) -> str:
-        def _is_hex_operand(name: str) -> bool:
+        def _is_hex_operand(name: str | int) -> bool:
+            if isinstance(name, int):
+                return False
             if name.endswith("h"):
                 tmp = name.removesuffix("h")
                 try:
@@ -112,8 +114,8 @@ class Command:
 
             case "$and":
                 return BranchProcessor().process_and(child_regexes, times_regex=times_regex)
-            # case "$or":
-            #     return BranchProcessor().process_or(child_regexes, times_regex=times_regex)
+            case "$or":
+                return BranchProcessor().process_or(child_regexes, times_regex=times_regex)
             # case "$not":
             #     return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
             # case "$perm":
@@ -160,7 +162,7 @@ class RegexWithOperandsCreator:
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
         if operands_regex:
-            return f"({IGNORE_INST_ADDR}{self.name}{COMMA}({operands_regex}))"
+            return f"({IGNORE_INST_ADDR}{self.name}{COMMA}{operands_regex}{SKIP_TO_END_OF_OPERAND})"
         return f"({IGNORE_INST_ADDR}{self.name}{COMMA}{SKIP_TO_END_OF_OPERAND})"
 
 
@@ -171,10 +173,10 @@ class BranchProcessor:
             return f"({SKIP_TO_END_OF_COMMAND.join(child_regexes) + SKIP_TO_END_OF_COMMAND}){times_regex}"
         return SKIP_TO_END_OF_COMMAND.join(child_regexes)
 
-    # def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
-    #     if times_regex:
-    #         return f"({self.join_instructions(child_regexes)}){times_regex}"
-    #     return self.join_instructions(child_regexes)
+    def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
+        if times_regex:
+            return f"({self.join_instructions(child_regexes)}){times_regex}"
+        return self.join_instructions(child_regexes)
 
     # @staticmethod
     # def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
@@ -198,7 +200,7 @@ class BranchProcessor:
 
         assert inst_list, "There are no instructions to join"
 
-        regex_instructions = [f"{IGNORE_INST_ADDR}{elem}{COMMA}" for elem in inst_list]
+        regex_instructions = [f"({elem})" for elem in inst_list]
 
         joined_by_bar_instructions = "|".join(regex_instructions)
 

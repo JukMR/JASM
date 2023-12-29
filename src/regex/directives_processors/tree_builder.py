@@ -48,8 +48,8 @@ class CommandBuilderNoParents:
         return [CommandBuilderNoParents(com).build() for com in command[name] if com != "times"]
 
     def build(self) -> Command:
-        assert isinstance(self.name, str)
-        assert not isinstance(self.command, int)
+        assert isinstance(self.name, (str, int))
+        # assert not isinstance(self.command, int)
 
         return Command(
             command_dict=self.command,
