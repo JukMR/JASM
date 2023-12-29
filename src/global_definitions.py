@@ -179,7 +179,7 @@ class BranchProcessor:
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
             return f"({self.join_instructions(child_regexes)}){times_regex}"
-        return self.join_instructions(child_regexes)
+        return f"({self.join_instructions(child_regexes)})"
 
     # @staticmethod
     # def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
