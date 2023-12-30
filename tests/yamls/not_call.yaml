@@ -1,4 +1,9 @@
 ---
 pattern:
+  - call:
+      times: 9
+
   - $not:
       - call
+
+  - endbr64

@@ -4,31 +4,32 @@ pattern:
   - $or:
       - jmp:
           - $or:
-            - rx
-            - rd
-            - rax
+              - rx
+              - rd
+              - rax
 
       - endbr64:
           - $or:
-            - rx
-            - rd
-            - rax
+              - rx
+              - rd
+              - rax
 
       - nopw:
           - $or:
-            - rx
-            - rd
-            - rax
+              - rx
+              - rd
+              - rax
             times: 2
     times:
       min: 1
       max: 1
 
   - $not:
-      - not
-      - mov
-      - call
-      - add
-      - ret
+      - $or:
+          - not
+          - mov
+          - call
+          - add
+          - ret
 
   - push

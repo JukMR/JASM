@@ -1,5 +1,4 @@
 ---
 pattern:
   - call:
-    times: 10
-
+      times: 10
