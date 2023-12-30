@@ -128,6 +128,22 @@
                 "-i",
                 "tests/assembly/moonbounce_malware_short.s"
             ]
+        },
+        {
+            "name": "test and_any_order",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/exclude_list.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
         }
     ]
 }
