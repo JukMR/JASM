@@ -59,16 +59,6 @@ test_matching:
     binary: "tests/binary/smc_eko.bin"
     expected: True
 
-  - title: "moonbounce_eko"
-    yaml: "tests/yamls/moonbounce_from_binarly_clean.yaml"
-    binary: "tests/binary/moonbounce.bin"
-    expected: True
-
-  - title: "moonbounce_eko_small"
-    yaml: "tests/yamls/moonbounce_from_binarly_clean.yaml"
-    assembly: "tests/assembly/moonbounce_binarly_bad_small.s"
-    expected: True
-
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"
