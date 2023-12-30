@@ -1,0 +1,7 @@
+---
+pattern:
+  - call:
+      times: 9
+  - "@any":
+      times: 8
+  - sub
