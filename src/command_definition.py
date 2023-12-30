@@ -4,12 +4,10 @@ from typing import List, Optional
 
 from src.global_definitions import (
     ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
-    COMMA,
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_COMMAND,
-    SKIP_TO_END_OF_OPERAND,
     CommandTypes,
     TimeType,
     dict_node,
@@ -130,10 +128,7 @@ class RegexWithOperandsCreator:
         if not self.operands:
             return None
 
-        return (
-            SKIP_TO_END_OF_OPERAND.join(operand.get_regex(operand) for operand in self.operands)
-            + SKIP_TO_END_OF_OPERAND
-        )
+        return "".join(operand.get_regex(operand) for operand in self.operands) + SKIP_TO_END_OF_COMMAND
 
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
