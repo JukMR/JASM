@@ -28,4 +28,6 @@ A command can be either an instruction or an operand. The rules are as follows:
 
 * `$not`: Matches any command that is not in the list
 
+* `$any_order`: Matches all the commands in the list in any order
+
 * `@any`: Matches any command
