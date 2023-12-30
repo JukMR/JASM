@@ -1,14 +1,14 @@
 ---
 pattern:
-  - call
-  - $any_order:
-      - $not:
-          - not
-      - $not:
-          - mov
-      - $not:
-          - call
+    - call
+    - $any_order:
+          - $not:
+                - not
+          - $not:
+                - mov
+          - $not:
+                - call
       times:
-        min: 1
-        max: 5
-  - ret
+          min: 1
+          max: 5
+    - ret

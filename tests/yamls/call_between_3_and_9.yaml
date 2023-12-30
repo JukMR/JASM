@@ -1,46 +1,33 @@
 ---
 pattern:
   - push:
-      operands:
-        - $any:
-            include_list:
-              - rax
-            exclude_list:
-              - rex
+      - $not:
+          - rex
   - call:
       times:
         min: 3
         max: 9
   - nopw
   - $not:
-      inst:
-        - jump
-        - jq
-      times:
-        min: 1
-        max: 10
-  - $any:
-      include_list:
-        - push
-        - call
-      times:
-        min: 3
-        max: 6
-
-      exclude_list:
-        - sub
+      - $or:
+          - jump
+          - jq
+        times:
+          min: 1
+          max: 10
+  - $or:
+      - push
+      - call
+    times:
+      min: 3
+      max: 6
 
   - $not:
-      inst:
-        - push
+      - push
   - mov:
-      times: 2
-      operands:
-        - $any:
-            include_list:
-              - rsi
-              - rbp
-              - fs:0x28
-              - rax
-            exclude_list:
-              - rsd
+      - $or:
+          - rsi
+          - rbp
+          - fs:0x28
+          - rax
+    times: 2

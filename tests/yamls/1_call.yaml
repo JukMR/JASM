@@ -1,5 +1,4 @@
 ---
 pattern:
   - call:
-    - $or:
       - "0x1dc6b"
