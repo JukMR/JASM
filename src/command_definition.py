@@ -16,6 +16,14 @@ from src.global_definitions import (
 )
 
 
+def get_command_name(name: str | int) -> str | int:
+    if name == "@any":
+        name = "[^,]*"
+    if ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS:
+        return f"{IGNORE_NAME_PREFIX}{name}{IGNORE_NAME_SUFFIX}"
+    return name
+
+
 class Command:
     def __init__(
         self,
@@ -78,13 +86,8 @@ class Command:
             assert isinstance(name, str), "Operand name must be a string"
             return _process_hex_operand(name)
 
-        operand_name: str | int
-        if ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS:
-            operand_name = f"{IGNORE_NAME_PREFIX}{name}{IGNORE_NAME_SUFFIX}"
-        else:
-            operand_name = name
-
-        return operand_name
+        command_name = get_command_name(name)
+        return command_name
 
     def process_branch(self, command: "Command") -> str:
         child_regexes = self.process_children(command)
@@ -139,23 +142,14 @@ class RegexWithOperandsCreator:
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         # Add prefix and suffix to name to allow matching only substring
-        command_name: str | int
-
-        if ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS:
-            command_name = f"{IGNORE_NAME_PREFIX}{self.name}{IGNORE_NAME_SUFFIX}"
-        else:
-            command_name = self.name
+        command_name = get_command_name(self.name)
 
         if operands_regex:
             return f"(({IGNORE_INST_ADDR}{command_name}({operands_regex}){SKIP_TO_END_OF_COMMAND}){times_regex})"
         return f"(({IGNORE_INST_ADDR}{command_name}{SKIP_TO_END_OF_COMMAND}){times_regex})"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
-        command_name: str | int
-        if ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS:
-            command_name = f"{IGNORE_NAME_PREFIX}{self.name}{IGNORE_NAME_SUFFIX}"
-        else:
-            command_name = self.name
+        command_name = get_command_name(self.name)
 
         if operands_regex:
             return f"({IGNORE_INST_ADDR}{command_name}{operands_regex}{SKIP_TO_END_OF_COMMAND})"
