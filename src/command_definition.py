@@ -1,7 +1,6 @@
+"Command definition file"
+
 from itertools import permutations
-
-"Global definition file"
-
 from typing import List, Optional
 
 from src.global_definitions import (
