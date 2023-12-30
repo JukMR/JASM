@@ -89,6 +89,7 @@ class CommandParentsBuilder:
 
 class CommandsTypeBuilder:
     def __init__(self, parent: Command) -> None:
+        assert isinstance(parent, Command)
         self.command = parent
 
     def _get_type(self) -> CommandTypes:
@@ -109,6 +110,9 @@ class CommandsTypeBuilder:
         if self.is_father_is_mnemonic():
             return CommandTypes.operand
 
+        if self.any_ancestor_is_mnemonic():
+            return CommandTypes.operand
+
         # Else is mnemonic
         return CommandTypes.mnemonic
 
@@ -117,12 +121,21 @@ class CommandsTypeBuilder:
         return self.command
 
     def is_father_is_mnemonic(self) -> bool:
-        # Check if the parent is a mnemonic
-        assert isinstance(self.command, Command)
-
+        "Check if the parent is a mnemonic"
         if not self.command.parent:
             return False
         return self.command.parent.command_type == CommandTypes.mnemonic
+
+    def any_ancestor_is_mnemonic(self) -> bool:
+        "Check if any ancestor is a mnemonic"
+
+        current_node = self.command.parent
+
+        while current_node:
+            if current_node.command_type == CommandTypes.mnemonic:
+                return True
+            current_node = current_node.parent
+        return False
 
     def build(self) -> None:
         self.set_type()
