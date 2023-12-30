@@ -39,6 +39,11 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     expected: True
 
+  - title: "@any macro"
+    yaml: "tests/yamls/any_macro.yaml"
+    assembly: "tests/assembly/binary_data.s"
+    expected: True
+
   - title: "moonbounce_regex_matcher_short"
     yaml: "tests/yamls/moonbounce_regex_matcher.yaml"
     assembly: "tests/assembly/moonbounce_malware_short.s"
