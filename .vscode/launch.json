@@ -48,6 +48,70 @@
                 "-i",
                 "tests/assembly/binary_data.s"
             ]
+        },
+        {
+            "name": "exclude list",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/exclude_list.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
+        },
+        {
+            "name": "10 calls",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/10_calls.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
+        },
+        {
+            "name": "1 call",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/1_call.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
+        },
+        {
+            "name": "call between 3 and 9 ",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/call_between_3_and_9.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
         }
     ]
 }
