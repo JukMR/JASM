@@ -6,7 +6,6 @@ from enum import Enum, auto
 from typing import Any, Dict, List, Optional, TypeAlias
 
 INSTRUCTION_SEPARATOR = r"\|"
-COMMA = ","
 SKIP_TO_END_OF_OPERAND = "[^,|]*,"
 SKIP_TO_END_OF_COMMAND = "[^|]*" + INSTRUCTION_SEPARATOR
 SKIP_TO_START_OF_OPERAND = "[^|,]*"

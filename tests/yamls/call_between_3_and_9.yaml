@@ -27,7 +27,8 @@ pattern:
   - mov:
       - $or:
           - rsi
-          - rbp
           - fs:0x28
+      - $or:
+          - rbp
           - rax
     times: 2
