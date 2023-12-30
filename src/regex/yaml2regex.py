@@ -4,7 +4,7 @@ from typing import Any, List
 
 import yaml
 
-from src.global_definitions import Command
+from src.command_definition import Command
 from src.logging_config import logger
 from src.regex.directives_processors.tree_builder import (
     CommandBuilderNoParents,
