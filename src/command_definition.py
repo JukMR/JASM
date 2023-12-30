@@ -128,7 +128,7 @@ class RegexWithOperandsCreator:
         if not self.operands:
             return None
 
-        return "".join(operand.get_regex(operand) for operand in self.operands) + SKIP_TO_END_OF_COMMAND
+        return "".join(operand.get_regex(operand) for operand in self.operands)
 
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
@@ -145,7 +145,7 @@ class RegexWithOperandsCreator:
             command_name = self.name
 
         if operands_regex:
-            return f"(({IGNORE_INST_ADDR}{command_name}({operands_regex})){times_regex})"
+            return f"(({IGNORE_INST_ADDR}{command_name}({operands_regex}){SKIP_TO_END_OF_COMMAND}){times_regex})"
         return f"(({IGNORE_INST_ADDR}{command_name}{SKIP_TO_END_OF_COMMAND}){times_regex})"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
