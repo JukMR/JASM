@@ -1,6 +1,7 @@
 from typing import List, Optional
 
-from src.global_definitions import Command, CommandTypes, TimeType, dict_node
+from src.command_definition import Command
+from src.global_definitions import CommandTypes, TimeType, dict_node
 
 
 class CommandBuilderNoParents:

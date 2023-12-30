@@ -1,35 +1,36 @@
 ---
 pattern:
-  - call
-  - $or:
-      - jmp:
+    - call
+    - $or:
+          - jmp:
+                - $or:
+                      - rx
+                      - rd
+                      - rax
+
+          - endbr64:
+                - $or:
+                      - rx
+                      - rd
+                      - rax
+
+          - nopw:
+                - $or:
+                      - rx
+                      - rd
+                      - rax
+                  times: 2
+      times:
+          min: 1
+          max: 1
+    - $not:
           - $or:
-              - rx
-              - rd
-              - rax
+                - not
+                - mov
+                - call
+                - add
+                - ret
 
-      - endbr64:
-          - $or:
-              - rx
-              - rd
-              - rax
-
-      - nopw:
-          - $or:
-              - rx
-              - rd
-              - rax
-            times: 2
-    times:
-      min: 1
-      max: 1
-
-  - $not:
-      - $or:
-          - not
-          - mov
-          - call
-          - add
-          - ret
-
-  - push
+    - push:
+          times: 6
+    - sub
