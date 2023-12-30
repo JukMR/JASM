@@ -1,12 +1,5 @@
 ---
 pattern:
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
+  - call:
+    times: 10
+

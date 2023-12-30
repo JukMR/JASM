@@ -1,15 +1,4 @@
 ---
 pattern:
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
-  - call
   - $not:
-      inst:
-        - call
-  - endbr64
+      - call

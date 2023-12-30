@@ -46,6 +46,7 @@ class CompleteConsumer(InstructionObserverConsumer):
         # Add stringified instructions to the observer to test them in test_parsing
 
         self._matched_observer.stringified_instructions = self._all_instructions
+        logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
         match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
 
@@ -57,7 +58,6 @@ class CompleteConsumer(InstructionObserverConsumer):
 
             addr = get_first_addr_from_regex_result(match_result.group(0))
             self._matched_observer.regex_matched(addr)
-        logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
         super().finalize()
 
