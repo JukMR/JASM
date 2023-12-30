@@ -5,5 +5,5 @@ plugins:
 
 pattern:
   - movb:
-      - "[^,]*" # Implement this with correct macros
+      - "@any" # Implement this with correct macros
       - rip
