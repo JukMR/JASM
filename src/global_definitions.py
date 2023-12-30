@@ -120,8 +120,8 @@ class Command:
                 return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
             # case "$perm":
             #     return BranchProcessor().process_perm(child_regexes, times_regex=times_regex)
-            # case "$no_order":
-            #     return BranchProcessor().process_no_order(child_regexes, times_regex=times_regex)
+            # case "$any_order":
+            #     return BranchProcessor().process_any_order(child_regexes, times_regex=times_regex)
             case _:
                 raise ValueError("Unknown command type")
 
@@ -193,7 +193,7 @@ class BranchProcessor:
     #     return ""
 
     # @staticmethod
-    # def process_no_order(child_regexes: List[str], times_regex: Optional[str]) -> str:
+    # def process_any_order(child_regexes: List[str], times_regex: Optional[str]) -> str:
     #     # TODO: implement this
     #     return ""
 
