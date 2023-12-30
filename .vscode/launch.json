@@ -32,6 +32,22 @@
                 "-i",
                 "tests/assembly/binary_data.s"
             ]
+        },
+        {
+            "name": "not test",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/not_call.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
         }
     ]
 }

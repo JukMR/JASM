@@ -116,8 +116,8 @@ class Command:
                 return BranchProcessor().process_and(child_regexes, times_regex=times_regex)
             case "$or":
                 return BranchProcessor().process_or(child_regexes, times_regex=times_regex)
-            # case "$not":
-            #     return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
+            case "$not":
+                return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
             # case "$perm":
             #     return BranchProcessor().process_perm(child_regexes, times_regex=times_regex)
             # case "$no_order":
@@ -181,11 +181,11 @@ class BranchProcessor:
             return f"({self.join_instructions(child_regexes)}){times_regex}"
         return f"({self.join_instructions(child_regexes)})"
 
-    # @staticmethod
-    # def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
-    #     if times_regex:
-    #         return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND}){times_regex}"
-    #     return f"((?!{child_regexes}){SKIP_TO_END_OF_COMMAND})"
+    @staticmethod
+    def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
+        if times_regex:
+            return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_COMMAND}){times_regex}"
+        return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_COMMAND})"
 
     # @staticmethod
     # def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:

@@ -30,6 +30,7 @@ class Yaml2Regex(File2Regex):
         "Generate the rule tree from the patterns"
         form_dict = {"$and": patterns}
 
+        # Generate the rule tree with no parents and type from root parent node downwards
         rule_tree: Command = CommandBuilderNoParents(command_dict=form_dict).build()
 
         # Transform parents of all nodes to commands
