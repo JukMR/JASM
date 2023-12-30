@@ -112,6 +112,22 @@
                 "-i",
                 "tests/assembly/binary_data.s"
             ]
+        },
+        {
+            "name": "moonbounce regex matcher simple",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/moonbounce_regex_matcher.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/moonbounce_malware_short.s"
+            ]
         }
     ]
 }
