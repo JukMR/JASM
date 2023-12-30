@@ -17,3 +17,15 @@ python3 run_regex.py -p <pattern.yaml> -b <binary_file.bin>
 To run test you can, run `run_tests.sh` while inside `poetry shell`.
 
 Another options is to simply call `pytest`
+
+## Rules manual
+
+A command can be either an instruction or an operand. The rules are as follows:
+
+* `$and`: Matches all the command in the list
+
+* `$or`: Matches any of the command in the list
+
+* `$not`: Matches any command that is not in the list
+
+* `@any`: Matches any command
