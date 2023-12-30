@@ -5,6 +5,5 @@ plugins:
 
 pattern:
   - movb:
-      operands:
-        - $any
-        - rip
+      - "[^,]*" # Implement this with correct macros
+      - rip
