@@ -1,3 +1,5 @@
+from itertools import permutations
+
 "Global definition file"
 
 from typing import List, Optional
@@ -99,8 +101,8 @@ class Command:
                 return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
             # case "$perm":
             #     return BranchProcessor().process_perm(child_regexes, times_regex=times_regex)
-            # case "$any_order":
-            #     return BranchProcessor().process_any_order(child_regexes, times_regex=times_regex)
+            case "$and_any_order":
+                return BranchProcessor().process_and_any_order(child_regexes, times_regex=times_regex)
             case _:
                 raise ValueError("Unknown command type")
 
@@ -183,10 +185,19 @@ class BranchProcessor:
     #     # TODO: implement this
     #     return ""
 
-    # @staticmethod
-    # def process_any_order(child_regexes: List[str], times_regex: Optional[str]) -> str:
-    #     # TODO: implement this
-    #     return ""
+    def process_and_any_order(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
+        full_all_against_all_regex: List[List[str]] = self.generate_any_order_permutation(child_regexes)
+
+        regex_list: List[str] = []
+        for list_regex in full_all_against_all_regex:
+            regex_list.append(self.process_and(child_regexes=list_regex, times_regex=None))
+
+        return self.process_or(regex_list, times_regex)
+
+    @staticmethod
+    def generate_any_order_permutation(child_regexes: List[str]) -> List[List[str]]:
+        # Generate all the permutation of this list
+        return [list(permutation) for permutation in permutations(child_regexes)]
 
     @staticmethod
     def join_instructions(inst_list: List[str]) -> str:

@@ -1,14 +1,9 @@
 ---
 pattern:
-    - call
-    - $any_order:
-          - $not:
-                - not
-          - $not:
-                - mov
-          - $not:
-                - call
-      times:
-          min: 1
-          max: 5
-    - ret
+  - call
+  - $and_any_order:
+      - push
+      - add
+      - ret
+      - call
+  - call
