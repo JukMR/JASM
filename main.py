@@ -4,7 +4,7 @@ from argparse import Namespace
 from parse_arguments import parse_args_from_console
 from src.global_definitions import InputFileType
 from src.logging_config import configure_logger
-from src.match import perform_matching
+from src.match import MasterOfPuppets
 from src.measure_performance import measure_performance
 
 
@@ -33,7 +33,9 @@ def main() -> None:
 
     print("Starting execution... ")
     input_file_type = decide_assembly_or_binary(args=args)
-    perform_matching(pattern_pathstr=args.pattern, input_file=args.input_file, input_file_type=input_file_type)
+    MasterOfPuppets().perform_matching(
+        pattern_pathstr=args.pattern, input_file=args.input_file, input_file_type=input_file_type
+    )
 
 
 def decide_assembly_or_binary(args: Namespace) -> InputFileType:
