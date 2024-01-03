@@ -5,13 +5,13 @@ from conftest import load_test_configs
 
 from src.global_definitions import InputFileType
 from src.logging_config import logger
-from src.match import do_matching_and_get_result
+from src.match import MasterOfPuppets
 
 
 def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_file_type: InputFileType) -> int:
     """Parse file and return number of lines"""
 
-    all_instructions = do_matching_and_get_result(
+    all_instructions = MasterOfPuppets._do_matching_and_get_result(
         regex_rule="", input_file=input_file, input_file_type=input_file_type, return_bool_result=False
     )
 

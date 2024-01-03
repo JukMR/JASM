@@ -3,14 +3,16 @@ from conftest import load_test_configs
 
 from src.global_definitions import InputFileType
 from src.logging_config import logger
-from src.match import perform_matching
+from src.match import MasterOfPuppets
 
 
 def run_match_test(
     pattern_pathstr: str, input_file: str, input_file_type: InputFileType, expected_result: bool
 ) -> None:
     """Run a single match test."""
-    result = perform_matching(pattern_pathstr=pattern_pathstr, input_file=input_file, input_file_type=input_file_type)
+    result = MasterOfPuppets().perform_matching(
+        pattern_pathstr=pattern_pathstr, input_file=input_file, input_file_type=input_file_type
+    )
     assert result == expected_result
 
 
