@@ -18,7 +18,7 @@ activate ParseArgs
 ParseArgs -> StartConfig: args
 deactivate ParseArgs
 
-StartConfig -> ConfigLogger: configure_logger(args)
+StartConfig -> ConfigLogger: args
 activate ConfigLogger
 ConfigLogger -> StartConfig: Logger configured
 deactivate ConfigLogger
@@ -26,12 +26,12 @@ deactivate ConfigLogger
 StartConfig -> Main: args
 deactivate StartConfig
 
-Main -> DecideType: decide_assembly_or_binary(args)
+Main -> DecideType: args
 activate DecideType
 DecideType -> Main: input_file_type
 deactivate DecideType
 
-Main -> PerformMatching: perform_matching(args.pattern, args.input_file, input_file_type)
+Main -> PerformMatching: args.pattern, args.input_file, input_file_type
 activate PerformMatching
 PerformMatching -> Main: Matching result
 deactivate PerformMatching
