@@ -33,4 +33,12 @@ ProducerBuilder -> Producer : New Instance
 
 MasterOfPuppets -> Consumer : add_observer(Observer)
 MasterOfPuppets -> Producer : process_file()
+
+alt return_bool_result == True:
+    MasterOfPuppets -> MatchedObserver : get_matched()
+    MatchedObserver -> MasterOfPuppets: matched
+else return_bool_result == False:
+    MasterOfPuppets -> MatchedObserver : get_stringify_instructions()
+    MatchedObserver -> MasterOfPuppets: stringified_instructions
+end
 @enduml
