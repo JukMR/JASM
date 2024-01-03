@@ -74,6 +74,9 @@ deactivate CreateProducer
 DoMatching -> Producer: process_file(input_file, Consumer)
 activate Producer
 Producer -> Producer: parser.parse()
+loop for insn in assembly_file
+    Producer -> Consumer: consume()
+end
 Producer -> Consumer: finalize()
 deactivate Producer
 Consumer -> MatchedObs: finalize()
