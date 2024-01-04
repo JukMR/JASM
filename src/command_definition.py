@@ -33,6 +33,16 @@ class Command:
         command_type: Optional[CommandTypes],
         parent: Optional["Command"],
     ) -> None:
+        """
+        Initialize a Command object.
+
+        :param command_dict: A dictionary representing the command structure.
+        :param name: The name of the command.
+        :param times: Repeating information for the command execution.
+        :param children: Sub-commands or child commands.
+        :param command_type: The type of the command (mnemonic, operand, etc.).
+        :param parent: The parent command, if any.
+        """
         self.command_dict = command_dict
         self.name = name
         self.times = times
@@ -46,16 +56,13 @@ class Command:
         return self.process_branch(command)
 
     def process_leaf(self, com: "Command") -> str:
-        return f"{self.form_regex_from_leaf(com)}"
-
-    def form_regex_from_leaf(self, com: "Command") -> str | int:
         name = com.name
         children = com.children
         times = com.times
         if not children:
             if com.command_type == CommandTypes.operand:
                 # Is an operand
-                return self.sanitize_operand_name(name)
+                return str(self.sanitize_operand_name(name))
             # Is a mnemonic with no operands
             print(f"Found a mnemonic with no operands: {com.name}")
 
@@ -91,22 +98,7 @@ class Command:
     def process_branch(self, command: "Command") -> str:
         child_regexes = self.process_children(command)
         times_regex: Optional[str] = global_get_min_max_regex(times=command.times)
-
-        match command.name:
-            # Match case where command.name is and or pattern
-
-            case "$and":
-                return BranchProcessor().process_and(child_regexes, times_regex=times_regex)
-            case "$or":
-                return BranchProcessor().process_or(child_regexes, times_regex=times_regex)
-            case "$not":
-                return BranchProcessor().process_not(child_regexes, times_regex=times_regex)
-            # case "$perm":
-            #     return BranchProcessor().process_perm(child_regexes, times_regex=times_regex)
-            case "$and_any_order":
-                return BranchProcessor().process_and_any_order(child_regexes, times_regex=times_regex)
-            case _:
-                raise ValueError("Unknown command type")
+        return BranchProcessor().process_command(command.name, child_regexes, times_regex)
 
     def process_children(self, command: "Command") -> List[str]:
         if command.children:
@@ -156,6 +148,31 @@ class RegexWithOperandsCreator:
 
 
 class BranchProcessor:
+    def process_command(self, command_name: str | int, child_regexes: List[str], times_regex: Optional[str]) -> str:
+        """
+        Process a command based on its name and child regexes.
+
+        :param command_name: The name of the command.
+        :param child_regexes: List of regexes from child commands.
+        :param times_regex: The regex string for repeating the match.
+        :return: The processed command regex.
+        """
+        match command_name:
+            # Match case where command.name is and or pattern
+
+            case "$and":
+                return self.process_and(child_regexes, times_regex=times_regex)
+            case "$or":
+                return self.process_or(child_regexes, times_regex=times_regex)
+            case "$not":
+                return self.process_not(child_regexes, times_regex=times_regex)
+            # case "$perm":
+            #     return self.process_perm(child_regexes, times_regex=times_regex)
+            case "$and_any_order":
+                return self.process_and_any_order(child_regexes, times_regex=times_regex)
+            case _:
+                raise ValueError("Unknown command type")
+
     @staticmethod
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
