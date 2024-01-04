@@ -15,11 +15,16 @@ from src.global_definitions import (
 )
 
 
-def get_command_name(name: str | int) -> str | int:
+def get_command_name(
+    name: str | int,
+    allow_matching_substrings: bool = ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
+    name_prefix: str = IGNORE_NAME_PREFIX,
+    name_suffix: str = IGNORE_NAME_SUFFIX,
+) -> str | int:
     if name == "@any":
         name = "[^,]*"
-    if ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS:
-        return f"{IGNORE_NAME_PREFIX}{name}{IGNORE_NAME_SUFFIX}"
+    if allow_matching_substrings:
+        return f"{name_prefix}{name}{name_suffix}"
     return name
 
 
