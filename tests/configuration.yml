@@ -78,11 +78,11 @@ test_parsing_lines:
     number_of_lines: 10957
 
   - title: "ls_asm.s"
-    assembly: "tests/../files_examples/assembly_examples/ls_asm.s"
+    assembly: "tests/assembly/ls_asm.s"
     number_of_lines: 19184
 
   - title: "moonbounce_malware.s"
-    assembly: "tests/../files_examples/assembly_examples/moonbounce_malware.s"
+    assembly: "tests/assembly/moonbounce_malware.s"
     number_of_lines: 107999
 
   - title: "moonbounce_malware_small_parsing_test.s"
