@@ -6,7 +6,7 @@ import yaml
 
 from src.command_definition import Command
 from src.logging_config import logger
-from src.regex.directives_processors.tree_builder import (
+from src.regex.tree_generators.tree_builder import (
     CommandBuilderNoParents,
     CommandParentsBuilder,
     CommandsTypeBuilder,
