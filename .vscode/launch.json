@@ -144,6 +144,22 @@
                 "-i",
                 "tests/assembly/binary_data.s"
             ]
-        }
+        },
+        {
+            "name": "include_include_macros",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/include_and_include_list_with_macros.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/binary_data.s"
+            ]
+        },
     ]
 }
