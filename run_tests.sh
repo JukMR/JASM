@@ -1,9 +1,19 @@
 #!/bin/sh
 
-# pytest -k "$1" -v tests/tests.py
+set -eu
+# Check if there is at least one argument
+if [ $# -eq 0 ]; then
+    echo "No arguments provided"
+    ARG_1=""
+else
+    ARG_1="-k $1"
+    shift
+fi
+
+# pytest -k "$ARG_1" -v tests/tests.py
 
 # Run integral tests
-pytest -n 3 -k "$1" -v
+pytest -n 3 -v "$ARG_1" "$@"
 
 # Run unit tests
-# pytest -n 3 -k "$1" -v tests/unit_tests.py
+# pytest -n 3 -k "$ARG_1" -v tests/unit_tests.py
