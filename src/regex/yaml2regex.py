@@ -1,7 +1,6 @@
 "File2regex Yaml implementation module"
 
 from typing import Any, List
-
 import yaml
 
 from src.command_definition import Command
@@ -74,7 +73,6 @@ class MacroReplacer:
     def resolve_macros(self, macros: dict, pattern: dict | list) -> dict | list:
         for macro in macros:
             pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
-
         return pattern
 
     def replace_macro_in_pattern(self, macro: dict, pattern: dict | list) -> dict | list:
@@ -89,8 +87,8 @@ class MacroReplacer:
 
         if isinstance(pattern, str):
             if pattern == macro.get("name"):
-                macro_pattern = macro.get("pattern")[0]
-                return macro_pattern
+                macro_value = self.get_macro_pattern(macro=macro)
+                return macro_value
         return pattern
 
     def replace_macro_in_pattern_dict(self, macro: dict, pattern: dict) -> dict:
@@ -103,8 +101,7 @@ class MacroReplacer:
         macro_name = macro.get("name")
         for key, value in pattern.items():
             if key == macro_name:
-                pattern = self.replace_macro_in_pattern_dict_for_key(macro=macro, pattern=pattern)
-                continue
+                return self.replace_macro_in_pattern_dict_for_key(macro=macro, pattern=pattern)
 
             if isinstance(value, dict):
                 pattern[key] = self.replace_macro_in_pattern_dict(macro=macro, pattern=value)
@@ -116,29 +113,37 @@ class MacroReplacer:
 
             if isinstance(value, str):
                 if key == macro_name:
-                    macro_value = macro.get("pattern")[0]
+                    macro_value = self.get_macro_pattern(macro=macro)
                     pattern[key] = macro_value
                     continue
 
         return pattern
 
     @staticmethod
-    def replace_macro_in_pattern_dict_for_key(macro: dict, pattern: dict) -> dict:
-        macro_value_list = macro.get("pattern")
-        assert isinstance(macro_value_list, list)
-        macro_value = macro_value_list[0]
+    def get_macro_pattern(macro: dict) -> dict | list:
+        _macro_value_list = macro.get("pattern")
+        assert isinstance(_macro_value_list, list)
+        macro_value = _macro_value_list[0]
+        # Return a copy of the macro value so that the original macro is not modified
+        return macro_value.copy()
+
+    def replace_macro_in_pattern_dict_for_key(self, macro: dict, pattern: dict) -> dict:
+        macro_value = self.get_macro_pattern(macro=macro)
+
         # Replace pattern with macro value
 
+        assert isinstance(macro_value, dict)
         times = pattern.get("times")
-        pattern = macro_value
+
+        tmp_pattern = macro_value
         if times:
-            pattern["times"] = times
-        return pattern
+            tmp_pattern["times"] = times
+        return tmp_pattern
 
     def replace_macro_in_pattern_in_list(self, macro: dict, pattern: list) -> list:
         """Replace the macro in the pattern
 
-        This algoritm will replace all the occurrences of the macro in the pattern using a BFS approach.
+        This algoritm will replace all the occurrences of the macro in the pattern
         """
         # Replace the macro in the pattern
         return [self.replace_macro_in_pattern(macro=macro, pattern=elem) for elem in pattern]
