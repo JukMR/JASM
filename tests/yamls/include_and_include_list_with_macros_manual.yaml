@@ -1,0 +1,44 @@
+---
+macros:
+  - name: $anyreg_rx_rd_rax
+    pattern:
+      - $or:
+          - rx
+          - rd
+          - rax
+
+pattern:
+  # - call
+  - $or:
+      # - jmp:
+      #     - $or:
+      #         - rx
+      #         - rd
+      #         - rax
+
+      - endbr64:
+          - $or:
+              - rx
+              - rd
+              - rax
+
+      - nopw:
+          - $or:
+              - rx
+              - rd
+              - rax
+            times: 2
+  #   times:
+  #     min: 1
+  #     max: 1
+  # - $not:
+  #     - $or:
+  #         - not
+  #         - mov
+  #         - call
+  #         - add
+  #         - ret
+
+  # - push:
+  #     times: 6
+  # - sub

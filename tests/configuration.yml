@@ -24,6 +24,11 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     expected: True
 
+  - title: "include_and_include_list_with_macros"
+    yaml: "tests/yamls/include_and_include_list_with_macros.yaml"
+    assembly: "tests/assembly/binary_data.s"
+    expected: True
+
   - title: "call_between_3_and_9"
     yaml: "tests/yamls/call_between_3_and_9.yaml"
     assembly: "tests/assembly/binary_data.s"

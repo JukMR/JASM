@@ -26,7 +26,7 @@ class Yaml2Regex(File2Regex):
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
-    def generate_rule_tree(self, patterns: List[str]) -> Command:
+    def _generate_rule_tree(self, patterns: List[str]) -> Command:
         "Generate the rule tree from the patterns"
         form_dict = {"$and": patterns}
 
@@ -44,9 +44,9 @@ class Yaml2Regex(File2Regex):
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
 
-        patterns = self.loaded_file.get("pattern", None)
+        patterns = self.get_pattern()
 
-        rule_tree = self.generate_rule_tree(patterns=patterns)
+        rule_tree = self._generate_rule_tree(patterns=patterns)
 
         # Process the rule tree and generate the regex
         output_regex = rule_tree.get_regex(rule_tree)
@@ -55,3 +55,90 @@ class Yaml2Regex(File2Regex):
         logger.info("The output regex is:\n%s\n", output_regex)
 
         return output_regex
+
+    def get_pattern(self) -> dict:
+        # Load pattern
+        patterns = self.loaded_file.get("pattern")
+
+        # Check if there are any macros setted
+        macros = self.loaded_file.get("macros")
+
+        if macros:
+            # Replace macros with their values
+            return MacroReplacer().resolve_macros(macros=macros, pattern=patterns)
+
+        return patterns
+
+
+class MacroReplacer:
+    def resolve_macros(self, macros: dict, pattern: dict | list) -> dict | list:
+        for macro in macros:
+            pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
+
+        return pattern
+
+    def replace_macro_in_pattern(self, macro: dict, pattern: dict | list) -> dict | list:
+        """Replace the macro in the pattern
+
+        This algoritm will replace all the occurrences of the macro in the pattern using a BFS approach.
+        """
+        if isinstance(pattern, dict):
+            return self.replace_macro_in_pattern_dict(macro=macro, pattern=pattern)
+        if isinstance(pattern, list):
+            return self.replace_macro_in_pattern_in_list(macro=macro, pattern=pattern)
+
+        if isinstance(pattern, str):
+            if pattern == macro.get("name"):
+                macro_pattern = macro.get("pattern")[0]
+                return macro_pattern
+        return pattern
+
+    def replace_macro_in_pattern_dict(self, macro: dict, pattern: dict) -> dict:
+        """Replace the macro in the pattern
+
+        This algoritm will replace all the occurrences of the macro in the pattern using a BFS approach.
+        """
+
+        # Replace the macro in the pattern
+        macro_name = macro.get("name")
+        for key, value in pattern.items():
+            if key == macro_name:
+                pattern = self.replace_macro_in_pattern_dict_for_key(macro=macro, pattern=pattern)
+                continue
+
+            if isinstance(value, dict):
+                pattern[key] = self.replace_macro_in_pattern_dict(macro=macro, pattern=value)
+                continue
+
+            if isinstance(value, list):
+                pattern[key] = self.replace_macro_in_pattern_in_list(macro=macro, pattern=value)
+                continue
+
+            if isinstance(value, str):
+                if key == macro_name:
+                    macro_value = macro.get("pattern")[0]
+                    pattern[key] = macro_value
+                    continue
+
+        return pattern
+
+    @staticmethod
+    def replace_macro_in_pattern_dict_for_key(macro: dict, pattern: dict) -> dict:
+        macro_value_list = macro.get("pattern")
+        assert isinstance(macro_value_list, list)
+        macro_value = macro_value_list[0]
+        # Replace pattern with macro value
+
+        times = pattern.get("times")
+        pattern = macro_value
+        if times:
+            pattern["times"] = times
+        return pattern
+
+    def replace_macro_in_pattern_in_list(self, macro: dict, pattern: list) -> list:
+        """Replace the macro in the pattern
+
+        This algoritm will replace all the occurrences of the macro in the pattern using a BFS approach.
+        """
+        # Replace the macro in the pattern
+        return [self.replace_macro_in_pattern(macro=macro, pattern=elem) for elem in pattern]
