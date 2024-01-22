@@ -51,7 +51,7 @@ class Yaml2Regex(File2Regex):
             # Replace macros with their values
             return MacroExpander().resolve_macros(macros=macros, pattern=pattern_with_top_node)
 
-        return patterns
+        return pattern_with_top_node
 
     def _generate_rule_tree(self, patterns: dict) -> Command:
         "Generate the rule tree from the patterns"
