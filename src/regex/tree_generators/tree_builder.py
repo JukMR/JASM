@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from src.regex.command import Command
+from src.regex.command import PatternNode
 from src.global_definitions import CommandTypes, TimeType, dict_node
 
 
@@ -53,15 +53,15 @@ class CommandBuilderNoParents:
         return TimeType(min_times=1, max_times=1)
 
     @staticmethod
-    def _get_children(name: str, command: dict_node) -> List[Command]:
+    def _get_children(name: str, command: dict_node) -> List[PatternNode]:
         assert isinstance(command, dict)
 
         return [CommandBuilderNoParents(com).build() for com in command[name] if com != "times"]
 
-    def build(self) -> Command:
+    def build(self) -> PatternNode:
         assert isinstance(self.name, (str, int))
 
-        return Command(
+        return PatternNode(
             command_dict=self.command,
             name=self.name,
             times=self.times,
@@ -72,10 +72,10 @@ class CommandBuilderNoParents:
 
 
 class CommandParentsBuilder:
-    def __init__(self, command: Command) -> None:
+    def __init__(self, command: PatternNode) -> None:
         self.command = command
 
-    def set_parent(self, parent: Command, children: List[Command]) -> None:
+    def set_parent(self, parent: PatternNode, children: List[PatternNode]) -> None:
         for child in children:
             child.parent = parent
             if child.children:  # Recursively set parent for the child's children
@@ -89,8 +89,8 @@ class CommandParentsBuilder:
 
 
 class CommandsTypeBuilder:
-    def __init__(self, parent: Command) -> None:
-        assert isinstance(parent, Command)
+    def __init__(self, parent: PatternNode) -> None:
+        assert isinstance(parent, PatternNode)
         self.command = parent
 
     def _get_type(self) -> CommandTypes:
@@ -117,7 +117,7 @@ class CommandsTypeBuilder:
         # Else is mnemonic
         return CommandTypes.mnemonic
 
-    def set_type(self) -> Command:
+    def set_type(self) -> PatternNode:
         self.command.command_type = self._get_type()
         return self.command
 

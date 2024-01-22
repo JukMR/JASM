@@ -26,9 +26,6 @@ package "Stringify_Asm" {
         {abstract} + process_file(file: str, iConsumer: IConsumer) -> None
     }
 
-    abstract class Disassembler {
-        {abstract} + disassemble(input_file: str) -> str
-    }
 
     class ComposableProducer {
         + disassembler: Disassembler
@@ -39,6 +36,9 @@ package "Stringify_Asm" {
 
     package Disassemblers {
 
+        abstract class Disassembler {
+            {abstract} + disassemble(input_file: str) -> str
+        }
         class ShellDisassembler {
             - program: str
             - flags: str
@@ -62,12 +62,12 @@ package "Stringify_Asm" {
 
 
 
-    abstract class AsmParser {
-        {abstract} parse(file: str, iConsumer: IConsumer) -> None:
-
-    }
 
     package Parsers{
+        abstract class AsmParser {
+            {abstract} parse(file: str, iConsumer: IConsumer) -> None:
+
+        }
 
         class LlvmObjdumpParser {
             + parse(file: str, iConsumer: IConsumer) -> None

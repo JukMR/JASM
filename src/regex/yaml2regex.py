@@ -5,7 +5,7 @@ from typing import Any, List
 import yaml
 
 from src.logging_config import logger
-from src.regex.command import Command
+from src.regex.command import PatternNode
 from src.regex.file2regex import File2Regex
 from src.regex.macro_expander import MacroExpander
 from src.regex.tree_generators.tree_builder import CommandBuilderNoParents, CommandParentsBuilder, CommandsTypeBuilder
@@ -53,10 +53,10 @@ class Yaml2Regex(File2Regex):
 
         return pattern_with_top_node
 
-    def _generate_rule_tree(self, patterns: dict) -> Command:
+    def _generate_rule_tree(self, patterns: dict) -> PatternNode:
         "Generate the rule tree from the patterns"
         # Generate the rule tree with no parents and type from root parent node downwards
-        rule_tree: Command = CommandBuilderNoParents(command_dict=patterns).build()
+        rule_tree: PatternNode = CommandBuilderNoParents(command_dict=patterns).build()
 
         # Transform parents of all nodes to commands
         CommandParentsBuilder(rule_tree).build()
