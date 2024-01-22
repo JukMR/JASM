@@ -3,7 +3,7 @@
 import sys
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Any, Dict, List, Optional, TypeAlias
+from typing import Any, Dict, Final, List, Optional, TypeAlias
 
 INSTRUCTION_SEPARATOR = r"\|"
 SKIP_TO_END_OF_OPERAND = "[^,|]*,"
@@ -28,7 +28,7 @@ OperandType: TypeAlias = Optional[Dict[str, Any]]
 dict_node: TypeAlias = Dict[str, Any] | str | int
 
 
-ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS = True
+ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS: Final = True
 
 
 class InputFileType(Enum):

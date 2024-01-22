@@ -8,7 +8,7 @@ from src.regex.command import (
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     BranchProcessor,
-    Command,
+    PatternNode,
     CommandTypes,
     RegexWithOperandsCreator,
     TimeType,
@@ -33,7 +33,7 @@ def test_get_command_name_with_string():
 @pytest.fixture
 def command_fixture():
     # Create a basic Command fixture
-    return Command(
+    return PatternNode(
         command_dict={},
         name="test",
         times=TimeType(min_times=1, max_times=1),
@@ -43,21 +43,21 @@ def command_fixture():
     )
 
 
-def test_get_regex_mnemonic(command_fixture: Command) -> None:
+def test_get_regex_mnemonic(command_fixture: PatternNode) -> None:
     command_fixture.command_type = CommandTypes.mnemonic
     command_fixture.process_leaf = MagicMock(return_value="leaf_regex")
     assert command_fixture.get_regex(command_fixture) == "leaf_regex"
     command_fixture.process_leaf.assert_called_once()
 
 
-def test_get_regex_operand(command_fixture: Command) -> None:
+def test_get_regex_operand(command_fixture: PatternNode) -> None:
     command_fixture.command_type = CommandTypes.operand
     command_fixture.process_leaf = MagicMock(return_value="leaf_regex")
     assert command_fixture.get_regex(command_fixture) == "leaf_regex"
     command_fixture.process_leaf.assert_called_once()
 
 
-def test_process_leaf_no_children(command_fixture: Command):
+def test_process_leaf_no_children(command_fixture: PatternNode):
     command_fixture.name = "operand"
     command_fixture.command_type = CommandTypes.operand
     command_fixture.children = None
@@ -65,10 +65,10 @@ def test_process_leaf_no_children(command_fixture: Command):
     assert command_fixture.process_leaf(command_fixture) == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
 
 
-def test_process_leaf_with_children(command_fixture: Command):
+def test_process_leaf_with_children(command_fixture: PatternNode):
     command_fixture.name = "command_with_children"
     command_fixture.command_type = CommandTypes.mnemonic
-    child_command = Command(
+    child_command = PatternNode(
         command_dict={},
         name="child",
         times=TimeType(min_times=1, max_times=1),
@@ -81,20 +81,20 @@ def test_process_leaf_with_children(command_fixture: Command):
     assert "command_with_children" in command_fixture.process_leaf(command_fixture)
 
 
-def test_sanitize_operand_name_hex(command_fixture: Command):
+def test_sanitize_operand_name_hex(command_fixture: PatternNode):
     hex_name = "A3h"
     assert command_fixture.sanitize_operand_name(hex_name) == "0xA3"
 
 
-def test_sanitize_operand_name_non_hex(command_fixture: Command) -> None:
+def test_sanitize_operand_name_non_hex(command_fixture: PatternNode) -> None:
     non_hex_name = "operand"
     assert command_fixture.sanitize_operand_name(non_hex_name) == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
 
 
-def test_process_branch_and(command_fixture: Command):
+def test_process_branch_and(command_fixture: PatternNode):
     # Create mock Command instances for children
-    mock_child1 = MagicMock(spec=Command)
-    mock_child2 = MagicMock(spec=Command)
+    mock_child1 = MagicMock(spec=PatternNode)
+    mock_child2 = MagicMock(spec=PatternNode)
 
     # Manually set up necessary attributes for the mock children
     for i_mock, mock_child in enumerate([mock_child1, mock_child2]):
