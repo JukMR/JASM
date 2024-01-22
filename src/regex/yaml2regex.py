@@ -1,17 +1,14 @@
 "File2regex Yaml implementation module"
 
 from typing import Any, List
+
 import yaml
 
-from src.command_definition import Command
 from src.logging_config import logger
-from src.regex.tree_generators.tree_builder import (
-    CommandBuilderNoParents,
-    CommandParentsBuilder,
-    CommandsTypeBuilder,
-)
+from src.regex.command import Command
 from src.regex.file2regex import File2Regex
 from src.regex.macro_expander import MacroExpander
+from src.regex.tree_generators.tree_builder import CommandBuilderNoParents, CommandParentsBuilder, CommandsTypeBuilder
 
 
 class Yaml2Regex(File2Regex):
@@ -25,21 +22,6 @@ class Yaml2Regex(File2Regex):
         "Read a yaml file and return the parsed content"
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
-
-    def _generate_rule_tree(self, patterns: List[str]) -> Command:
-        "Generate the rule tree from the patterns"
-        form_dict = {"$and": patterns}
-
-        # Generate the rule tree with no parents and type from root parent node downwards
-        rule_tree: Command = CommandBuilderNoParents(command_dict=form_dict).build()
-
-        # Transform parents of all nodes to commands
-        CommandParentsBuilder(rule_tree).build()
-
-        # Add the command_type to each node
-        CommandsTypeBuilder(rule_tree).build()
-
-        return rule_tree
 
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
@@ -60,13 +42,26 @@ class Yaml2Regex(File2Regex):
         # Load pattern
         patterns = self.loaded_file.get("pattern")
 
-        form_pattern_with_and = {"$and": patterns}
+        pattern_with_top_node = {"$and": patterns}
 
         # Check if there are any macros setted
         macros = self.loaded_file.get("macros")
 
         if macros:
             # Replace macros with their values
-            return MacroExpander().resolve_macros(macros=macros, pattern=form_pattern_with_and)
+            return MacroExpander().resolve_macros(macros=macros, pattern=pattern_with_top_node)
 
         return patterns
+
+    def _generate_rule_tree(self, patterns: dict) -> Command:
+        "Generate the rule tree from the patterns"
+        # Generate the rule tree with no parents and type from root parent node downwards
+        rule_tree: Command = CommandBuilderNoParents(command_dict=patterns).build()
+
+        # Transform parents of all nodes to commands
+        CommandParentsBuilder(rule_tree).build()
+
+        # Add the command_type to each node
+        CommandsTypeBuilder(rule_tree).build()
+
+        return rule_tree

@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from src.command_definition import Command
+from src.regex.command import Command
 from src.global_definitions import CommandTypes, TimeType, dict_node
 
 
