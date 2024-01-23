@@ -32,6 +32,11 @@ class MacroExpander:
             if pattern == macro.get("name"):
                 macro_value = self.get_macro_pattern(macro=macro)
                 return macro_value
+            if macro.get("name") in pattern:
+                # Doing string replacement only
+                assert isinstance(macro.get("pattern"), str)
+                new_name = pattern.replace(macro.get("name"), macro.get("pattern"))
+                return new_name
         return pattern
 
     def replace_macro_in_pattern_dict(self, macro: dict, pattern: dict) -> dict:
@@ -55,6 +60,13 @@ class MacroExpander:
                     macro_value = self.get_macro_pattern(macro=macro)
                     pattern[key] = macro_value
                     continue
+                if macro_name in key:
+                    # Doing string replacement only
+                    tmp_value = pattern[key]
+                    new_key_name = key.replace(macro_name, macro.get("pattern"))
+                    pattern[new_key_name] = tmp_value
+                    pattern.pop(key)
+                    continue
 
         return pattern
 
@@ -62,6 +74,10 @@ class MacroExpander:
     def get_macro_pattern(macro: dict) -> dict | str:
         """Return the macro pattern"""
         _macro_value_list = macro.get("pattern")
+
+        if isinstance(_macro_value_list, str):
+            # Macro value is only a string, doing string replacement only
+            return _macro_value_list
         assert isinstance(_macro_value_list, List)
         macro_value = _macro_value_list[0]
         # Return a copy of the macro value so that the original macro is not modified
@@ -69,6 +85,7 @@ class MacroExpander:
         if isinstance(macro_value, dict):
             return macro_value.copy()
         if isinstance(macro_value, str):
+            # Macro value is a string, doing string replacement only
             return macro_value
         raise ValueError(f"Macro value must be a dict or a string, macro_value: {macro_value}")
 
