@@ -36,6 +36,13 @@ class InputFileType(Enum):
     assembly = auto()
 
 
+class EnumDisasStyle(Enum):
+    """Enum for the disassembler style."""
+
+    intel = auto()
+    att = auto()
+
+
 @dataclass
 class TimeType:
     min_times: int

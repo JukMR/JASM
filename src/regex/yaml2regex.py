@@ -1,9 +1,10 @@
 "File2regex Yaml implementation module"
 
-from typing import Any, List
+from typing import Any, Optional
 
 import yaml
 
+from src.global_definitions import EnumDisasStyle
 from src.logging_config import logger
 from src.regex.command import PatternNode
 from src.regex.file2regex import File2Regex
@@ -65,3 +66,18 @@ class Yaml2Regex(File2Regex):
         CommandsTypeBuilder(rule_tree).build()
 
         return rule_tree
+
+    def get_assembly_style(self) -> Optional[EnumDisasStyle]:
+        "Get the file style from the pattern file"
+        config = self.loaded_file.get("config")
+        if config:
+            style = config.get("style")
+        else:
+            return None
+
+        if style:
+            if style == "intel":
+                return EnumDisasStyle.intel
+            if style == "att":
+                return EnumDisasStyle.att
+        return None
