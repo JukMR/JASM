@@ -131,4 +131,5 @@ class ObjdumpParser(AsmParser):
         # Parse the assembly and provide instruction to the consumer
 
         for parse_element in self._execute_pyparsing(assembly=file):
+            print(parse_element)
             iConsumer.consume_instruction(self._parse_instruction(parse_element))

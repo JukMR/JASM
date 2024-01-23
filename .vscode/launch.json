@@ -193,5 +193,13 @@
                 "tests/binary/lenovo2.bin"
             ]
         },
+        {
+            "name": "parse_with_manual_regex",
+            "type": "python",
+            "request": "launch",
+            "program": "parsing_asm_manual_regex.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+        },
     ]
 }
