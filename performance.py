@@ -1,12 +1,14 @@
 import cProfile
-from src.match import perform_matching
+from src.global_definitions import InputFileType
+from src.match import MasterOfPuppets
 
 
 profiler = cProfile.Profile()
 profiler.enable()
-perform_matching(
+MasterOfPuppets().perform_matching(
     pattern_pathstr="tests/yamls/moonbounce_regex_matcher.yaml",
-    assembly="tests/assembly/moonbounce_malware_truncated.s",
+    input_file="tests/binary/moonbounce.bin",
+    input_file_type=InputFileType.binary,
 )
 profiler.disable()
 profiler.dump_stats("profiling_results.pstat")
