@@ -1,0 +1,100 @@
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, TypeAlias
+
+from src.stringify_asm.abstracts.abs_observer import Instruction
+
+
+@dataclass
+@dataclass
+class Section:
+    name: str
+
+
+@dataclass
+class Label:
+    addr: str
+    name: str
+
+
+ParsedElement: TypeAlias = Instruction | Section | Label | str
+
+
+def get_file_lines(file: Path) -> List[str]:
+    with open(file, "r", encoding="utf-8") as f:
+        return f.readlines()
+
+
+def parse_file_lines(file_lines: List[str]) -> List["LineParser"]:
+    parsed_file_lines = []
+    for line in file_lines:
+        parsed_file_lines.append(parse_line(line))
+    return parsed_file_lines
+
+
+def parse_line(line: str) -> ParsedElement:
+    return LineParser(line).parse()
+
+
+class LineParser:
+    def __init__(self, str_line: str) -> None:
+        self.line = str_line
+
+    def parse(self) -> ParsedElement:
+        if self.line_is_instruction():
+            return self.parse_instruction()
+        if self.line_is_section():
+            return self.parse_section()
+        if self.line_is_label():
+            return self.parse_label()
+
+        if self.is_empty_line():
+            return self.line
+
+        print(f"Found a line that is not an instruction, section or label: '{self.line}'")
+        return self.line
+
+    def line_is_instruction(self) -> bool:
+        return bool(re.match(r"^( )*[0-9a-fA-F]+:\t(.\t)*", self.line))
+
+    def line_is_section(self) -> bool:
+        return "Disassembly of section".lower() in self.line.lower()
+
+    def line_is_label(self) -> bool:
+        return bool(re.match(r"^[0-9a-fA-F]+ <.*>:$", self.line))
+
+    def is_empty_line(self) -> bool:
+        return self.line == "\n"
+
+    def parse_instruction(self) -> Instruction:
+        # match = re.search(r"^( )*([0-9a-fA-F]{0,4}):\t[0-9a-fA-F ]+\t([^ ]*)\t(.*)", self.line)
+        match = re.search(r"^ *([0-9a-fA-F]+):\t[0-9a-fA-F ]+ ([^ ]*) *([^#]*)", self.line)
+        if match:
+            return Instruction(addrs=match.group(1), mnemonic=match.group(2), operands=match.group(3).split(","))
+        raise ValueError("Error parsing instruction")
+
+    def parse_section(self) -> Section:
+        match = re.search("disassembly of section (.*)", self.line.lower())
+        if match:
+            return Section(name=match.group(1))
+        raise ValueError("Error parsing section")
+
+    def parse_label(self) -> Label:
+        match = re.search("([0-9a-fA-F]+) <(.*)>:", self.line)
+        if match:
+            return Label(addr=match.group(1), name=match.group(2))
+        raise ValueError("Error parsing label")
+
+
+def main() -> None:
+    file = Path("tests/assembly/moonbounce_malware_truncated_11518_lines.s")
+    assert file.exists(), f"File {file} does not exist"
+
+    file_lines = get_file_lines(file)
+    parsed_file_lines = parse_file_lines(file_lines)
+    print(parsed_file_lines)
+
+
+if __name__ == "__main__":
+    main()
