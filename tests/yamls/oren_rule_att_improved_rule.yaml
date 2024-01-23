@@ -5,16 +5,14 @@ config:
 
 macros:
   - name: $any32reg
-    pattern:
-      - e.x
+    pattern: e.x
 
   - name: $any64reg
-    pattern:
-      - r.x
+    pattern: r.x
 
 pattern:
   - mov:
-      - r.x\+0x78
+      - $any64reg\+0x78
       - rax
   - cmpw:
       - "0x3"
@@ -22,7 +20,7 @@ pattern:
   - jne
 
   - lea:
-      - r.x\+0x10
+      - $any64reg\+0x10
       - $any64reg
 
   - add:

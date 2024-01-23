@@ -105,7 +105,8 @@ class CommandsTypeBuilder:
             return CommandTypes.operand
 
         # Is node
-        if name.startswith("$"):
+
+        if self.is_node(name):
             return CommandTypes.node
 
         if self.is_father_is_mnemonic():
@@ -116,6 +117,11 @@ class CommandsTypeBuilder:
 
         # Else is mnemonic
         return CommandTypes.mnemonic
+
+    @staticmethod
+    def is_node(name: str):
+        if name in ["$or", "$and", "$not", "$any_no_order"]:
+            return True
 
     def set_type(self) -> PatternNode:
         self.command.command_type = self._get_type()
