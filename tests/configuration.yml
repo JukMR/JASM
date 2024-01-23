@@ -69,6 +69,11 @@ test_matching:
     binary: "tests/binary/smc_eko.bin"
     expected: True
 
+  - title: "oren_rule_example"
+    yaml: "tests/yamls/oren_rule_att.yaml"
+    assembly: "tests/assembly/oren_rule_att.s"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"
