@@ -26,9 +26,6 @@ package "Stringify_Asm" {
         {abstract} + process_file(file: str, iConsumer: IConsumer) -> None
     }
 
-    abstract class Disassembler {
-        {abstract} + disassemble(input_file: str) -> str
-    }
 
     class ComposableProducer {
         + disassembler: Disassembler
@@ -37,40 +34,53 @@ package "Stringify_Asm" {
         + process_file(file: str, iConsumer: IConsumer) -> None
     }
 
-    class GNUObjdumpDisassembler {
-        + __init__(flags: str) -> None
+    package Disassemblers {
+
+        abstract class Disassembler {
+            {abstract} + disassemble(input_file: str) -> str
+        }
+        class ShellDisassembler {
+            - program: str
+            - flags: str
+            + __init__(program: str, flags: str) -> None
+            + disassemble(input_file: str) -> str
+        }
+
+        class GNUObjdumpDisassembler {
+            + __init__(flags: str) -> None
+
+        }
+
+        class LLvmObjdumpDisassembler {
+            + __init__(flags: str) -> None
+        }
+
+        class NullDisassembler {
+            + disassemble(input_file: str) -> str
+        }
+    }
+
+
+
+
+    package Parsers{
+        abstract class AsmParser {
+            {abstract} parse(file: str, iConsumer: IConsumer) -> None:
+
+        }
+
+        class LlvmObjdumpParser {
+            + parse(file: str, iConsumer: IConsumer) -> None
+        }
+
+
+        class GNUObjdumpParser {
+            + parse(file: str, iConsumer: IConsumer) -> None
+        }
 
     }
 
-    class LLvmObjdumpDisassembler {
-        + __init__(flags: str) -> None
-    }
 
-    class NullDisassembler {
-        + disassemble(input_file: str) -> str
-    }
-
-
-    abstract class AsmParser {
-        {abstract} parse(file: str, iConsumer: IConsumer) -> None:
-
-    }
-
-    class LlvmObjdumpParser {
-        + parse(file: str, iConsumer: IConsumer) -> None
-    }
-
-
-    class GNUObjdumpParser {
-        + parse(file: str, iConsumer: IConsumer) -> None
-     }
-
-    class ShellDisassembler {
-        - program: str
-        - flags: str
-        + __init__(program: str, flags: str) -> None
-        + disassemble(input_file: str) -> str
-    }
 
 
     interface IMatchedObserver {
@@ -122,66 +132,99 @@ package "Stringify_Asm" {
 
 }
 
-package "Regex" {
 
+package Regex {
     abstract class File2Regex {
         {abstract} load_file(file) : Any
         {abstract} produce_regex()
     }
 
+
     class Yaml2Regex {
-        - loaded_file: Any
-        - directive_processor: DirectiveProcessor
-        + load_file(file: PathStr) : Any
-        + produce_regex() -> str
+        -loaded_file: Any
+        +__init__(pattern_pathstr: str): None
+        +load_file(file: str): Any
+        -_generate_rule_tree(patterns: List[str]): Command
+        +produce_regex(): str
+        +get_pattern(): dict
     }
 
-    class OperandsHandler {
-        - operands: OperandListType
-        + get_regex() -> str
+    package command_pkg {
+        class Command {
+            -command_dict: dict_node
+            -name: str | int
+            -times: TimeType
+            -children: Optional[dict | List["Command"]]
+            -command_type: Optional[CommandTypes]
+            -parent: Optional["Command"]
+            +__init__(command_dict: dict_node, name: str | int, times: TimeType, children: Optional[dict | List["Command"]], command_type: Optional[CommandTypes], parent: Optional["Command"]): None
+            +get_regex(command: "Command"): str
+            +process_leaf(com: "Command"): str
+            +sanitize_operand_name(name: str | int): str | int
+            +process_branch(command: "Command"): str
+            +process_children(command: "Command"): List[str]
+        }
+
+        class BranchProcessor {
+            +process_command(command_name: str | int, child_regexes: List[str], times_regex: Optional[str]): str
+            +process_and(child_regexes: List[str], times_regex: Optional[str]): str
+            +process_or(child_regexes: List[str], times_regex: Optional[str]): str
+            +process_not(child_regexes: List[str], times_regex: Optional[str]): str
+            +process_and_any_order(child_regexes: List[str], times_regex: Optional[str]): str
+            +generate_any_order_permutation(child_regexes: List[str]): List[List[str]]
+            +join_instructions(inst_list: List[str]): str
+        }
+        class RegexWithOperandsCreator {
+            -name: str | int
+            -operands: Optional[List[Command]]
+            -times: Optional[TimeType]
+            +__init__(name: str | int, operands: Optional[List[Command]], times: Optional[TimeType]): None
+            +generate_regex(): str
+            +get_operand_regex(): Optional[str]
+            +get_min_max_regex(): Optional[str]
+            +_form_regex_with_time(operands_regex: Optional[str], times_regex: str): str
+            +_form_regex_without_time(operands_regex: Optional[str]): str
+        }
+
     }
 
-    class DirectiveProcessor {
-        - strategy: IDirectiveStrategy
-        + execute_strategy(): str
+
+    package tree_builder_pkg {
+
+        class CommandBuilderNoParents {
+            -command: dict_node | str | int
+            -name: str | int
+            -times: TimeType
+            -children: Optional[dict | List["Command"]]
+            +__init__(command_dict: dict_node | str | int): None
+            +_get_name(command_dict: dict_node): str
+            +_get_times(command_dict: dict_node): TimeType
+            +_get_children(name: str, command: dict_node): List[Command]
+            +build(): Command
+        }
+
+        class CommandParentsBuilder {
+            -command: Command
+            +__init__(command: Command): None
+            +set_parent(parent: Command, children: List[Command]): None
+            +build(): None
+        }
+
+        class CommandsTypeBuilder {
+            -command: Command
+            +__init__(parent: Command): None
+            +_get_type(): CommandTypes
+            +set_type(): Command
+            +is_father_is_mnemonic(): bool
+            +any_ancestor_is_mnemonic(): bool
+            +build(): None
+        }
     }
 
-    interface IDirectiveProcessor {
-        pattern : Dict
-        include_list : Optional
-        exclude_list : Optional
-        times : Optional
-        operands : Optional
-        times_regex: Optional[str]
-        operand_regex: str
-
-        join_instructions(inst_list: List[str], operand: str) -> str
-        get_times(pattern: PatternDict) -> TimesType
-        {abstract}process() -> str
-    }
-
-
-    class AnyDirectiveProcessor {
-        exclude_list_regex : str
-        include_list_regex : str
-        operand_regex : str
-        times_regex : Optional[str]
-
-        + process() -> str
-    }
-
-    class NotDirectiveProcessor {
-        operand_regex : str
-        times_regex : Optional[str]
-
-        + process() -> str
-    }
-
-    class SingleDirectiveProcessor {
-        operand_regex : str
-        times_regex : Optional[str]
-
-        process() -> str
+    package macro_expander_pkg {
+        class MacroExpander {
+            +resolve_macros(macros: dict, pattern: dict): dict
+        }
     }
 
 }
@@ -211,19 +254,18 @@ package "Observers" {
 ' RELATIONS
 
 ' Regex
-DirectiveProcessor -[#red,thickness=1]o IDirectiveProcessor: uses
-IDirectiveProcessor  <|-- AnyDirectiveProcessor
-IDirectiveProcessor  <|-- SingleDirectiveProcessor
-IDirectiveProcessor  <|-- NotDirectiveProcessor
-
-Yaml2Regex --up> AnyDirectiveProcessor : executes_strategy
-Yaml2Regex --up> SingleDirectiveProcessor : executes_strategy
-Yaml2Regex --up> NotDirectiveProcessor : executes_strategy
-Yaml2Regex --o DirectiveProcessor: has
-
-IDirectiveProcessor -o OperandsHandler
 
 File2Regex <|-- Yaml2Regex
+Yaml2Regex --> macro_expander_pkg: check if there is any macro and do the expansion
+
+' command_pkg
+Yaml2Regex --> command_pkg: generate rule tree
+
+' tree_builder_pkg
+Yaml2Regex --> CommandBuilderNoParents
+Yaml2Regex --> CommandParentsBuilder
+Yaml2Regex --> CommandsTypeBuilder
+
 
 
 ' Stringify_Asm
@@ -242,6 +284,10 @@ Disassembler <|-- ShellDisassembler
 ShellDisassembler <|-- GNUObjdumpDisassembler
 ShellDisassembler <|-- LLvmObjdumpDisassembler
 Disassembler <|--- NullDisassembler
+
+' Hidden arrow to draw the relation Disassembler -> NullDisassembler in the correct level
+NullDisassembler -[hidden]> LLvmObjdumpDisassembler: uses
+
 
 ComposableProducer --o Disassembler
 ComposableProducer --o AsmParser

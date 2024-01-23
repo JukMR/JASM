@@ -28,15 +28,15 @@ def get_command_name(
     return name
 
 
-class Command:
+class PatternNode:
     def __init__(
         self,
         command_dict: dict_node,
         name: str | int,
         times: TimeType,
-        children: Optional[dict | List["Command"]],
+        children: Optional[dict | List["PatternNode"]],
         command_type: Optional[CommandTypes],
-        parent: Optional["Command"],
+        parent: Optional["PatternNode"],
     ) -> None:
         """
         Initialize a Command object.
@@ -55,12 +55,12 @@ class Command:
         self.command_type = command_type
         self.parent = parent
 
-    def get_regex(self, command: "Command") -> str:
+    def get_regex(self, command: "PatternNode") -> str:
         if command.command_type in [CommandTypes.mnemonic, CommandTypes.operand]:
             return self.process_leaf(command)
         return self.process_branch(command)
 
-    def process_leaf(self, com: "Command") -> str:
+    def process_leaf(self, com: "PatternNode") -> str:
         name = com.name
         children = com.children
         times = com.times
@@ -100,19 +100,19 @@ class Command:
         command_name = get_command_name(name)
         return command_name
 
-    def process_branch(self, command: "Command") -> str:
+    def process_branch(self, command: "PatternNode") -> str:
         child_regexes = self.process_children(command)
         times_regex: Optional[str] = global_get_min_max_regex(times=command.times)
         return BranchProcessor().process_command(command.name, child_regexes, times_regex)
 
-    def process_children(self, command: "Command") -> List[str]:
+    def process_children(self, command: "PatternNode") -> List[str]:
         if command.children:
             return [self.get_regex(child) for child in command.children]
         raise ValueError("Children list is empty")
 
 
 class RegexWithOperandsCreator:
-    def __init__(self, name: str | int, operands: Optional[List[Command]], times: Optional[TimeType]) -> None:
+    def __init__(self, name: str | int, operands: Optional[List[PatternNode]], times: Optional[TimeType]) -> None:
         self.name = name
         self.operands = operands
         self.times = times

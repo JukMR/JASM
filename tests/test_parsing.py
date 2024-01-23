@@ -3,7 +3,7 @@ import re
 import pytest
 from conftest import load_test_configs
 
-from src.global_definitions import InputFileType
+from src.global_definitions import EnumDisasStyle, InputFileType
 from src.logging_config import logger
 from src.match import MasterOfPuppets
 
@@ -12,7 +12,11 @@ def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_fil
     """Parse file and return number of lines"""
 
     all_instructions = MasterOfPuppets._do_matching_and_get_result(
-        regex_rule="", input_file=input_file, input_file_type=input_file_type, return_bool_result=False
+        regex_rule="",
+        assembly_style=EnumDisasStyle.intel,
+        input_file=input_file,
+        input_file_type=input_file_type,
+        return_bool_result=False,
     )
 
     if isinstance(all_instructions, bool):

@@ -161,5 +161,21 @@
                 "tests/assembly/binary_data.s"
             ]
         },
+        {
+            "name": "smc_binary",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/smc.yaml",
+                "-b",
+                "-i",
+                "tests/binary/smc_eko.bin"
+            ]
+        },
     ]
 }
