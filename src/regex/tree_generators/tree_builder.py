@@ -120,7 +120,7 @@ class CommandsTypeBuilder:
 
     @staticmethod
     def is_node(name: str):
-        if name in ["$or", "$and", "$not", "$any_no_order"]:
+        if name in ["$or", "$and", "$not", "$and_any_order"]:
             return True
 
     def set_type(self) -> PatternNode:
