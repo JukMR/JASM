@@ -18,7 +18,7 @@ class MacroExpander:
         ), f"The pattern must be a dict,\npattern_type: {type(pattern)}\npattern:{pattern}"
         return pattern
 
-    def replace_macro_in_pattern(self, macro: dict, pattern: dict | List) -> dict | List:
+    def replace_macro_in_pattern(self, macro: dict, pattern: dict | List) -> dict | List | str:
         """Expand the macro in the pattern
 
         This algoritm will replace all the occurrences of the macro in the pattern.
@@ -59,15 +59,18 @@ class MacroExpander:
         return pattern
 
     @staticmethod
-    def get_macro_pattern(macro: dict) -> dict:
+    def get_macro_pattern(macro: dict) -> dict | str:
         """Return the macro pattern"""
         _macro_value_list = macro.get("pattern")
         assert isinstance(_macro_value_list, List)
         macro_value = _macro_value_list[0]
         # Return a copy of the macro value so that the original macro is not modified
 
-        assert isinstance(macro_value, dict)
-        return macro_value.copy()
+        if isinstance(macro_value, dict):
+            return macro_value.copy()
+        if isinstance(macro_value, str):
+            return macro_value
+        raise ValueError(f"Macro value must be a dict or a string, macro_value: {macro_value}")
 
     def replace_macro_in_pattern_dict_for_key(self, macro: dict, pattern: dict) -> dict:
         """Expand the macro in the pattern if it is a dict and the key matches the macro name"""
