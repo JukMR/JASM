@@ -34,9 +34,9 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     expected: True
 
-  - title: "moonbounce_regex_matcher_truncated"
+  - title: "moonbounce_malware_truncated_11518_lines"
     yaml: "tests/yamls/moonbounce_regex_matcher.yaml"
-    assembly: "tests/assembly/moonbounce_malware_truncated.s"
+    assembly: "tests/assembly/moonbounce_malware_truncated_11518_lines.s"
     expected: True
 
   - title: "1_call"
@@ -49,9 +49,9 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     expected: True
 
-  - title: "moonbounce_regex_matcher_short"
+  - title: "moonbounce_malware_short_6_lines"
     yaml: "tests/yamls/moonbounce_regex_matcher.yaml"
-    assembly: "tests/assembly/moonbounce_malware_short.s"
+    assembly: "tests/assembly/moonbounce_malware_short_6_lines.s"
     expected: True
 
   - title: "smc_assembly"
@@ -79,34 +79,34 @@ test_parsing_lines:
     assembly: "tests/assembly/binary_data.s"
     number_of_lines: 33
 
-  - title: "moonbounce_malware_short.s"
-    assembly: "tests/assembly/moonbounce_malware_short.s"
+  - title: "moonbounce_malware_short_6_lines.s"
+    assembly: "tests/assembly/moonbounce_malware_short_6_lines.s"
     number_of_lines: 7
 
-  - title: "moonbounce_malware_truncated.s"
-    assembly: "tests/assembly/moonbounce_malware_truncated.s"
+  - title: "moonbounce_malware_truncated_11518_lines.s"
+    assembly: "tests/assembly/moonbounce_malware_truncated_11518_lines.s"
     number_of_lines: 10957
 
   - title: "ls_asm.s"
     assembly: "tests/assembly/ls_asm.s"
     number_of_lines: 19184
 
-  - title: "moonbounce_malware.s"
-    assembly: "tests/assembly/moonbounce_malware.s"
+  - title: "moonbounce_malware_full_111826_lines.s"
+    assembly: "tests/assembly/moonbounce_malware_full_111826_lines.s"
     number_of_lines: 107999
 
-  - title: "moonbounce_malware_small_parsing_test.s"
-    assembly: "tests/assembly/moonbounce_malware_small_parsing_test.s"
+  - title: "moonbounce_malware_small_parsing_test_13_lines.s"
+    assembly: "tests/assembly/moonbounce_malware_small_parsing_test_13_lines.s"
     number_of_lines: 14
 
-  - title: "moonbounce_malware_short_section_test.s"
-    assembly: "tests/assembly/moonbounce_malware_short_section_test.s"
+  - title: "moonbounce_malware_short_section_test_19_lines.s"
+    assembly: "tests/assembly/moonbounce_malware_short_section_test_19_lines.s"
     number_of_lines: 18
 
-  - title: "moonbounce_malware_bad_instruction.s"
-    assembly: "tests/assembly/moonbounce_malware_bad_instruction.s"
+  - title: "moonbounce_malware_bad_instruction_25_lines.s"
+    assembly: "tests/assembly/moonbounce_malware_bad_instruction_25_lines.s"
     number_of_lines: 26
 
-  - title: "moonbounce_malware_jo_pn_instruction.s"
-    assembly: "tests/assembly/moonbounce_malware_jo_pn_instruction.s"
+  - title: "moonbounce_malware_jo_pn_instruction_9_lines.s"
+    assembly: "tests/assembly/moonbounce_malware_jo_pn_instruction_9_lines.s"
     number_of_lines: 10
