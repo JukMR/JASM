@@ -52,17 +52,29 @@ class LineParser:
         if self.is_empty_line():
             return self.line
 
+        if self.line_is_title():
+            return self.line
+
+        if self.line_is_nop_padding():
+            return self.line
+
         print(f"Found a line that is not an instruction, section or label: '{self.line}'")
         return self.line
 
     def line_is_instruction(self) -> bool:
-        return bool(re.match(r"^( )*[0-9a-fA-F]+:\t(.\t)*", self.line))
+        return bool(re.match(r"^ *([0-9a-fA-F]+):\t[0-9a-fA-F ]+ ([^ ]*) *([^#]*)$", self.line))
+
+    def line_is_nop_padding(self) -> bool:
+        return bool(re.match(r"^( )*[0-9a-fA-F]+:\t( )*$", self.line))
 
     def line_is_section(self) -> bool:
         return "Disassembly of section".lower() in self.line.lower()
 
     def line_is_label(self) -> bool:
         return bool(re.match(r"^[0-9a-fA-F]+ <.*>:$", self.line))
+
+    def line_is_title(self) -> bool:
+        return bool(re.match(r"^.*file format.*$", self.line))
 
     def is_empty_line(self) -> bool:
         return self.line == "\n"
