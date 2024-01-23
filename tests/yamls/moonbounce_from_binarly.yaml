@@ -1,6 +1,6 @@
 ---
 config:
-  style: intel
+  style: att
   plugins:
 
 pattern:
@@ -19,8 +19,8 @@ pattern:
   - $or:
       - $and:
           - sub:
-            - eax
-            - ecx
+              - eax
+              - ecx
             times:
               min: 1
               max: 2
@@ -29,8 +29,8 @@ pattern:
             times: 2
 
       - xor:
-        - ecx
-        - ecx
+          - ecx
+          - ecx
 
   - inc:
       - ecx
@@ -43,5 +43,5 @@ pattern:
       - eax
       - ecx
       - $or:
-        - 1
-        - 2
+          - 1
+          - 2

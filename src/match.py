@@ -3,10 +3,10 @@ Main match module
 """
 
 from enum import Enum, auto
-from typing import List
+from typing import List, Optional
 
 from src.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
-from src.global_definitions import InputFileType
+from src.global_definitions import EnumDisasStyle, InputFileType
 from src.matched_observers import MatchedObserver
 from src.regex.yaml2regex import Yaml2Regex
 from src.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
@@ -68,7 +68,7 @@ class ProducerBuilder:
     """Builder for the producer."""
 
     @staticmethod
-    def build(file_type: InputFileType) -> IInstructionProducer:
+    def build(file_type: InputFileType, assembly_style: Optional[EnumDisasStyle] = None) -> IInstructionProducer:
         """Create a producer based on the file type."""
 
         # Logic for choosing diferent type of parser should be here
@@ -79,7 +79,7 @@ class ProducerBuilder:
         # Logic for choosing diferent type of disassembler should be here
         match file_type:
             case InputFileType.binary:
-                disassembler = GNUObjdumpDisassembler(flags=DEFAULT_FLAGS)
+                disassembler = GNUObjdumpDisassembler(enum_disas_style=assembly_style)
             case InputFileType.assembly:
                 disassembler = NullDisassembler()
 
@@ -97,8 +97,14 @@ class MasterOfPuppets:
 
         regex_rule = self._get_regex_rule(pattern_pathstr=pattern_pathstr)
 
+        file_style = self.get_file_style(pattern_pathstr=pattern_pathstr)
+
         return self._do_matching_and_get_result(
-            regex_rule=regex_rule, input_file=input_file, input_file_type=input_file_type, return_bool_result=True
+            regex_rule=regex_rule,
+            assembly_style=file_style,
+            input_file=input_file,
+            input_file_type=input_file_type,
+            return_bool_result=True,
         )
 
     @staticmethod
@@ -108,9 +114,19 @@ class MasterOfPuppets:
 
         return regex_rule
 
+    def get_file_style(self, pattern_pathstr: str) -> Optional[EnumDisasStyle]:
+        """Retrieve the file style from the pattern file"""
+        file_stype = Yaml2Regex(pattern_pathstr).get_assembly_style()
+
+        return file_stype
+
     @staticmethod
     def _do_matching_and_get_result(
-        regex_rule: str, input_file: str, input_file_type: InputFileType, return_bool_result: bool = True
+        regex_rule: str,
+        assembly_style: Optional[EnumDisasStyle],
+        input_file: str,
+        input_file_type: InputFileType,
+        return_bool_result: bool = True,
     ) -> bool | str:
         """Main function to perform regex matching on assembly or binary."""
 
@@ -127,7 +143,7 @@ class MasterOfPuppets:
             consumer.add_observer(obs)
 
         # Create producer
-        producer = ProducerBuilder().build(file_type=input_file_type)
+        producer = ProducerBuilder().build(file_type=input_file_type, assembly_style=assembly_style)
 
         # Do the processing
         producer.process_file(file=input_file, iConsumer=consumer)

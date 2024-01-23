@@ -1,7 +1,9 @@
 """File2Regex module"""
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Optional
+
+from src.global_definitions import EnumDisasStyle
 
 
 class File2Regex(ABC):
@@ -15,3 +17,7 @@ class File2Regex(ABC):
     @abstractmethod
     def produce_regex(self):
         "Main method to produce the regex"
+
+    @abstractmethod
+    def get_assembly_style(self) -> Optional[EnumDisasStyle]:
+        "Method to get the assembly style intel or att"

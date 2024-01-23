@@ -1,0 +1,46 @@
+@startuml sequence_diagram_regex_module
+participant "Yaml2Regex" as Y
+participant "Command" as C
+participant "CommandBuilderNoParents" as CNP
+participant "CommandParentsBuilder" as CPB
+participant "CommandsTypeBuilder" as CTB
+participant "MacroExpander" as ME
+
+activate Y
+Y -> Y : load_file(file)
+
+Y -> Y : load_file.get("pattern")
+Y -> Y : load_file.get("macros")
+
+opt macros is not None
+    Y -> ME : resolve_macros(macros, pattern)
+    activate ME
+    Y <- ME : return patterns
+    deactivate ME
+end
+
+activate Y
+Y -> CNP : CommandBuilderNoParents(patterns).build()
+activate CNP
+CNP -> Y : return command_rule_tree
+deactivate CNP
+
+Y -> CPB : CommandParentsBuilder(rule_tree).build()
+activate CPB
+CPB -> Y: return command_rule_tree
+deactivate CPB
+
+
+Y -> CTB : CommandsTypeBuilder(rule_tree).build()
+activate CTB
+CTB -> Y: return command_rule_tree
+deactivate CTB
+
+Y -> C : rule_tree.get_regex(rule_tree)
+activate C
+C -> Y : return output_regex
+deactivate C
+
+Y -> Y : return output_regex
+deactivate Y
+@enduml
