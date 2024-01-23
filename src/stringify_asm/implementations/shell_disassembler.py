@@ -1,3 +1,4 @@
+from pathlib import Path
 import subprocess
 
 from src.logging_config import logger
@@ -9,7 +10,7 @@ from src.stringify_asm.abstracts.disassembler import Disassembler
 class ShellDisassembler(Disassembler):
     """A class to disassemble binaries using a shell program."""
 
-    def __init__(self, program: str, flags: str) -> None:
+    def __init__(self, program: str, flags: list[str]) -> None:
         self.program = program
         self.flags = flags
 
@@ -17,8 +18,9 @@ class ShellDisassembler(Disassembler):
     def disassemble(self, input_file: str) -> str:
         """Run the shell program to disassemble the binary."""
         try:
+            assert Path(input_file).exists(), f"File '{input_file}' does not exist"
             result = subprocess.run(
-                [self.program, self.flags, input_file],
+                [self.program] + self.flags + [input_file],
                 capture_output=True,
                 text=True,
                 check=True,

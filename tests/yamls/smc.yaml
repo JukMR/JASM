@@ -1,7 +1,7 @@
 ---
 config:
-  - style: intel
-plugins:
+  style: att
+  plugins:
 
 pattern:
   - movb:
