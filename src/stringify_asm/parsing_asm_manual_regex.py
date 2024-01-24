@@ -68,6 +68,7 @@ class LineParser:
         self.line = str_line
 
     def parse(self) -> ParsedElement:
+        """Parse a single line of the objdump output."""
         if self.line_is_instruction():
             return self.parse_instruction()
 
@@ -87,6 +88,7 @@ class LineParser:
             return self.line
 
         if self.line_is_nop_padding():
+            # This is a line that is not an instruction but is a line that is used to pad the output of objdump
             match = re.match(LINE_NOP_PADDING, self.line)
             if match:
                 return Instruction(addrs=match.group(1), mnemonic="empty", operands=[])
@@ -95,27 +97,35 @@ class LineParser:
         return self.line
 
     def line_is_instruction(self) -> bool:
+        """Check if the line is an instruction."""
         return bool(re.match(INSTRUCTION_W_OPERANDS, self.line))
 
     def line_is_instruction_no_operands(self) -> bool:
+        """Check if the line is an instruction without operands."""
         return bool(re.match(INSTRUCION_NO_OPERANDS, self.line))
 
     def line_is_nop_padding(self) -> bool:
+        """Check if the line is a line that is used to pad the output of objdump."""
         return bool(re.match(LINE_NOP_PADDING, self.line))
 
     def line_is_section(self) -> bool:
+        """Check if the line is a section."""
         return "Disassembly of section".lower() in self.line.lower()
 
     def line_is_label(self) -> bool:
+        """Check if the line is a label."""
         return bool(re.match(LINE_IS_LABER, self.line))
 
     def line_is_title(self) -> bool:
+        """Check if the line is a title."""
         return bool(re.match(LINE_IS_TITLE, self.line))
 
     def is_empty_line(self) -> bool:
+        """Check if the line is empty."""
         return self.line in ("\n", "")
 
     def parse_instruction(self) -> Instruction:
+        """Parse a single instruction."""
         match = re.match(INSTRUCTION_W_OPERANDS, self.line)
 
         if match:
@@ -129,6 +139,7 @@ class LineParser:
         raise ValueError("Error parsing instruction")
 
     def parse_instruction_no_operands(self) -> Instruction:
+        """Parse a single instruction without operands."""
         match = re.match(INSTRUCION_NO_OPERANDS, self.line)
         if match:
             addrs = match.group(1)
@@ -143,12 +154,14 @@ class LineParser:
         raise ValueError("Error parsing instruction")
 
     def parse_section(self) -> Section:
+        """Parse a single section."""
         match = re.match("disassembly of section (.*)", self.line.lower())
         if match:
             return Section(name=match.group(1))
         raise ValueError("Error parsing section")
 
     def parse_label(self) -> Label:
+        """Parse a single label."""
         match = re.match(LINE_IS_LABER, self.line)
         if match:
             return Label(addr=match.group(1), name=match.group(2))
@@ -156,6 +169,8 @@ class LineParser:
 
 
 class OperandsParser:
+    """Parse the operands of an instruction."""
+
     def __init__(self, operands: List[str]) -> None:
         self.operands = operands
 
