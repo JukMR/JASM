@@ -44,7 +44,7 @@ FIRST_PADDING = r"^ *"
 HEX_ADDR = rf"({HEX_NUMBER}+):{TAB}"
 
 INSTRUCTION_CODE = rf"(?:{HEX_NUMBER}{{2}} ?)+"
-MNEMONIC = r"([^ ]+)"
+MNEMONIC = rf"{TAB}([^ ]+)"
 SPACES = r" +"
 POSIBLE_TAB = "\t?"
 OPERANDS = r"([^#]*)"
