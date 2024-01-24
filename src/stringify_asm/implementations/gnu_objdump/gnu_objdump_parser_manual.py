@@ -2,7 +2,7 @@
 Parser Implementation module
 """
 
-from parsing_asm_manual_regex import parse_file_lines
+from src.stringify_asm.parsing_asm_manual_regex import parse_file_lines
 from src.stringify_asm.abstracts.abs_observer import IConsumer, Instruction
 from src.stringify_asm.abstracts.asm_parser import AsmParser
 
