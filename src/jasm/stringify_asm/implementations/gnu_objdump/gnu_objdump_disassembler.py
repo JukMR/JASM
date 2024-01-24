@@ -1,7 +1,7 @@
 from typing import Optional
 
-from src.global_definitions import EnumDisasStyle
-from src.stringify_asm.implementations.shell_disassembler import ShellDisassembler
+from src.jasm.global_definitions import EnumDisasStyle
+from src.jasm.stringify_asm.implementations.shell_disassembler import ShellDisassembler
 
 
 class GNUObjdumpDisassembler(ShellDisassembler):

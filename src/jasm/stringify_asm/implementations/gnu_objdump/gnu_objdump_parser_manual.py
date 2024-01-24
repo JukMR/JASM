@@ -2,9 +2,9 @@
 Parser Implementation module
 """
 
-from src.stringify_asm.parsing_asm_manual_regex import parse_file_lines
-from src.stringify_asm.abstracts.abs_observer import IConsumer, Instruction
-from src.stringify_asm.abstracts.asm_parser import AsmParser
+from src.jasm.stringify_asm.parsing_asm_manual_regex import parse_file_lines
+from src.jasm.stringify_asm.abstracts.abs_observer import IConsumer, Instruction
+from src.jasm.stringify_asm.abstracts.asm_parser import AsmParser
 
 
 class ObjdumpParserManual(AsmParser):

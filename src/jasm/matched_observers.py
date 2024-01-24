@@ -1,5 +1,5 @@
-from src.logging_config import logger
-from src.stringify_asm.abstracts.abs_observer import IMatchedObserver
+from src.jasm.logging_config import logger
+from src.jasm.stringify_asm.abstracts.abs_observer import IMatchedObserver
 
 
 class MatchedObserver(IMatchedObserver):

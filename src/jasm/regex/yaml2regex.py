@@ -4,12 +4,16 @@ from typing import Any, Optional
 
 import yaml
 
-from src.global_definitions import EnumDisasStyle
-from src.logging_config import logger
-from src.regex.command import PatternNode
-from src.regex.file2regex import File2Regex
-from src.regex.macro_expander import MacroExpander
-from src.regex.tree_generators.tree_builder import CommandBuilderNoParents, CommandParentsBuilder, CommandsTypeBuilder
+from src.jasm.global_definitions import EnumDisasStyle
+from src.jasm.logging_config import logger
+from src.jasm.regex.command import PatternNode
+from src.jasm.regex.file2regex import File2Regex
+from src.jasm.regex.macro_expander import MacroExpander
+from src.jasm.regex.tree_generators.tree_builder import (
+    CommandBuilderNoParents,
+    CommandParentsBuilder,
+    CommandsTypeBuilder,
+)
 
 
 class Yaml2Regex(File2Regex):

@@ -3,7 +3,7 @@
 from itertools import permutations
 from typing import List, Optional
 
-from src.global_definitions import (
+from src.jasm.global_definitions import (
     ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,

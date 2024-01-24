@@ -71,7 +71,7 @@ test_matching:
 
   - title: "oren_rule_example"
     yaml: "tests/yamls/oren_rule_att.yaml"
-    assembly: "tests/assembly/oren_rule_att.s"
+    binary: "tests/binary/lenovo2.bin"
     expected: True
 
 test_parsing_lines:
