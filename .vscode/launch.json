@@ -14,7 +14,7 @@
                 "tests/yamls/moonbounce_from_binarly.yaml",
                 "-s",
                 "-i",
-                "tests/assembly/moonbounce_binarly_bad_small.s"
+                "tests/assembly/moonbounce_binarly_bad_small_19_lines.s"
             ]
         },
         {
@@ -126,7 +126,7 @@
                 "tests/yamls/moonbounce_regex_matcher.yaml",
                 "-s",
                 "-i",
-                "tests/assembly/moonbounce_malware_short.s"
+                "tests/assembly/moonbounce_malware_short_6_lines.s"
             ]
         },
         {
