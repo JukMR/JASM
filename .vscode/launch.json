@@ -34,7 +34,7 @@
             ]
         },
         {
-            "name": "not test",
+            "name": "not call",
             "type": "python",
             "request": "launch",
             "program": "main.py",
