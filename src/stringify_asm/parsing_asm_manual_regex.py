@@ -21,10 +21,7 @@ ParsedElement: TypeAlias = Instruction | Section | Label | str
 
 
 def parse_file_lines(file_lines: List[str]) -> List[ParsedElement]:
-    parsed_file_lines = []
-    for line in file_lines:
-        parsed_file_lines.append(parse_line(line))
-    return parsed_file_lines
+    return [parse_line(line) for line in file_lines]
 
 
 def parse_line(line: str) -> ParsedElement:
