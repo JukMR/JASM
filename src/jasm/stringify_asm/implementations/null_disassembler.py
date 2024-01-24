@@ -1,6 +1,6 @@
 # from typing import override
 
-from src.stringify_asm.abstracts.disassembler import Disassembler
+from src.jasm.stringify_asm.abstracts.disassembler import Disassembler
 
 
 class NullDisassembler(Disassembler):

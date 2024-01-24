@@ -6,11 +6,11 @@ To run the project it is recommended to do `poetry shell` and execute the files 
 
 ## Parse an assembly file
 
-python3 run_regex.py -p <pattern.yaml> -s <assembly_file.s>
+python3 run_regex.py -p <pattern.yaml> -i -s <assembly_file.s>
 
 ## Parse a binary file
 
-python3 run_regex.py -p <pattern.yaml> -b <binary_file.bin>
+python3 run_regex.py -p <pattern.yaml> -i -b <binary_file.bin>
 
 ## Run tests
 

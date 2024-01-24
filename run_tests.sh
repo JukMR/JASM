@@ -10,6 +10,9 @@ else
     shift
 fi
 
+# Export current directory to PYTHONPATH so pytest can see the files
+
+export PYTHONPATH=.
 # pytest -k "$ARG_1" -v tests/tests.py
 
 # Run integral tests
