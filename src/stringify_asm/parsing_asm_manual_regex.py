@@ -45,9 +45,8 @@ OPERANDS = r"([^#]*)"
 # COMMENTS = r"#.+$"
 ANYTHING_ELSE = r".*$"
 
-INSTRUCTION_W_OPERANDS = (
-    rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{MNEMONIC}{SPACES}{POSIBLE_TAB}{OPERANDS}{ANYTHING_ELSE}"
-)
+INSTRUCTION_W_OPERANDS = rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{POSIBLE_TAB}{MNEMONIC}{SPACES}{POSIBLE_TAB}{OPERANDS}{ANYTHING_ELSE}"
+
 
 INSTRUCION_NO_OPERANDS = rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{POSIBLE_TAB}{MNEMONIC}{ANYTHING_ELSE}"
 
@@ -87,6 +86,9 @@ class LineParser:
             if match:
                 return Instruction(addrs=match.group(1), mnemonic="empty", operands=[])
 
+        if self.is_line_broken():
+            return self.line
+
         print(f"Found a line that is not an instruction, section or label: '{self.line}'")
         return self.line
 
@@ -117,6 +119,10 @@ class LineParser:
     def is_empty_line(self) -> bool:
         """Check if the line is empty."""
         return self.line in ("\n", "")
+
+    def is_line_broken(self) -> bool:
+        """Check if the line is broken."""
+        return self.line == "	..."
 
     def parse_instruction(self) -> Instruction:
         """Parse a single instruction."""
