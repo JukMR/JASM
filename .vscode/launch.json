@@ -177,5 +177,21 @@
                 "tests/binary/smc_eko.bin"
             ]
         },
+        {
+            "name": "oren_rule_w_macros",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att_improved_rule.yaml",
+                "-b",
+                "-i",
+                "tests/binary/lenovo2.bin"
+            ]
+        },
     ]
 }
