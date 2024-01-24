@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
-from src.global_definitions import (
+from src.jasm.global_definitions import (
     SKIP_TO_ANY_OPERAND_CHARS,
     SKIP_TO_END_OF_COMMAND,
     SKIP_TO_END_OF_OPERAND,

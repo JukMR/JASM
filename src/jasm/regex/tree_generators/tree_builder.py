@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from src.regex.command import PatternNode
-from src.global_definitions import CommandTypes, TimeType, dict_node
+from src.jasm.regex.command import PatternNode
+from src.jasm.global_definitions import CommandTypes, TimeType, dict_node
 
 
 class CommandBuilderNoParents:

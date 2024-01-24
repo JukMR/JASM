@@ -6,10 +6,10 @@ import re
 from typing import List
 
 from pyparsing import ParseException, ParserElement, ParseResults
-from src.measure_performance import measure_performance
-from src.stringify_asm.abstracts.abs_observer import IConsumer, Instruction
-from src.stringify_asm.abstracts.asm_parser import AsmParser
-from src.stringify_asm.pyparsing_binary_rules import parsed
+from src.jasm.measure_performance import measure_performance
+from src.jasm.stringify_asm.abstracts.abs_observer import IConsumer, Instruction
+from src.jasm.stringify_asm.abstracts.asm_parser import AsmParser
+from src.jasm.stringify_asm.pyparsing_binary_rules import parsed
 
 BAD_INSTRUCTION = "(bad)"
 

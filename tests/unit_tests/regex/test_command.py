@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from src.regex.command import (
+from src.jasm.regex.command import (
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     BranchProcessor,
@@ -135,7 +135,7 @@ def test_generate_regex_without_operands():
     assert "command" in creator.generate_regex()
 
 
-from src.regex.command import BranchProcessor
+from src.jasm.regex.command import BranchProcessor
 
 
 def test_branch_processor_and():
