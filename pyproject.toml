@@ -9,9 +9,6 @@ packages = [{ include = "jasm", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pathlib = "^1.0.1"
-logging = "^0.4.9.6"
-argparse = "^1.4.0"
 pyyaml = "^6.0.1"
 
 
