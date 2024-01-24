@@ -2,10 +2,10 @@
 from argparse import Namespace
 
 from parse_arguments import parse_args_from_console
-from src.jasm.global_definitions import InputFileType
-from src.jasm.logging_config import configure_logger
-from src.jasm.match import MasterOfPuppets
-from src.jasm.measure_performance import measure_performance
+from jasm.global_definitions import InputFileType
+from jasm.logging_config import configure_logger
+from jasm.match import MasterOfPuppets
+from jasm.measure_performance import measure_performance
 
 
 def start_configurations() -> Namespace:

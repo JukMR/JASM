@@ -1,4 +1,4 @@
-from src.jasm.stringify_asm.implementations.shell_disassembler import ShellDisassembler
+from jasm.stringify_asm.implementations.shell_disassembler import ShellDisassembler
 
 
 class LLvmObjdumpDisassembler(ShellDisassembler):

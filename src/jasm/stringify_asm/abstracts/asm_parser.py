@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.jasm.consumer import IConsumer
+from jasm.consumer import IConsumer
 
 
 class AsmParser(ABC):

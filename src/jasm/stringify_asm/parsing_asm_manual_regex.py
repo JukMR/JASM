@@ -2,7 +2,7 @@ import re
 from dataclasses import dataclass
 from typing import List, Optional, TypeAlias
 
-from src.jasm.stringify_asm.abstracts.abs_observer import Instruction
+from jasm.stringify_asm.abstracts.abs_observer import Instruction
 
 
 @dataclass

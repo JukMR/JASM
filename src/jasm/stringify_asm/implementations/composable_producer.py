@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from src.jasm.stringify_asm.abstracts.abs_observer import IConsumer
-from src.jasm.stringify_asm.abstracts.asm_parser import AsmParser
-from src.jasm.stringify_asm.abstracts.disassembler import Disassembler
+from jasm.stringify_asm.abstracts.abs_observer import IConsumer
+from jasm.stringify_asm.abstracts.asm_parser import AsmParser
+from jasm.stringify_asm.abstracts.disassembler import Disassembler
 
 
 class IInstructionProducer(ABC):
