@@ -139,16 +139,3 @@ class LineParser:
         if match:
             return Label(addr=match.group(1), name=match.group(2))
         raise ValueError("Error parsing label")
-
-
-def main() -> None:
-    file = Path("tests/assembly/moonbounce_malware_truncated_11518_lines.s")
-    assert file.exists(), f"File {file} does not exist"
-
-    file_lines = get_file_lines(file)
-    parsed_file_lines = parse_file_lines(file_lines)
-    print(parsed_file_lines)
-
-
-if __name__ == "__main__":
-    main()
