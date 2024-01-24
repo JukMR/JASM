@@ -1,6 +1,5 @@
 import re
 from dataclasses import dataclass
-from pathlib import Path
 from typing import List, TypeAlias
 
 from src.stringify_asm.abstracts.abs_observer import Instruction
@@ -19,11 +18,6 @@ class Label:
 
 
 ParsedElement: TypeAlias = Instruction | Section | Label | str
-
-
-def get_file_lines(file: Path) -> List[str]:
-    with open(file, "r", encoding="utf-8") as f:
-        return f.readlines()
 
 
 def parse_file_lines(file_lines: List[str]) -> List[ParsedElement]:
