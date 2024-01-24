@@ -42,11 +42,11 @@ MNEMONIC = rf"{TAB}([^ ]+)"
 SPACES = r" +"
 POSIBLE_TAB = "\t?"
 OPERANDS = r"([^#]*)"
-COMMENTS = r"#.+$"
+# COMMENTS = r"#.+$"
 ANYTHING_ELSE = r".*$"
 
 INSTRUCTION_W_OPERANDS = (
-    rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{MNEMONIC}{SPACES}{POSIBLE_TAB}{OPERANDS}{ANYTHING_ELSE}"
+    rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{MNEMONIC}{SPACES}{POSIBLE_TAB}{OPERANDS}{ANYTHING_ELSE}"
 )
 
 INSTRUCION_NO_OPERANDS = rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{POSIBLE_TAB}{MNEMONIC}{ANYTHING_ELSE}"
@@ -58,8 +58,8 @@ LINE_IS_TITLE = r"^.*file format.*$"
 
 
 class LineParser:
-    def __init__(self, str_line: str) -> None:
-        self.line = str_line
+    def __init__(self, line: str) -> None:
+        self.line = line
 
     def parse(self) -> ParsedElement:
         """Parse a single line of the objdump output."""
