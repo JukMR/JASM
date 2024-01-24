@@ -1,6 +1,6 @@
 # tests/unit_tests/test_file2regex.py
-from src.jasm.regex.file2regex import File2Regex
-from src.jasm.global_definitions import EnumDisasStyle
+from jasm.regex.file2regex import File2Regex
+from jasm.global_definitions import EnumDisasStyle
 
 
 class ConcreteFile2Regex(File2Regex):

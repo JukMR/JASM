@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.jasm.regex.yaml2regex import Yaml2Regex
+from jasm.regex.yaml2regex import Yaml2Regex
 
 
 def load_regex_rule_no_macro(yamls_directory: Path) -> dict:

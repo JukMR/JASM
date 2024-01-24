@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from src.jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, Instruction
+from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, Instruction
 
 
 class TagOutofAddrsRangeJumps(IConsumer):

@@ -3,7 +3,7 @@
 from typing import Optional, Callable, Any
 import time
 
-from src.jasm.logging_config import logger
+from jasm.logging_config import logger
 
 
 def measure_performance(perf_title: Optional[str] = None) -> Callable[..., Any]:
