@@ -14,7 +14,8 @@ from src.stringify_asm.abstracts.asm_parser import AsmParser
 from src.stringify_asm.abstracts.disassembler import Disassembler
 from src.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer
 from src.stringify_asm.implementations.gnu_objdump.gnu_objdump_disassembler import GNUObjdumpDisassembler
-from src.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser import ObjdumpParser
+
+# from src.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser import ObjdumpParser
 from src.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser_manual import ObjdumpParserManual
 from src.stringify_asm.implementations.null_disassembler import NullDisassembler
 from src.stringify_asm.implementations.observers import RemoveEmptyInstructions
