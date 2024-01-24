@@ -117,7 +117,9 @@ class LineParser:
         match = re.match(INSTRUCTION_W_OPERANDS, self.line)
 
         if match:
-            return Instruction(addrs=match.group(1), mnemonic=match.group(2), operands=match.group(3).split(","))
+            return Instruction(
+                addrs=match.group(1), mnemonic=match.group(2), operands=match.group(3).strip().split(",")
+            )
         raise ValueError("Error parsing instruction")
 
     def parse_instruction_no_operands(self) -> Instruction:
