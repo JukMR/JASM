@@ -26,7 +26,7 @@ def get_file_lines(file: Path) -> List[str]:
         return f.readlines()
 
 
-def parse_file_lines(file_lines: List[str]) -> List["LineParser"]:
+def parse_file_lines(file_lines: List[str]) -> List[ParsedElement]:
     parsed_file_lines = []
     for line in file_lines:
         parsed_file_lines.append(parse_line(line))
