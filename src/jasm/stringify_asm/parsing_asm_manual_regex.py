@@ -36,7 +36,7 @@ HEX_ADDR = rf"({HEX_NUMBER}+):{TAB}"
 
 INSTRUCTION_CODE = rf"(?:{HEX_NUMBER}{{2}} ?)+"
 POSIBLE_TAB = "\t?"
-MNEMONIC = rf"{POSIBLE_TAB}([^ ]+)"
+MNEMONIC = rf"{TAB}([^ ]+)"
 SPACES = r" +"
 OPERANDS = r"([^# ]+)"
 # COMMENTS = r"#.+$"
