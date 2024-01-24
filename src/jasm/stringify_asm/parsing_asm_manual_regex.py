@@ -1,8 +1,8 @@
 import re
 from dataclasses import dataclass
-from typing import List, TypeAlias
+from typing import List, Optional, TypeAlias
 
-from src.stringify_asm.abstracts.abs_observer import Instruction
+from src.jasm.stringify_asm.abstracts.abs_observer import Instruction
 
 
 @dataclass
@@ -21,10 +21,7 @@ ParsedElement: TypeAlias = Instruction | Section | Label | str
 
 
 def parse_file_lines(file_lines: List[str]) -> List[ParsedElement]:
-    parsed_file_lines = []
-    for line in file_lines:
-        parsed_file_lines.append(parse_line(line))
-    return parsed_file_lines
+    return [parse_line(line) for line in file_lines]
 
 
 def parse_line(line: str) -> ParsedElement:
@@ -62,55 +59,41 @@ class LineParser:
 
     def parse(self) -> ParsedElement:
         """Parse a single line of the objdump output."""
-        if self.line_is_instruction():
-            return self.parse_instruction()
+        inst = self.parse_instruction()
+        if inst:
+            return inst
 
-        if self.line_is_instruction_no_operands():
-            return self.parse_instruction_no_operands()
+        inst = self.parse_instruction_no_operands()
+        if inst:
+            return inst
 
-        if self.line_is_section():
-            return self.parse_section()
+        label = self.parse_label()
+        if label:
+            return label
 
-        if self.line_is_label():
-            return self.parse_label()
+        line = self.parse_nop_padding()
+        if line:
+            return line
+
+        if self.is_line_broken():
+            return self.line
 
         if self.is_empty_line():
             return self.line
 
+        section = self.parse_section()
+        if section:
+            return section
+
         if self.line_is_title():
-            return self.line
-
-        if self.line_is_nop_padding():
-            # This is a line that is not an instruction but is a line that is used to pad the output of objdump
-            match = re.match(LINE_NOP_PADDING, self.line)
-            if match:
-                return Instruction(addrs=match.group(1), mnemonic="empty", operands=[])
-
-        if self.is_line_broken():
             return self.line
 
         print(f"Found a line that is not an instruction, section or label: '{self.line}'")
         return self.line
 
-    def line_is_instruction(self) -> bool:
-        """Check if the line is an instruction."""
-        return bool(re.match(INSTRUCTION_W_OPERANDS, self.line))
-
-    def line_is_instruction_no_operands(self) -> bool:
-        """Check if the line is an instruction without operands."""
-        return bool(re.match(INSTRUCION_NO_OPERANDS, self.line))
-
-    def line_is_nop_padding(self) -> bool:
-        """Check if the line is a line that is used to pad the output of objdump."""
-        return bool(re.match(LINE_NOP_PADDING, self.line))
-
     def line_is_section(self) -> bool:
         """Check if the line is a section."""
         return "Disassembly of section".lower() in self.line.lower()
-
-    def line_is_label(self) -> bool:
-        """Check if the line is a label."""
-        return bool(re.match(LINE_IS_LABER, self.line))
 
     def line_is_title(self) -> bool:
         """Check if the line is a title."""
@@ -124,7 +107,7 @@ class LineParser:
         """Check if the line is broken."""
         return self.line == "	..."
 
-    def parse_instruction(self) -> Instruction:
+    def parse_instruction(self) -> Optional[Instruction]:
         """Parse a single instruction."""
         match = re.match(INSTRUCTION_W_OPERANDS, self.line)
 
@@ -135,10 +118,9 @@ class LineParser:
 
             operands = OperandsParser(operands=operands).parse()
             return Instruction(addrs=addrs, mnemonic=mnemonic, operands=operands)
+        return None
 
-        raise ValueError("Error parsing instruction")
-
-    def parse_instruction_no_operands(self) -> Instruction:
+    def parse_instruction_no_operands(self) -> Optional[Instruction]:
         """Parse a single instruction without operands."""
         match = re.match(INSTRUCION_NO_OPERANDS, self.line)
         if match:
@@ -151,21 +133,31 @@ class LineParser:
                 return Instruction(addrs=addrs, mnemonic="bad", operands=[])
 
             return Instruction(addrs=match.group(1), mnemonic=match.group(2), operands=[])
-        raise ValueError("Error parsing instruction")
+        return None
 
-    def parse_section(self) -> Section:
+    def parse_section(self) -> Optional[Section]:
         """Parse a single section."""
         match = re.match("disassembly of section (.*)", self.line.lower())
         if match:
             return Section(name=match.group(1))
-        raise ValueError("Error parsing section")
 
-    def parse_label(self) -> Label:
+        return None
+
+    def parse_label(self) -> Optional[Label]:
         """Parse a single label."""
         match = re.match(LINE_IS_LABER, self.line)
         if match:
             return Label(addr=match.group(1), name=match.group(2))
-        raise ValueError("Error parsing label")
+        return None
+
+    def parse_nop_padding(self) -> Optional[Instruction]:
+        """Parse a single nop padding."""
+        # This is a line that is not an instruction but is a line that is used to pad the output of objdump
+
+        match = re.match(LINE_NOP_PADDING, self.line)
+        if match:
+            return Instruction(addrs=match.group(1), mnemonic="empty", operands=[])
+        return None
 
 
 class OperandsParser:

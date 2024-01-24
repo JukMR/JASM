@@ -1,6 +1,6 @@
 from typing import List
-from src.stringify_asm.abstracts.abs_observer import IConsumer
-from src.stringify_asm.abstracts.asm_parser import AsmParser
+from src.jasm.stringify_asm.abstracts.abs_observer import IConsumer
+from src.jasm.stringify_asm.abstracts.asm_parser import AsmParser
 
 
 class LlvmObjdumpParser(AsmParser):

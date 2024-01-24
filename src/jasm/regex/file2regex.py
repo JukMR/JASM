@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
-from src.global_definitions import EnumDisasStyle
+from src.jasm.global_definitions import EnumDisasStyle
 
 
 class File2Regex(ABC):

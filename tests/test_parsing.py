@@ -3,9 +3,9 @@ import re
 import pytest
 from conftest import load_test_configs
 
-from src.global_definitions import EnumDisasStyle, InputFileType
-from src.logging_config import logger
-from src.match import MasterOfPuppets
+from src.jasm.global_definitions import EnumDisasStyle, InputFileType
+from src.jasm.logging_config import logger
+from src.jasm.match import MasterOfPuppets
 
 
 def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_file_type: InputFileType) -> int:
