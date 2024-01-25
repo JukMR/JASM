@@ -12,7 +12,15 @@ fi
 
 # Export current directory to PYTHONPATH so pytest can see the files
 
-export PYTHONPATH=.
+# Check if PYTHONPATH is empty
+if [ -z "${PYTHONPATH:-}" ]; then
+    # If empty, set it to current directory
+    export PYTHONPATH="."
+else
+    # If not empty, append current directory to it
+    export PYTHONPATH="$PYTHONPATH:."
+fi
+
 # pytest -k "$ARG_1" -v tests/tests.py
 
 # Run integral tests
