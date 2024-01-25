@@ -14,10 +14,20 @@ jobs:
         with:
           node-version: "16"
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          python -m pip install --upgrade pip
+          pip install pytest pytest-xdist
+
       - name: Run tests
         run: |
           echo "Running tests..."
-          sudo apt install pytest pytest-xdist
           sh ./run_tests.sh
 
       - name: Build package
