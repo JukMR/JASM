@@ -12,7 +12,7 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          sh ./run-tests.sh
+          sh ./run_tests.sh
 
       - name: Build package
         run: |
