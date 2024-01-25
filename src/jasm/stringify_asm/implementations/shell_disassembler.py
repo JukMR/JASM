@@ -1,8 +1,8 @@
 from pathlib import Path
 import subprocess
 
-from src.jasm.logging_config import logger
-from src.jasm.stringify_asm.abstracts.disassembler import Disassembler
+from jasm.logging_config import logger
+from jasm.stringify_asm.abstracts.disassembler import Disassembler
 
 # from typing import override
 

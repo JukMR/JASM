@@ -5,20 +5,20 @@ Main match module
 from enum import Enum, auto
 from typing import List, Optional
 
-from src.jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
-from src.jasm.global_definitions import EnumDisasStyle, InputFileType
-from src.jasm.matched_observers import MatchedObserver
-from src.jasm.regex.yaml2regex import Yaml2Regex
-from src.jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
-from src.jasm.stringify_asm.abstracts.asm_parser import AsmParser
-from src.jasm.stringify_asm.abstracts.disassembler import Disassembler
-from src.jasm.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer
-from src.jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_disassembler import GNUObjdumpDisassembler
+from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
+from jasm.global_definitions import EnumDisasStyle, InputFileType
+from jasm.matched_observers import MatchedObserver
+from jasm.regex.yaml2regex import Yaml2Regex
+from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
+from jasm.stringify_asm.abstracts.asm_parser import AsmParser
+from jasm.stringify_asm.abstracts.disassembler import Disassembler
+from jasm.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer
+from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_disassembler import GNUObjdumpDisassembler
 
-# from src.jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser import ObjdumpParser
-from src.jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser_manual import ObjdumpParserManual
-from src.jasm.stringify_asm.implementations.null_disassembler import NullDisassembler
-from src.jasm.stringify_asm.implementations.observers import RemoveEmptyInstructions
+# from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser import ObjdumpParser
+from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser_manual import ObjdumpParserManual
+from jasm.stringify_asm.implementations.null_disassembler import NullDisassembler
+from jasm.stringify_asm.implementations.observers import RemoveEmptyInstructions
 
 DEFAULT_FLAGS = "-d"
 

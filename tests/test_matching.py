@@ -1,9 +1,9 @@
 import pytest
 from conftest import load_test_configs
 
-from src.jasm.global_definitions import InputFileType
-from src.jasm.logging_config import logger
-from src.jasm.match import MasterOfPuppets
+from jasm.global_definitions import InputFileType
+from jasm.logging_config import logger
+from jasm.match import MasterOfPuppets
 
 
 def run_match_test(
