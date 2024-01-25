@@ -13,7 +13,7 @@ fi
 # Export current directory to PYTHONPATH so pytest can see the files
 
 # Check if PYTHONPATH is empty
-if [ -z "$PYTHONPATH" ]; then
+if [ -z "${PYTHONPATH:-}" ]; then
     # If empty, set it to current directory
     export PYTHONPATH="."
 else
