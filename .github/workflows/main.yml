@@ -9,11 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
-        with:
-          node-version: "16"
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -28,8 +23,7 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          poetry shell
-          sh ./run_tests.sh
+          poetry run sh ./run_tests.sh
 
       - name: Build package
         run: |
