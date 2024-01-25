@@ -1,6 +1,6 @@
 import cProfile
-from src.jasm.global_definitions import InputFileType
-from src.jasm.match import MasterOfPuppets
+from jasm.global_definitions import InputFileType
+from jasm.match import MasterOfPuppets
 
 
 profiler = cProfile.Profile()

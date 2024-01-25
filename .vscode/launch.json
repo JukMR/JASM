@@ -2,6 +2,22 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "qequ lenovo objdump",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/objlenovo_qequ_objdump_2.34.s"
+            ]
+        },
+        {
             "name": "JASM: moonbounce example",
             "type": "python",
             "request": "launch",
@@ -187,7 +203,7 @@
             "args": [
                 "--debug",
                 "-p",
-                "tests/yamls/oren_rule_att_improved_rule.yaml",
+                "tests/yamls/oren_rule_att.yaml",
                 "-b",
                 "-i",
                 "tests/binary/lenovo2.bin"

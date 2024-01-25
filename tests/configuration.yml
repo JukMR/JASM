@@ -74,6 +74,11 @@ test_matching:
     binary: "tests/binary/lenovo2.bin"
     expected: True
 
+  - title: "lenovo_qequ_objdump"
+    yaml: "tests/yamls/oren_rule_att.yaml"
+    assembly: "tests/assembly/objlenovo_qequ_objdump_2.34.s"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"

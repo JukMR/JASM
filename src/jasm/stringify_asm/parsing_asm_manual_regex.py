@@ -2,7 +2,7 @@ import re
 from dataclasses import dataclass
 from typing import List, Optional, TypeAlias
 
-from src.jasm.stringify_asm.abstracts.abs_observer import Instruction
+from jasm.stringify_asm.abstracts.abs_observer import Instruction
 
 
 @dataclass
@@ -35,17 +35,19 @@ FIRST_PADDING = r"^ *"
 HEX_ADDR = rf"({HEX_NUMBER}+):{TAB}"
 
 INSTRUCTION_CODE = rf"(?:{HEX_NUMBER}{{2}} ?)+"
+POSIBLE_TAB = "\t?"
 MNEMONIC = rf"{TAB}([^ ]+)"
 SPACES = r" +"
-POSIBLE_TAB = "\t?"
-OPERANDS = r"([^#]*)"
+OPERANDS = r"([^# ]+)"
 # COMMENTS = r"#.+$"
 ANYTHING_ELSE = r".*$"
 
-INSTRUCTION_W_OPERANDS = rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{POSIBLE_TAB}{MNEMONIC}{SPACES}{POSIBLE_TAB}{OPERANDS}{ANYTHING_ELSE}"
+INSTRUCTION_W_OPERANDS = (
+    rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{MNEMONIC}{SPACES}{POSIBLE_TAB}{OPERANDS}{ANYTHING_ELSE}"
+)
 
 
-INSTRUCION_NO_OPERANDS = rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{POSIBLE_TAB}{MNEMONIC}{ANYTHING_ELSE}"
+INSTRUCION_NO_OPERANDS = rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}{SPACES}{MNEMONIC}{ANYTHING_ELSE}"
 
 LINE_NOP_PADDING = rf"{FIRST_PADDING}{HEX_ADDR}{INSTRUCTION_CODE}$"
 LINE_IS_LABER = rf"^({HEX_NUMBER}+) <(.*)>:$"

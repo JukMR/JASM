@@ -1,8 +1,8 @@
 import re
 from typing import Final, List, Optional
 
-from src.jasm.logging_config import logger
-from src.jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
+from jasm.logging_config import logger
+from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
 
 
 class InstructionObserverConsumer(IConsumer):
