@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,8 +28,29 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          export PYTHONPATH=.
           poetry run sh ./run_tests.sh
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          poetry install
 
       - name: Build package
         run: |
