@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          sh ./run-tests.sh
+
+      - name: Build package
+        run: |
+          echo "Building package..."
+          poetry build
