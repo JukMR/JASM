@@ -28,6 +28,7 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
+          export PYTHONPATH=.
           poetry run sh ./run_tests.sh
 
       - name: Build package
