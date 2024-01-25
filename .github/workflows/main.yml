@@ -28,8 +28,7 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          cd ..
-          poetry run sh ./run_tests.sh
+          poetry run pytest
 
   build:
     needs: test
