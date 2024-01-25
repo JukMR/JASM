@@ -23,11 +23,12 @@ jobs:
         run: |
           echo "Installing dependencies..."
           python -m pip install --upgrade pip
-          pip install pytest pytest-xdist
+          pip install pytest pytest-xdist poetry
 
       - name: Run tests
         run: |
           echo "Running tests..."
+          poetry shell
           sh ./run_tests.sh
 
       - name: Build package
