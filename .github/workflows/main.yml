@@ -25,10 +25,14 @@ jobs:
           echo "Installing dependencies with poetry ..."
           poetry install
 
+      - name: Install project
+        run: |
+          echo "Installing project..."
+          pip install -e .
       - name: Run tests
         run: |
           echo "Running tests..."
-          poetry run pytest
+          poetry run sh ./run_tests.sh
 
   build:
     needs: test
