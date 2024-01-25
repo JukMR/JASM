@@ -1,0 +1,3 @@
+# Extra development packages needed
+pytest
+pytest-xdist
