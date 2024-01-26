@@ -135,7 +135,7 @@ class MasterOfPuppets:
         assembly_style: Optional[EnumDisasStyle],
         input_file: str,
         input_file_type: InputFileType,
-        valid_addr_range: Optional[ValidAddrRange],
+        valid_addr_range: Optional[ValidAddrRange] = None,
         return_bool_result: bool = True,
     ) -> bool | str:
         """Main function to perform regex matching on assembly or binary."""
