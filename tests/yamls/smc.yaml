@@ -6,4 +6,12 @@ config:
 pattern:
   - movb:
       - "@any"
-      - rip
+      - deref:
+          main_reg: "%rip"
+          constant_offset: $any
+          register_multiplier: $any
+          constant_multiplier: $any
+# Comment on how to implement this:
+
+# - 0x1(pepe) -->  [pepe+0x1]
+#   objdump         jasm/godbolt
