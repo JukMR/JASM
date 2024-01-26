@@ -1,34 +1,40 @@
 ---
 pattern:
-  - push:
-      - $not:
-          - rex
-  - call:
-      times:
-        min: 3
-        max: 9
-  - nopw
-  - $not:
-      - $or:
-          - jump
-          - jq
-        times:
-          min: 1
-          max: 10
-  - $or:
-      - push
-      - call
-    times:
-      min: 3
-      max: 6
+    - push:
+          - $not:
+                - rex
+    - call:
+          times:
+              min: 3
+              max: 9
+    - nopw:
+          - deref:
+                main_reg: "%rax"
+                constant_offset: "0x0"
+                register_multiplier: "%rax"
+                constant_multiplier: 1
 
-  - $not:
-      - push
-  - mov:
-      - $or:
-          - rsi
-          - fs:0x28
-      - $or:
-          - rbp
-          - rax
-    times: 2
+    - $not:
+          - $or:
+                - jump
+                - jq
+            times:
+                min: 1
+                max: 10
+    - $or:
+          - push
+          - call
+      times:
+          min: 3
+          max: 6
+
+    - $not:
+          - push
+    - mov:
+          - $or:
+                - "[rsi]"
+                - fs:0x28
+          - $or:
+                - rbp
+                - rax
+      times: 2

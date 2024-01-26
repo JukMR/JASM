@@ -146,6 +146,22 @@
             ]
         },
         {
+            "name": "moonbounce bad small 19 lines",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/moonbounce_regex_matcher.yaml",
+                "-s",
+                "-i",
+                "tests/assembly/moonbounce_binarly_bad_small_19_lines.s"
+            ]
+        },
+        {
             "name": "test and_any_order",
             "type": "python",
             "request": "launch",
