@@ -119,7 +119,7 @@ class LineParser:
             operands = match.group(3).strip().split(",")
 
             operands = OperandsParser(operands=operands).parse()
-            return Instruction(addrs=addrs, mnemonic=mnemonic, operands=operands)
+            return Instruction(addr=addrs, mnemonic=mnemonic, operands=operands)
         return None
 
     def parse_instruction_no_operands(self) -> Optional[Instruction]:
@@ -132,9 +132,9 @@ class LineParser:
             # TODO: check if this is needed or this worst the performance
             # If instruction is bad return a bad instruction
             if mnemonic == "(bad)":
-                return Instruction(addrs=addrs, mnemonic="bad", operands=[])
+                return Instruction(addr=addrs, mnemonic="bad", operands=[])
 
-            return Instruction(addrs=match.group(1), mnemonic=match.group(2), operands=[])
+            return Instruction(addr=match.group(1), mnemonic=match.group(2), operands=[])
         return None
 
     def parse_section(self) -> Optional[Section]:
@@ -158,7 +158,7 @@ class LineParser:
 
         match = re.match(LINE_NOP_PADDING, self.line)
         if match:
-            return Instruction(addrs=match.group(1), mnemonic="empty", operands=[])
+            return Instruction(addr=match.group(1), mnemonic="empty", operands=[])
         return None
 
 
