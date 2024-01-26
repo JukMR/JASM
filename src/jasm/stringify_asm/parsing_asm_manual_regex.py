@@ -179,23 +179,22 @@ class OperandsParser:
             for operand in operands_list
         ]
 
-    @staticmethod
-    def _process_operand_elem(operand_elem: str) -> str:
+    def _process_operand_elem(self, operand_elem: str) -> str:
         "Process operand element"
 
+        # Operand is memory access
         if operand_elem[0] == "(" and operand_elem[-1] == ")":
+            operand_elem.replace("[", "").replace(")", "]")
             return operand_elem
 
+        # The operand have a memory address access plus an inmediate
         if "(" in operand_elem and ")" in operand_elem:
-            registry = re.findall(r"\([^\)]*\)", operand_elem)
-            if len(registry) != 1:
-                raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+            if "," in operand_elem:
+                return self.form_full_operand_with_4_elements(operand_elem)
+            else:
+                return self.form_full_operand_with_1_element(operand_elem)
 
-            inmediate = operand_elem.replace(registry[0], "")
-
-            return f"{registry[0]}+{inmediate}"
-
-        if operand_elem[0] == "$" or operand_elem[0] == "%":
+        if operand_elem.startswith("$") or operand_elem[0].startswith("%"):
             return operand_elem
 
         if isinstance(operand_elem, List):
@@ -230,6 +229,35 @@ class OperandsParser:
             return operand_elem
 
         raise ValueError("Error in processing operand")
+
+    @staticmethod
+    def form_full_operand_with_4_elements(operand_elem) -> str:
+        """Form a full operand with 4 elements."""
+        find_something_with_parenthesis_regex = r"\([^\)]*\)"
+        registry = re.search(find_something_with_parenthesis_regex, operand_elem)
+        if not registry:
+            raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+
+        constant_offset = operand_elem.replace(registry[0], "")
+        inside_parenthesis = registry.group()
+
+        elements = inside_parenthesis.split(",")
+
+        assert len(elements) == 3
+        main_reg, register_multiplier, constant_multiplier = elements
+
+        return f"[{main_reg}+{register_multiplier}*{constant_multiplier}+{constant_offset}]"
+
+    @staticmethod
+    def form_full_operand_with_1_element(operand_elem) -> str:
+        find_something_with_parenthesis_regex = r"\([^\)]*\)"
+        registry = re.search(find_something_with_parenthesis_regex, operand_elem)
+        if not registry:
+            raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+
+        immediate = operand_elem.replace(registry[0], "")
+
+        return f"[{registry.group()}+{immediate}]"
 
     def parse(self) -> List[str]:
         """Main class method.
