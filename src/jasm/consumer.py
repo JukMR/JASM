@@ -1,5 +1,5 @@
 import re
-from typing import Final, List, Optional
+from typing import Final, List, Optional, Type
 
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
