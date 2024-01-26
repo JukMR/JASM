@@ -12,7 +12,7 @@ class TagOutofAddrsRangeJumps(IConsumer):
         self.max_addr = max_addr
 
     def consume_instruction(self, inst: Instruction) -> None:
-        if inst.addrs > self.max_addr:
+        if inst.addr > self.max_addr:
             return self.deal_with_instruction_out_of_range(inst)
         return inst
 

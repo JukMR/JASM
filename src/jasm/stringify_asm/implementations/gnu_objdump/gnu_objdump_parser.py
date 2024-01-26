@@ -106,7 +106,7 @@ class ObjdumpParser(AsmParser):
         address = instruction_parts_addr[0]
 
         if len(instruction_parts_addr) == 2:
-            return Instruction(addrs=address, mnemonic="empty", operands=[])
+            return Instruction(addr=address, mnemonic="empty", operands=[])
 
         instruction_parts_command = instruction_parts_addr[2]
 
@@ -114,14 +114,14 @@ class ObjdumpParser(AsmParser):
         operands = instruction_parts_command[0][1:]
 
         if inst == BAD_INSTRUCTION:
-            return Instruction(addrs=address, mnemonic="bad", operands=[])
+            return Instruction(addr=address, mnemonic="bad", operands=[])
 
         if operands:
             operands_list = self._parse_operands(operands)
             operands_list_no_tags = self._remove_tags_from_operands(operands_list)
-            return Instruction(addrs=address, mnemonic=mnemonic, operands=operands_list_no_tags)
+            return Instruction(addr=address, mnemonic=mnemonic, operands=operands_list_no_tags)
 
-        return Instruction(addrs=address, mnemonic=mnemonic, operands=[])
+        return Instruction(addr=address, mnemonic=mnemonic, operands=[])
 
     # @override
     @measure_performance(perf_title="Parse Instructions")

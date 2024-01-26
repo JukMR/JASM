@@ -28,6 +28,7 @@ OperandType: TypeAlias = Optional[Dict[str, Any]]
 dict_node: TypeAlias = Dict[str, Any] | str | int
 
 
+# Move this to a global config class
 ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS: Final = True
 
 
@@ -41,6 +42,38 @@ class EnumDisasStyle(Enum):
 
     intel = auto()
     att = auto()
+
+
+class HexType:
+    def __init__(self, hex_str: str) -> None:
+        if hex_str.startswith("0x"):
+            only_int_part = hex_str[2:]
+        else:
+            only_int_part = hex_str
+        self.hex = int(only_int_part, 16)
+
+    def __lt__(self, other: "HexType") -> bool:
+        return self.hex < other.hex
+
+    def __gt__(self, other: "HexType") -> bool:
+        return self.hex > other.hex
+
+    def __eq__(self, other: object) -> bool:
+        return self.hex == other
+
+
+class ValidAddrRange:
+    """Enum for the valid address mode."""
+
+    def __init__(self, min_addr: str, max_addr: str) -> None:
+        self.min = HexType(min_addr)
+        self.max = HexType(max_addr)
+
+    def is_in_range(self, addr: str) -> bool:
+        """Check if the address is in the valid address range"""
+        addr_hex = HexType(addr)
+
+        return self.min.hex <= addr_hex.hex <= self.max.hex
 
 
 @dataclass

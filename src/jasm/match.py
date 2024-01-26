@@ -6,10 +6,10 @@ from enum import Enum, auto
 from typing import List, Optional
 
 from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
-from jasm.global_definitions import EnumDisasStyle, InputFileType
+from jasm.global_definitions import EnumDisasStyle, InputFileType, ValidAddrRange
 from jasm.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
-from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
+from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver, Instruction
 from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
 from jasm.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer
@@ -99,11 +99,14 @@ class MasterOfPuppets:
 
         file_style = self.get_file_style(pattern_pathstr=pattern_pathstr)
 
+        valid_addr_range = self.get_file_valid_addr_range(pattern_pathstr=pattern_pathstr)
+
         return self._do_matching_and_get_result(
             regex_rule=regex_rule,
             assembly_style=file_style,
             input_file=input_file,
             input_file_type=input_file_type,
+            valid_addr_range=valid_addr_range,
             return_bool_result=True,
         )
 
@@ -120,12 +123,19 @@ class MasterOfPuppets:
 
         return file_stype
 
+    def get_file_valid_addr_range(self, pattern_pathstr: str) -> Optional[ValidAddrRange]:
+        """Retrieve the file style from the pattern file"""
+        file_valid_addr_range = Yaml2Regex(pattern_pathstr).get_valid_addr_range()
+
+        return file_valid_addr_range
+
     @staticmethod
     def _do_matching_and_get_result(
         regex_rule: str,
         assembly_style: Optional[EnumDisasStyle],
         input_file: str,
         input_file_type: InputFileType,
+        valid_addr_range: Optional[ValidAddrRange],
         return_bool_result: bool = True,
     ) -> bool | str:
         """Main function to perform regex matching on assembly or binary."""
@@ -139,6 +149,10 @@ class MasterOfPuppets:
         # Consumer call observers
         observer_list = ObserverBuilder().get_instruction_observers()
 
+        if valid_addr_range:
+            valid_addr_observer = get_valid_addr_observer(valid_addr_range)
+            observer_list.append(valid_addr_observer)
+
         for obs in observer_list:
             consumer.add_observer(obs)
 
@@ -151,3 +165,24 @@ class MasterOfPuppets:
         if return_bool_result:
             return matched_observer.matched
         return matched_observer.stringified_instructions
+
+
+def get_valid_addr_observer(valid_addr_range: ValidAddrRange) -> IInstructionObserver:
+    """Get the valid address observer"""
+    return ValidAddrObserver(valid_addr_range)
+
+
+class ValidAddrObserver(IInstructionObserver):
+    """Valid address observer"""
+
+    def __init__(self, valid_addr_range: ValidAddrRange) -> None:
+        self.addr_range = valid_addr_range
+
+    def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:
+        """Main observer method"""
+
+        if self.addr_range.is_in_range(inst.addr):
+            # Find a way to fix this
+            if inst.mnemonic in ["call", "jmp"]:
+                return Instruction(addr=inst.addr, mnemonic=inst.mnemonic, operands=["valid_addr"])
+        return inst

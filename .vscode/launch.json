@@ -217,5 +217,21 @@
             "console": "integratedTerminal",
             "justMyCode": true,
         },
+        {
+            "name": "lenovo_rule_with_valid_addr",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att_addr_valid.yaml",
+                "-b",
+                "-i",
+                "tests/binary/lenovo2.bin"
+            ]
+        },
     ]
 }
