@@ -181,8 +181,8 @@ class ValidAddrObserver(IInstructionObserver):
     def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:
         """Main observer method"""
 
-        if self.addr_range.is_in_range(inst.addr):
-            # Find a way to fix this
-            if inst.mnemonic in ["call", "jmp"]:
+        inst_addr_jump = inst.operands[0] if inst.operands else None
+        if inst_addr_jump and self.addr_range.is_in_range(inst.addr):
+            if inst.mnemonic in ["call", "jmp", "jne", "je", "jg", "jge", "jl", "jle", "jz", "jnz"]:
                 return Instruction(addr=inst.addr, mnemonic=inst.mnemonic, operands=["valid_addr"])
         return inst
