@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 import yaml
 
-from jasm.global_definitions import EnumDisasStyle
+from jasm.global_definitions import EnumDisasStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.command import PatternNode
 from jasm.regex.file2regex import File2Regex
@@ -84,4 +84,16 @@ class Yaml2Regex(File2Regex):
                 return EnumDisasStyle.intel
             if style == "att":
                 return EnumDisasStyle.att
+        return None
+
+    def get_valid_addr_range(self) -> Optional[ValidAddrRange]:
+        "Get the valid address range from the pattern file"
+        config = self.loaded_file.get("config")
+        if config:
+            valid_addr = config.get("valid_addr_range")
+        else:
+            return None
+
+        if valid_addr:
+            return ValidAddrRange(min_addr=valid_addr.get("min"), max_addr=(valid_addr.get("max")))
         return None
