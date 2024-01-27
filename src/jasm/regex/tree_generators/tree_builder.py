@@ -77,7 +77,7 @@ class PatternNodeBuilderNoParents:
                 times=TimeType(min_times=1, max_times=1),
                 children=None,
                 pattern_node_dict=name,
-                command_type=PatternNodeTypes.deref_child,
+                command_type=PatternNodeTypes.deref_property,
                 parent=None,
             )
         ]
@@ -128,7 +128,7 @@ class PatternNodeTypeBuilder:
                 return PatternNodeTypes.deref
 
             if self.is_father_is_deref():
-                return PatternNodeTypes.deref_child
+                return PatternNodeTypes.deref_property
 
         # Is operand
 
