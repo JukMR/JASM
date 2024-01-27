@@ -1,8 +1,17 @@
 ---
 pattern:
-    - nopw:
-          - $deref:
-                main_reg: "%rax"
-                constant_offset: "0x0"
-                register_multiplier: "%rax"
-                constant_multiplier: 1
+  - push:
+      - $not:
+          - rex
+
+  - call:
+      times:
+        min: 3
+        max: 9
+
+  - nopw:
+      - $deref:
+          main_reg: "%rax"
+          constant_offset: "0x0"
+          register_multiplier: "%rax"
+          constant_multiplier: 1

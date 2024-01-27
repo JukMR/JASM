@@ -58,8 +58,12 @@ class PatternNode:
     def get_regex(self, command: "PatternNode") -> str:
         if command.command_type in [PatternNodeTypes.mnemonic, PatternNodeTypes.operand]:
             return self.process_leaf(command)
+
         if command.command_type == PatternNodeTypes.deref_property:
             return self.process_deref_child(command)
+
+        if command.command_type == PatternNodeTypes.times:
+            return ""
         return self.process_branch(command)
 
     def process_leaf(self, com: "PatternNode") -> str:
