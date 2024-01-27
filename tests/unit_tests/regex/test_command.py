@@ -9,7 +9,7 @@ from jasm.regex.command import (
     IGNORE_NAME_SUFFIX,
     BranchProcessor,
     PatternNode,
-    CommandTypes,
+    PatternNodeTypes,
     RegexWithOperandsCreator,
     TimeType,
     get_command_name,
@@ -34,24 +34,24 @@ def test_get_command_name_with_string():
 def command_fixture():
     # Create a basic Command fixture
     return PatternNode(
-        command_dict={},
+        pattern_node_dict={},
         name="test",
         times=TimeType(min_times=1, max_times=1),
         children=[],
-        command_type=CommandTypes.operand,
+        command_type=PatternNodeTypes.operand,
         parent=None,
     )
 
 
 def test_get_regex_mnemonic(command_fixture: PatternNode) -> None:
-    command_fixture.command_type = CommandTypes.mnemonic
+    command_fixture.command_type = PatternNodeTypes.mnemonic
     command_fixture.process_leaf = MagicMock(return_value="leaf_regex")
     assert command_fixture.get_regex(command_fixture) == "leaf_regex"
     command_fixture.process_leaf.assert_called_once()
 
 
 def test_get_regex_operand(command_fixture: PatternNode) -> None:
-    command_fixture.command_type = CommandTypes.operand
+    command_fixture.command_type = PatternNodeTypes.operand
     command_fixture.process_leaf = MagicMock(return_value="leaf_regex")
     assert command_fixture.get_regex(command_fixture) == "leaf_regex"
     command_fixture.process_leaf.assert_called_once()
@@ -59,7 +59,7 @@ def test_get_regex_operand(command_fixture: PatternNode) -> None:
 
 def test_process_leaf_no_children(command_fixture: PatternNode):
     command_fixture.name = "operand"
-    command_fixture.command_type = CommandTypes.operand
+    command_fixture.command_type = PatternNodeTypes.operand
     command_fixture.children = None
     # Assuming sanitize_operand_name works correctly
     assert command_fixture.process_leaf(command_fixture) == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
@@ -67,13 +67,13 @@ def test_process_leaf_no_children(command_fixture: PatternNode):
 
 def test_process_leaf_with_children(command_fixture: PatternNode):
     command_fixture.name = "command_with_children"
-    command_fixture.command_type = CommandTypes.mnemonic
+    command_fixture.command_type = PatternNodeTypes.mnemonic
     child_command = PatternNode(
-        command_dict={},
+        pattern_node_dict={},
         name="child",
         times=TimeType(min_times=1, max_times=1),
         children=None,
-        command_type=CommandTypes.operand,
+        command_type=PatternNodeTypes.operand,
         parent=command_fixture,
     )
     command_fixture.children = [child_command]
@@ -101,7 +101,7 @@ def test_process_branch_and(command_fixture: PatternNode):
         mock_child.name = f"mock_child{i_mock + 1}"
         mock_child.times = TimeType(min_times=1, max_times=1)
         mock_child.children = []
-        mock_child.command_type = CommandTypes.operand
+        mock_child.command_type = PatternNodeTypes.operand
         mock_child.get_regex = MagicMock(return_value=f"{mock_child.name}")
 
     # Set up the return value for get_regex method on mock children
@@ -111,7 +111,7 @@ def test_process_branch_and(command_fixture: PatternNode):
     # Assign these mock children to the command_fixture
     command_fixture.children = [mock_child1, mock_child2]
     command_fixture.name = "$and"
-    command_fixture.command_type = CommandTypes.node  # or appropriate type
+    command_fixture.command_type = PatternNodeTypes.node  # or appropriate type
 
     regex = command_fixture.process_branch(command_fixture)
 

@@ -6,7 +6,7 @@ config:
 pattern:
   - movb:
       - "@any"
-      - deref:
+      - $deref:
           main_reg: "%rip"
           constant_offset: $any
           register_multiplier: $any

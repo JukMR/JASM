@@ -9,7 +9,7 @@ from jasm.global_definitions import (
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_COMMAND,
-    CommandTypes,
+    PatternNodeTypes,
     TimeType,
     dict_node,
 )
@@ -31,11 +31,11 @@ def get_command_name(
 class PatternNode:
     def __init__(
         self,
-        command_dict: dict_node,
+        pattern_node_dict: dict_node,
         name: str | int,
         times: TimeType,
         children: Optional[dict | List["PatternNode"]],
-        command_type: Optional[CommandTypes],
+        command_type: Optional[PatternNodeTypes],
         parent: Optional["PatternNode"],
     ) -> None:
         """
@@ -48,7 +48,7 @@ class PatternNode:
         :param command_type: The type of the command (mnemonic, operand, etc.).
         :param parent: The parent command, if any.
         """
-        self.command_dict = command_dict
+        self.command_dict = pattern_node_dict
         self.name = name
         self.times = times
         self.children = children
@@ -56,8 +56,10 @@ class PatternNode:
         self.parent = parent
 
     def get_regex(self, command: "PatternNode") -> str:
-        if command.command_type in [CommandTypes.mnemonic, CommandTypes.operand]:
+        if command.command_type in [PatternNodeTypes.mnemonic, PatternNodeTypes.operand]:
             return self.process_leaf(command)
+        if command.command_type == PatternNodeTypes.deref_child:
+            return self.process_deref_child(command)
         return self.process_branch(command)
 
     def process_leaf(self, com: "PatternNode") -> str:
@@ -65,13 +67,15 @@ class PatternNode:
         children = com.children
         times = com.times
         if not children:
-            if com.command_type == CommandTypes.operand:
+            if com.command_type == PatternNodeTypes.operand:
                 # Is an operand
                 return str(self.sanitize_operand_name(name))
             # Is a mnemonic with no operands
             print(f"Found a mnemonic with no operands: {com.name}")
 
         assert isinstance(children, List) or (not children), "Children must be a list or None"
+        # This line shouldn't be necessary but the linter complains children could be dict
+        assert not isinstance(children, dict), "Children must be a list or None"
         return RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
 
     def sanitize_operand_name(self, name: str | int) -> str | int:
@@ -109,6 +113,12 @@ class PatternNode:
         if command.children:
             return [self.get_regex(child) for child in command.children]
         raise ValueError("Children list is empty")
+
+    def process_deref_child(self, command: "PatternNode") -> str | int:
+        assert isinstance(command.command_dict, tuple)
+        result = command.command_dict[1]
+        assert isinstance(result, str | int)
+        return result
 
 
 class RegexWithOperandsCreator:
@@ -175,6 +185,8 @@ class BranchProcessor:
             #     return self.process_perm(child_regexes, times_regex=times_regex)
             case "$and_any_order":
                 return self.process_and_any_order(child_regexes, times_regex=times_regex)
+            case "$deref":
+                return self.process_deref(child_regexes, times_regex=times_regex)
             case _:
                 raise ValueError("Unknown command type")
 
@@ -208,6 +220,16 @@ class BranchProcessor:
             regex_list.append(self.process_and(child_regexes=list_regex, times_regex=None))
 
         return self.process_or(regex_list, times_regex)
+
+    def process_deref(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
+        def join_deref_childs(child_regexes: List[str]) -> str:
+            main_reg, constant_offset, register_multiplier, constant_multiplier = child_regexes
+            deref_child_regex = rf"\[{main_reg}\+{register_multiplier}\*{constant_multiplier}\+{constant_offset}\]"
+            return deref_child_regex
+
+        if times_regex:
+            return f"({join_deref_childs(child_regexes)}){times_regex}"
+        return f"({join_deref_childs(child_regexes)})"
 
     @staticmethod
     def generate_any_order_permutation(child_regexes: List[str]) -> List[List[str]]:
