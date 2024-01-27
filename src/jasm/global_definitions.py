@@ -7,7 +7,7 @@ from typing import Any, Dict, Final, List, Optional, TypeAlias
 
 INSTRUCTION_SEPARATOR = r"\|"
 SKIP_TO_END_OF_OPERAND = "[^,|]*,"
-SKIP_TO_END_OF_COMMAND = "[^|]*" + INSTRUCTION_SEPARATOR
+SKIP_TO_END_OF_PATTERNNODE = "[^|]*" + INSTRUCTION_SEPARATOR
 SKIP_TO_START_OF_OPERAND = "[^|,]*"
 SKIP_TO_ANY_OPERAND_CHARS = "[^|]*"
 

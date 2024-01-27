@@ -181,13 +181,6 @@ class OperandsParser:
         """Parse the operands of an instruction."""
         return [self._process_operand_elem(operand_elem=operand) for operand in self.operands]
 
-    # def remove_tags_from_operands(self, operands_list: List[str]) -> List[str]:
-    #     """Remove extra tags from operands."""
-    #     return [
-    #         operand.replace("$", "").replace("%", "").replace("*", "").replace("(", "").replace(")", "")
-    #         for operand in operands_list
-    #     ]
-
     def _process_operand_elem(self, operand_elem: str) -> str:
         "Process operand element"
 
@@ -271,7 +264,13 @@ class OperandsParser:
 
         immediate = operand_elem.replace(registry[0], "")
 
-        return f"[{registry.group()}+{immediate}]"
+        register = registry.group()
+        if register.startswith("("):
+            register = register[1:]
+        if register.endswith(")"):
+            register = register[:-1]
+
+        return f"[{register}+{immediate}]"
 
     def parse(self) -> List[str]:
         """Main class method.
