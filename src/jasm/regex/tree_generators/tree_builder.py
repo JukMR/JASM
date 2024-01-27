@@ -1,10 +1,10 @@
 from typing import List, Optional
 
 from jasm.regex.command import PatternNode
-from jasm.global_definitions import CommandTypes, TimeType, dict_node
+from jasm.global_definitions import PatternNodeTypes, TimeType, dict_node
 
 
-class CommandBuilderNoParents:
+class PatternNodeBuilderNoParents:
     def __init__(self, command_dict: dict_node | str | int) -> None:
         self.command = command_dict
 
@@ -18,6 +18,13 @@ class CommandBuilderNoParents:
             self.name = self._get_name(self.command)
             self.times = self._get_times(self.command)
             self.children = self._get_children(name=self.name, command=self.command)
+
+        # Case when PatternNode is from a deref
+        elif isinstance(self.command, tuple):
+            self.name = self.command[0]
+            # self.time = self._get_times(self.command) # TODO: Fix this
+            self.times = TimeType(min_times=1, max_times=1)
+            self.children = self.get_simple_child(self.command[1])
 
     @staticmethod
     def _get_name(command_dict: dict_node) -> str:
@@ -56,22 +63,39 @@ class CommandBuilderNoParents:
     def _get_children(name: str, command: dict_node) -> List[PatternNode]:
         assert isinstance(command, dict)
 
-        return [CommandBuilderNoParents(com).build() for com in command[name] if com != "times"]
+        if isinstance(command[name], List):
+            return [PatternNodeBuilderNoParents(com).build() for com in command[name] if com != "times"]
+        if isinstance(command[name], dict):
+            return [PatternNodeBuilderNoParents(com).build() for com in command[name].items() if com != "times"]
+        raise ValueError("Command is not a list or a dict")
+
+    @staticmethod
+    def get_simple_child(name: str) -> List[PatternNode]:
+        return [
+            PatternNode(
+                name=name,
+                times=TimeType(min_times=1, max_times=1),
+                children=None,
+                pattern_node_dict=name,
+                command_type=PatternNodeTypes.deref_child,
+                parent=None,
+            )
+        ]
 
     def build(self) -> PatternNode:
         assert isinstance(self.name, (str, int))
 
         return PatternNode(
-            command_dict=self.command,
+            pattern_node_dict=self.command,
             name=self.name,
             times=self.times,
             children=self.children,
-            parent=None,
             command_type=None,
+            parent=None,
         )
 
 
-class CommandParentsBuilder:
+class PatternNodeParentsBuilder:
     def __init__(self, command: PatternNode) -> None:
         self.command = command
 
@@ -79,7 +103,7 @@ class CommandParentsBuilder:
         for child in children:
             child.parent = parent
             if child.children:  # Recursively set parent for the child's children
-                assert isinstance(child.children, List)
+                assert isinstance(child.children, List) or isinstance(child.children, str)
                 self.set_parent(child, child.children)
 
     def build(self) -> None:
@@ -88,35 +112,42 @@ class CommandParentsBuilder:
             self.set_parent(self.command, self.command.children)
 
 
-class CommandsTypeBuilder:
+class PatternNodeTypeBuilder:
     def __init__(self, parent: PatternNode) -> None:
         assert isinstance(parent, PatternNode)
         self.command = parent
 
-    def _get_type(self) -> CommandTypes:
+    def _get_type(self) -> PatternNodeTypes:
         if not getattr(self.command, "name", None):
             raise ValueError("Name is not defined")
 
         name = self.command.name
 
+        if isinstance(name, str):
+            if name == "$deref":
+                return PatternNodeTypes.deref
+
+            if self.is_father_is_deref():
+                return PatternNodeTypes.deref_child
+
         # Is operand
 
         if isinstance(name, int):
-            return CommandTypes.operand
+            return PatternNodeTypes.operand
 
         # Is node
 
         if self.is_node(name):
-            return CommandTypes.node
+            return PatternNodeTypes.node
 
         if self.is_father_is_mnemonic():
-            return CommandTypes.operand
+            return PatternNodeTypes.operand
 
         if self.any_ancestor_is_mnemonic():
-            return CommandTypes.operand
+            return PatternNodeTypes.operand
 
         # Else is mnemonic
-        return CommandTypes.mnemonic
+        return PatternNodeTypes.mnemonic
 
     @staticmethod
     def is_node(name: str):
@@ -131,7 +162,13 @@ class CommandsTypeBuilder:
         "Check if the parent is a mnemonic"
         if not self.command.parent:
             return False
-        return self.command.parent.command_type == CommandTypes.mnemonic
+        return self.command.parent.command_type == PatternNodeTypes.mnemonic
+
+    def is_father_is_deref(self) -> bool:
+        "Check if the parent is a deref"
+        if not self.command.parent:
+            return False
+        return self.command.parent.command_type == PatternNodeTypes.deref
 
     def any_ancestor_is_mnemonic(self) -> bool:
         "Check if any ancestor is a mnemonic"
@@ -139,7 +176,7 @@ class CommandsTypeBuilder:
         current_node = self.command.parent
 
         while current_node:
-            if current_node.command_type == CommandTypes.mnemonic:
+            if current_node.command_type == PatternNodeTypes.mnemonic:
                 return True
             current_node = current_node.parent
         return False
@@ -148,4 +185,4 @@ class CommandsTypeBuilder:
         self.set_type()
         if self.command.children:
             for child in self.command.children:
-                CommandsTypeBuilder(child).build()
+                PatternNodeTypeBuilder(child).build()

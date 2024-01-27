@@ -116,11 +116,20 @@ class LineParser:
         if match:
             addrs = match.group(1)
             mnemonic = match.group(2)
-            operands = match.group(3).strip().split(",")
+            operands = match.group(3)
 
-            operands = OperandsParser(operands=operands).parse()
-            return Instruction(addr=addrs, mnemonic=mnemonic, operands=operands)
+            operands_list = self.get_splitted_operands(operands=operands)
+
+            operands_parsed = OperandsParser(operands=operands_list).parse()
+            return Instruction(addr=addrs, mnemonic=mnemonic, operands=operands_parsed)
         return None
+
+    @staticmethod
+    def get_splitted_operands(operands: str) -> List[str]:
+        """Get splitted operands."""
+        # Will split between commans only if this commas are not inside a parenthesis
+        operands_list = re.split(r",(?![^\(]*\))", operands)
+        return operands_list
 
     def parse_instruction_no_operands(self) -> Optional[Instruction]:
         """Parse a single instruction without operands."""
@@ -172,12 +181,12 @@ class OperandsParser:
         """Parse the operands of an instruction."""
         return [self._process_operand_elem(operand_elem=operand) for operand in self.operands]
 
-    def remove_tags_from_operands(self, operands_list: List[str]) -> List[str]:
-        """Remove extra tags from operands."""
-        return [
-            operand.replace("$", "").replace("%", "").replace("*", "").replace("(", "").replace(")", "")
-            for operand in operands_list
-        ]
+    # def remove_tags_from_operands(self, operands_list: List[str]) -> List[str]:
+    #     """Remove extra tags from operands."""
+    #     return [
+    #         operand.replace("$", "").replace("%", "").replace("*", "").replace("(", "").replace(")", "")
+    #         for operand in operands_list
+    #     ]
 
     def _process_operand_elem(self, operand_elem: str) -> str:
         "Process operand element"
@@ -190,9 +199,11 @@ class OperandsParser:
         # The operand have a memory address access plus an inmediate
         if "(" in operand_elem and ")" in operand_elem:
             if "," in operand_elem:
+                # Operand is of form 0x0(%rax,%rax,1)
                 return self.form_full_operand_with_4_elements(operand_elem)
-            else:
-                return self.form_full_operand_with_1_element(operand_elem)
+
+            # Operand is of form *0x1dc59(%rip)
+            return self.form_full_operand_with_1_element(operand_elem)
 
         if operand_elem.startswith("$") or operand_elem[0].startswith("%"):
             return operand_elem
@@ -246,6 +257,9 @@ class OperandsParser:
         assert len(elements) == 3
         main_reg, register_multiplier, constant_multiplier = elements
 
+        main_reg = main_reg.replace("(", "")
+        constant_multiplier = constant_multiplier.replace(")", "")
+
         return f"[{main_reg}+{register_multiplier}*{constant_multiplier}+{constant_offset}]"
 
     @staticmethod
@@ -263,5 +277,4 @@ class OperandsParser:
         """Main class method.
         Parse the operands of an instruction."""
         operands_list = self.parse_operands()
-        operands_list_no_tags = self.remove_tags_from_operands(operands_list)
-        return operands_list_no_tags
+        return operands_list

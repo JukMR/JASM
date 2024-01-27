@@ -82,7 +82,9 @@ class TimeType:
     max_times: int
 
 
-class CommandTypes(Enum):
+class PatternNodeTypes(Enum):
     node = auto()
     operand = auto()
     mnemonic = auto()
+    deref = auto()
+    deref_child = auto()
