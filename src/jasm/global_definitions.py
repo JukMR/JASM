@@ -88,3 +88,4 @@ class PatternNodeTypes(Enum):
     mnemonic = auto()
     deref = auto()
     deref_property = auto()
+    times = auto()

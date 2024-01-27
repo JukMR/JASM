@@ -130,6 +130,10 @@ class PatternNodeTypeBuilder:
             if self.is_father_is_deref():
                 return PatternNodeTypes.deref_property
 
+        # Is times
+        if name == "times":
+            return PatternNodeTypes.times
+
         # Is operand
 
         if isinstance(name, int):
