@@ -1,4 +1,4 @@
-"Command definition file"
+"PatternNode definition file"
 
 from itertools import permutations
 from typing import List, Optional
@@ -8,21 +8,22 @@ from jasm.global_definitions import (
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
-    SKIP_TO_END_OF_COMMAND,
+    SKIP_TO_END_OF_PATTERNNODE,
     PatternNodeTypes,
     TimeType,
     dict_node,
 )
+from jasm.regex.deref_classes import DerefObject, DerefObjectBuilder
 
 
-def get_command_name(
+def get_pattern_nod_name(
     name: str | int,
     allow_matching_substrings: bool = ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
     name_prefix: str = IGNORE_NAME_PREFIX,
     name_suffix: str = IGNORE_NAME_SUFFIX,
 ) -> str | int:
     if name == "@any":
-        name = "[^,]*"
+        name = f"[^,]{1,10}"  # Set a limit of 10 characters for the name for reducing regex complexity
     if allow_matching_substrings:
         return f"{name_prefix}{name}{name_suffix}"
     return name
@@ -35,47 +36,47 @@ class PatternNode:
         name: str | int,
         times: TimeType,
         children: Optional[dict | List["PatternNode"]],
-        command_type: Optional[PatternNodeTypes],
+        pattern_node_type: Optional[PatternNodeTypes],
         parent: Optional["PatternNode"],
     ) -> None:
         """
         Initialize a Command object.
 
-        :param command_dict: A dictionary representing the command structure.
-        :param name: The name of the command.
-        :param times: Repeating information for the command execution.
-        :param children: Sub-commands or child commands.
-        :param command_type: The type of the command (mnemonic, operand, etc.).
-        :param parent: The parent command, if any.
+        :param pattern_node_dict: A dictionary representing the pattern_nod structure.
+        :param name: The name of the pattern_nod.
+        :param times: Repeating information for the pattern_nod execution.
+        :param children: Sub-pattern_nods or child pattern_nods.
+        :param pattern_nod_type: The type of the pattern_nod (mnemonic, operand, etc.).
+        :param parent: The parent pattern_nod, if any.
         """
-        self.command_dict = pattern_node_dict
+        self.pattern_node_dict = pattern_node_dict
         self.name = name
         self.times = times
         self.children = children
-        self.command_type = command_type
+        self.pattern_node_type = pattern_node_type
         self.parent = parent
 
-    def get_regex(self, command: "PatternNode") -> str:
-        if command.command_type in [PatternNodeTypes.mnemonic, PatternNodeTypes.operand]:
-            return self.process_leaf(command)
+    def get_regex(self, pattern_node: "PatternNode") -> str:
+        if pattern_node.pattern_node_type in [PatternNodeTypes.mnemonic, PatternNodeTypes.operand]:
+            return self.process_leaf(pattern_node)
 
-        if command.command_type == PatternNodeTypes.deref_property:
-            return self.process_deref_child(command)
+        if pattern_node.pattern_node_type == PatternNodeTypes.deref_property:
+            return self.process_deref_child(pattern_node)
 
-        if command.command_type == PatternNodeTypes.times:
+        if pattern_node.pattern_node_type == PatternNodeTypes.times:
             return ""
-        return self.process_branch(command)
+        return self.process_branch(pattern_node)
 
-    def process_leaf(self, com: "PatternNode") -> str:
-        name = com.name
-        children = com.children
-        times = com.times
+    def process_leaf(self, pattern: "PatternNode") -> str:
+        name = pattern.name
+        children = pattern.children
+        times = pattern.times
         if not children:
-            if com.command_type == PatternNodeTypes.operand:
+            if pattern.pattern_node_type == PatternNodeTypes.operand:
                 # Is an operand
                 return str(self.sanitize_operand_name(name))
             # Is a mnemonic with no operands
-            print(f"Found a mnemonic with no operands: {com.name}")
+            print(f"Found a mnemonic with no operands: {pattern.name}")
 
         assert isinstance(children, List) or (not children), "Children must be a list or None"
         # This line shouldn't be necessary but the linter complains children could be dict
@@ -105,22 +106,24 @@ class PatternNode:
             assert isinstance(name, str), "Operand name must be a string"
             return _process_hex_operand(name)
 
-        command_name = get_command_name(name)
-        return command_name
+        pattern_nod_name = get_pattern_nod_name(name)
+        return pattern_nod_name
 
-    def process_branch(self, command: "PatternNode") -> str:
-        child_regexes = self.process_children(command)
-        times_regex: Optional[str] = global_get_min_max_regex(times=command.times)
-        return BranchProcessor().process_command(command.name, child_regexes, times_regex)
+    def process_branch(self, pattern_node: "PatternNode") -> str:
+        child_regexes = self.process_children(pattern_node)
+        times_regex: Optional[str] = global_get_min_max_regex(times=pattern_node.times)
+        return BranchProcessor().process_pattern_node(
+            pattern_node.name, child_regexes, times_regex, pattern_node.pattern_node_dict
+        )
 
-    def process_children(self, command: "PatternNode") -> List[str]:
-        if command.children:
-            return [self.get_regex(child) for child in command.children]
+    def process_children(self, pattern_node: "PatternNode") -> List[str]:
+        if pattern_node.children:
+            return [self.get_regex(child) for child in pattern_node.children]
         raise ValueError("Children list is empty")
 
-    def process_deref_child(self, command: "PatternNode") -> str | int:
-        assert isinstance(command.command_dict, tuple)
-        result = command.command_dict[1]
+    def process_deref_child(self, pattern_node: "PatternNode") -> str | int:
+        assert isinstance(pattern_node.pattern_node_dict, tuple)
+        result = pattern_node.pattern_node_dict[1]
         assert isinstance(result, str | int)
         return result
 
@@ -152,32 +155,37 @@ class RegexWithOperandsCreator:
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         # Add prefix and suffix to name to allow matching only substring
-        command_name = get_command_name(self.name)
+        pattern_nod_name = get_pattern_nod_name(self.name)
 
         if operands_regex:
-            return f"(({IGNORE_INST_ADDR}{command_name}({operands_regex}){SKIP_TO_END_OF_COMMAND}){times_regex})"
-        return f"(({IGNORE_INST_ADDR}{command_name}{SKIP_TO_END_OF_COMMAND}){times_regex})"
+            return (
+                f"(({IGNORE_INST_ADDR}{pattern_nod_name}({operands_regex}){SKIP_TO_END_OF_PATTERNNODE}){times_regex})"
+            )
+        return f"(({IGNORE_INST_ADDR}{pattern_nod_name}{SKIP_TO_END_OF_PATTERNNODE}){times_regex})"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
-        command_name = get_command_name(self.name)
+        pattern_nod_name = get_pattern_nod_name(self.name)
 
         if operands_regex:
-            return f"({IGNORE_INST_ADDR}{command_name}{operands_regex}{SKIP_TO_END_OF_COMMAND})"
-        return f"({IGNORE_INST_ADDR}{command_name}{SKIP_TO_END_OF_COMMAND})"
+            return f"({IGNORE_INST_ADDR}{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERNNODE})"
+        return f"({IGNORE_INST_ADDR}{pattern_nod_name}{SKIP_TO_END_OF_PATTERNNODE})"
 
 
 class BranchProcessor:
-    def process_command(self, command_name: str | int, child_regexes: List[str], times_regex: Optional[str]) -> str:
+    def process_pattern_node(
+        self, pattern_nod_name: str | int, child_regexes: List[str], times_regex: Optional[str], pattern_node_dict: dict
+    ) -> str:
         """
-        Process a command based on its name and child regexes.
+        Process a pattern_node based on its name and child regexes.
 
-        :param command_name: The name of the command.
-        :param child_regexes: List of regexes from child commands.
+        :param pattern_node_name: The name of the pattern_node.
+        :param child_regexes: List of regexes from child pattern_nodes.
         :param times_regex: The regex string for repeating the match.
-        :return: The processed command regex.
+        :return: The processed pattern_node regex.
         """
-        match command_name:
-            # Match case where command.name is and or pattern
+        assert isinstance(pattern_node_dict, dict)
+        match pattern_nod_name:
+            # Match case where pattern_nod.name is and or pattern
 
             case "$and":
                 return self.process_and(child_regexes, times_regex=times_regex)
@@ -190,14 +198,16 @@ class BranchProcessor:
             case "$and_any_order":
                 return self.process_and_any_order(child_regexes, times_regex=times_regex)
             case "$deref":
-                return self.process_deref(child_regexes, times_regex=times_regex)
+                assert isinstance(pattern_node_dict, dict)
+                deref_object = DerefObjectBuilder(pattern_node_dict).build()
+                return self.process_deref(deref_object, times_regex=times_regex)
             case _:
-                raise ValueError("Unknown command type")
+                raise ValueError("Unknown pattern_nod type")
 
     @staticmethod
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"({''.join(child_regexes) + SKIP_TO_END_OF_COMMAND}){times_regex}"
+            return f"({''.join(child_regexes) + SKIP_TO_END_OF_PATTERNNODE}){times_regex}"
         return f"({''.join(child_regexes)})"
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
@@ -208,8 +218,8 @@ class BranchProcessor:
     @staticmethod
     def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_COMMAND}){times_regex}"
-        return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_COMMAND})"
+            return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERNNODE}){times_regex}"
+        return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERNNODE})"
 
     # @staticmethod
     # def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:
@@ -225,15 +235,11 @@ class BranchProcessor:
 
         return self.process_or(regex_list, times_regex)
 
-    def process_deref(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
-        def join_deref_childs(child_regexes: List[str]) -> str:
-            main_reg, constant_offset, register_multiplier, constant_multiplier = child_regexes
-            deref_child_regex = rf"\[{main_reg}\+{register_multiplier}\*{constant_multiplier}\+{constant_offset}\]"
-            return deref_child_regex
-
+    def process_deref(self, deref_object: DerefObject, times_regex: Optional[str]) -> str:
+        deref_regex = deref_object.get_regex()
         if times_regex:
-            return f"({join_deref_childs(child_regexes)}){times_regex}"
-        return f"({join_deref_childs(child_regexes)})"
+            return f"({deref_regex}){times_regex}"
+        return f"({deref_regex})"
 
     @staticmethod
     def generate_any_order_permutation(child_regexes: List[str]) -> List[List[str]]:

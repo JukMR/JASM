@@ -2,6 +2,8 @@ from typing import List
 
 
 class MacroExpander:
+    """Expand macros in a pattern rule"""
+
     def resolve_macros(self, macros: dict, pattern: dict) -> dict:
         """Expand all macros in the pattern in the order they are defined in the macros list"""
 
@@ -59,14 +61,17 @@ class MacroExpander:
                 if key == macro_name:
                     macro_value = self.get_macro_pattern(macro=macro)
                     pattern[key] = macro_value
-                    continue
-                if macro_name in key:
+
+                elif macro_name in key:
                     # Doing string replacement only
                     tmp_value = pattern[key]
                     new_key_name = key.replace(macro_name, macro.get("pattern"))
                     pattern[new_key_name] = tmp_value
                     pattern.pop(key)
-                    continue
+
+                elif macro_name in value:
+                    # Doing string replacement only
+                    pattern[key] = value.replace(macro_name, macro.get("pattern"))
 
         return pattern
 

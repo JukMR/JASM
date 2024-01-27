@@ -136,7 +136,7 @@ class MasterOfPuppets:
         input_file: str,
         input_file_type: InputFileType,
         valid_addr_range: Optional[ValidAddrRange] = None,
-        return_bool_result: bool = True,
+        return_bool_result: bool = True,  # attribute only used for testing. Should always be true
     ) -> bool | str:
         """Main function to perform regex matching on assembly or binary."""
 

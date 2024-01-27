@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from jasm.regex.command import (
+from jasm.regex.pattern_node import (
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     BranchProcessor,
@@ -44,14 +44,14 @@ def command_fixture():
 
 
 def test_get_regex_mnemonic(command_fixture: PatternNode) -> None:
-    command_fixture.command_type = PatternNodeTypes.mnemonic
+    command_fixture.pattern_node_type = PatternNodeTypes.mnemonic
     command_fixture.process_leaf = MagicMock(return_value="leaf_regex")
     assert command_fixture.get_regex(command_fixture) == "leaf_regex"
     command_fixture.process_leaf.assert_called_once()
 
 
 def test_get_regex_operand(command_fixture: PatternNode) -> None:
-    command_fixture.command_type = PatternNodeTypes.operand
+    command_fixture.pattern_node_type = PatternNodeTypes.operand
     command_fixture.process_leaf = MagicMock(return_value="leaf_regex")
     assert command_fixture.get_regex(command_fixture) == "leaf_regex"
     command_fixture.process_leaf.assert_called_once()
@@ -59,7 +59,7 @@ def test_get_regex_operand(command_fixture: PatternNode) -> None:
 
 def test_process_leaf_no_children(command_fixture: PatternNode):
     command_fixture.name = "operand"
-    command_fixture.command_type = PatternNodeTypes.operand
+    command_fixture.pattern_node_type = PatternNodeTypes.operand
     command_fixture.children = None
     # Assuming sanitize_operand_name works correctly
     assert command_fixture.process_leaf(command_fixture) == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
@@ -67,7 +67,7 @@ def test_process_leaf_no_children(command_fixture: PatternNode):
 
 def test_process_leaf_with_children(command_fixture: PatternNode):
     command_fixture.name = "command_with_children"
-    command_fixture.command_type = PatternNodeTypes.mnemonic
+    command_fixture.pattern_node_type = PatternNodeTypes.mnemonic
     child_command = PatternNode(
         pattern_node_dict={},
         name="child",
@@ -111,7 +111,7 @@ def test_process_branch_and(command_fixture: PatternNode):
     # Assign these mock children to the command_fixture
     command_fixture.children = [mock_child1, mock_child2]
     command_fixture.name = "$and"
-    command_fixture.command_type = PatternNodeTypes.node  # or appropriate type
+    command_fixture.pattern_node_type = PatternNodeTypes.node  # or appropriate type
 
     regex = command_fixture.process_branch(command_fixture)
 
@@ -135,7 +135,7 @@ def test_generate_regex_without_operands():
     assert "command" in creator.generate_regex()
 
 
-from jasm.regex.command import BranchProcessor
+from jasm.regex.pattern_node import BranchProcessor
 
 
 def test_branch_processor_and():

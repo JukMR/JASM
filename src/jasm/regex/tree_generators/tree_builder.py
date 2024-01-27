@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from jasm.regex.command import PatternNode
+from jasm.regex.pattern_node import PatternNode
 from jasm.global_definitions import PatternNodeTypes, TimeType, dict_node
 
 
@@ -77,7 +77,7 @@ class PatternNodeBuilderNoParents:
                 times=TimeType(min_times=1, max_times=1),
                 children=None,
                 pattern_node_dict=name,
-                command_type=PatternNodeTypes.deref_property,
+                pattern_node_type=PatternNodeTypes.deref_property,
                 parent=None,
             )
         ]
@@ -90,7 +90,7 @@ class PatternNodeBuilderNoParents:
             name=self.name,
             times=self.times,
             children=self.children,
-            command_type=None,
+            pattern_node_type=None,
             parent=None,
         )
 
@@ -103,7 +103,7 @@ class PatternNodeParentsBuilder:
         for child in children:
             child.parent = parent
             if child.children:  # Recursively set parent for the child's children
-                assert isinstance(child.children, List) or isinstance(child.children, str)
+                assert isinstance(child.children, (List, str))
                 self.set_parent(child, child.children)
 
     def build(self) -> None:
@@ -154,25 +154,26 @@ class PatternNodeTypeBuilder:
         return PatternNodeTypes.mnemonic
 
     @staticmethod
-    def is_node(name: str):
+    def is_node(name: str) -> bool:
         if name in ["$or", "$and", "$not", "$and_any_order"]:
             return True
+        return False
 
     def set_type(self) -> PatternNode:
-        self.command.command_type = self._get_type()
+        self.command.pattern_node_type = self._get_type()
         return self.command
 
     def is_father_is_mnemonic(self) -> bool:
         "Check if the parent is a mnemonic"
         if not self.command.parent:
             return False
-        return self.command.parent.command_type == PatternNodeTypes.mnemonic
+        return self.command.parent.pattern_node_type == PatternNodeTypes.mnemonic
 
     def is_father_is_deref(self) -> bool:
         "Check if the parent is a deref"
         if not self.command.parent:
             return False
-        return self.command.parent.command_type == PatternNodeTypes.deref
+        return self.command.parent.pattern_node_type == PatternNodeTypes.deref
 
     def any_ancestor_is_mnemonic(self) -> bool:
         "Check if any ancestor is a mnemonic"
@@ -180,7 +181,7 @@ class PatternNodeTypeBuilder:
         current_node = self.command.parent
 
         while current_node:
-            if current_node.command_type == PatternNodeTypes.mnemonic:
+            if current_node.pattern_node_type == PatternNodeTypes.mnemonic:
                 return True
             current_node = current_node.parent
         return False
