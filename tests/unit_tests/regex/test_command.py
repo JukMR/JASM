@@ -4,12 +4,10 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from jasm.global_definitions import IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX, PatternNodeTypes, ASTERISK_WITH_LIMIT
 from jasm.regex.pattern_node import (
-    IGNORE_NAME_PREFIX,
-    IGNORE_NAME_SUFFIX,
     BranchProcessor,
     PatternNode,
-    PatternNodeTypes,
     RegexWithOperandsCreator,
     TimeType,
     get_pattern_node_name,
@@ -17,6 +15,8 @@ from jasm.regex.pattern_node import (
 
 
 def test_get_pattern_node_name_with_string():
+    name = f"[^, ]{ASTERISK_WITH_LIMIT}"
+
     result = get_pattern_node_name("pattern_node", allow_matching_substrings=False, name_prefix="", name_suffix="")
     assert result == "pattern_node"
 
@@ -25,13 +25,15 @@ def test_get_pattern_node_name_with_string():
     )
     assert result == "prefix_pattern_node_suffix"
 
-    result = get_pattern_node_name("@any", allow_matching_substrings=True, name_prefix="prefix_", name_suffix="_suffix")
-    assert result == "prefix_[^,]*_suffix"
+    result = get_pattern_node_name(
+        "@any", allow_matching_substrings=True, name_prefix=IGNORE_NAME_PREFIX, name_suffix=IGNORE_NAME_SUFFIX
+    )
+    assert result == f"{IGNORE_NAME_PREFIX}{name}{IGNORE_NAME_SUFFIX}"
 
     result = get_pattern_node_name(
         "@any", allow_matching_substrings=False, name_prefix="prefix_", name_suffix="_suffix"
     )
-    assert result == "[^,]*"
+    assert result == name
 
 
 @pytest.fixture
