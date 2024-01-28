@@ -5,8 +5,13 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
+
+# set this limit to asterisk to reduce backtracking regex explosion
+# WARNING: something setting this value too low would affect negative
+# lookaheads failing to match the existing pattern
+ASTERISK_WITH_LIMIT = r"{0,1000}"
+
 INSTRUCTION_SEPARATOR = r"\|"
-ASTERISK_WITH_LIMIT = r"{0,30}"  # set this limit to asterisk to reduce backtracking regex explosion
 SKIP_TO_END_OF_OPERAND = f"[^,|]{ASTERISK_WITH_LIMIT},"
 SKIP_TO_END_OF_PATTERNNODE = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
 SKIP_TO_START_OF_OPERAND = f"[^|,]{ASTERISK_WITH_LIMIT}"
