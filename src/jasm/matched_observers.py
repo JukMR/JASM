@@ -1,3 +1,4 @@
+from typing import List
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IMatchedObserver
 
@@ -8,6 +9,7 @@ class MatchedObserver(IMatchedObserver):
     def __init__(self) -> None:
         self._matched = False
         self._stringified_instructions: str = ""
+        self.addr_list: List[str] = []
 
     @property
     def matched(self) -> bool:
@@ -25,6 +27,7 @@ class MatchedObserver(IMatchedObserver):
     # @override
     def regex_matched(self, addr: str) -> None:
         self._matched = True
+        self.addr_list.append(addr)
         logger.info("Matched address: %s", addr)
 
     # @override

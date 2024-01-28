@@ -1,6 +1,8 @@
-import re
 from typing import Final, List, Optional
 
+import regex
+
+from jasm.global_definitions import MatchingSearchMode
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
 
@@ -30,15 +32,21 @@ class InstructionObserverConsumer(IConsumer):
 
 
 class CompleteConsumer(InstructionObserverConsumer):
-    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver) -> None:
+    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver, matching_mode: MatchingSearchMode) -> None:
         super().__init__(regex_rule=regex_rule, matched_observer=matched_observer)
         self._all_instructions: str = ""
+        self.matching_mode = matching_mode
 
     # @override
     def consume_instruction(self, inst: Instruction) -> None:
         processed_inst = self._process_instruction(inst)
         if processed_inst:
             self._all_instructions += processed_inst.stringify() + ",|"
+
+    @staticmethod
+    def get_first_addr_from_regex_result(regex_result: str) -> str:
+        regex_result = regex_result.split("::")[0]
+        return regex_result
 
     # @override
     def finalize(self) -> None:
@@ -48,18 +56,39 @@ class CompleteConsumer(InstructionObserverConsumer):
         self._matched_observer.stringified_instructions = self._all_instructions
         logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
-        match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
+        if self.matching_mode == MatchingSearchMode.first_find:  # return first finding
+            self.do_match_first_occurence()
 
-        if match_result:
-
-            def get_first_addr_from_regex_result(regex_result: str) -> str:
-                regex_result = regex_result.split("::")[0]
-                return regex_result
-
-            addr = get_first_addr_from_regex_result(match_result.group(0))
-            self._matched_observer.regex_matched(addr)
+        if self.matching_mode == MatchingSearchMode.all_finds:  # return all findings
+            self.do_match_all_findings()
 
         super().finalize()
+
+    def do_match_first_occurence(self) -> None:
+        try:
+            match_result = regex.search(pattern=self._regex_rule, string=self._all_instructions, timeout=30)
+
+        except TimeoutError as exc:
+            logger.error("Regex timeout")
+            raise ValueError("Regex timeout") from exc
+
+        if match_result:
+            addr = self.get_first_addr_from_regex_result(match_result.group(0))
+            self._matched_observer.regex_matched(addr)
+
+    def do_match_all_findings(self) -> None:
+        try:
+            match_iterator = regex.finditer(pattern=self._regex_rule, string=self._all_instructions, timeout=30)
+
+        except TimeoutError as exc:
+            logger.error("Regex timeout")
+            raise ValueError("Regex timeout") from exc
+
+        if match_iterator:
+            for match_result in match_iterator:
+                if match_result:
+                    addr = self.get_first_addr_from_regex_result(match_result.group(0))
+                    self._matched_observer.regex_matched(addr)
 
 
 class StreamConsumer(InstructionObserverConsumer):

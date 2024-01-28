@@ -2,7 +2,7 @@
 from argparse import Namespace
 
 from parse_arguments import parse_args_from_console
-from jasm.global_definitions import InputFileType
+from jasm.global_definitions import InputFileType, MatchingSearchMode
 from jasm.logging_config import configure_logger
 from jasm.match import MasterOfPuppets
 from jasm.measure_performance import measure_performance
@@ -34,6 +34,7 @@ def main() -> None:
     print("Starting execution... ")
     input_file_type = decide_assembly_or_binary(args=args)
 
+    # Set assembly mode or binary mode
     if input_file_type == InputFileType.assembly:
         input_file = args.assembly
     elif input_file_type == InputFileType.binary:
@@ -41,8 +42,17 @@ def main() -> None:
     else:
         raise ValueError("Invalid input file type")
 
+    # Set first matching only or full matches
+    if args.all_matches:
+        matching_mode = MatchingSearchMode.all_finds
+    else:
+        matching_mode = MatchingSearchMode.first_find
+
     MasterOfPuppets().perform_matching(
-        pattern_pathstr=args.pattern, input_file=input_file, input_file_type=input_file_type
+        pattern_pathstr=args.pattern,
+        input_file=input_file,
+        input_file_type=input_file_type,
+        matching_mode=matching_mode,
     )
 
 

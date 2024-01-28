@@ -14,6 +14,9 @@ def parse_args_from_console() -> argparse.Namespace:
     parser.add_argument(
         "--enable_logging_to_terminal", default=True, action="store_true", help="Enable logging to terminal"
     )
+    parser.add_argument(
+        "--all-matches", default=False, action="store_true", help="Return all matches instead of only first match"
+    )
 
     # Create a mutually exclusive group for the two arguments
     group = parser.add_mutually_exclusive_group(required=True)
