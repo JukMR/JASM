@@ -128,7 +128,7 @@ def test_process_branch_and(pattern_node_fixture: PatternNode):
     print(mock_child1.name)
     assert (
         regex
-        == f"([^,|]{ASTERISK_WITH_LIMIT}mock_child1[^,|]{ASTERISK_WITH_LIMIT},[^,|]{ASTERISK_WITH_LIMIT}mock_child2[^,|]{ASTERISK_WITH_LIMIT},)"
+        == f"(?:[^,|]{ASTERISK_WITH_LIMIT}mock_child1[^,|]{ASTERISK_WITH_LIMIT},[^,|]{ASTERISK_WITH_LIMIT}mock_child2[^,|]{ASTERISK_WITH_LIMIT},)"
     )
 
     # Optionally, you can assert that get_regex was called on the child pattern_nodes
@@ -153,4 +153,4 @@ from jasm.regex.pattern_node import BranchProcessor
 
 def test_branch_processor_and():
     processor = BranchProcessor()
-    assert processor.process_and(["regex1", "regex2"], None) == "(regex1regex2)"
+    assert processor.process_and(["regex1", "regex2"], None) == "(?:regex1regex2)"

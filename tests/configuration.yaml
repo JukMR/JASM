@@ -84,6 +84,11 @@ test_matching:
     assembly: "tests/assembly/objlenovo_qequ_objdump_2.34.s"
     expected: True
 
+  - title: "9_calls_with_capture_groups"
+    yaml: "tests/yamls/capture_groups_test_rule.yaml"
+    assembly: "tests/assembly/binary_data_for_capture_groups.s"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"

@@ -1,0 +1,6 @@
+# Indexes start at 1 following the regex capturing group convention. Only full instructions supported for now
+---
+pattern:
+  - push
+  - call
+  - $2
