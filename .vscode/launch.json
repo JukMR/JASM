@@ -13,7 +13,6 @@
                 "-p",
                 "tests/yamls/moonbounce_from_binarly.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/moonbounce_binarly_bad_small_19_lines.s"
             ]
         },
@@ -29,7 +28,6 @@
                 "-p",
                 "tests/yamls/include_and_include_list.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -45,7 +43,6 @@
                 "-p",
                 "tests/yamls/not_call.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -61,7 +58,6 @@
                 "-p",
                 "tests/yamls/exclude_list.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -77,7 +73,6 @@
                 "-p",
                 "tests/yamls/10_calls.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -93,7 +88,6 @@
                 "-p",
                 "tests/yamls/1_call.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -109,7 +103,6 @@
                 "-p",
                 "tests/yamls/call_between_3_and_9.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -125,7 +118,6 @@
                 "-p",
                 "tests/yamls/moonbounce_regex_matcher.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/moonbounce_malware_short_6_lines.s"
             ]
         },
@@ -141,7 +133,6 @@
                 "-p",
                 "tests/yamls/moonbounce_regex_matcher.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/moonbounce_binarly_bad_small_19_lines.s"
             ]
         },
@@ -157,7 +148,6 @@
                 "-p",
                 "tests/yamls/exclude_list.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -173,7 +163,6 @@
                 "-p",
                 "tests/yamls/include_and_include_list_with_macros.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/binary_data.s"
             ]
         },
@@ -189,7 +178,6 @@
                 "-p",
                 "tests/yamls/smc.yaml",
                 "-b",
-                "-i",
                 "tests/binary/smc_eko.bin"
             ]
         },
@@ -205,7 +193,6 @@
                 "-p",
                 "tests/yamls/oren_rule_att.yaml",
                 "-b",
-                "-i",
                 "tests/binary/lenovo2.bin"
             ]
         },
@@ -229,7 +216,6 @@
                 "-p",
                 "tests/yamls/oren_rule_att_addr_valid.yaml",
                 "-b",
-                "-i",
                 "tests/binary/lenovo2.bin"
             ]
         },
@@ -245,7 +231,6 @@
                 "-p",
                 "tests/yamls/oren_rule_att.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/objlenovo_qequ_objdump_2.34.s"
             ]
         },
@@ -261,7 +246,6 @@
                 "-p",
                 "tests/yamls/oren_rule_att.yaml",
                 "-s",
-                "-i",
                 "tests/assembly/lenovo2_short.s"
             ]
         },
