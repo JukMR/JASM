@@ -3,11 +3,19 @@ pattern:
   - push:
       - $not:
           - rex
+
   - call:
       times:
         min: 3
         max: 9
-  - nopw
+
+  - nopw:
+      - $deref:
+          main_reg: "%rax"
+          constant_offset: "0x0"
+          register_multiplier: "%rax"
+          constant_multiplier: 1
+
   - $not:
       - $or:
           - jump
@@ -15,6 +23,7 @@ pattern:
         times:
           min: 1
           max: 10
+
   - $or:
       - push
       - call
@@ -26,7 +35,7 @@ pattern:
       - push
   - mov:
       - $or:
-          - rsi
+          - "[rsi]"
           - fs:0x28
       - $or:
           - rbp

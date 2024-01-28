@@ -23,8 +23,7 @@ pattern:
           - $anyreg_rx_rd_rax
 
       - nopw:
-          - $anyreg_rx_rd_rax:
-            times: 2
+          - $anyreg_rx_rd_rax
 
       - endbr64:
           - $anyreg_rx_rd_rax

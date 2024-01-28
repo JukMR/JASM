@@ -6,13 +6,13 @@ import yaml
 
 from jasm.global_definitions import EnumDisasStyle, ValidAddrRange
 from jasm.logging_config import logger
-from jasm.regex.command import PatternNode
+from jasm.regex.pattern_node import PatternNode
 from jasm.regex.file2regex import File2Regex
 from jasm.regex.macro_expander import MacroExpander
 from jasm.regex.tree_generators.tree_builder import (
-    CommandBuilderNoParents,
-    CommandParentsBuilder,
-    CommandsTypeBuilder,
+    PatternNodeBuilderNoParents,
+    PatternNodeParentsBuilder,
+    PatternNodeTypeBuilder,
 )
 
 
@@ -61,13 +61,13 @@ class Yaml2Regex(File2Regex):
     def _generate_rule_tree(self, patterns: dict) -> PatternNode:
         "Generate the rule tree from the patterns"
         # Generate the rule tree with no parents and type from root parent node downwards
-        rule_tree: PatternNode = CommandBuilderNoParents(command_dict=patterns).build()
+        rule_tree: PatternNode = PatternNodeBuilderNoParents(command_dict=patterns).build()
 
         # Transform parents of all nodes to commands
-        CommandParentsBuilder(rule_tree).build()
+        PatternNodeParentsBuilder(rule_tree).build()
 
         # Add the command_type to each node
-        CommandsTypeBuilder(rule_tree).build()
+        PatternNodeTypeBuilder(rule_tree).build()
 
         return rule_tree
 
