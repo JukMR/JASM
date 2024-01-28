@@ -63,10 +63,13 @@ class CompleteConsumer(InstructionObserverConsumer):
                 self._matched_observer.regex_matched(addr)
 
         if self.matching_mode == MatchingMode.all_finds:  # return all findings
-            match_results = re.findall(pattern=self._regex_rule, string=self._all_instructions)
+            match_iterator = re.finditer(
+                pattern=self._regex_rule,
+                string=self._all_instructions,
+            )
 
-            if match_results:
-                for match_result in match_results:
+            if match_iterator:
+                for match_result in match_iterator:
                     if match_result:
                         addr = self.get_first_addr_from_regex_result(match_result.group(0))
                         self._matched_observer.regex_matched(addr)
