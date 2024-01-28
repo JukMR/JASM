@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "JASM: moonbounce example",
+            "name": "moonbounce_binarly_bad_small_19_lines",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -18,7 +18,7 @@
             ]
         },
         {
-            "name": "include and exclude list",
+            "name": "include_and_include_list",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -50,7 +50,7 @@
             ]
         },
         {
-            "name": "exclude list",
+            "name": "exclude_list",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -66,7 +66,7 @@
             ]
         },
         {
-            "name": "10 calls",
+            "name": "10_calls",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -82,7 +82,7 @@
             ]
         },
         {
-            "name": "1 call",
+            "name": "1_call",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -98,7 +98,7 @@
             ]
         },
         {
-            "name": "call between 3 and 9 ",
+            "name": "call_between_3_and_9",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -114,7 +114,7 @@
             ]
         },
         {
-            "name": "moonbounce regex matcher simple",
+            "name": "moonbounce_malware_short_6_lines",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -130,7 +130,7 @@
             ]
         },
         {
-            "name": "moonbounce bad small 19 lines",
+            "name": "moonbounce_binarly_bad_small_19_lines",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -146,7 +146,7 @@
             ]
         },
         {
-            "name": "test and_any_order",
+            "name": "exclude_list",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -162,7 +162,7 @@
             ]
         },
         {
-            "name": "include_include_macros",
+            "name": "include_and_include_list_with_macros",
             "type": "python",
             "request": "launch",
             "program": "main.py",

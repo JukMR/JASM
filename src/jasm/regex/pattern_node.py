@@ -76,7 +76,7 @@ class PatternNode:
                 # Is an operand
                 return str(self.sanitize_operand_name(name))
             # Is a mnemonic with no operands
-            print(f"Found a mnemonic with no operands: {pattern.name}")
+            print(f"Found a mnemonic with no operands in yaml rule: {pattern.name}")
 
         assert isinstance(children, List) or (not children), "Children must be a list or None"
         # This line shouldn't be necessary but the linter complains children could be dict
