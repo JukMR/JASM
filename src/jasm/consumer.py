@@ -1,6 +1,6 @@
 import re
 from typing import Final, List, Optional
-from jasm.global_definitions import MatchingMode
+from jasm.global_definitions import MatchingSearchMode
 
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
@@ -31,7 +31,7 @@ class InstructionObserverConsumer(IConsumer):
 
 
 class CompleteConsumer(InstructionObserverConsumer):
-    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver, matching_mode: MatchingMode) -> None:
+    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver, matching_mode: MatchingSearchMode) -> None:
         super().__init__(regex_rule=regex_rule, matched_observer=matched_observer)
         self._all_instructions: str = ""
         self.matching_mode = matching_mode
@@ -55,11 +55,12 @@ class CompleteConsumer(InstructionObserverConsumer):
         self._matched_observer.stringified_instructions = self._all_instructions
         logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
-        if self.matching_mode == MatchingMode.first_find:  # return first finding
+        if self.matching_mode == MatchingSearchMode.first_find:  # return first finding
             self.do_match_first_occurence()
 
-        if self.matching_mode == MatchingMode.all_finds:  # return all findings
+        if self.matching_mode == MatchingSearchMode.all_finds:  # return all findings
             self.do_match_all_findings()
+
         super().finalize()
 
     def do_match_first_occurence(self) -> None:
