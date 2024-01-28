@@ -130,17 +130,19 @@ class PatternNodeTypeBuilder:
             if self.is_father_is_deref():
                 return PatternNodeTypes.deref_property
 
+            if name.startswith("$"):
+                if self.is_capture_group_reference(name[1:]):
+                    return PatternNodeTypes.capture_group_reference
+
         # Is times
         if name == "times":
             return PatternNodeTypes.times
 
         # Is operand
-
         if isinstance(name, int):
             return PatternNodeTypes.operand
 
         # Is node
-
         if self.is_node(name):
             return PatternNodeTypes.node
 
@@ -185,6 +187,15 @@ class PatternNodeTypeBuilder:
                 return True
             current_node = current_node.parent
         return False
+
+    @staticmethod
+    def is_capture_group_reference(name) -> bool:
+        try:
+            int(name)
+            return True
+
+        except ValueError:
+            return False
 
     def build(self) -> None:
         self.set_type()

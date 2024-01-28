@@ -249,5 +249,20 @@
                 "tests/assembly/lenovo2_short.s"
             ]
         },
+        {
+            "name": "capture_groups_test_rule",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/capture_groups_test_rule.yaml",
+                "-s",
+                "tests/assembly/binary_data_for_capture_groups.s"
+            ]
+        },
     ]
 }
