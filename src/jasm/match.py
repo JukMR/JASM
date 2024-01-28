@@ -3,10 +3,11 @@ Main match module
 """
 
 from enum import Enum, auto
+from re import M
 from typing import List, Optional
 
 from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
-from jasm.global_definitions import EnumDisasStyle, InputFileType, ValidAddrRange
+from jasm.global_definitions import EnumDisasStyle, InputFileType, ValidAddrRange, MatchingMode
 from jasm.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
 from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver, Instruction
@@ -50,13 +51,15 @@ class ConsumerBuilder:
 
     @staticmethod
     def build(
-        regex_rule: str, iMatchedObserver: IMatchedObserver, consumer_type: ConsumerType
+        regex_rule: str, iMatchedObserver: IMatchedObserver, consumer_type: ConsumerType, matching_mode: MatchingMode
     ) -> InstructionObserverConsumer:
         """Decide which consumer to create"""
 
         match consumer_type:
             case ConsumerType.complete:
-                return CompleteConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
+                return CompleteConsumer(
+                    regex_rule=regex_rule, matched_observer=iMatchedObserver, matching_mode=matching_mode
+                )
             case ConsumerType.stream:
                 return StreamConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
 
@@ -89,7 +92,13 @@ class ProducerBuilder:
 class MasterOfPuppets:
     """Main class which is responsible for the execution of the program."""
 
-    def perform_matching(self, pattern_pathstr: str, input_file: str, input_file_type: InputFileType) -> bool | str:
+    def perform_matching(
+        self,
+        pattern_pathstr: str,
+        input_file: str,
+        input_file_type: InputFileType,
+        matching_mode: MatchingMode = MatchingMode.first_find,
+    ) -> bool | str:
         """Main function to perform regex matching on assembly or binary."""
 
         regex_rule = self._get_regex_rule(pattern_pathstr=pattern_pathstr)
@@ -105,6 +114,7 @@ class MasterOfPuppets:
             input_file_type=input_file_type,
             valid_addr_range=valid_addr_range,
             return_bool_result=True,
+            matching_mode=matching_mode,
         )
 
     @staticmethod
@@ -132,6 +142,7 @@ class MasterOfPuppets:
         assembly_style: Optional[EnumDisasStyle],
         input_file: str,
         input_file_type: InputFileType,
+        matching_mode: MatchingMode = MatchingMode.first_find,
         valid_addr_range: Optional[ValidAddrRange] = None,
         return_bool_result: bool = True,  # attribute only used for testing. Should always be true
     ) -> bool | str:
@@ -140,7 +151,10 @@ class MasterOfPuppets:
         matched_observer = MatchedObserver()
 
         consumer = ConsumerBuilder().build(
-            regex_rule=regex_rule, iMatchedObserver=matched_observer, consumer_type=ConsumerType.complete
+            regex_rule=regex_rule,
+            iMatchedObserver=matched_observer,
+            consumer_type=ConsumerType.complete,
+            matching_mode=matching_mode,
         )
 
         # Consumer call observers
