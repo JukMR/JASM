@@ -20,7 +20,6 @@ pattern:
               - rx
               - rd
               - rax
-            times: 2
 
       - endbr64:
           - $or:

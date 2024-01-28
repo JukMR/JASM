@@ -5,16 +5,22 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
+
+# set this limit to asterisk to reduce backtracking regex explosion
+# WARNING: something setting this value too low would affect negative
+# lookaheads failing to match the existing pattern
+ASTERISK_WITH_LIMIT = r"{0,1000}"
+
 INSTRUCTION_SEPARATOR = r"\|"
-SKIP_TO_END_OF_OPERAND = "[^,|]*,"
-SKIP_TO_END_OF_COMMAND = "[^|]*" + INSTRUCTION_SEPARATOR
-SKIP_TO_START_OF_OPERAND = "[^|,]*"
-SKIP_TO_ANY_OPERAND_CHARS = "[^|]*"
+SKIP_TO_END_OF_OPERAND = f"[^,|]{ASTERISK_WITH_LIMIT},"
+SKIP_TO_END_OF_PATTERNNODE = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
+SKIP_TO_START_OF_OPERAND = f"[^|,]{ASTERISK_WITH_LIMIT}"
+SKIP_TO_ANY_OPERAND_CHARS = f"[^|]{ASTERISK_WITH_LIMIT}"
 
 IGNORE_INST_ADDR = r"[\dabcedf]+::"
 
-IGNORE_NAME_PREFIX = "[^,|]*"
-IGNORE_NAME_SUFFIX = "[^,|]*,"
+IGNORE_NAME_PREFIX = f"[^,|]{ASTERISK_WITH_LIMIT}"
+IGNORE_NAME_SUFFIX = f"[^,|]{ASTERISK_WITH_LIMIT},"  # set a limit of
 
 MAX_PYTHON_INT = sys.maxsize * 2
 
@@ -82,7 +88,10 @@ class TimeType:
     max_times: int
 
 
-class CommandTypes(Enum):
+class PatternNodeTypes(Enum):
     node = auto()
     operand = auto()
     mnemonic = auto()
+    deref = auto()
+    deref_property = auto()
+    times = auto()

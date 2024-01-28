@@ -116,11 +116,20 @@ class LineParser:
         if match:
             addrs = match.group(1)
             mnemonic = match.group(2)
-            operands = match.group(3).strip().split(",")
+            operands = match.group(3)
 
-            operands = OperandsParser(operands=operands).parse()
-            return Instruction(addr=addrs, mnemonic=mnemonic, operands=operands)
+            operands_list = self.get_splitted_operands(operands=operands)
+
+            operands_parsed = OperandsParser(operands=operands_list).parse()
+            return Instruction(addr=addrs, mnemonic=mnemonic, operands=operands_parsed)
         return None
+
+    @staticmethod
+    def get_splitted_operands(operands: str) -> List[str]:
+        """Get splitted operands."""
+        # Will split between commans only if this commas are not inside a parenthesis
+        operands_list = re.split(r",(?![^\(]*\))", operands)
+        return operands_list
 
     def parse_instruction_no_operands(self) -> Optional[Instruction]:
         """Parse a single instruction without operands."""
@@ -172,30 +181,29 @@ class OperandsParser:
         """Parse the operands of an instruction."""
         return [self._process_operand_elem(operand_elem=operand) for operand in self.operands]
 
-    def remove_tags_from_operands(self, operands_list: List[str]) -> List[str]:
-        """Remove extra tags from operands."""
-        return [
-            operand.replace("$", "").replace("%", "").replace("*", "").replace("(", "").replace(")", "")
-            for operand in operands_list
-        ]
-
-    @staticmethod
-    def _process_operand_elem(operand_elem: str) -> str:
+    def _process_operand_elem(self, operand_elem: str) -> str:
         "Process operand element"
 
+        # Operand is memory access
         if operand_elem[0] == "(" and operand_elem[-1] == ")":
+            operand_elem.replace("[", "").replace(")", "]")
             return operand_elem
 
+        # The operand have a memory address access plus an inmediate
         if "(" in operand_elem and ")" in operand_elem:
-            registry = re.findall(r"\([^\)]*\)", operand_elem)
-            if len(registry) != 1:
-                raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+            if "," in operand_elem:
+                # Operand is of form 0x0(%rax,%rax,1)
+                return self.form_full_operand_with_4_elements(operand_elem)
 
-            inmediate = operand_elem.replace(registry[0], "")
+            # Operand is of form *0x1dc59(%rip)
+            return self.form_full_operand_with_1_element(operand_elem)
 
-            return f"{registry[0]}+{inmediate}"
+        # Remove $ from inmediate
+        if operand_elem.startswith("$"):
+            return operand_elem[1:]
 
-        if operand_elem[0] == "$" or operand_elem[0] == "%":
+        # Leave % to registers
+        if operand_elem.startswith("%"):
             return operand_elem
 
         if isinstance(operand_elem, List):
@@ -231,9 +239,46 @@ class OperandsParser:
 
         raise ValueError("Error in processing operand")
 
+    @staticmethod
+    def form_full_operand_with_4_elements(operand_elem) -> str:
+        """Form a full operand with 4 elements."""
+        find_something_with_parenthesis_regex = r"\([^\)]*\)"
+        registry = re.search(find_something_with_parenthesis_regex, operand_elem)
+        if not registry:
+            raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+
+        constant_offset = operand_elem.replace(registry[0], "")
+        inside_parenthesis = registry.group()
+
+        elements = inside_parenthesis.split(",")
+
+        assert len(elements) == 3
+        main_reg, register_multiplier, constant_multiplier = elements
+
+        main_reg = main_reg.replace("(", "")
+        constant_multiplier = constant_multiplier.replace(")", "")
+
+        return f"[{main_reg}+{register_multiplier}*{constant_multiplier}+{constant_offset}]"
+
+    @staticmethod
+    def form_full_operand_with_1_element(operand_elem) -> str:
+        find_something_with_parenthesis_regex = r"\([^\)]*\)"
+        registry = re.search(find_something_with_parenthesis_regex, operand_elem)
+        if not registry:
+            raise ValueError(f"Wrong value for operand {operand_elem}, {type(operand_elem)}")
+
+        immediate = operand_elem.replace(registry[0], "")
+
+        register = registry.group()
+        if register.startswith("("):
+            register = register[1:]
+        if register.endswith(")"):
+            register = register[:-1]
+
+        return f"[{register}+{immediate}]"
+
     def parse(self) -> List[str]:
         """Main class method.
         Parse the operands of an instruction."""
         operands_list = self.parse_operands()
-        operands_list_no_tags = self.remove_tags_from_operands(operands_list)
-        return operands_list_no_tags
+        return operands_list
