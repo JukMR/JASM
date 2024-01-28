@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "JASM"
-version = "0.3.1"
+version = "0.4.0"
 description = "JASM - Assembly Regex Generator"
 authors = ["Julian Merida <julianmr97@gmail.com>"]
 readme = "README.md"
@@ -10,6 +10,7 @@ packages = [{ include = "jasm", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.10"
 pyyaml = "^6.0.1"
+regex = "^2023.12.25"
 
 
 [build-system]

@@ -264,5 +264,52 @@
                 "tests/assembly/binary_data_for_capture_groups.s"
             ]
         },
+        {
+            "name": "moonbounce_with_multiple_findings",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "--all-matches",
+                "-p",
+                "tests/yamls/moonbounce_regex_matcher.yaml",
+                "-b",
+                "tests/binary/moonbounce.bin"
+            ]
+        },
+        {
+            "name": "1_call_plain_with_multiple_findings",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "--all-matches",
+                "-p",
+                "tests/yamls/1_call_plain.yaml",
+                "-s",
+                "tests/assembly/binary_data.s"
+            ]
+        },
+        {
+            "name": "1_call_plain_with_single_findings",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/1_call_plain.yaml",
+                "-s",
+                "tests/assembly/binary_data.s"
+            ]
+        },
     ]
 }
