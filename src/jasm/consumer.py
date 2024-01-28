@@ -1,7 +1,8 @@
-import re
 from typing import Final, List, Optional
-from jasm.global_definitions import MatchingSearchMode
 
+import regex
+
+from jasm.global_definitions import MatchingSearchMode
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
 
@@ -64,16 +65,24 @@ class CompleteConsumer(InstructionObserverConsumer):
         super().finalize()
 
     def do_match_first_occurence(self) -> None:
-        match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
+        try:
+            match_result = regex.search(pattern=self._regex_rule, string=self._all_instructions, timeout=30)
+
+        except TimeoutError as exc:
+            logger.error("Regex timeout")
+            raise ValueError("Regex timeout") from exc
+
         if match_result:
             addr = self.get_first_addr_from_regex_result(match_result.group(0))
             self._matched_observer.regex_matched(addr)
 
     def do_match_all_findings(self) -> None:
-        match_iterator = re.finditer(
-            pattern=self._regex_rule,
-            string=self._all_instructions,
-        )
+        try:
+            match_iterator = regex.finditer(pattern=self._regex_rule, string=self._all_instructions, timeout=30)
+
+        except TimeoutError as exc:
+            logger.error("Regex timeout")
+            raise ValueError("Regex timeout") from exc
 
         if match_iterator:
             for match_result in match_iterator:
