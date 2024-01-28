@@ -9,6 +9,7 @@ from jasm.global_definitions import (
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_PATTERNNODE,
+    ASTERISK_WITH_LIMIT,
     PatternNodeTypes,
     TimeType,
     dict_node,
@@ -16,14 +17,14 @@ from jasm.global_definitions import (
 from jasm.regex.deref_classes import DerefObject, DerefObjectBuilder
 
 
-def get_pattern_nod_name(
+def get_pattern_node_name(
     name: str | int,
     allow_matching_substrings: bool = ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
     name_prefix: str = IGNORE_NAME_PREFIX,
     name_suffix: str = IGNORE_NAME_SUFFIX,
 ) -> str | int:
     if name == "@any":
-        name = f"[^,]{1,10}"  # Set a limit of 10 characters for the name for reducing regex complexity
+        name = rf"[^, ]{ASTERISK_WITH_LIMIT}"  # Set a limit of 10 characters for the name for reducing regex complexity
     if allow_matching_substrings:
         return f"{name_prefix}{name}{name_suffix}"
     return name
@@ -106,7 +107,7 @@ class PatternNode:
             assert isinstance(name, str), "Operand name must be a string"
             return _process_hex_operand(name)
 
-        pattern_nod_name = get_pattern_nod_name(name)
+        pattern_nod_name = get_pattern_node_name(name)
         return pattern_nod_name
 
     def process_branch(self, pattern_node: "PatternNode") -> str:
@@ -155,7 +156,7 @@ class RegexWithOperandsCreator:
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         # Add prefix and suffix to name to allow matching only substring
-        pattern_nod_name = get_pattern_nod_name(self.name)
+        pattern_nod_name = get_pattern_node_name(self.name)
 
         if operands_regex:
             return (
@@ -164,7 +165,7 @@ class RegexWithOperandsCreator:
         return f"(({IGNORE_INST_ADDR}{pattern_nod_name}{SKIP_TO_END_OF_PATTERNNODE}){times_regex})"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
-        pattern_nod_name = get_pattern_nod_name(self.name)
+        pattern_nod_name = get_pattern_node_name(self.name)
 
         if operands_regex:
             return f"({IGNORE_INST_ADDR}{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERNNODE})"
