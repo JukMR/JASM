@@ -1,5 +1,6 @@
 import re
 from typing import Final, List, Optional
+from jasm.global_definitions import MatchingMode
 
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
@@ -30,15 +31,21 @@ class InstructionObserverConsumer(IConsumer):
 
 
 class CompleteConsumer(InstructionObserverConsumer):
-    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver) -> None:
+    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver, matching_mode: MatchingMode) -> None:
         super().__init__(regex_rule=regex_rule, matched_observer=matched_observer)
         self._all_instructions: str = ""
+        self.matching_mode = matching_mode
 
     # @override
     def consume_instruction(self, inst: Instruction) -> None:
         processed_inst = self._process_instruction(inst)
         if processed_inst:
             self._all_instructions += processed_inst.stringify() + ",|"
+
+    @staticmethod
+    def get_first_addr_from_regex_result(regex_result: str) -> str:
+        regex_result = regex_result.split("::")[0]
+        return regex_result
 
     # @override
     def finalize(self) -> None:
@@ -48,17 +55,21 @@ class CompleteConsumer(InstructionObserverConsumer):
         self._matched_observer.stringified_instructions = self._all_instructions
         logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
-        match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
+        if self.matching_mode == MatchingMode.first_find:  # return first finding
+            match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
 
-        if match_result:
+            if match_result:
+                addr = self.get_first_addr_from_regex_result(match_result.group(0))
+                self._matched_observer.regex_matched(addr)
 
-            def get_first_addr_from_regex_result(regex_result: str) -> str:
-                regex_result = regex_result.split("::")[0]
-                return regex_result
+        if self.matching_mode == MatchingMode.all_finds:  # return all findings
+            match_results = re.findall(pattern=self._regex_rule, string=self._all_instructions)
 
-            addr = get_first_addr_from_regex_result(match_result.group(0))
-            self._matched_observer.regex_matched(addr)
-
+            if match_results:
+                for match_result in match_results:
+                    if match_result:
+                        addr = self.get_first_addr_from_regex_result(match_result.group(0))
+                        self._matched_observer.regex_matched(addr)
         super().finalize()
 
 
