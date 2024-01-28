@@ -33,8 +33,16 @@ def main() -> None:
 
     print("Starting execution... ")
     input_file_type = decide_assembly_or_binary(args=args)
+
+    if input_file_type == InputFileType.assembly:
+        input_file = args.assembly
+    elif input_file_type == InputFileType.binary:
+        input_file = args.binary
+    else:
+        raise ValueError("Invalid input file type")
+
     MasterOfPuppets().perform_matching(
-        pattern_pathstr=args.pattern, input_file=args.input_file, input_file_type=input_file_type
+        pattern_pathstr=args.pattern, input_file=input_file, input_file_type=input_file_type
     )
 
 
