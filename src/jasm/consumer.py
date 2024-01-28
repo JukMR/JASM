@@ -56,24 +56,29 @@ class CompleteConsumer(InstructionObserverConsumer):
         logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
         if self.matching_mode == MatchingMode.first_find:  # return first finding
-            match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
-
-            if match_result:
-                addr = self.get_first_addr_from_regex_result(match_result.group(0))
-                self._matched_observer.regex_matched(addr)
+            self.do_match_first_occurence()
 
         if self.matching_mode == MatchingMode.all_finds:  # return all findings
-            match_iterator = re.finditer(
-                pattern=self._regex_rule,
-                string=self._all_instructions,
-            )
-
-            if match_iterator:
-                for match_result in match_iterator:
-                    if match_result:
-                        addr = self.get_first_addr_from_regex_result(match_result.group(0))
-                        self._matched_observer.regex_matched(addr)
+            self.do_match_all_findings()
         super().finalize()
+
+    def do_match_first_occurence(self) -> None:
+        match_result = re.search(pattern=self._regex_rule, string=self._all_instructions)
+        if match_result:
+            addr = self.get_first_addr_from_regex_result(match_result.group(0))
+            self._matched_observer.regex_matched(addr)
+
+    def do_match_all_findings(self) -> None:
+        match_iterator = re.finditer(
+            pattern=self._regex_rule,
+            string=self._all_instructions,
+        )
+
+        if match_iterator:
+            for match_result in match_iterator:
+                if match_result:
+                    addr = self.get_first_addr_from_regex_result(match_result.group(0))
+                    self._matched_observer.regex_matched(addr)
 
 
 class StreamConsumer(InstructionObserverConsumer):
