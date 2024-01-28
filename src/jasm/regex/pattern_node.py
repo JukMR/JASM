@@ -8,12 +8,13 @@ from jasm.global_definitions import (
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
-    SKIP_TO_END_OF_PATTERNNODE,
+    SKIP_TO_END_OF_PATTERN_NODE,
     ASTERISK_WITH_LIMIT,
     PatternNodeTypes,
     TimeType,
     dict_node,
 )
+from jasm.regex.capture_group import CaptureGroupIndex
 from jasm.regex.deref_classes import DerefObject, DerefObjectBuilder
 
 
@@ -43,12 +44,12 @@ class PatternNode:
         """
         Initialize a Command object.
 
-        :param pattern_node_dict: A dictionary representing the pattern_nod structure.
-        :param name: The name of the pattern_nod.
-        :param times: Repeating information for the pattern_nod execution.
+        :param pattern_node_dict: A dictionary representing the pattern_node structure.
+        :param name: The name of the pattern_node.
+        :param times: Repeating information for the pattern_node execution.
         :param children: Sub-pattern_nods or child pattern_nods.
-        :param pattern_nod_type: The type of the pattern_nod (mnemonic, operand, etc.).
-        :param parent: The parent pattern_nod, if any.
+        :param pattern_nod_type: The type of the pattern_node (mnemonic, operand, etc.).
+        :param parent: The parent pattern_node, if any.
         """
         self.pattern_node_dict = pattern_node_dict
         self.name = name
@@ -58,6 +59,7 @@ class PatternNode:
         self.parent = parent
 
     def get_regex(self, pattern_node: "PatternNode") -> str:
+        """Get regex from a leaf or call a recursion over the branch."""
         if pattern_node.pattern_node_type in [PatternNodeTypes.mnemonic, PatternNodeTypes.operand]:
             return self.process_leaf(pattern_node)
 
@@ -66,6 +68,9 @@ class PatternNode:
 
         if pattern_node.pattern_node_type == PatternNodeTypes.times:
             return ""
+
+        if pattern_node.pattern_node_type == PatternNodeTypes.capture_group_reference:
+            return self.get_capture_group_reference(pattern_node)
         return self.process_branch(pattern_node)
 
     def process_leaf(self, pattern: "PatternNode") -> str:
@@ -128,6 +133,15 @@ class PatternNode:
         assert isinstance(result, str | int)
         return result
 
+    def get_capture_group_reference(self, pattern_node: "PatternNode") -> str:
+        index = self.get_capture_group_index(pattern_node).to_regex()
+        return index
+
+    @staticmethod
+    def get_capture_group_index(pattern_node) -> "CaptureGroupIndex":
+        # For now only full instructions is supported
+        return CaptureGroupIndex(pattern_node.name)
+
 
 class RegexWithOperandsCreator:
     def __init__(self, name: str | int, operands: Optional[List[PatternNode]], times: Optional[TimeType]) -> None:
@@ -160,16 +174,16 @@ class RegexWithOperandsCreator:
 
         if operands_regex:
             return (
-                f"(({IGNORE_INST_ADDR}{pattern_nod_name}({operands_regex}){SKIP_TO_END_OF_PATTERNNODE}){times_regex})"
+                f"(?:{IGNORE_INST_ADDR}({pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})){times_regex}"
             )
-        return f"(({IGNORE_INST_ADDR}{pattern_nod_name}{SKIP_TO_END_OF_PATTERNNODE}){times_regex})"
+        return f"(?:{IGNORE_INST_ADDR}({pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE}){times_regex})"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
         pattern_nod_name = get_pattern_node_name(self.name)
 
         if operands_regex:
-            return f"({IGNORE_INST_ADDR}{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERNNODE})"
-        return f"({IGNORE_INST_ADDR}{pattern_nod_name}{SKIP_TO_END_OF_PATTERNNODE})"
+            return f"{IGNORE_INST_ADDR}({pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})"
+        return f"{IGNORE_INST_ADDR}({pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE})"
 
 
 class BranchProcessor:
@@ -186,7 +200,7 @@ class BranchProcessor:
         """
         assert isinstance(pattern_node_dict, dict)
         match pattern_nod_name:
-            # Match case where pattern_nod.name is and or pattern
+            # Match case where pattern_node.name is and or pattern
 
             case "$and":
                 return self.process_and(child_regexes, times_regex=times_regex)
@@ -203,13 +217,13 @@ class BranchProcessor:
                 deref_object = DerefObjectBuilder(pattern_node_dict).build()
                 return self.process_deref(deref_object, times_regex=times_regex)
             case _:
-                raise ValueError("Unknown pattern_nod type")
+                raise ValueError("Unknown pattern_node type")
 
     @staticmethod
     def process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"({''.join(child_regexes) + SKIP_TO_END_OF_PATTERNNODE}){times_regex}"
-        return f"({''.join(child_regexes)})"
+            return f"(?:{''.join(child_regexes) + SKIP_TO_END_OF_PATTERN_NODE}){times_regex}"
+        return f"(?:{''.join(child_regexes)})"
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
@@ -219,8 +233,8 @@ class BranchProcessor:
     @staticmethod
     def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERNNODE}){times_regex}"
-        return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERNNODE})"
+            return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE}){times_regex}"
+        return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE})"
 
     # @staticmethod
     # def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:
