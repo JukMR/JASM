@@ -14,7 +14,6 @@ from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
 from jasm.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer
 from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_disassembler import GNUObjdumpDisassembler
-
 from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser_manual import ObjdumpParserManual
 from jasm.stringify_asm.implementations.null_disassembler import NullDisassembler
 from jasm.stringify_asm.implementations.observers import RemoveEmptyInstructions
