@@ -198,7 +198,12 @@ class OperandsParser:
             # Operand is of form *0x1dc59(%rip)
             return self.form_full_operand_with_1_element(operand_elem)
 
-        if operand_elem.startswith("$") or operand_elem[0].startswith("%"):
+        # Remove $ from inmediate
+        if operand_elem.startswith("$"):
+            return operand_elem[1:]
+
+        # Leave % to registers
+        if operand_elem.startswith("%"):
             return operand_elem
 
         if isinstance(operand_elem, List):

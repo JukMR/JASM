@@ -238,8 +238,8 @@ class BranchProcessor:
     def process_deref(self, deref_object: DerefObject, times_regex: Optional[str]) -> str:
         deref_regex = deref_object.get_regex()
         if times_regex:
-            return f"({deref_regex}){times_regex}"
-        return f"({deref_regex})"
+            return f"({deref_regex},){times_regex}"
+        return f"{deref_regex},"
 
     @staticmethod
     def generate_any_order_permutation(child_regexes: List[str]) -> List[List[str]]:
