@@ -18,11 +18,11 @@ def run_match_test(
 
 @pytest.mark.parametrize(
     "config",
-    load_test_configs(file_path="configuration.yml", yaml_config_field="test_matching"),
+    load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
     ids=lambda config: config["title"],
 )
 def test_all_patterns(config):
-    """Test function for all configurations in configuration.yml."""
+    """Test function for all configurations in configuration.yaml."""
     config_yaml = config["yaml"]
     expected_result = config["expected"]
     assembly = config.get("assembly", None)

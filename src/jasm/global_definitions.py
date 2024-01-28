@@ -13,7 +13,7 @@ ASTERISK_WITH_LIMIT = r"{0,1000}"
 
 INSTRUCTION_SEPARATOR = r"\|"
 SKIP_TO_END_OF_OPERAND = f"[^,|]{ASTERISK_WITH_LIMIT},"
-SKIP_TO_END_OF_PATTERNNODE = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
+SKIP_TO_END_OF_PATTERN_NODE = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
 SKIP_TO_START_OF_OPERAND = f"[^|,]{ASTERISK_WITH_LIMIT}"
 SKIP_TO_ANY_OPERAND_CHARS = f"[^|]{ASTERISK_WITH_LIMIT}"
 
@@ -95,3 +95,4 @@ class PatternNodeTypes(Enum):
     deref = auto()
     deref_property = auto()
     times = auto()
+    capture_group_reference = auto()
