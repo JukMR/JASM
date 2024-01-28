@@ -3,7 +3,6 @@ Main match module
 """
 
 from enum import Enum, auto
-from re import M
 from typing import List, Optional
 
 from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
