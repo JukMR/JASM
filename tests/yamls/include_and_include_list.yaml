@@ -19,7 +19,6 @@ pattern:
               - rx
               - rd
               - rax
-            times: 2
     times:
       min: 1
       max: 1
