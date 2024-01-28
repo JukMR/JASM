@@ -2,7 +2,7 @@
 from argparse import Namespace
 
 from parse_arguments import parse_args_from_console
-from jasm.global_definitions import InputFileType, MatchingMode
+from jasm.global_definitions import InputFileType, MatchingSearchMode
 from jasm.logging_config import configure_logger
 from jasm.match import MasterOfPuppets
 from jasm.measure_performance import measure_performance
@@ -44,9 +44,9 @@ def main() -> None:
 
     # Set first matching only or full matches
     if args.all_matches:
-        matching_mode = MatchingMode.all_finds
+        matching_mode = MatchingSearchMode.all_finds
     else:
-        matching_mode = MatchingMode.first_find
+        matching_mode = MatchingSearchMode.first_find
 
     MasterOfPuppets().perform_matching(
         pattern_pathstr=args.pattern,

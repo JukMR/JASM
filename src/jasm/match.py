@@ -6,7 +6,13 @@ from enum import Enum, auto
 from typing import List, Optional
 
 from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
-from jasm.global_definitions import EnumDisasStyle, InputFileType, ValidAddrRange, MatchingMode
+from jasm.global_definitions import (
+    EnumDisasStyle,
+    InputFileType,
+    MatchingReturnMode,
+    ValidAddrRange,
+    MatchingSearchMode,
+)
 from jasm.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
 from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver, Instruction
@@ -50,7 +56,10 @@ class ConsumerBuilder:
 
     @staticmethod
     def build(
-        regex_rule: str, iMatchedObserver: IMatchedObserver, consumer_type: ConsumerType, matching_mode: MatchingMode
+        regex_rule: str,
+        iMatchedObserver: IMatchedObserver,
+        consumer_type: ConsumerType,
+        matching_mode: MatchingSearchMode,
     ) -> InstructionObserverConsumer:
         """Decide which consumer to create"""
 
@@ -96,8 +105,9 @@ class MasterOfPuppets:
         pattern_pathstr: str,
         input_file: str,
         input_file_type: InputFileType,
-        matching_mode: MatchingMode = MatchingMode.first_find,
-    ) -> bool | str:
+        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,
+        return_mode: MatchingReturnMode = MatchingReturnMode.bool,
+    ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
         regex_rule = self._get_regex_rule(pattern_pathstr=pattern_pathstr)
@@ -112,8 +122,8 @@ class MasterOfPuppets:
             input_file=input_file,
             input_file_type=input_file_type,
             valid_addr_range=valid_addr_range,
-            return_bool_result=True,
             matching_mode=matching_mode,
+            return_mode=return_mode,
         )
 
     @staticmethod
@@ -141,10 +151,10 @@ class MasterOfPuppets:
         assembly_style: Optional[EnumDisasStyle],
         input_file: str,
         input_file_type: InputFileType,
-        matching_mode: MatchingMode = MatchingMode.first_find,
+        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,
         valid_addr_range: Optional[ValidAddrRange] = None,
-        return_bool_result: bool = True,  # attribute only used for testing. Should always be true
-    ) -> bool | str:
+        return_mode: MatchingReturnMode = MatchingReturnMode.bool,
+    ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
         matched_observer = MatchedObserver()
@@ -172,9 +182,15 @@ class MasterOfPuppets:
         # Do the processing
         producer.process_file(file=input_file, iConsumer=consumer)
 
-        if return_bool_result:
+        if return_mode == MatchingReturnMode.bool:
             return matched_observer.matched
-        return matched_observer.stringified_instructions
+        elif return_mode == MatchingReturnMode.matched_addrs_list:
+            # This mode implies that if the list is not empty, then the match was successful
+            return matched_observer.addr_list
+        elif return_mode == MatchingReturnMode.all_instructions_string:
+            return matched_observer.stringified_instructions
+
+        raise ValueError("Invalid return mode")
 
 
 def get_valid_addr_observer(valid_addr_range: ValidAddrRange) -> IInstructionObserver:

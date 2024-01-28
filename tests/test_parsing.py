@@ -3,7 +3,7 @@ import re
 import pytest
 from conftest import load_test_configs
 
-from jasm.global_definitions import EnumDisasStyle, InputFileType
+from jasm.global_definitions import EnumDisasStyle, InputFileType, MatchingReturnMode
 from jasm.logging_config import logger
 from jasm.match import MasterOfPuppets
 
@@ -13,10 +13,10 @@ def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_fil
 
     all_instructions = MasterOfPuppets._do_matching_and_get_result(
         regex_rule="",
-        assembly_style=EnumDisasStyle.intel,
+        assembly_style=EnumDisasStyle.att,
         input_file=input_file,
         input_file_type=input_file_type,
-        return_bool_result=False,
+        return_mode=MatchingReturnMode.all_instructions_string,
     )
 
     if isinstance(all_instructions, bool):
@@ -52,7 +52,7 @@ def test_correct_number_of_lines_with_regex(config) -> None:
     ids=lambda config: config["title"],
 )
 def test_parsing_number_of_lines(config) -> None:
-    "Test parsing number of lines for all configurations in configuration.yaml."
+    "Test parsing number of lines for all configurations in configuration.yml."
 
     assembly = config.get("assembly")
     number_of_lines = config.get("number_of_lines")

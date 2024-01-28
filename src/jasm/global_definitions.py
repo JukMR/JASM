@@ -1,5 +1,6 @@
 "Global definition file"
 
+from dis import Instruction
 import sys
 from dataclasses import dataclass
 from enum import Enum, auto
@@ -98,6 +99,12 @@ class PatternNodeTypes(Enum):
     capture_group_reference = auto()
 
 
-class MatchingMode(Enum):
-    all_finds = auto()
+class MatchingSearchMode(Enum):
     first_find = auto()
+    all_finds = auto()
+
+
+class MatchingReturnMode(Enum):
+    bool = auto()
+    matched_addrs_list = auto()
+    all_instructions_string = auto()  # this enum is used for testing only
