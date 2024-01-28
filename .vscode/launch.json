@@ -265,7 +265,7 @@
             ]
         },
         {
-            "name": "moonbounce with multiple findings",
+            "name": "moonbounce_with_multiple_findings",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -281,7 +281,7 @@
             ]
         },
         {
-            "name": "1 call plain with multiple findings",
+            "name": "1_call_plain_with_multiple_findings",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -290,6 +290,21 @@
             "args": [
                 "--debug",
                 "--all-matches",
+                "-p",
+                "tests/yamls/1_call_plain.yaml",
+                "-s",
+                "tests/assembly/binary_data.s"
+            ]
+        },
+        {
+            "name": "1_call_plain_with_single_findings",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
                 "-p",
                 "tests/yamls/1_call_plain.yaml",
                 "-s",
