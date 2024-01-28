@@ -126,7 +126,10 @@ def test_process_branch_and(pattern_node_fixture: PatternNode):
     regex = pattern_node_fixture.process_branch(pattern_node_fixture)
 
     print(mock_child1.name)
-    assert regex == "([^,|]*mock_child1[^,|]*,[^,|]*mock_child2[^,|]*,)"
+    assert (
+        regex
+        == f"([^,|]{ASTERISK_WITH_LIMIT}mock_child1[^,|]{ASTERISK_WITH_LIMIT},[^,|]{ASTERISK_WITH_LIMIT}mock_child2[^,|]{ASTERISK_WITH_LIMIT},)"
+    )
 
     # Optionally, you can assert that get_regex was called on the child pattern_nodes
     # mock_child1.get_regex.assert_called_once()
