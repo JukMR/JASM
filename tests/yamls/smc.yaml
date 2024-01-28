@@ -3,15 +3,25 @@ config:
   style: att
   plugins:
 
+macros:
+  - name: "@any"
+    pattern: "[^, ]{1,100}"
+
 pattern:
   - movb:
       - "@any"
-      - $deref:
-          main_reg: "%rip"
-          constant_offset: $any
-          register_multiplier: $any
-          constant_multiplier: $any
-# Comment on how to implement this:
-
-# - 0x1(pepe) -->  [pepe+0x1]
-#   objdump         jasm/godbolt
+      - $or:
+          - $deref:
+              main_reg: "%rip"
+          - $deref:
+              main_reg: "%rip"
+              constant_offset: "@any"
+          - $deref:
+              main_reg: "%rip"
+              constant_offset: "@any"
+              register_multiplier: "@any"
+          - $deref:
+              main_reg: "%rip"
+              constant_offset: "@any"
+              register_multiplier: "@any"
+              constant_multiplier: "@any"
