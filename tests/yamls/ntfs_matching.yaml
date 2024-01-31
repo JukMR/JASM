@@ -29,9 +29,12 @@ macros:
 
 pattern:
   - cmp:
-      - $deref:
-        main_reg: "@any"
-        constant_offset: "0x0"
+      - $or:
+          - $deref:
+            main_reg: "@any"
+            constant_offset: "0x0"
+          - $deref:
+            main_reg: "@any"
       - "0x"
 
   - $any_jmp
@@ -40,6 +43,7 @@ pattern:
       - $deref:
         main_reg: "@any"
         constant_offset: "0x1"
+      - "0x"
 
   - $any_jmp
 
@@ -47,9 +51,12 @@ pattern:
       - $deref:
         main_reg: "@any"
         constant_offset: "0x2"
+      - "0x"
 
   - $any_jmp
+
   - cmp:
       - $deref:
         main_reg: "@any"
         constant_offset: "0x3"
+      - "0x"
