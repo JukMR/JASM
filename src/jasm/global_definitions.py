@@ -1,6 +1,5 @@
 "Global definition file"
 
-from dis import Instruction
 import sys
 from dataclasses import dataclass
 from enum import Enum, auto

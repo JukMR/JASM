@@ -10,8 +10,8 @@ class CaptureGroupIndex:
     def get_capture_group_reference(str_index: str) -> int:
         """The index system uses a sequence of ints and points"""
         for elem in CAPTURE_GROUPS_REFERENCES:
-            if elem.name == str_index:
-                assert isinstance(elem.name, str)
+            if elem == str_index:
+                assert isinstance(elem, str)
                 return CAPTURE_GROUPS_REFERENCES.index(elem) + 1
         raise ValueError(f"Capture group reference {str_index} not found")
 
