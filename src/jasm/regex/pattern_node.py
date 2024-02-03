@@ -152,7 +152,7 @@ class PatternNode:
 
     def get_capture_group_call(self, pattern_node: "PatternNode") -> str:
         index = self.get_capture_group_index(pattern_node).to_regex()
-        return f"({index})"
+        return f"{index}"
 
     @staticmethod
     def get_capture_group_index(pattern_node) -> "CaptureGroupIndex":
@@ -246,14 +246,14 @@ class BranchProcessor:
 
     def process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"({self.join_instructions(child_regexes)}){times_regex}"
-        return f"({self.join_instructions(child_regexes)})"
+            return f"(?:{self.join_instructions(child_regexes)}){times_regex}"
+        return f"(?:{self.join_instructions(child_regexes)})"
 
     @staticmethod
     def process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
         if times_regex:
-            return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE}){times_regex}"
-        return f"((?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE})"
+            return f"(?:(?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE}){times_regex}"
+        return f"(?:(?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE})"
 
     # @staticmethod
     # def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:
@@ -272,7 +272,7 @@ class BranchProcessor:
     def process_deref(self, deref_object: DerefObject, times_regex: Optional[str]) -> str:
         deref_regex = deref_object.get_regex()
         if times_regex:
-            return f"({deref_regex},){times_regex}"
+            return f"(?:{deref_regex},){times_regex}"
         return f"{deref_regex},"
 
     @staticmethod
@@ -286,7 +286,7 @@ class BranchProcessor:
 
         assert inst_list, "There are no instructions to join"
 
-        regex_instructions = [f"({elem})" for elem in inst_list]
+        regex_instructions = [f"(?:{elem})" for elem in inst_list]
 
         joined_by_bar_instructions = "|".join(regex_instructions)
 
