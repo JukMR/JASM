@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from jasm.regex.pattern_node import PatternNode
 from jasm.global_definitions import PatternNodeTypes, TimeType, dict_node
+from jasm.regex.pattern_node import CAPTURE_GROUPS_REFERENCES, PatternNode
 
 
 class PatternNodeBuilderNoParents:
@@ -130,9 +130,18 @@ class PatternNodeTypeBuilder:
             if self.is_father_is_deref():
                 return PatternNodeTypes.deref_property
 
-            if name.startswith("$"):
-                if self.is_capture_group_reference(name[1:]):
-                    return PatternNodeTypes.capture_group_reference
+            # Is a capture group reference
+            if name.startswith("#"):
+
+                # Add this macro to refence list
+                # First check it it should be a new reference or a call to an existing one
+                if self.has_any_ancester_who_is_capture_group_reference():
+                    # This is calling the reference
+                    self.add_new_references_to_global_list()
+                    return PatternNodeTypes.capture_group_call
+
+                # This is the capturing the reference
+                return PatternNodeTypes.capture_group_reference
 
         # Is times
         if name == "times":
@@ -188,14 +197,21 @@ class PatternNodeTypeBuilder:
             current_node = current_node.parent
         return False
 
-    @staticmethod
-    def is_capture_group_reference(name) -> bool:
-        try:
-            int(name)
-            return True
+    def has_any_ancester_who_is_capture_group_reference(self) -> bool:
+        "Check if any ancestor is a capture group reference"
+        current_node = self.command
 
-        except ValueError:
-            return False
+        global CAPTURE_GROUPS_REFERENCESq
+        if current_node in CAPTURE_GROUPS_REFERENCES:
+            return True
+        return False
+
+    def add_new_references_to_global_list(self) -> None:
+        "Add new references to global list"
+
+        global CAPTURE_GROUPS_REFERENCES
+        if self.command not in CAPTURE_GROUPS_REFERENCES:
+            CAPTURE_GROUPS_REFERENCES.append(self.command)
 
     def build(self) -> None:
         self.set_type()
