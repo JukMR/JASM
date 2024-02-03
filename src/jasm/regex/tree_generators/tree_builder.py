@@ -136,11 +136,11 @@ class PatternNodeTypeBuilder:
                 # Add this macro to refence list
                 # First check it it should be a new reference or a call to an existing one
                 if self.has_any_ancester_who_is_capture_group_reference():
-                    # This is calling the reference
-                    self.add_new_references_to_global_list()
+                    # This is the using the reference
                     return PatternNodeTypes.capture_group_call
 
-                # This is the capturing the reference
+                # This is creating the reference
+                self.add_new_references_to_global_list()
                 return PatternNodeTypes.capture_group_reference
 
         # Is times
@@ -202,7 +202,7 @@ class PatternNodeTypeBuilder:
         current_node = self.command
 
         global CAPTURE_GROUPS_REFERENCESq
-        if current_node in CAPTURE_GROUPS_REFERENCES:
+        if current_node.name in CAPTURE_GROUPS_REFERENCES:
             return True
         return False
 
@@ -210,8 +210,8 @@ class PatternNodeTypeBuilder:
         "Add new references to global list"
 
         global CAPTURE_GROUPS_REFERENCES
-        if self.command not in CAPTURE_GROUPS_REFERENCES:
-            CAPTURE_GROUPS_REFERENCES.append(self.command)
+        if self.command.name not in CAPTURE_GROUPS_REFERENCES:
+            CAPTURE_GROUPS_REFERENCES.append(self.command.name)
 
     def build(self) -> None:
         self.set_type()

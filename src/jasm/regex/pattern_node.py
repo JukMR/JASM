@@ -142,11 +142,7 @@ class PatternNode:
     # Capture group reference
 
     def get_capture_group_reference(self) -> str:
-        reference_setter = self.get_dumb_instruction_getter()
-        return reference_setter
-
-    def get_dumb_instruction_getter(self) -> str:
-        return f"{IGNORE_INST_ADDR}([^|]+),|"  # Get all the instruction
+        return rf"{IGNORE_INST_ADDR}([^|]+),\|"  # Get all the instruction
 
     # Capture group call
 
@@ -192,17 +188,15 @@ class RegexWithOperandsCreator:
         pattern_nod_name = get_pattern_node_name(self.name)
 
         if operands_regex:
-            return (
-                f"(?:{IGNORE_INST_ADDR}({pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})){times_regex}"
-            )
-        return f"(?:{IGNORE_INST_ADDR}({pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE}){times_regex})"
+            return f"(?:{IGNORE_INST_ADDR}(?:{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})){times_regex}"
+        return f"(?:{IGNORE_INST_ADDR}(?:{pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE}){times_regex})"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
         pattern_nod_name = get_pattern_node_name(self.name)
 
         if operands_regex:
-            return f"{IGNORE_INST_ADDR}({pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})"
-        return f"{IGNORE_INST_ADDR}({pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE})"
+            return f"{IGNORE_INST_ADDR}(?:{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})"
+        return f"{IGNORE_INST_ADDR}(?:{pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE})"
 
 
 class BranchProcessor:
@@ -301,4 +295,4 @@ def global_get_min_max_regex(times: TimeType) -> Optional[str]:
     return f"{{{times.min_times},{times.max_times}}}"
 
 
-CAPTURE_GROUPS_REFERENCES: List["PatternNode"] = []
+CAPTURE_GROUPS_REFERENCES: List[str] = []

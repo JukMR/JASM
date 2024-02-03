@@ -4,5 +4,3 @@ pattern:
   - push
   - "#cc-1"
   - "#cc-1"
-  - call
-  - "cc-1"
