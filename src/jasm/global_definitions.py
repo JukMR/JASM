@@ -97,6 +97,7 @@ class PatternNodeTypes(Enum):
     deref_property = auto()
     times = auto()
     capture_group_reference = auto()
+    capture_group_call = auto()
 
 
 class MatchingSearchMode(Enum):

@@ -14,7 +14,6 @@ from jasm.global_definitions import (
     TimeType,
     dict_node,
 )
-from jasm.regex.capture_group import CaptureGroupIndex
 from jasm.regex.deref_classes import DerefObject, DerefObjectBuilder
 
 
@@ -40,6 +39,7 @@ class PatternNode:
         children: Optional[dict | List["PatternNode"]],
         pattern_node_type: Optional[PatternNodeTypes],
         parent: Optional["PatternNode"],
+        capture_group: Optional[bool] = None,
     ) -> None:
         """
         Initialize a Command object.
@@ -57,6 +57,7 @@ class PatternNode:
         self.children = children
         self.pattern_node_type = pattern_node_type
         self.parent = parent
+        self.capture_group = capture_group
 
     def get_regex(self, pattern_node: "PatternNode") -> str:
         """Get regex from a leaf or call a recursion over the branch."""
@@ -70,19 +71,24 @@ class PatternNode:
             return ""
 
         if pattern_node.pattern_node_type == PatternNodeTypes.capture_group_reference:
-            return self.get_capture_group_reference(pattern_node)
+            return self.get_capture_group_reference()
+
+        if pattern_node.pattern_node_type == PatternNodeTypes.capture_group_call:
+            return self.get_capture_group_call(pattern_node)
+
         return self.process_branch(pattern_node)
 
     def process_leaf(self, pattern: "PatternNode") -> str:
         name = pattern.name
         children = pattern.children
         times = pattern.times
-        if not children:
-            if pattern.pattern_node_type == PatternNodeTypes.operand:
-                # Is an operand
-                return str(self.sanitize_operand_name(name))
-            # Is a mnemonic with no operands
-            print(f"Found a mnemonic with no operands in yaml rule: {pattern.name}")
+
+        # Leaf is operand
+        if not children and pattern.pattern_node_type == PatternNodeTypes.operand:
+            # Is an operand
+            return str(self.sanitize_operand_name(name))
+        # Is a mnemonic with no operands
+        print(f"Found a mnemonic with no operands in yaml rule: {pattern.name}")
 
         assert isinstance(children, List) or (not children), "Children must be a list or None"
         # This line shouldn't be necessary but the linter complains children could be dict
@@ -133,12 +139,25 @@ class PatternNode:
         assert isinstance(result, str | int)
         return result
 
-    def get_capture_group_reference(self, pattern_node: "PatternNode") -> str:
+    # Capture group reference
+
+    def get_capture_group_reference(self) -> str:
+        reference_setter = self.get_dumb_instruction_getter()
+        return reference_setter
+
+    def get_dumb_instruction_getter(self) -> str:
+        return f"{IGNORE_INST_ADDR}([^|]+),|"  # Get all the instruction
+
+    # Capture group call
+
+    def get_capture_group_call(self, pattern_node: "PatternNode") -> str:
         index = self.get_capture_group_index(pattern_node).to_regex()
-        return index
+        return f"({index})"
 
     @staticmethod
     def get_capture_group_index(pattern_node) -> "CaptureGroupIndex":
+        from jasm.regex.capture_group import CaptureGroupIndex
+
         # For now only full instructions is supported
         return CaptureGroupIndex(pattern_node.name)
 
@@ -280,3 +299,6 @@ def global_get_min_max_regex(times: TimeType) -> Optional[str]:
     if times.min_times == times.max_times:
         return f"{{{times.min_times}}}"
     return f"{{{times.min_times},{times.max_times}}}"
+
+
+CAPTURE_GROUPS_REFERENCES: List["PatternNode"] = []

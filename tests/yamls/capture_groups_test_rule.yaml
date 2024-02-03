@@ -2,5 +2,7 @@
 ---
 pattern:
   - push
+  - "#cc-1"
+  - "#cc-1"
   - call
-  - $2
+  - "cc-1"
