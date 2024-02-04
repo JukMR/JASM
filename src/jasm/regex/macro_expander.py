@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, Generator, List, Optional, Tuple
 
 
 class MacroExpander:
@@ -8,7 +8,11 @@ class MacroExpander:
         """Expand all macros in the pattern in the order they are defined in the macros list"""
 
         for macro in macros:
-            tmp_pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
+            if self.macro_has_arguments(macro):
+                tmp_pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
+
+            else:
+                tmp_pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
             assert isinstance(tmp_pattern, dict)
             pattern = tmp_pattern
 
@@ -26,6 +30,13 @@ class MacroExpander:
         This algoritm will replace all the occurrences of the macro in the pattern.
         """
         if isinstance(pattern, dict):
+            macro_args = macro.get("args")
+            if macro_args:
+                for arg in macro_args:
+                    if arg in pattern:
+                        # Replace with argument
+                        return self.replace_macro_in_pattern_dict(macro=macro, pattern=pattern, current_arg=arg)
+
             return self.replace_macro_in_pattern_dict(macro=macro, pattern=pattern)
         if isinstance(pattern, List):
             return self.replace_macro_in_pattern_in_list(macro=macro, pattern=pattern)
@@ -41,13 +52,13 @@ class MacroExpander:
                 return new_name
         return pattern
 
-    def replace_macro_in_pattern_dict(self, macro: dict, pattern: dict) -> dict:
+    def replace_macro_in_pattern_dict(self, macro: dict, pattern: dict, current_arg: Optional[str] = None) -> dict:
         """Expand the macro in the pattern when it is a dict"""
 
         macro_name = macro.get("name")
         for key, value in pattern.items():
             if key == macro_name:
-                return self.replace_macro_in_pattern_dict_for_key(macro=macro, pattern=pattern)
+                return self.replace_macro_in_pattern_dict_for_key(macro=macro, pattern=pattern, current_arg=current_arg)
 
             if isinstance(value, dict):
                 pattern[key] = self.replace_macro_in_pattern_dict(macro=macro, pattern=value)
@@ -94,8 +105,11 @@ class MacroExpander:
             return macro_value
         raise ValueError(f"Macro value must be a dict or a string, macro_value: {macro_value}")
 
-    def replace_macro_in_pattern_dict_for_key(self, macro: dict, pattern: dict) -> dict:
+    def replace_macro_in_pattern_dict_for_key(
+        self, macro: dict, pattern: dict, current_arg: Optional[str] = None
+    ) -> dict:
         """Expand the macro in the pattern if it is a dict and the key matches the macro name"""
+
         macro_value = self.get_macro_pattern(macro=macro)
 
         assert isinstance(macro_value, dict)
@@ -104,8 +118,54 @@ class MacroExpander:
         tmp_pattern = macro_value
         if times:
             tmp_pattern["times"] = times
+
+        if current_arg:
+            tmp_pattern = self.replace_arg_in_pattern(pattern=pattern, tmp_pattern=tmp_pattern, current_arg=current_arg)
         return tmp_pattern
 
-    def replace_macro_in_pattern_in_list(self, macro: dict, pattern: List) -> List:
+    def replace_macro_in_pattern_in_list(self, macro: Dict, pattern: List) -> List:
         """Replace the macro in the pattern when the pattern is a list"""
         return [self.replace_macro_in_pattern(macro=macro, pattern=elem) for elem in pattern]
+
+    def macro_has_arguments(self, macro: Dict) -> bool:
+        return "args" in macro
+
+    def replace_arg_in_pattern(self, pattern: Dict, tmp_pattern: Dict, current_arg: Optional[str] = None) -> Dict:
+        """Replace the macro argument in the pattern"""
+        assert current_arg
+
+        args_mapping = self.get_args_mapping(pattern, current_arg)
+        assert args_mapping
+
+        for item in self.iter_items(tmp_pattern):
+            if isinstance(item, str):
+                if item == current_arg:
+                    item = args_mapping[current_arg]
+            if isinstance(item, tuple):
+                values = item[1]
+                for i_value, value in enumerate(values):
+                    if value == current_arg:
+                        values[i_value] = args_mapping[current_arg]
+
+        return tmp_pattern
+
+    def get_args_mapping(self, pattern: Dict, current_arg: str) -> Optional[Dict]:
+        for k, v in pattern.items():
+            if k == current_arg:
+                return {k: v}
+        return None
+
+    def iter_items(
+        self,
+        elems: str | List | Dict,
+    ) -> Generator[str | Dict | List | Tuple, str | Dict | List | Tuple, None]:
+        if isinstance(elems, str):
+            yield elems
+        if isinstance(elems, List):
+            for elem in elems:
+                yield elem
+        if isinstance(elems, Dict):
+            for k, v in elems.items():
+                yield k, v
+
+        return None
