@@ -10,6 +10,7 @@ from jasm.global_definitions import (
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_PATTERN_NODE,
     ASTERISK_WITH_LIMIT,
+    CaptureGroupMode,
     PatternNodeTypes,
     TimeType,
     dict_node,
@@ -74,7 +75,13 @@ class PatternNode:
             return self.get_capture_group_reference()
 
         if pattern_node.pattern_node_type == PatternNodeTypes.capture_group_call:
-            return self.get_capture_group_call(pattern_node)
+            return self.get_capture_group_call(pattern_node, CaptureGroupMode.instruction)
+
+        if pattern_node.pattern_node_type == PatternNodeTypes.capture_group_reference_operand:
+            return self.get_capture_group_reference_operand()
+
+        if pattern_node.pattern_node_type == PatternNodeTypes.capture_group_call_operand:
+            return self.get_capture_group_call(pattern_node, CaptureGroupMode.operand)
 
         return self.process_branch(pattern_node)
 
@@ -146,16 +153,19 @@ class PatternNode:
 
     # Capture group call
 
-    def get_capture_group_call(self, pattern_node: "PatternNode") -> str:
-        index = self.get_capture_group_index(pattern_node).to_regex()
+    def get_capture_group_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
+        index = self.get_capture_group_index(pattern_node, capture_group_mode=capture_group_mode).to_regex()
         return f"{index}"
 
     @staticmethod
-    def get_capture_group_index(pattern_node) -> "CaptureGroupIndex":
+    def get_capture_group_index(pattern_node, capture_group_mode: CaptureGroupMode) -> "CaptureGroupIndex":
         from jasm.regex.capture_group import CaptureGroupIndex
 
         # For now only full instructions is supported
-        return CaptureGroupIndex(pattern_node.name)
+        return CaptureGroupIndex(pattern_node.name, mode=capture_group_mode)
+
+    def get_capture_group_reference_operand(self) -> str:
+        return r"([^,|]+),"  # Get the operand value
 
 
 class RegexWithOperandsCreator:

@@ -1,6 +1,8 @@
-# Indexes start at 1 following the regex capturing group convention. Only full instructions supported for now
+# Match two push with same registry
 ---
 pattern:
-  - push
-  - "#cc-1"
-  - "#cc-1"
+  - push:
+      - "#cc-2"
+
+  - push:
+      - "#cc-2"
