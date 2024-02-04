@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "moonbounce_binarly_bad_small_19_lines",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -18,7 +18,7 @@
         },
         {
             "name": "include_and_include_list",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -33,7 +33,7 @@
         },
         {
             "name": "not call",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -48,7 +48,7 @@
         },
         {
             "name": "exclude_list",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -63,7 +63,7 @@
         },
         {
             "name": "10_calls",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -78,7 +78,7 @@
         },
         {
             "name": "1_call",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -93,7 +93,7 @@
         },
         {
             "name": "call_between_3_and_9",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -108,7 +108,7 @@
         },
         {
             "name": "moonbounce_malware_short_6_lines",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -123,7 +123,7 @@
         },
         {
             "name": "moonbounce_binarly_bad_small_19_lines",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -138,7 +138,7 @@
         },
         {
             "name": "exclude_list",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -153,7 +153,7 @@
         },
         {
             "name": "include_and_include_list_with_macros",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -168,7 +168,7 @@
         },
         {
             "name": "smc_binary",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -183,7 +183,7 @@
         },
         {
             "name": "oren_rule_w_macros",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -198,7 +198,7 @@
         },
         {
             "name": "parse_with_manual_regex",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "parsing_asm_manual_regex.py",
             "console": "integratedTerminal",
@@ -206,7 +206,7 @@
         },
         {
             "name": "lenovo_rule_with_valid_addr",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -221,7 +221,7 @@
         },
         {
             "name": "qequ lenovo objdump",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -236,7 +236,7 @@
         },
         {
             "name": "lenovo2 short rule",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -250,23 +250,8 @@
             ]
         },
         {
-            "name": "capture_groups_test_rule",
-            "type": "python",
-            "request": "launch",
-            "program": "main.py",
-            "console": "integratedTerminal",
-            "justMyCode": true,
-            "args": [
-                "--debug",
-                "-p",
-                "tests/yamls/capture_groups_test_rule.yaml",
-                "-s",
-                "tests/assembly/binary_data_for_capture_groups.s"
-            ]
-        },
-        {
             "name": "moonbounce_with_multiple_findings",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -282,7 +267,7 @@
         },
         {
             "name": "1_call_plain_with_multiple_findings",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -298,7 +283,7 @@
         },
         {
             "name": "1_call_plain_with_single_findings",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
@@ -309,6 +294,21 @@
                 "tests/yamls/1_call_plain.yaml",
                 "-s",
                 "tests/assembly/binary_data.s"
+            ]
+        },
+        {
+            "name": "capture_groups_test_rule on binary_data_for_capture_groups",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/capture_groups_test_rule.yaml",
+                "-s",
+                "tests/assembly/binary_data_for_capture_groups.s"
             ]
         },
     ]
