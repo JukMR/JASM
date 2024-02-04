@@ -84,6 +84,9 @@ class Yaml2Regex(File2Regex):
                 return EnumDisasStyle.intel
             if style == "att":
                 return EnumDisasStyle.att
+
+            logger.error("Invalid style in the pattern file")
+            return None
         return None
 
     def get_valid_addr_range(self) -> Optional[ValidAddrRange]:

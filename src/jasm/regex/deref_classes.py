@@ -1,8 +1,6 @@
-from dataclasses import dataclass
-from typing import Dict, Optional
+from typing import Optional
 
 
-@dataclass
 class DerefObject:
     """Represents a deref object."""
 
@@ -12,10 +10,18 @@ class DerefObject:
     # constant_multiplier = c
     # constant_offset = k
 
-    main_reg: str
-    constant_offset: Optional[str | int]
-    register_multiplier: Optional[str]
-    constant_multiplier: Optional[str | int]
+    def __init__(
+        self,
+        main_reg: str,
+        constant_offset: Optional[str | int],
+        register_multiplier: Optional[str],
+        constant_multiplier: Optional[str | int],
+    ) -> None:
+
+        self.main_reg = main_reg
+        self.constant_offset = constant_offset
+        self.register_multiplier = register_multiplier
+        self.constant_multiplier = constant_multiplier
 
     def get_regex(self) -> str:
         """Returns regex from the given deref object."""
@@ -54,19 +60,38 @@ class DerefObject:
 class DerefObjectBuilder:
     """Builds a deref object from the given command dict."""
 
-    def __init__(self, command_dict: Dict[str, Dict[str, str]]) -> None:
-        self.deref_elems = command_dict["$deref"]
+    def __init__(self, parent: "PatternNode") -> None:
+        self.parent = parent
 
-    def build(self) -> DerefObject:
-        """Main build method"""
-        try:
-            main_reg = self.deref_elems["main_reg"]
-        except ValueError as exc:
-            raise ValueError(f"main_reg is required for deref object: {self.deref_elems}") from exc
+    def build(self):
+        main_reg = self._child_getter(parent=self.parent, child_name="main_reg")
+
+        if not main_reg:
+            raise ValueError("main_reg is required for deref object")
+
+        constant_offset = self._child_getter(parent=self.parent, child_name="constant_offset")
+        register_multiplier = self._child_getter(parent=self.parent, child_name="register_multiplier")
+        constant_multiplier = self._child_getter(parent=self.parent, child_name="constant_multiplier")
+
+        # Transform PatterNode into regexs
+
+        get_regex_function = self.parent.get_regex
+        main_reg_regex = get_regex_function(main_reg)
+        constant_offset_regex = get_regex_function(constant_offset) if constant_offset else None
+        register_multiplier_regex = get_regex_function(register_multiplier) if register_multiplier else None
+        constant_multiplier_regex = get_regex_function(constant_multiplier) if constant_multiplier else None
 
         return DerefObject(
-            main_reg=main_reg,
-            constant_offset=self.deref_elems.get("constant_offset"),
-            register_multiplier=self.deref_elems.get("register_multiplier"),
-            constant_multiplier=self.deref_elems.get("constant_multiplier"),
+            main_reg=main_reg_regex,
+            constant_offset=constant_offset_regex,
+            register_multiplier=register_multiplier_regex,
+            constant_multiplier=constant_multiplier_regex,
         )
+
+    @staticmethod
+    def _child_getter(parent: "PatternNode", child_name: str) -> Optional["PatternNode"]:
+        """Get the child of the given parent."""
+        for child in parent.children:
+            if child.name == child_name:
+                return child
+        return None

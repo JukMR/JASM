@@ -1,6 +1,34 @@
 # Indexes start at 1 following the regex capturing group convention. Only full instructions supported for now
 ---
+macros:
+  - name: "@any_op"
+    pattern: "[^,]+"
+
 pattern:
   - push
-  - call
-  - $2
+
+  - "#cc-1"
+
+  - "#cc-1"
+
+  - nopw
+
+  - endbr64
+
+  - push:
+      - "#cc-2"
+
+  - push:
+      - "#cc-2"
+
+  - push # r13
+  - push # r12
+
+  - push:
+      - "#cc-3"
+
+  - push
+  - sub
+  - mov:
+      - "@any_op"
+      - "#cc-3"

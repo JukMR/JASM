@@ -186,7 +186,7 @@ class OperandsParser:
 
         # Operand is memory access
         if operand_elem[0] == "(" and operand_elem[-1] == ")":
-            operand_elem.replace("[", "").replace(")", "]")
+            operand_elem = operand_elem.replace("(", "[").replace(")", "]")
             return operand_elem
 
         # The operand have a memory address access plus an inmediate

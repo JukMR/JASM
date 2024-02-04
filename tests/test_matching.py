@@ -2,7 +2,6 @@ import pytest
 from conftest import load_test_configs
 
 from jasm.global_definitions import InputFileType, MatchingReturnMode, MatchingSearchMode
-from jasm.logging_config import logger
 from jasm.match import MasterOfPuppets
 
 
@@ -15,7 +14,10 @@ def run_match_test(
     matching_mode: MatchingSearchMode,
 ) -> None:
     """Run a single match test."""
-    result = MasterOfPuppets().perform_matching(
+
+    mop_instance = MasterOfPuppets()
+
+    result = mop_instance.perform_matching(
         pattern_pathstr=pattern_pathstr,
         input_file=input_file,
         input_file_type=input_file_type,
@@ -39,7 +41,7 @@ def test_all_patterns(config):
     return_mode = config.get("return_mode", None)
     matching_mode = config.get("matching_mode", None)
 
-    logger.info("Testing assembly: %s with pattern: %s", assembly, config_yaml)
+    print("Testing assembly: %s with pattern: %s", assembly, config_yaml)
 
     # Check if tests uses assembly or binary
     if assembly:

@@ -182,13 +182,14 @@ class MasterOfPuppets:
         # Do the processing
         producer.process_file(file=input_file, iConsumer=consumer)
 
-        if return_mode == MatchingReturnMode.bool:
-            return matched_observer.matched
-        elif return_mode == MatchingReturnMode.matched_addrs_list:
-            # This mode implies that if the list is not empty, then the match was successful
-            return matched_observer.addr_list
-        elif return_mode == MatchingReturnMode.all_instructions_string:
-            return matched_observer.stringified_instructions
+        match return_mode:
+            case MatchingReturnMode.bool:
+                return matched_observer.matched
+            case MatchingReturnMode.matched_addrs_list:
+                # This mode implies that if the list is not empty, then the match was successful
+                return matched_observer.addr_list
+            case MatchingReturnMode.all_instructions_string:
+                return matched_observer.stringified_instructions
 
         raise ValueError("Invalid return mode")
 

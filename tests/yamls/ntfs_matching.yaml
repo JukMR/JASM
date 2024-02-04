@@ -1,0 +1,62 @@
+# Indexes start at 1 following the regex capturing group convention. Only full instructions supported for now
+---
+macros:
+  - name: $any_jmp
+    pattern:
+      - $or:
+          - jmp
+          - jne
+          - je
+          - jg
+          - jge
+          - jl
+          - jle
+          - jae
+          - ja
+          - jbe
+          - jb
+          - jcxz
+          - jecxz
+          - jrcxz
+          - jno
+          - jo
+          - jnp
+          - jp
+          - js
+          - jns
+          - jnz
+          - jz
+
+pattern:
+  - cmp:
+      - $or:
+          - $deref:
+            main_reg: "@any"
+            constant_offset: "0x0"
+          - $deref:
+            main_reg: "@any"
+      - "0x"
+
+  - $any_jmp
+
+  - cmp:
+      - $deref:
+        main_reg: "@any"
+        constant_offset: "0x1"
+      - "0x"
+
+  - $any_jmp
+
+  - cmp:
+      - $deref:
+        main_reg: "@any"
+        constant_offset: "0x2"
+      - "0x"
+
+  - $any_jmp
+
+  - cmp:
+      - $deref:
+        main_reg: "@any"
+        constant_offset: "0x3"
+      - "0x"

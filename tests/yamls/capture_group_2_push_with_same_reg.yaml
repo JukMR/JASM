@@ -1,0 +1,8 @@
+# Match two push with same registry
+---
+pattern:
+  - push:
+      - "#cc-2"
+
+  - push:
+      - "#cc-2"
