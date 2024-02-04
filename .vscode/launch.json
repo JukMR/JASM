@@ -311,5 +311,20 @@
                 "tests/assembly/binary_data_for_capture_groups.s"
             ]
         },
+        {
+            "name": "oren rule with capture groups",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att_with_capture_groups.yaml",
+                "-s",
+                "tests/assembly/binary_data_for_capture_groups.s"
+            ]
+        },
     ]
 }
