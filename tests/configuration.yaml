@@ -84,7 +84,7 @@ test_matching:
     assembly: "tests/assembly/objlenovo_qequ_objdump_2.34.s"
     expected: True
 
-  - title: "9_calls_with_capture_groups"
+  - title: "capture_groups_test_rule on binary_data_for_capture_groups"
     yaml: "tests/yamls/capture_groups_test_rule.yaml"
     assembly: "tests/assembly/binary_data_for_capture_groups.s"
     expected: True
@@ -102,6 +102,21 @@ test_matching:
     return_mode: "list"
     matching_mode: "single"
     expected: ["4014"]
+
+  - title: "capture_group_two_push_with_same_reg"
+    yaml: "tests/yamls/capture_group_2_push_with_same_reg.yaml"
+    assembly: "tests/assembly/binary_data_for_capture_groups.s"
+    expected: True
+
+  - title: "capture_group_test_with_operands_working"
+    yaml: "tests/yamls/capture_groups_test_rule.yaml"
+    assembly: "tests/assembly/binary_data_for_capture_groups.s"
+    expected: True
+
+  - title: "oren_rule_with_capture_groups"
+    yaml: "tests/yamls/oren_rule_att_with_capture_groups.yaml"
+    binary: "tests/binary/lenovo2.bin"
+    expected: True
 
 test_parsing_lines:
   - title: "binary_data.s"

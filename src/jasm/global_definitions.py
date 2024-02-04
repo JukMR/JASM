@@ -1,6 +1,5 @@
 "Global definition file"
 
-from dis import Instruction
 import sys
 from dataclasses import dataclass
 from enum import Enum, auto
@@ -95,8 +94,13 @@ class PatternNodeTypes(Enum):
     mnemonic = auto()
     deref = auto()
     deref_property = auto()
+    deref_property_capture_group_reference = auto()
+    deref_property_capture_group_call = auto()
     times = auto()
     capture_group_reference = auto()
+    capture_group_call = auto()
+    capture_group_reference_operand = auto()
+    capture_group_call_operand = auto()
 
 
 class MatchingSearchMode(Enum):
@@ -108,3 +112,8 @@ class MatchingReturnMode(Enum):
     bool = auto()
     matched_addrs_list = auto()
     all_instructions_string = auto()  # this enum is used for testing only
+
+
+class CaptureGroupMode(Enum):
+    instruction = auto()
+    operand = auto()
