@@ -167,6 +167,21 @@
             ]
         },
         {
+            "name": "include_and_include_list_with_macros_with_args",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/include_and_include_list_with_macros_with_args_mock_hint.yaml",
+                "-s",
+                "tests/assembly/binary_data.s"
+            ]
+        },
+        {
             "name": "smc_binary",
             "type": "debugpy",
             "request": "launch",
