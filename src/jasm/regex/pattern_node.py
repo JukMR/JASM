@@ -40,7 +40,7 @@ class PatternNode:
         children: Optional[dict | List["PatternNode"]],
         pattern_node_type: Optional[PatternNodeTypes],
         parent: Optional["PatternNode"],
-        capture_group: Optional[bool] = None,
+        capture_group_references: List[str] = [],
     ) -> None:
         """
         Initialize a Command object.
@@ -58,7 +58,7 @@ class PatternNode:
         self.children = children
         self.pattern_node_type = pattern_node_type
         self.parent = parent
-        self.capture_group = capture_group
+        self.capture_group_references = capture_group_references
 
     def get_regex(self, pattern_node: "PatternNode") -> str:
         """Get regex from a leaf or call a recursion over the branch."""
@@ -154,15 +154,25 @@ class PatternNode:
     # Capture group call
 
     def get_capture_group_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
-        index = self.get_capture_group_index(pattern_node, capture_group_mode=capture_group_mode).to_regex()
+
+        capture_group_instance = self.get_capture_group_index(
+            pattern_node, capture_group_mode=capture_group_mode, capture_group_references=self.capture_group_references
+        )
+
+        index = capture_group_instance.to_regex()
+
         return f"{index}"
 
     @staticmethod
-    def get_capture_group_index(pattern_node, capture_group_mode: CaptureGroupMode) -> "CaptureGroupIndex":
+    def get_capture_group_index(
+        pattern_node, capture_group_mode: CaptureGroupMode, capture_group_references: List[str]
+    ) -> "CaptureGroupIndex":
         from jasm.regex.capture_group import CaptureGroupIndex
 
         # For now only full instructions is supported
-        return CaptureGroupIndex(pattern_node.name, mode=capture_group_mode)
+        return CaptureGroupIndex(
+            pattern_node.name, mode=capture_group_mode, capture_groups_references=capture_group_references
+        )
 
     def get_capture_group_reference_operand(self) -> str:
         return r"([^,|]+),"  # Get the operand value

@@ -115,6 +115,3 @@ class MatchingReturnMode(Enum):
 class CaptureGroupMode(Enum):
     instruction = auto()
     operand = auto()
-
-
-CAPTURE_GROUPS_REFERENCES: List[str] = []
