@@ -113,6 +113,11 @@ test_matching:
     assembly: "tests/assembly/binary_data_for_capture_groups.s"
     expected: True
 
+  - title: "oren_rule_with_capture_groups"
+    yaml: "tests/yamls/oren_rule_att_with_capture_groups.yaml"
+    assembly: "tests/assembly/binary_data_for_capture_groups.s"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"
