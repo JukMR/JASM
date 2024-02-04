@@ -323,7 +323,7 @@
                 "-p",
                 "tests/yamls/oren_rule_att_with_capture_groups.yaml",
                 "-s",
-                "tests/assembly/binary_data_for_capture_groups.s"
+                "tests/assembly/lenovo2_short.s"
             ]
         },
     ]

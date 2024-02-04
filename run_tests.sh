@@ -24,7 +24,7 @@ fi
 # pytest -k "$ARG_1" -v tests/tests.py
 
 # Run integral tests
-pytest -n 2 -v "$ARG_1" "$@"
+pytest -n 10 --random-order -v "$ARG_1" "$@"
 
 # Run unit tests
 # pytest -n 3 -k "$ARG_1" -v tests/unit_tests.py
