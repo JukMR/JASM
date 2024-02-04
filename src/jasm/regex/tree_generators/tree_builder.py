@@ -133,6 +133,15 @@ class PatternNodeTypeBuilder:
             # Is a capture group reference
             if name.startswith("#"):
 
+                # Is Capture Group in operand
+                if self.is_capture_group_operand():
+                    if self.has_any_ancester_who_is_capture_group_reference():
+                        return PatternNodeTypes.capture_group_call_operand
+
+                    self.add_new_references_to_global_list()
+                    return PatternNodeTypes.capture_group_reference_operand
+
+                # Is Capture Group in Mnemonic
                 # Add this macro to refence list
                 # First check it it should be a new reference or a call to an existing one
                 if self.has_any_ancester_who_is_capture_group_reference():
@@ -211,7 +220,18 @@ class PatternNodeTypeBuilder:
 
         global CAPTURE_GROUPS_REFERENCES
         if self.command.name not in CAPTURE_GROUPS_REFERENCES:
+            assert isinstance(self.command.name, str)
             CAPTURE_GROUPS_REFERENCES.append(self.command.name)
+
+    def is_capture_group_operand(self):
+        "Check if the current node is a capture group operand"
+        if not self.command.parent:
+            return False
+
+        if self.command.parent.pattern_node_type == PatternNodeTypes.mnemonic:
+            return True
+
+        return False
 
     def build(self) -> None:
         self.set_type()

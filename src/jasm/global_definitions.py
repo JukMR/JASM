@@ -96,7 +96,9 @@ class PatternNodeTypes(Enum):
     deref_property = auto()
     times = auto()
     capture_group_reference = auto()
+    capture_group_reference_operand = auto()
     capture_group_call = auto()
+    capture_group_call_operand = auto()
 
 
 class MatchingSearchMode(Enum):
@@ -108,3 +110,8 @@ class MatchingReturnMode(Enum):
     bool = auto()
     matched_addrs_list = auto()
     all_instructions_string = auto()  # this enum is used for testing only
+
+
+class CaptureGroupMode(Enum):
+    instruction = auto()
+    operand = auto()
