@@ -7,6 +7,7 @@ from typing import List, Optional
 
 from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
 from jasm.global_definitions import (
+    CAPTURE_GROUPS_REFERENCES,
     EnumDisasStyle,
     InputFileType,
     MatchingReturnMode,

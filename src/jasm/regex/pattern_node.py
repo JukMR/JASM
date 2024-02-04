@@ -303,6 +303,3 @@ def global_get_min_max_regex(times: TimeType) -> Optional[str]:
     if times.min_times == times.max_times:
         return f"{{{times.min_times}}}"
     return f"{{{times.min_times},{times.max_times}}}"
-
-
-CAPTURE_GROUPS_REFERENCES: List[str] = []

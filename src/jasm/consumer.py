@@ -66,7 +66,11 @@ class CompleteConsumer(InstructionObserverConsumer):
 
     def do_match_first_occurence(self) -> None:
         try:
-            match_result = regex.search(pattern=self._regex_rule, string=self._all_instructions, timeout=30)
+            match_result = regex.search(
+                pattern=self._regex_rule,
+                string=self._all_instructions,
+                timeout=30,
+            )
 
         except TimeoutError as exc:
             logger.error("Regex timeout")
