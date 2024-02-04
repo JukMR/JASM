@@ -1,5 +1,4 @@
-from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode
-from jasm.regex.pattern_node import CAPTURE_GROUPS_REFERENCES
+from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode, CAPTURE_GROUPS_REFERENCES
 
 
 class CaptureGroupIndex:
@@ -18,7 +17,7 @@ class CaptureGroupIndex:
 
     def to_regex(self) -> str:
         if self.mode == CaptureGroupMode.instruction:
-            return rf"{IGNORE_INST_ADDR}\{self.index},"
+            return rf"{IGNORE_INST_ADDR}\{self.index},\|"
 
         if self.mode == CaptureGroupMode.operand:
             return rf"\{self.index},"

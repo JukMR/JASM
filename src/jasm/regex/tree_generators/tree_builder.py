@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from jasm.global_definitions import PatternNodeTypes, TimeType, dict_node
-from jasm.regex.pattern_node import CAPTURE_GROUPS_REFERENCES, PatternNode
+from jasm.global_definitions import CAPTURE_GROUPS_REFERENCES, PatternNodeTypes, TimeType, dict_node
+from jasm.regex.pattern_node import PatternNode
 
 
 class PatternNodeBuilderNoParents:
@@ -210,7 +210,7 @@ class PatternNodeTypeBuilder:
         "Check if any ancestor is a capture group reference"
         current_node = self.command
 
-        global CAPTURE_GROUPS_REFERENCESq
+        global CAPTURE_GROUPS_REFERENCES
         if current_node.name in CAPTURE_GROUPS_REFERENCES:
             return True
         return False
