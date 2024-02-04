@@ -1,7 +1,7 @@
 import pytest
 from conftest import load_test_configs
 
-from jasm.global_definitions import InputFileType, MatchingReturnMode, MatchingSearchMode, CAPTURE_GROUPS_REFERENCES
+from jasm.global_definitions import InputFileType, MatchingReturnMode, MatchingSearchMode
 from jasm.match import MasterOfPuppets
 
 
@@ -14,7 +14,10 @@ def run_match_test(
     matching_mode: MatchingSearchMode,
 ) -> None:
     """Run a single match test."""
-    result = MasterOfPuppets().perform_matching(
+
+    mop_instance = MasterOfPuppets()
+
+    result = mop_instance.perform_matching(
         pattern_pathstr=pattern_pathstr,
         input_file=input_file,
         input_file_type=input_file_type,

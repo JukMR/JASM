@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from jasm.global_definitions import CAPTURE_GROUPS_REFERENCES, PatternNodeTypes, TimeType, dict_node
+from jasm.global_definitions import PatternNodeTypes, TimeType, dict_node
 from jasm.regex.pattern_node import PatternNode
 
 
@@ -113,9 +113,9 @@ class PatternNodeParentsBuilder:
 
 
 class PatternNodeTypeBuilder:
-    def __init__(self, parent: PatternNode) -> None:
-        assert isinstance(parent, PatternNode)
-        self.command = parent
+    def __init__(self, pattern_node: PatternNode) -> None:
+        assert isinstance(pattern_node, PatternNode)
+        self.command = pattern_node
 
     def _get_type(self) -> PatternNodeTypes:
         if not getattr(self.command, "name", None):
@@ -210,18 +210,16 @@ class PatternNodeTypeBuilder:
         "Check if any ancestor is a capture group reference"
         current_node = self.command
 
-        global CAPTURE_GROUPS_REFERENCES
-        if current_node.name in CAPTURE_GROUPS_REFERENCES:
+        if current_node.name in current_node.capture_group_references:
             return True
         return False
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
 
-        global CAPTURE_GROUPS_REFERENCES
-        if self.command.name not in CAPTURE_GROUPS_REFERENCES:
+        if self.command.name not in self.command.capture_group_references:
             assert isinstance(self.command.name, str)
-            CAPTURE_GROUPS_REFERENCES.append(self.command.name)
+            self.command.capture_group_references.append(self.command.name)
 
     def is_capture_group_operand(self):
         "Check if the current node is a capture group operand"
