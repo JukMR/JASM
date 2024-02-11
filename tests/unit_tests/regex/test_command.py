@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from jasm.global_definitions import IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX, PatternNodeTypes, ASTERISK_WITH_LIMIT
-from jasm.regex.pattern_node import (
+from jasm.regex.tree_generators.pattern_node import (
     BranchProcessor,
     PatternNode,
     RegexWithOperandsCreator,
@@ -148,7 +148,7 @@ def test_generate_regex_without_operands():
     assert "pattern_node" in creator.generate_regex()
 
 
-from jasm.regex.pattern_node import BranchProcessor
+from jasm.regex.tree_generators.pattern_node import BranchProcessor
 
 
 def test_branch_processor_and():
