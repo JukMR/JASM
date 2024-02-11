@@ -1,5 +1,3 @@
-from typing import Optional
-
 from jasm.global_definitions import DisassStyle
 from jasm.stringify_asm.implementations.shell_disassembler import ShellDisassembler
 
@@ -7,18 +5,21 @@ from jasm.stringify_asm.implementations.shell_disassembler import ShellDisassemb
 class GNUObjdumpDisassembler(ShellDisassembler):
     """Disassemble binaries using objdump from shell"""
 
-    def __init__(self, enum_disas_style: Optional[DisassStyle]) -> None:
+    def __init__(self, enum_disas_style: DisassStyle) -> None:
         # Add interface for handling specific flags
 
         # Read it from yaml and pass it here
         # The flag to use is -M intel or -M att
 
-        default_flag = ["-d"]
+        # Default -d flag is used to disassemble the binary executable parts
+        default_flags = ["-d"]
+
+        flags = default_flags
 
         match enum_disas_style:
             case DisassStyle.intel:
-                default_flag.extend(["-M", "Intel"])
+                flags.extend(["-M", "Intel"])
             case DisassStyle.att:
-                default_flag.extend(["-M", "att"])
+                flags.extend(["-M", "att"])
 
-        super().__init__(program="objdump", flags=default_flag)
+        super().__init__(program="objdump", flags=flags)
