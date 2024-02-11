@@ -1,6 +1,6 @@
 # tests/unit_tests/test_file2regex.py
 from jasm.regex.file2regex import File2Regex
-from jasm.global_definitions import EnumDisasStyle
+from jasm.global_definitions import DisassStyle
 
 
 class ConcreteFile2Regex(File2Regex):
@@ -12,7 +12,7 @@ class ConcreteFile2Regex(File2Regex):
         return "RegexPattern"
 
     def get_assembly_style(self):
-        return EnumDisasStyle.att
+        return DisassStyle.att
 
 
 def test_load_file():
@@ -26,4 +26,4 @@ def test_produce_regex():
 
 def test_get_assembly_style():
     concrete_instance = ConcreteFile2Regex()
-    assert concrete_instance.get_assembly_style() == EnumDisasStyle.att
+    assert concrete_instance.get_assembly_style() == DisassStyle.att

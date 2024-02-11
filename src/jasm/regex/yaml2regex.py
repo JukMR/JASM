@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 import yaml
 
-from jasm.global_definitions import EnumDisasStyle, ValidAddrRange
+from jasm.global_definitions import DisassStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.pattern_node import PatternNode
 from jasm.regex.file2regex import File2Regex
@@ -71,23 +71,20 @@ class Yaml2Regex(File2Regex):
 
         return rule_tree
 
-    def get_assembly_style(self) -> Optional[EnumDisasStyle]:
-        "Get the file style from the pattern file"
+    def get_assembly_style(self) -> DisassStyle:
+        "Get the file style from the pattern file or return the default att"
         config = self.loaded_file.get("config")
         if config:
             style = config.get("style")
-        else:
-            return None
+            match style:
+                case "intel":
+                    return DisassStyle.intel
+                case "att":
+                    return DisassStyle.att
+                case _:
+                    logger.error("Invalid or unsupported style: '%s' in the pattern file", style)
 
-        if style:
-            if style == "intel":
-                return EnumDisasStyle.intel
-            if style == "att":
-                return EnumDisasStyle.att
-
-            logger.error("Invalid style in the pattern file")
-            return None
-        return None
+        return DisassStyle.att
 
     def get_valid_addr_range(self) -> Optional[ValidAddrRange]:
         "Get the valid address range from the pattern file"

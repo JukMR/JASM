@@ -3,7 +3,7 @@ import re
 import pytest
 from conftest import load_test_configs
 
-from jasm.global_definitions import EnumDisasStyle, InputFileType, MatchingReturnMode
+from jasm.global_definitions import DisassStyle, InputFileType, MatchingReturnMode
 from jasm.logging_config import logger
 from jasm.match import MasterOfPuppets
 
@@ -13,7 +13,7 @@ def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_fil
 
     all_instructions = MasterOfPuppets._do_matching_and_get_result(
         regex_rule="",
-        assembly_style=EnumDisasStyle.att,
+        assembly_style=DisassStyle.att,
         input_file=input_file,
         input_file_type=input_file_type,
         return_mode=MatchingReturnMode.all_instructions_string,
