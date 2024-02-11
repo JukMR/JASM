@@ -1,9 +1,9 @@
 """File2Regex module"""
 
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
-from jasm.global_definitions import EnumDisasStyle
+from jasm.global_definitions import DisassStyle
 
 
 class File2Regex(ABC):
@@ -19,5 +19,5 @@ class File2Regex(ABC):
         "Main method to produce the regex"
 
     @abstractmethod
-    def get_assembly_style(self) -> Optional[EnumDisasStyle]:
+    def get_assembly_style(self) -> DisassStyle:
         "Method to get the assembly style intel or att"

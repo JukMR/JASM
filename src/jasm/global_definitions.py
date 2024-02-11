@@ -43,7 +43,7 @@ class InputFileType(Enum):
     assembly = auto()
 
 
-class EnumDisasStyle(Enum):
+class DisassStyle(Enum):
     """Enum for the disassembler style."""
 
     intel = auto()

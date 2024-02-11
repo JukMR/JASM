@@ -7,7 +7,7 @@ from typing import List, Optional
 
 from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
 from jasm.global_definitions import (
-    EnumDisasStyle,
+    DisassStyle,
     InputFileType,
     MatchingReturnMode,
     ValidAddrRange,
@@ -76,7 +76,9 @@ class ProducerBuilder:
     """Builder for the producer."""
 
     @staticmethod
-    def build(file_type: InputFileType, assembly_style: Optional[EnumDisasStyle] = None) -> IInstructionProducer:
+    def build(
+        file_type: InputFileType, assembly_style: Optional[DisassStyle] = DisassStyle.att
+    ) -> IInstructionProducer:
         """Create a producer based on the file type."""
 
         # Logic for choosing diferent type of parser should be here
@@ -110,15 +112,17 @@ class MasterOfPuppets:
     ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
-        regex_rule = self._get_regex_rule(pattern_pathstr=pattern_pathstr)
+        yaml2_regex_instance = Yaml2Regex(pattern_pathstr)
 
-        file_style = self.get_file_style(pattern_pathstr=pattern_pathstr)
+        regex_rule = self._get_regex_rule(yaml_2_regex_instance=yaml2_regex_instance)
 
-        valid_addr_range = self.get_file_valid_addr_range(pattern_pathstr=pattern_pathstr)
+        disass_style = self.get_disass_style(yaml_2_regex_instance=yaml2_regex_instance)
+
+        valid_addr_range = self.get_file_valid_addr_range(yaml_2_regex_instance=yaml2_regex_instance)
 
         return self._do_matching_and_get_result(
             regex_rule=regex_rule,
-            assembly_style=file_style,
+            assembly_style=disass_style,
             input_file=input_file,
             input_file_type=input_file_type,
             valid_addr_range=valid_addr_range,
@@ -127,28 +131,30 @@ class MasterOfPuppets:
         )
 
     @staticmethod
-    def _get_regex_rule(pattern_pathstr: str) -> str:
+    def _get_regex_rule(yaml_2_regex_instance: Yaml2Regex) -> str:
         """Retrieve the regex rule from the pattern file"""
-        regex_rule = Yaml2Regex(pattern_pathstr).produce_regex()
+        regex_rule = yaml_2_regex_instance.produce_regex()
 
         return regex_rule
 
-    def get_file_style(self, pattern_pathstr: str) -> Optional[EnumDisasStyle]:
+    @staticmethod
+    def get_disass_style(yaml_2_regex_instance: Yaml2Regex) -> Optional[DisassStyle]:
         """Retrieve the file style from the pattern file"""
-        file_stype = Yaml2Regex(pattern_pathstr).get_assembly_style()
+        file_stype = yaml_2_regex_instance.get_assembly_style()
 
         return file_stype
 
-    def get_file_valid_addr_range(self, pattern_pathstr: str) -> Optional[ValidAddrRange]:
+    @staticmethod
+    def get_file_valid_addr_range(yaml_2_regex_instance: Yaml2Regex) -> Optional[ValidAddrRange]:
         """Retrieve the file style from the pattern file"""
-        file_valid_addr_range = Yaml2Regex(pattern_pathstr).get_valid_addr_range()
+        file_valid_addr_range = yaml_2_regex_instance.get_valid_addr_range()
 
         return file_valid_addr_range
 
     @staticmethod
     def _do_matching_and_get_result(
         regex_rule: str,
-        assembly_style: Optional[EnumDisasStyle],
+        assembly_style: Optional[DisassStyle],
         input_file: str,
         input_file_type: InputFileType,
         matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,
