@@ -68,9 +68,7 @@ class ProducerBuilder:
     """Builder for the producer."""
 
     @staticmethod
-    def build(
-        file_type: InputFileType, assembly_style: Optional[DisassStyle] = DisassStyle.att
-    ) -> IInstructionProducer:
+    def build(file_type: InputFileType, assembly_style: DisassStyle = DisassStyle.att) -> IInstructionProducer:
         """Create a producer based on the file type."""
 
         # Logic for choosing diferent type of parser should be here
@@ -130,7 +128,7 @@ class MasterOfPuppets:
         return regex_rule
 
     @staticmethod
-    def get_disass_style(yaml_2_regex_instance: Yaml2Regex) -> Optional[DisassStyle]:
+    def get_disass_style(yaml_2_regex_instance: Yaml2Regex) -> DisassStyle:
         """Retrieve the file style from the pattern file"""
         file_stype = yaml_2_regex_instance.get_assembly_style()
 
@@ -146,7 +144,7 @@ class MasterOfPuppets:
     @staticmethod
     def _do_matching_and_get_result(
         regex_rule: str,
-        assembly_style: Optional[DisassStyle],
+        assembly_style: DisassStyle,
         input_file: str,
         input_file_type: InputFileType,
         matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,
