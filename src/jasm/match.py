@@ -6,13 +6,7 @@ from enum import Enum, auto
 from typing import List, Optional
 
 from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
-from jasm.global_definitions import (
-    DisassStyle,
-    InputFileType,
-    MatchingReturnMode,
-    ValidAddrRange,
-    MatchingSearchMode,
-)
+from jasm.global_definitions import DisassStyle, InputFileType, MatchingReturnMode, MatchingSearchMode, ValidAddrRange
 from jasm.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
 from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver, Instruction
@@ -212,8 +206,9 @@ class ValidAddrObserver(IInstructionObserver):
     def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:
         """Main observer method"""
 
+        jump_mnemonics = ["call", "jmp", "jne", "je", "jg", "jge", "jl", "jle", "jz", "jnz"]
         inst_addr_jump = inst.operands[0] if inst.operands else None
         if inst_addr_jump and self.addr_range.is_in_range(inst.addr):
-            if inst.mnemonic in ["call", "jmp", "jne", "je", "jg", "jge", "jl", "jle", "jz", "jnz"]:
+            if inst.mnemonic in jump_mnemonics:
                 return Instruction(addr=inst.addr, mnemonic=inst.mnemonic, operands=["valid_addr"])
         return inst
