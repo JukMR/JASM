@@ -24,8 +24,6 @@ from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser_manual im
 from jasm.stringify_asm.implementations.null_disassembler import NullDisassembler
 from jasm.stringify_asm.implementations.observers import RemoveEmptyInstructions
 
-DEFAULT_FLAGS = "-d"
-
 
 class ConsumerType(Enum):
     """Enum for the consumer type."""
