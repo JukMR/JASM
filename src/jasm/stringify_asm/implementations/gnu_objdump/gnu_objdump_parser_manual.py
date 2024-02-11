@@ -2,7 +2,7 @@
 Parser Implementation module
 """
 
-from jasm.stringify_asm.parsing_asm_manual_regex import parse_file_lines
+from jasm.stringify_asm.implementations.gnu_objdump.asm_manual_parser_w_regex import parse_file_lines
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, Instruction
 from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 

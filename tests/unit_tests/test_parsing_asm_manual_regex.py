@@ -1,5 +1,5 @@
 from jasm.stringify_asm.abstracts.abs_observer import Instruction
-from jasm.stringify_asm.parsing_asm_manual_regex import LineParser
+from jasm.stringify_asm.implementations.gnu_objdump.asm_manual_parser_w_regex import LineParser
 
 
 def test_lineparser_parse():

@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from jasm.global_definitions import PatternNodeTypes, TimeType, dict_node
-from jasm.regex.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
 class PatternNodeBuilderNoParents:
