@@ -118,7 +118,7 @@ class PatternNodeTypeBuilder:
         self.command = pattern_node
 
     def _get_type(self) -> PatternNodeTypes:
-        if not getattr(self.command, "name", None):
+        if getattr(self.command, "name", None) is None:
             raise ValueError("Name is not defined")
 
         name = self.command.name
