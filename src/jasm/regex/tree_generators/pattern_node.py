@@ -225,7 +225,7 @@ class RegexWithOperandsCreator:
 
         if operands_regex:
             return f"(?:{IGNORE_INST_ADDR}(?:{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})){times_regex}"
-        return f"(?:{IGNORE_INST_ADDR}(?:{pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE}){times_regex})"
+        return f"(?:{IGNORE_INST_ADDR}(?:{pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE})){times_regex}"
 
     def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
         pattern_nod_name = get_pattern_node_name(self.name)
