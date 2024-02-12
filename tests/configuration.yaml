@@ -123,6 +123,26 @@ test_matching:
     binary: "tests/binary/lenovo2.bin"
     expected: True
 
+  - title: "zero_reg_rule with -O3"
+    yaml: "tests/yamls/zero_reg.yaml"
+    assembly: "tests/assembly/zero_reg/main_O3.s"
+    expected: True
+
+  - title: "zero_reg_rule with -O0"
+    yaml: "tests/yamls/zero_reg.yaml"
+    assembly: "tests/assembly/zero_reg/main_O0.s"
+    expected: True
+
+  - title: "function return 0 with zero_reg -O0"
+    yaml: "tests/yamls/function_return_0.yaml"
+    assembly: "tests/assembly/zero_reg/main_O0.s"
+    expected: True
+
+  - title: "function return 0 with zero_reg -O3"
+    yaml: "tests/yamls/function_return_0.yaml"
+    assembly: "tests/assembly/zero_reg/main_O3.s"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"

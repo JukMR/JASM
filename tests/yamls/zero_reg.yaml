@@ -1,0 +1,21 @@
+---
+config:
+  style: att
+  plugins:
+
+macros:
+  - name: $zero_reg
+    args:
+      - macro-arg1
+    pattern:
+      - $or:
+          - xor:
+              - macro-arg1
+              - macro-arg1
+          - mov:
+              - "0"
+              - macro-arg1
+
+pattern:
+  - $zero_reg:
+    macro-arg1: eax
