@@ -57,9 +57,11 @@ class CompleteConsumer(InstructionObserverConsumer):
         logger.debug("Finalized with instructions: \n%s", self._all_instructions)
 
         if self.matching_mode == MatchingSearchMode.first_find:  # return first finding
+            logger.info("Matching first occurence")
             self.do_match_first_occurence()
 
         if self.matching_mode == MatchingSearchMode.all_finds:  # return all findings
+            logger.info("Matching all findings")
             self.do_match_all_findings()
 
         super().finalize()
@@ -82,7 +84,7 @@ class CompleteConsumer(InstructionObserverConsumer):
 
     def do_match_all_findings(self) -> None:
         try:
-            match_iterator = regex.finditer(pattern=self._regex_rule, string=self._all_instructions, timeout=30)
+            match_iterator = regex.finditer(pattern=self._regex_rule, string=self._all_instructions, timeout=60)
 
         except TimeoutError as exc:
             logger.error("Regex timeout")
