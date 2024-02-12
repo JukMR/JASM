@@ -26,10 +26,12 @@ pattern:
             macro-arg1: rax
 
       - nopw:
-          - $anyreg_rx_rd_rax
+          - $anyreg_rx_rd_rax:
+            macro-arg1: rax
 
       - endbr64:
-          - $anyreg_rx_rd_rax
+          - $anyreg_rx_rd_rax:
+            macro-arg1: rax
 
     times:
       min: 1

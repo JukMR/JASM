@@ -341,5 +341,35 @@
                 "tests/assembly/lenovo2_short.s"
             ]
         },
+        {
+            "name": "zero_reg_macro_with_args",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/zero_reg.yaml",
+                "-s",
+                "tests/assembly/zero_reg/main_O3.s"
+            ]
+        },
+        {
+            "name": "function with zero_reg and -O3",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/function_return_0.yaml",
+                "-s",
+                "tests/assembly/zero_reg/main_O3.s"
+            ]
+        },
     ]
 }

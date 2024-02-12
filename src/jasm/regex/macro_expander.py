@@ -1,4 +1,4 @@
-from typing import Dict, Generator, List, Optional, Tuple
+from typing import Any, Dict, Generator, List, Optional, Tuple, Union
 
 
 class MacroExpander:
@@ -131,21 +131,25 @@ class MacroExpander:
         return "args" in macro
 
     def replace_arg_in_pattern(self, pattern: Dict, tmp_pattern: Dict, current_arg: Optional[str] = None) -> Dict:
-        """Replace the macro argument in the pattern"""
-        assert current_arg
+        assert current_arg, "current_arg must be provided."
 
         args_mapping = self.get_args_mapping(pattern, current_arg)
-        assert args_mapping
+        assert args_mapping, "No mapping found for the current argument."
 
-        for item in self.iter_items(tmp_pattern):
-            if isinstance(item, str):
-                if item == current_arg:
-                    item = args_mapping[current_arg]
-            if isinstance(item, tuple):
-                values = item[1]
-                for i_value, value in enumerate(values):
-                    if value == current_arg:
-                        values[i_value] = args_mapping[current_arg]
+        def replace_item_in_structure(struct: Union[Dict, List], path: Tuple, new_value: Any):
+            """Navigate struct using path and replace the target item with new_value."""
+            for step in path[:-1]:
+                struct = (
+                    struct[step] if isinstance(struct, dict) else struct[int(step)]
+                )  # Navigate to the final container.
+            if isinstance(struct, dict):
+                struct[path[-1]] = new_value
+            else:  # For lists, path[-1] is an index.
+                struct[int(path[-1])] = new_value
+
+        for path, item in self.iter_items_with_path(tmp_pattern):
+            if item == current_arg:
+                replace_item_in_structure(tmp_pattern, path, args_mapping[current_arg])
 
         return tmp_pattern
 
@@ -155,17 +159,14 @@ class MacroExpander:
                 return {k: v}
         return None
 
-    def iter_items(
-        self,
-        elems: str | List | Dict,
-    ) -> Generator[str | Dict | List | Tuple, str | Dict | List | Tuple, None]:
+    def iter_items_with_path(
+        self, elems: Union[str, List, Dict], path: Tuple = ()
+    ) -> Generator[Tuple[Tuple, Any], None, None]:
         if isinstance(elems, str):
-            yield elems
-        if isinstance(elems, List):
-            for elem in elems:
-                yield elem
-        if isinstance(elems, Dict):
+            yield path, elems
+        elif isinstance(elems, list):
+            for i, elem in enumerate(elems):
+                yield from self.iter_items_with_path(elem, path + (i,))
+        elif isinstance(elems, dict):
             for k, v in elems.items():
-                yield k, v
-
-        return None
+                yield from self.iter_items_with_path(v, path + (k,))
