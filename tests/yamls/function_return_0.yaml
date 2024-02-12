@@ -13,7 +13,7 @@ macros:
               - macro-arg1
               - macro-arg1
           - mov:
-              - "0"
+              - 0
               - macro-arg1
 
 pattern:
