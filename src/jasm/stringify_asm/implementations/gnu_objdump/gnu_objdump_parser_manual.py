@@ -21,4 +21,4 @@ class ObjdumpParserManual(AsmParser):
 
         only_instructions = [elem for elem in parsed_file_lines if isinstance(elem, Instruction)]
         for elem in only_instructions:
-            iConsumer.consume_instruction(elem)
+            iConsumer.consume_instruction_normal(elem)

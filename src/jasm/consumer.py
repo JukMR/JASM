@@ -34,14 +34,26 @@ class InstructionObserverConsumer(IConsumer):
 class CompleteConsumer(InstructionObserverConsumer):
     def __init__(self, regex_rule: str, matched_observer: IMatchedObserver, matching_mode: MatchingSearchMode) -> None:
         super().__init__(regex_rule=regex_rule, matched_observer=matched_observer)
-        self._all_instructions: str = ""
+        self._all_instructions_normal: str = ""
+        # self._all_instructions_list: List[str] = []
+        # self._all_instructions_bytearray: bytearray = bytearray()
         self.matching_mode = matching_mode
 
     # @override
-    def consume_instruction(self, inst: Instruction) -> None:
+    def consume_instruction_normal(self, inst: Instruction) -> None:
         processed_inst = self._process_instruction(inst)
         if processed_inst:
-            self._all_instructions += processed_inst.stringify() + ",|"
+            self._all_instructions_normal += processed_inst.stringify() + ",|"
+
+    def consume_instruction_list(self, inst: Instruction) -> None:
+        processed_inst = self._process_instruction(inst)
+        if processed_inst:
+            self._all_instructions_list.append(processed_inst.stringify() + ",|")
+
+    def consume_instruction_bytearray(self, inst: Instruction) -> None:
+        processed_inst = self._process_instruction(inst)
+        if processed_inst:
+            self._all_instructions_bytearray.extend((processed_inst.stringify() + ",|").encode("utf-8"))
 
     @staticmethod
     def get_first_addr_from_regex_result(regex_result: str) -> str:
@@ -53,8 +65,15 @@ class CompleteConsumer(InstructionObserverConsumer):
         # TODO: find the right way to do this
         # Add stringified instructions to the observer to test them in test_parsing
 
-        self._matched_observer.stringified_instructions = self._all_instructions
-        logger.debug("Finalized with instructions: \n%s", self._all_instructions)
+        # Normal state
+        # self._matched_observer.stringified_instructions = self._all_instructions_normal
+        # logger.debug("Finalized with instructions: \n%s", self._all_instructions_normal)
+
+        # List
+        # self._all_instructions_normal = "".join(self._all_instructions_list)
+
+        # Bytearray
+        # self._all_instructions_normal = self._all_instructions_bytearray.decode("utf-8")
 
         if self.matching_mode == MatchingSearchMode.first_find:  # return first finding
             logger.info("Matching first occurence")
@@ -70,7 +89,7 @@ class CompleteConsumer(InstructionObserverConsumer):
         try:
             match_result = regex.search(
                 pattern=self._regex_rule,
-                string=self._all_instructions,
+                string=self._all_instructions_normal,
                 timeout=30,
             )
 
@@ -84,7 +103,7 @@ class CompleteConsumer(InstructionObserverConsumer):
 
     def do_match_all_findings(self) -> None:
         try:
-            match_iterator = regex.finditer(pattern=self._regex_rule, string=self._all_instructions, timeout=60)
+            match_iterator = regex.finditer(pattern=self._regex_rule, string=self._all_instructions_normal, timeout=60)
 
         except TimeoutError as exc:
             logger.error("Regex timeout")
@@ -99,7 +118,7 @@ class CompleteConsumer(InstructionObserverConsumer):
 
 class StreamConsumer(InstructionObserverConsumer):
     # @override
-    def consume_instruction(self, inst: Instruction) -> None:
+    def consume_instruction_normal(self, inst: Instruction) -> None:
         processed_inst = self._process_instruction(inst)
         if processed_inst:
             # Evaluate the instruction in the streaming regex engine
