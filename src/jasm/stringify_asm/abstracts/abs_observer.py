@@ -47,15 +47,7 @@ class IConsumer(ABC):
         self._matched_observer: Final = matched_observer
 
     @abstractmethod
-    def consume_instruction_normal(self, inst: Instruction) -> None:
-        "Main consumer method"
-
-    @abstractmethod
-    def consume_instruction_list(self, inst: Instruction) -> None:
-        "Main consumer method"
-
-    @abstractmethod
-    def consume_instruction_bytearray(self, inst: Instruction) -> None:
+    def consume_instruction(self, inst: Instruction) -> None:
         "Main consumer method"
 
     @abstractmethod

@@ -14,7 +14,6 @@ class ShellDisassembler(Disassembler):
         self.program = program
         self.flags = flags
 
-    # @override
     def disassemble(self, input_file: str) -> str:
         """Run the shell program to disassemble the binary."""
         try:
