@@ -49,7 +49,6 @@ class CheckAddrRangeJumpsNearBadInstruction(IConsumer):
 class RemoveEmptyInstructions(IInstructionObserver):
     "InstructionObserver implementation that only concatenates instructions"
 
-    # @override
     def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:
         # Check instructions
         if not inst.mnemonic == "empty":

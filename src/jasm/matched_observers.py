@@ -24,13 +24,11 @@ class MatchedObserver(IMatchedObserver):
     def stringified_instructions(self, value: str) -> None:
         self._stringified_instructions = value
 
-    # @override
     def regex_matched(self, addr: str) -> None:
         self._matched = True
         self.addr_list.append(addr)
         logger.info("Matched address: %s", addr)
 
-    # @override
     def finalize(self) -> None:
         if not self._matched:
             logger.info("RESULT: Pattern not found\n")
