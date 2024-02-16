@@ -61,6 +61,11 @@ class LineParser:
 
     def parse(self) -> ParsedElement:
         """Parse a single line of the objdump output."""
+
+        # Inst has a data16 prefix. Remove it
+        if "data16" in self.line:
+            self.line = self.line.replace("data16 ", "")
+
         inst = self.parse_instruction()
         if inst:
             return inst
