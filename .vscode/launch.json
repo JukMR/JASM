@@ -327,7 +327,7 @@
             ]
         },
         {
-            "name": "oren rule with capture groups",
+            "name": "oren_rule_att_with_capture_groups",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
