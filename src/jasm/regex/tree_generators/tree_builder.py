@@ -140,7 +140,7 @@ class PatternNodeTypeBuilder:
 
             # CAPTURE GROUP TYPES
             # Is a capture group reference
-            if name.startswith("#"):
+            if name.startswith("&"):
 
                 # Is Capture Group in operand
                 if self.is_capture_group_operand():
@@ -248,7 +248,7 @@ class PatternNodeTypeBuilder:
         if not self.command.parent:
             raise ValueError("Parent is not defined")
 
-        if isinstance(self.command.name, str) and self.command.name.startswith("#"):
+        if isinstance(self.command.name, str) and self.command.name.startswith("&"):
             return True
 
         return False

@@ -7,28 +7,28 @@ macros:
 pattern:
   - push
 
-  - "#cc-1"
+  - "&cc-1"
 
-  - "#cc-1"
+  - "&cc-1"
 
   - nopw
 
   - endbr64
 
   - push:
-      - "#cc-2"
+      - "&cc-2"
 
   - push:
-      - "#cc-2"
+      - "&cc-2"
 
   - push # r13
   - push # r12
 
   - push:
-      - "#cc-3"
+      - "&cc-3"
 
   - push
   - sub
   - mov:
       - "@any_op"
-      - "#cc-3"
+      - "&cc-3"
