@@ -204,9 +204,20 @@ class ValidAddrObserver(IInstructionObserver):
     def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:
         """Main observer method"""
 
-        jump_mnemonics = ["call", "jmp", "jne", "je", "jg", "jge", "jl", "jle", "jz", "jnz"]
+        jump_mnemonics = ["call", "callq", "jmp", "jne", "je", "jg", "jge", "jl", "jle", "jz", "jnz"]
         inst_addr_jump = inst.operands[0] if inst.operands else None
-        if inst_addr_jump and self.addr_range.is_in_range(inst.addr):
-            if inst.mnemonic in jump_mnemonics:
+
+        if inst_addr_jump is None:
+            return inst
+
+        # The instruction is a jmp or call
+        if inst.mnemonic in jump_mnemonics:
+
+            # Check if inst_addr is derefering a register
+            # Not supporting this yet
+            if "*" in inst_addr_jump:
+                return inst
+
+            if self.addr_range.is_in_range(inst_addr_jump):
                 return Instruction(addr=inst.addr, mnemonic=inst.mnemonic, operands=["valid_addr"])
         return inst
