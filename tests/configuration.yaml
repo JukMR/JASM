@@ -123,6 +123,11 @@ test_matching:
     binary: "tests/binary/lenovo2.bin"
     expected: True
 
+  - title: "oren_rule_att_with_capture_groups_macro_subtree_expansion"
+    yaml: "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml"
+    binary: "tests/binary/lenovo2.bin"
+    expected: True
+
   - title: "zero_reg_rule with -O3"
     yaml: "tests/yamls/zero_reg.yaml"
     assembly: "tests/assembly/zero_reg/main_O3.s"

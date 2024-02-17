@@ -54,7 +54,7 @@ class Yaml2Regex(File2Regex):
 
         if macros:
             # Replace macros with their values
-            return MacroExpander().resolve_macros(macros=macros, pattern=pattern_with_top_node)
+            pattern_with_top_node = MacroExpander().resolve_all_macros(macros=macros, tree=pattern_with_top_node)
 
         return pattern_with_top_node
 
