@@ -8,11 +8,8 @@ class MacroExpander:
         """Expand all macros in the pattern in the order they are defined in the macros list"""
 
         for macro in macros:
-            if self.macro_has_arguments(macro):
-                tmp_pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
+            tmp_pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
 
-            else:
-                tmp_pattern = self.replace_macro_in_pattern(macro=macro, pattern=pattern)
             assert isinstance(tmp_pattern, dict)
             pattern = tmp_pattern
 
@@ -29,27 +26,29 @@ class MacroExpander:
 
         This algoritm will replace all the occurrences of the macro in the pattern.
         """
-        if isinstance(pattern, dict):
-            macro_args = macro.get("args")
-            if macro_args:
-                for arg in macro_args:
-                    if arg in pattern:
-                        # Replace with argument
-                        return self.replace_macro_in_pattern_dict(macro=macro, pattern=pattern, current_arg=arg)
+        match pattern:
+            case dict():
+                macro_args = macro.get("args")
+                if macro_args:
+                    for arg in macro_args:
+                        if arg in pattern:
+                            # Replace with argument
+                            return self.replace_macro_in_pattern_dict(macro=macro, pattern=pattern, current_arg=arg)
+                return self.replace_macro_in_pattern_dict(macro=macro, pattern=pattern)
 
-            return self.replace_macro_in_pattern_dict(macro=macro, pattern=pattern)
-        if isinstance(pattern, List):
-            return self.replace_macro_in_pattern_in_list(macro=macro, pattern=pattern)
+            case list():
+                return [self.replace_macro_in_pattern(macro=macro, pattern=elem) for elem in pattern]
 
-        if isinstance(pattern, str):
-            if pattern == macro.get("name"):
-                macro_value = self.get_macro_pattern(macro=macro)
-                return macro_value
-            if macro.get("name") in pattern:
-                # Doing string replacement only
-                assert isinstance(macro.get("pattern"), str)
-                new_name = pattern.replace(macro.get("name"), macro.get("pattern"))
-                return new_name
+            case str():
+                if pattern == macro.get("name"):
+                    macro_value = self.get_macro_pattern(macro=macro)
+                    return macro_value
+
+                if macro.get("name") in pattern:
+                    # Doing string replacement only
+                    assert isinstance(macro.get("pattern"), str)
+                    new_name = pattern.replace(macro.get("name"), macro.get("pattern"))
+                    return new_name
         return pattern
 
     def replace_macro_in_pattern_dict(self, macro: dict, pattern: dict, current_arg: Optional[str] = None) -> dict:
@@ -60,29 +59,28 @@ class MacroExpander:
             if key == macro_name:
                 return self.replace_macro_in_pattern_dict_for_key(macro=macro, pattern=pattern, current_arg=current_arg)
 
-            if isinstance(value, dict):
-                pattern[key] = self.replace_macro_in_pattern_dict(macro=macro, pattern=value)
-                continue
+            match value:
+                case dict():
+                    pattern[key] = self.replace_macro_in_pattern_dict(macro=macro, pattern=value)
 
-            if isinstance(value, List):
-                pattern[key] = self.replace_macro_in_pattern_in_list(macro=macro, pattern=value)
-                continue
+                case list():
+                    pattern[key] = [self.replace_macro_in_pattern(macro=macro, pattern=elem) for elem in value]
 
-            if isinstance(value, str):
-                if key == macro_name:
-                    macro_value = self.get_macro_pattern(macro=macro)
-                    pattern[key] = macro_value
+                case str():
+                    if key == macro_name:
+                        macro_value = self.get_macro_pattern(macro=macro)
+                        pattern[key] = macro_value
 
-                elif macro_name in key:
-                    # Doing string replacement only
-                    tmp_value = pattern[key]
-                    new_key_name = key.replace(macro_name, macro.get("pattern"))
-                    pattern[new_key_name] = tmp_value
-                    pattern.pop(key)
+                    elif macro_name in key:
+                        # Doing string replacement only
+                        tmp_value = pattern[key]
+                        new_key_name = key.replace(macro_name, macro.get("pattern"))
+                        pattern[new_key_name] = tmp_value
+                        pattern.pop(key)
 
-                elif macro_name in value:
-                    # Doing string replacement only
-                    pattern[key] = value.replace(macro_name, macro.get("pattern"))
+                    elif macro_name in value:
+                        # Doing string replacement only
+                        pattern[key] = value.replace(macro_name, macro.get("pattern"))
 
         return pattern
 
@@ -94,15 +92,18 @@ class MacroExpander:
         if isinstance(_macro_value_list, str):
             # Macro value is only a string, doing string replacement only
             return _macro_value_list
+
         assert isinstance(_macro_value_list, List)
         macro_value = _macro_value_list[0]
         # Return a copy of the macro value so that the original macro is not modified
 
-        if isinstance(macro_value, dict):
-            return macro_value.copy()
-        if isinstance(macro_value, str):
-            # Macro value is a string, doing string replacement only
-            return macro_value
+        match macro_value:
+            case dict():
+                return macro_value.copy()
+            case str():
+                # Macro value is a string, doing string replacement only
+                return macro_value
+
         raise ValueError(f"Macro value must be a dict or a string, macro_value: {macro_value}")
 
     def replace_macro_in_pattern_dict_for_key(
@@ -122,13 +123,6 @@ class MacroExpander:
         if current_arg:
             tmp_pattern = self.replace_arg_in_pattern(pattern=pattern, tmp_pattern=tmp_pattern, current_arg=current_arg)
         return tmp_pattern
-
-    def replace_macro_in_pattern_in_list(self, macro: Dict, pattern: List) -> List:
-        """Replace the macro in the pattern when the pattern is a list"""
-        return [self.replace_macro_in_pattern(macro=macro, pattern=elem) for elem in pattern]
-
-    def macro_has_arguments(self, macro: Dict) -> bool:
-        return "args" in macro
 
     def replace_arg_in_pattern(self, pattern: Dict, tmp_pattern: Dict, current_arg: Optional[str] = None) -> Dict:
         assert current_arg, "current_arg must be provided."
@@ -162,11 +156,12 @@ class MacroExpander:
     def iter_items_with_path(
         self, elems: Union[str, List, Dict], path: Tuple = ()
     ) -> Generator[Tuple[Tuple, Any], None, None]:
-        if isinstance(elems, str):
-            yield path, elems
-        elif isinstance(elems, list):
-            for i, elem in enumerate(elems):
-                yield from self.iter_items_with_path(elem, path + (i,))
-        elif isinstance(elems, dict):
-            for k, v in elems.items():
-                yield from self.iter_items_with_path(v, path + (k,))
+        match elems:
+            case str():
+                yield path, elems
+            case list():
+                for i, elem in enumerate(elems):
+                    yield from self.iter_items_with_path(elem, path + (i,))
+            case dict():
+                for k, v in elems.items():
+                    yield from self.iter_items_with_path(v, path + (k,))
