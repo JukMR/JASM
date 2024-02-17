@@ -9,22 +9,23 @@ class PatternNodeBuilderNoParents:
         self.command = command_dict
 
         # Check if is instance of int or str
-        if isinstance(self.command, (int, str)):
-            self.name = self.command
-            self.times = TimeType(min_times=1, max_times=1)
-            self.children = None
+        match self.command:
+            case int() | str():
+                self.name = self.command
+                self.times = TimeType(min_times=1, max_times=1)
+                self.children = None
 
-        elif isinstance(self.command, dict):
-            self.name = self._get_name(self.command)
-            self.times = self._get_times(self.command)
-            self.children = self._get_children(name=self.name, command=self.command)
+            case dict():
+                self.name = self._get_name(self.command)
+                self.times = self._get_times(self.command)
+                self.children = self._get_children(name=self.name, command=self.command)
 
-        # Case when PatternNode is from a deref
-        elif isinstance(self.command, tuple):
-            self.name = self.command[0]
-            # self.time = self._get_times(self.command) # TODO: Fix this
-            self.times = TimeType(min_times=1, max_times=1)
-            self.children = self.get_simple_child(self.command[1])
+            # Case when PatternNode is from a deref
+            case tuple():
+                self.name = self.command[0]
+                # self.time = self._get_times(self.command) # TODO: Fix this
+                self.times = TimeType(min_times=1, max_times=1)
+                self.children = self.get_simple_child(self.command[1])
 
     @staticmethod
     def _get_name(command_dict: dict_node) -> str:
@@ -49,13 +50,14 @@ class PatternNodeBuilderNoParents:
         if isinstance(command_dict, dict):
             times = _get_time_object(command_dict)
 
-            if isinstance(times, int):
-                return TimeType(min_times=times, max_times=times)
+            match times:
+                case int():
+                    return TimeType(min_times=times, max_times=times)
 
-            if isinstance(times, dict):
-                min_time = times.get("min", 1)
-                max_time = times.get("max", 1)
-                return TimeType(min_times=min_time, max_times=max_time)
+                case dict():
+                    min_time = times.get("min", 1)
+                    max_time = times.get("max", 1)
+                    return TimeType(min_times=min_time, max_times=max_time)
 
         return TimeType(min_times=1, max_times=1)
 
@@ -63,10 +65,12 @@ class PatternNodeBuilderNoParents:
     def _get_children(name: str, command: dict_node) -> List[PatternNode]:
         assert isinstance(command, dict)
 
-        if isinstance(command[name], List):
-            return [PatternNodeBuilderNoParents(com).build() for com in command[name] if com != "times"]
-        if isinstance(command[name], dict):
-            return [PatternNodeBuilderNoParents(com).build() for com in command[name].items() if com != "times"]
+        match command[name]:
+            case list():
+                return [PatternNodeBuilderNoParents(com).build() for com in command[name] if com != "times"]
+            case dict():
+                return [PatternNodeBuilderNoParents(com).build() for com in command[name].items() if com != "times"]
+
         raise ValueError("Command is not a list or a dict")
 
     @staticmethod
