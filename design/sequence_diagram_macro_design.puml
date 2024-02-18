@@ -1,0 +1,14 @@
+@startuml sequence_diagram_macro_design
+participant "macro" as Macro
+participant "tree" as Tree
+
+loop for macro in macros
+    opt macro has args
+        Macro -> Tree: get_args_evaluation
+        Tree -> Macro: mapping_dict
+        Macro -> Macro: evaluate args in macro
+    end
+    Macro -> Tree: do macro replacement/expansion
+end
+
+@enduml
