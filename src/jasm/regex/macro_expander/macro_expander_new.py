@@ -36,6 +36,9 @@ class MacroExpander:
         if self.tree_should_be_expanded(tree=tree, macro=macro):
             tree = self.apply_macro_to_tree(node=tree, macro=macro)
 
+        elif self.tree_is_substring(tree=tree, macro=macro):
+            tree = self.apply_macro_to_tree_substring(node=tree, macro=macro)
+
         else:
             # Continue recursion on all children
             match tree:
@@ -58,7 +61,10 @@ class MacroExpander:
         """Check if the tree should be expanded"""
         match tree:
             case str():
-                return tree == macro.get("name")
+                macro_name = macro.get("name")
+                assert isinstance(macro_name, str), f"Macro name {macro_name} is not a string"
+                # Case of full string matching
+                return macro_name == tree
             case dict():
                 return macro.get("name") in tree
             case _:
@@ -74,7 +80,13 @@ class MacroExpander:
 
         match node:
             case str():
-                assert node == macro_name, f"Node {node} is not equal to the macro name {macro_name}"
+                # Case of full string matching
+                # Case of substring matching
+
+                assert macro_name and (
+                    macro_name == node or macro_name in node
+                ), f"Node {node} is not equal to the macro name {macro_name}"
+
             case dict():
                 assert macro_name in node, f"Macro name {macro_name} not found in the tree {node}"
 
@@ -86,6 +98,21 @@ class MacroExpander:
                 return macro_pattern[0]
 
         raise ValueError(f"Macro pattern {macro_pattern} is not a valid type")
+
+    def tree_is_substring(self, tree: PatternTree, macro: MacroTree) -> bool:
+        """Check if the tree is a substring of the macro"""
+        macro_name = macro.get("name")
+        assert macro_name, f"Macro name {macro_name} not found in the macro {macro}"
+
+        return isinstance(tree, str) and macro_name in tree
+
+    def apply_macro_to_tree_substring(self, node: str, macro: MacroTree) -> str:
+        macro_name, macro_pattern = macro.get("name"), macro.get("pattern")
+        assert (
+            macro_name and macro_pattern
+        ), f"Macro name {macro_name} and pattern {macro_pattern} not found in the macro"
+
+        return node.replace(macro_name, macro_pattern)
 
     def node_children(self, tree: PatternTree) -> Generator[PatternTree | List, None, None]:
         """Yield the children of a node in a tree"""

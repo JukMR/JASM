@@ -235,7 +235,7 @@
             "justMyCode": true,
         },
         {
-            "name": "lenovo_rule_with_valid_addr",
+            "name": "oren_rule_example_addr_valid",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -247,6 +247,21 @@
                 "tests/yamls/oren_rule_att_addr_valid.yaml",
                 "-b",
                 "tests/binary/lenovo2.bin"
+            ]
+        },
+        {
+            "name": "oren_rule_example_addr_valid_assembly",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att_addr_valid.yaml",
+                "-s",
+                "tests/assembly/lenovo2_short.s"
             ]
         },
         {

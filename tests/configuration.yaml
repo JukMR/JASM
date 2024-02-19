@@ -84,6 +84,11 @@ test_matching:
     binary: "tests/binary/lenovo2.bin"
     expected: True
 
+  - title: "oren_rule_example_addr_valid_assembly"
+    yaml: "tests/yamls/oren_rule_att_addr_valid.yaml"
+    assembly: "tests/assembly/lenovo2_short.s"
+    expected: True
+
   - title: "lenovo_qequ_objdump"
     yaml: "tests/yamls/oren_rule_att.yaml"
     assembly: "tests/assembly/objlenovo_qequ_objdump_2.34.s"
