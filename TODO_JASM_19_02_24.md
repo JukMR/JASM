@@ -11,3 +11,5 @@
 5. [x] - Soportar arboles como argumentos de macros (anycmp)
 
 6. [ ] - Remove % from registries
+
+7. [ ] - Actualizar diseño de macros
