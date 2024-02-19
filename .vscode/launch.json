@@ -182,7 +182,22 @@
             ]
         },
         {
-            "name": "smc_binary",
+            "name": "smc_assembly",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/smc.yaml",
+                "-s",
+                "tests/assembly/smc.s"
+            ]
+        },
+        {
+            "name": "smc_binary_eko",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
