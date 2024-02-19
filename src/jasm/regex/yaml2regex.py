@@ -10,7 +10,7 @@ from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.file2regex import File2Regex
 
 # from jasm.regex.macro_expander.macro_expander import MacroExpander
-from jasm.regex.macro_expander.macro_expander_new import MacroExpander
+from jasm.regex.macro_expander.macro_expander import MacroExpander
 from jasm.regex.tree_generators.tree_builder import (
     PatternNodeBuilderNoParents,
     PatternNodeParentsBuilder,
