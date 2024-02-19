@@ -342,6 +342,21 @@
             ]
         },
         {
+            "name": "oren_rule_att_with_capture_groups_macro_subtree_expansion",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml",
+                "-s",
+                "tests/assembly/lenovo2_short.s"
+            ]
+        },
+        {
             "name": "zero_reg_macro_with_args",
             "type": "debugpy",
             "request": "launch",

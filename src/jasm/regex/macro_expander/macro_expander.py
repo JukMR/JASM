@@ -191,9 +191,7 @@ class ArgsMappingGenerator:
                 mapping_dict.update(item)
         return mapping_dict
 
-    def _get_args_mapping(
-        self, tree: Dict, current_arg: str
-    ) -> Optional[Dict | Generator[Dict | List | str, Any, None]]:
+    def _get_args_mapping(self, tree: Dict, current_arg: str) -> Generator[Dict, None, None]:
         for key, value in self.yield_key_value_pairs(tree):
             if key == current_arg:
                 yield {key: value}
