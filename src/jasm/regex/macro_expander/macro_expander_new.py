@@ -55,7 +55,7 @@ class MacroExpander:
         """Check if the tree should be expanded"""
         return macro.get("name") in tree
 
-    def apply_macro_to_tree(self, node: PatternTree, macro: Dict) -> PatternTree:
+    def apply_macro_to_tree(self, node: PatternTree, macro: Dict) -> PatternTree | str:
         """Apply the macro to the node"""
         assert macro.get("name") in node, f"Macro name {macro.get('name')} not found in the tree {node}"
 
@@ -63,9 +63,14 @@ class MacroExpander:
 
         assert macro_pattern, f"Macro pattern {macro_pattern} not found in the macro {macro}"
 
-        assert len(macro_pattern) == 1, f"Macro pattern {macro_pattern} must have only one key"
+        match macro_pattern:
+            case str():
+                return macro_pattern
+            case list():
+                assert len(macro_pattern) == 1, f"Macro pattern {macro_pattern} must have only one key"
+                return macro_pattern[0]
 
-        return macro_pattern[0]
+        raise ValueError(f"Macro pattern {macro_pattern} is not a valid type")
 
     def node_children(self, tree: PatternTree) -> Generator[PatternTree | List, None, None]:
         """Yield the children of a node in a tree"""
