@@ -5,7 +5,7 @@ config:
 
 pattern:
   - movb:
-      - 48h
+      - 48
       - rax
   - movl
   - mov:
@@ -35,11 +35,11 @@ pattern:
   - inc:
       - ecx
   - cmp:
-      - 158878h
+      - 158878
       - ecx
   - jg
   - cmpl:
-      - cb485541h
+      - cb485541
       - eax
       - ecx
       - $or:

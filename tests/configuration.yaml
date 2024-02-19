@@ -44,6 +44,11 @@ test_matching:
     assembly: "tests/assembly/moonbounce_malware_truncated_11518_lines.s"
     expected: True
 
+  - title: "moonbounce_malware_full_111826_lines_binarly.s"
+    yaml: "tests/yamls/moonbounce_from_binarly.yaml"
+    assembly: "tests/assembly/moonbounce_malware_full_111826_lines.s"
+    expected: True
+
   - title: "1_call"
     yaml: "tests/yamls/1_call.yaml"
     assembly: "tests/assembly/binary_data.s"
