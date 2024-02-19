@@ -8,7 +8,9 @@ from jasm.global_definitions import DisassStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.file2regex import File2Regex
-from jasm.regex.macro_expander import MacroExpander
+
+# from jasm.regex.macro_expander.macro_expander import MacroExpander
+from jasm.regex.macro_expander.macro_expander import MacroExpander
 from jasm.regex.tree_generators.tree_builder import (
     PatternNodeBuilderNoParents,
     PatternNodeParentsBuilder,
@@ -54,7 +56,7 @@ class Yaml2Regex(File2Regex):
 
         if macros:
             # Replace macros with their values
-            return MacroExpander().resolve_macros(macros=macros, pattern=pattern_with_top_node)
+            pattern_with_top_node = MacroExpander().resolve_all_macros(macros=macros, tree=pattern_with_top_node)
 
         return pattern_with_top_node
 
