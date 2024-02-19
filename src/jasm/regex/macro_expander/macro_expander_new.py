@@ -1,5 +1,4 @@
-# pylint: disable=unused-import
-from typing import Any, Dict, Generator, List, Optional, Tuple, TypeAlias, Union
+from typing import Any, Dict, Generator, List, Tuple, TypeAlias, Union
 
 MappingDict: TypeAlias = Dict
 PatternTree: TypeAlias = Dict | str
