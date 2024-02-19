@@ -2,7 +2,7 @@
 from typing import Any, Dict, Generator, List, Optional, Tuple, TypeAlias, Union
 
 MappingDict: TypeAlias = Dict
-PatternTree: TypeAlias = Dict
+PatternTree: TypeAlias = Dict | str
 MacroTree: TypeAlias = Dict
 
 
@@ -17,7 +17,7 @@ class MacroExpander:
             tmp_tree = self.resolve_macro(macro=macro, tree=tmp_tree)
         return tmp_tree
 
-    def resolve_macro(self, macro: Dict, tree: PatternTree) -> PatternTree:
+    def resolve_macro(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
         """Expand a macro in the tree"""
 
         if self.macro_has_args(macro=macro):
@@ -25,11 +25,11 @@ class MacroExpander:
 
         return self.apply_macro_recursively(macro=macro, tree=tree)
 
-    def macro_has_args(self, macro: Dict) -> bool:
+    def macro_has_args(self, macro: MacroTree) -> bool:
         """Check if a macro has arguments"""
         return "args" in macro
 
-    def apply_macro_recursively(self, macro: Dict, tree: PatternTree) -> PatternTree:
+    def apply_macro_recursively(self, macro: MacroTree, tree: PatternTree | str) -> PatternTree | str:
         """Do the macro expansion in a tree recursively in order to allow modification of the tree while replacing"""
 
         # Check the current node of the tree for replacement
@@ -48,20 +48,35 @@ class MacroExpander:
                             case list():
                                 # Apply to each element in the list and update the list directly
                                 tree[key] = [self.apply_macro_recursively(tree=elem, macro=macro) for elem in value]
-
+                            case str():
+                                # Case where the macro is just string substitution on values
+                                if value == macro.get("name"):
+                                    tree[key] = self.apply_macro_to_tree(node=value, macro=macro)
         return tree
 
-    def tree_should_be_expanded(self, tree: PatternTree, macro: Dict) -> bool:
+    def tree_should_be_expanded(self, tree: PatternTree, macro: MacroTree) -> bool:
         """Check if the tree should be expanded"""
-        return macro.get("name") in tree
+        match tree:
+            case str():
+                return tree == macro.get("name")
+            case dict():
+                return macro.get("name") in tree
+            case _:
+                raise ValueError(f"Tree {tree} is not a valid type")
 
-    def apply_macro_to_tree(self, node: PatternTree, macro: Dict) -> PatternTree | str:
+    def apply_macro_to_tree(self, node: PatternTree | str, macro: MacroTree) -> PatternTree | str:
         """Apply the macro to the node"""
-        assert macro.get("name") in node, f"Macro name {macro.get('name')} not found in the tree {node}"
 
         macro_pattern = macro.get("pattern")
-
         assert macro_pattern, f"Macro pattern {macro_pattern} not found in the macro {macro}"
+
+        macro_name = macro.get("name")
+
+        match node:
+            case str():
+                assert node == macro_name, f"Node {node} is not equal to the macro name {macro_name}"
+            case dict():
+                assert macro_name in node, f"Macro name {macro_name} not found in the tree {node}"
 
         match macro_pattern:
             case str():
@@ -81,21 +96,21 @@ class MacroExpander:
 
 class MacroArgsResolver:
 
-    def resolve(self, macro: Dict, tree: PatternTree) -> PatternTree:
+    def resolve(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
         mapping_dict = self.get_macro_mapping_arg_dict(macro=macro, tree=tree)
 
         macro = self.evaluate_args_in_macro(macro=macro, mapping_dict=mapping_dict)
 
         return macro
 
-    def get_macro_mapping_arg_dict(self, macro: Dict, tree: Dict) -> MappingDict:
+    def get_macro_mapping_arg_dict(self, macro: MacroTree, tree: PatternTree) -> MappingDict:
         macro_args = macro.get("args")
         assert macro_args, "The macro must have args to replace."
 
         mapping_dict = ArgsMappingGenerator().get_args_mapping_dict(tree=tree, args=macro_args)
         return mapping_dict
 
-    def evaluate_args_in_macro(self, macro: Dict, mapping_dict: MappingDict) -> PatternTree:
+    def evaluate_args_in_macro(self, macro: MacroTree, mapping_dict: MappingDict) -> MacroTree:
         """This function will replace the macro getting the args evaluation from the pattern"""
 
         macro_pattern = macro.get("pattern")
@@ -144,7 +159,7 @@ class MacroArgsResolver:
 
 class ArgsMappingGenerator:
 
-    def get_args_mapping_dict(self, tree: Dict, args: List[str]) -> Dict:
+    def get_args_mapping_dict(self, tree: PatternTree, args: List[str]) -> Dict:
         mapping_dict: Dict[str, Dict | List | str] = {}
 
         for arg in args:
@@ -152,10 +167,16 @@ class ArgsMappingGenerator:
                 mapping_dict.update(item)
         return mapping_dict
 
-    def _get_args_mapping(self, tree: Dict, current_arg: str) -> Generator[Dict, None, None]:
-        for key, value in self.yield_key_value_pairs(tree):
-            if key == current_arg:
-                yield {key: value}
+    def _get_args_mapping(self, tree: PatternTree, current_arg: str) -> Generator[Dict, None, None]:
+        match tree:
+            case str():
+                if tree == current_arg:
+                    yield {current_arg: tree}
+
+            case dict():
+                for key, value in self.yield_key_value_pairs(tree):
+                    if key == current_arg:
+                        yield {key: value}
         return None
 
     def yield_key_value_pairs(self, data: Union[Dict[Any, Any], List[Any]]) -> Generator[Tuple[Any, Any], None, None]:
