@@ -182,7 +182,22 @@
             ]
         },
         {
-            "name": "smc_binary",
+            "name": "smc_assembly",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/smc.yaml",
+                "-s",
+                "tests/assembly/smc.s"
+            ]
+        },
+        {
+            "name": "smc_binary_eko",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -220,7 +235,7 @@
             "justMyCode": true,
         },
         {
-            "name": "lenovo_rule_with_valid_addr",
+            "name": "oren_rule_example_addr_valid",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -235,7 +250,22 @@
             ]
         },
         {
-            "name": "qequ lenovo objdump",
+            "name": "oren_rule_example_addr_valid_assembly",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att_addr_valid.yaml",
+                "-s",
+                "tests/assembly/lenovo2_short.s"
+            ]
+        },
+        {
+            "name": "lenovo_qequ_objdump",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -337,6 +367,21 @@
                 "--debug",
                 "-p",
                 "tests/yamls/oren_rule_att_with_capture_groups.yaml",
+                "-s",
+                "tests/assembly/lenovo2_short.s"
+            ]
+        },
+        {
+            "name": "oren_rule_att_with_capture_groups_macro_subtree_expansion",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml",
                 "-s",
                 "tests/assembly/lenovo2_short.s"
             ]
