@@ -5,7 +5,7 @@ from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
 class PatternNodeBuilderNoParents:
-    def __init__(self, command_dict: dict_node | str | int) -> None:
+    def __init__(self, command_dict: dict_node) -> None:
         self.command = command_dict
 
         # Check if is instance of int or str
@@ -26,6 +26,9 @@ class PatternNodeBuilderNoParents:
                 # self.time = self._get_times(self.command) # TODO: Fix this
                 self.times = TimeType(min_times=1, max_times=1)
                 self.children = self.get_simple_child(self.command[1])
+
+            case _:
+                raise ValueError(f"Command {self.command} is not a valid type")
 
     @staticmethod
     def _get_name(command_dict: dict_node) -> str:
