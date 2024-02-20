@@ -92,6 +92,6 @@ jobs:
       - name: Upload Release Assets
         uses: AButler/upload-release-assets@v3.0
         with:
-          release-tag: ${{ steps.create_release.outputs.upload_url }}
+          release-tag: ${{ github.ref_name }}
           files: "dist/*.whl"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
