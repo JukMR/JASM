@@ -1,6 +1,14 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*" # Trigger on version tags e.g., v1.0.0
+  pull_request:
+  release:
+    types: [created]
 
 jobs:
   test:
@@ -60,3 +68,24 @@ jobs:
         run: |
           echo "Building package..."
           poetry build
+
+  publish:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'created'
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          echo "Publishing package to PyPI..."
+          poetry publish --build
