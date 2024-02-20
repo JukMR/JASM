@@ -1,5 +1,6 @@
-import yaml
 from pathlib import Path
+
+import yaml
 
 
 def load_test_configs(file_path: str, yaml_config_field: str):
