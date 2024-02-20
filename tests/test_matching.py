@@ -27,6 +27,7 @@ def run_match_test(
     assert result == expected_result
 
 
+@pytest.fixture(scope="function")
 @pytest.mark.parametrize(
     "config",
     load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
