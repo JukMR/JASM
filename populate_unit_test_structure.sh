@@ -7,7 +7,7 @@ TESTS_DIR="tests/unit_tests"
 mkdir -p $TESTS_DIR
 
 # Loop over each file in the src directory
-find $SRC_DIR -name '*.py' | while read fname; do
+find $SRC_DIR -name '*.py' | while read -r fname; do
     # Replace the src directory with the tests directory in the file path
     TEST_PATH=${fname/$SRC_DIR/$TESTS_DIR}
 
