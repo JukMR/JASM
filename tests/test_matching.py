@@ -42,8 +42,6 @@ def test_all_patterns(config):
     return_mode = config.get("return_mode", None)
     matching_mode = config.get("matching_mode", None)
 
-    print("Testing assembly: %s with pattern: %s", assembly, config_yaml)
-
     # Check if tests uses assembly or binary
     if assembly:
         input_file = assembly
