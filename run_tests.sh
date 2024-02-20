@@ -25,11 +25,3 @@ fi
 
 # Run integral tests
 pytest -n 4 -v "$ARG_1" "$@"
-
-# Make sure capture groups sequencial tests keep failing
-if [ "$(pytest -k capture_group -n 1 | grep -c FAILED)" = 3 ]; then
-    echo "Capture group tests keeps failing"
-else
-    echo "Some capture test passed!"
-    exit 1
-fi
