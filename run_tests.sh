@@ -24,4 +24,4 @@ fi
 # pytest -k "$ARG_1" -v tests/tests.py
 
 # Run integral tests
-pytest -n 4 -v "$ARG_1" "$@"
+pytest -vv "$ARG_1" "$@"

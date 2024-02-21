@@ -9,8 +9,11 @@ def _create_log_folder_if_not_exists(folder_name: str) -> Path:
     return folder
 
 
-def _get_date_string_for_filename(log_type: str) -> str:
-    date = datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
+def get_current_date() -> str:
+    return datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
+
+
+def _get_date_string_for_filename(log_type: str, date: str) -> str:
     folder_name = f"logs/{log_type}"
     _create_log_folder_if_not_exists(folder_name)
     return f"{folder_name}/{date}.log"
@@ -52,7 +55,8 @@ class LazyFileHandler(StreamHandler):
 
 def _set_log_to_file(log_level):
     log_type = getLevelName(log_level)
-    logfile = _get_date_string_for_filename(log_type)
+    date = get_current_date()
+    logfile = _get_date_string_for_filename(log_type=log_type, date=date)
     file_handler = LazyFileHandler(logfile)
     file_handler.setLevel(log_level)
     formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
