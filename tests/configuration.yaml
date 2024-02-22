@@ -158,6 +158,11 @@ test_matching:
     assembly: "tests/assembly/zero_reg/main_O3.s"
     expected: True
 
+  - title: "Salsa20"
+    yaml: "tests/yamls/arx.yaml"
+    assembly: "tests/binary/arx_detection/salsa20/main.s"
+    expected: True
+
   - title: "AesCore rule asm"
     yaml: "tests/yamls/arx.yaml"
     assembly: "tests/assembly/AesCore.s"
