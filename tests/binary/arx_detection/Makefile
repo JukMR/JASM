@@ -4,8 +4,9 @@
 CC=gcc
 CFLAGS=-Wall -O3 -g # -Werror
 
-# Automatically find all .c files in the directory
+# Automatically find all .c and .h files in the directory
 SRCS=$(wildcard *.c)
+HEADERS=$(wildcard *.h)
 
 # Convert the .c filenames to .o
 OBJS=$(SRCS:.c=.o)
@@ -17,12 +18,15 @@ ASMS=$(SRCS:.c=.s)
 all: $(ASMS) $(OBJS)
 
 # Rule to compile .c files to .o files
-%.o: %.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Rule to disassemble .o files to .s assembly listings
 %.s: %.o
 	objdump -d $< > $@
+
+# Prevent Make from automatically deleting any intermediate files
+.SECONDARY: $(OBJS)
 
 # Clean the build
 clean:
