@@ -1,27 +1,45 @@
 #!/bin/sh
 
 set -eu
-# Check if there is at least one argument
+
+# Initialize arguments for benchmark save and compare
+BENCHMARK_SAVE=""
+BENCHMARK_COMPARE=""
+
+# Check for special benchmark arguments
+while [ $# -gt 0 ]; do
+    case "$1" in
+    --benchmark-save)
+        echo "Benchmark save: $2"
+        BENCHMARK_SAVE="--benchmark-save=$2"
+        shift 2
+        ;;
+    --benchmark-compare)
+        echo "Benchmark compare: $2"
+        BENCHMARK_COMPARE="--benchmark-compare=$2"
+        shift 2
+        ;;
+    *)
+        break
+        ;;
+    esac
+done
+
+# Check if there is at least one argument left for -k option
 if [ $# -eq 0 ]; then
-    echo "No arguments provided"
+    echo "No test selection argument provided"
     ARG_1=""
 else
     ARG_1="-k $1"
     shift
 fi
 
-# Export current directory to PYTHONPATH so pytest can see the files
-
-# Check if PYTHONPATH is empty
+# Configure PYTHONPATH
 if [ -z "${PYTHONPATH:-}" ]; then
-    # If empty, set it to current directory
     export PYTHONPATH="."
 else
-    # If not empty, append current directory to it
     export PYTHONPATH="$PYTHONPATH:."
 fi
 
-# pytest -k "$ARG_1" -v tests/tests.py
-
-# Run integral tests
-pytest -vv "$ARG_1" "$@"
+# Run pytest with fail-slow and benchmarking options
+pytest -vv --fail-slow 5s "$BENCHMARK_SAVE" "$BENCHMARK_COMPARE" "$ARG_1" "$@"
