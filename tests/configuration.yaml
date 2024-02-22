@@ -168,6 +168,16 @@ test_matching:
     binary: "tests/binary/arx_detection/salsa20/main.o"
     expected: True
 
+  - title: "Chacha20"
+    yaml: "tests/yamls/arx.yaml"
+    assembly: "tests/assembly/chacha20.s"
+    expected: True
+
+  - title: "Chacha20 bin"
+    yaml: "tests/yamls/arx.yaml"
+    binary: "tests/binary/arx_detection/chacha20/chacha20.o"
+    expected: True
+
   - title: "AesCore rule asm"
     yaml: "tests/yamls/arx.yaml"
     assembly: "tests/assembly/AesCore.s"
