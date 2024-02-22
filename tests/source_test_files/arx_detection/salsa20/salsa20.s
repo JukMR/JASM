@@ -1,5 +1,5 @@
 
-main.o:     file format elf64-x86-64
+salsa20.o:     file format elf64-x86-64
 
 
 Disassembly of section .text:

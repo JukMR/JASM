@@ -140,22 +140,57 @@ test_matching:
 
   - title: "zero_reg_rule with -O3"
     yaml: "tests/yamls/zero_reg.yaml"
-    assembly: "tests/assembly/zero_reg/main_O3.s"
+    assembly: "tests/source_test_files/zero_reg/main_O3.s"
     expected: True
 
   - title: "zero_reg_rule with -O0"
     yaml: "tests/yamls/zero_reg.yaml"
-    assembly: "tests/assembly/zero_reg/main_O0.s"
+    assembly: "tests/source_test_files/zero_reg/main_O0.s"
     expected: True
 
   - title: "function return 0 with zero_reg -O0"
     yaml: "tests/yamls/function_return_0.yaml"
-    assembly: "tests/assembly/zero_reg/main_O0.s"
+    assembly: "tests/source_test_files/zero_reg/main_O0.s"
     expected: True
 
   - title: "function return 0 with zero_reg -O3"
     yaml: "tests/yamls/function_return_0.yaml"
-    assembly: "tests/assembly/zero_reg/main_O3.s"
+    assembly: "tests/source_test_files/zero_reg/main_O3.s"
+    expected: True
+
+  - title: "Salsa20 asm"
+    yaml: "tests/yamls/arx.yaml"
+    assembly: "tests/source_test_files/arx_detection/salsa20/salsa20.s"
+    expected: True
+
+  - title: "Salsa20 bin"
+    yaml: "tests/yamls/arx.yaml"
+    binary: "tests/source_test_files/arx_detection/salsa20/salsa20.o"
+    expected: True
+
+  - title: "Chacha20 asm"
+    yaml: "tests/yamls/arx.yaml"
+    assembly: "tests/source_test_files/arx_detection/chacha20/chacha20.s"
+    expected: True
+
+  - title: "Chacha20 bin"
+    yaml: "tests/yamls/arx.yaml"
+    binary: "tests/source_test_files/arx_detection/chacha20/chacha20.o"
+    expected: True
+
+  - title: "AesCore rule asm"
+    yaml: "tests/yamls/arx.yaml"
+    assembly: "tests/assembly/AesCore.s"
+    expected: True
+
+  - title: "AesCore rule bin"
+    yaml: "tests/yamls/arx.yaml"
+    binary: "tests/binary/AesCore.bin"
+    expected: True
+
+  - title: "Arx onto zip"
+    yaml: "tests/yamls/arx.yaml"
+    binary: "tests/binary/zip.bin"
     expected: True
 
 test_parsing_lines:
