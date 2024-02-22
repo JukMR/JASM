@@ -126,7 +126,7 @@ class MacroExpander:
 
 class MacroArgsResolver:
 
-    def resolve(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
+    def resolve(self, macro: MacroTree, tree: PatternTree) -> MacroTree:
         mapping_dict = self.get_macro_mapping_arg_dict(macro=macro, tree=tree)
 
         macro = self.evaluate_args_in_macro(macro=macro, mapping_dict=mapping_dict)
