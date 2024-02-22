@@ -23,6 +23,7 @@ def run_match_test(
         input_file_type=input_file_type,
         return_mode=return_mode,
         matching_mode=matching_mode,
+        return_only_address=True,
     )
     assert result == expected_result
 

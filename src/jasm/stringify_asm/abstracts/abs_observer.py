@@ -43,7 +43,10 @@ class IMatchedObserver(ABC):
 class IConsumer(ABC):
     "Base abstract class for Instruction Observers"
 
-    def __init__(self, matched_observer) -> None:
+    # Importing type here to prevent circular import
+    from jasm.matched_observers import MatchedObserver  # pylint: disable=import-outside-toplevel
+
+    def __init__(self, matched_observer: MatchedObserver) -> None:
         self._matched_observer: Final = matched_observer
 
     @abstractmethod

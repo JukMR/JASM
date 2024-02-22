@@ -6,10 +6,14 @@
 
 3. [x] - Arreglar/chequear valiaddrrange observer, que use el operando y no el address
 
-4. [ ] - Medir coverage
+4. [x] - Medir coverage
 
 5. [x] - Soportar arboles como argumentos de macros (anycmp)
 
-6. [ ] - Remove % from registries
+6. [?] - Remove % from registries
+
+            - Revision. Creo que estaria bueno hacerlos opcionales.
 
 7. [ ] - Actualizar diseño de macros
+
+8. [ ] - Agregar feature para devolver todas las instrucciones matcheadas

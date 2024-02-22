@@ -30,12 +30,19 @@ class InstructionObserverConsumer(IConsumer):
 
 
 class CompleteConsumer(InstructionObserverConsumer):
-    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver, matching_mode: MatchingSearchMode) -> None:
+    def __init__(
+        self,
+        regex_rule: str,
+        matched_observer: IMatchedObserver,
+        matching_mode: MatchingSearchMode,
+        return_only_address: bool,
+    ) -> None:
         super().__init__(regex_rule=regex_rule, matched_observer=matched_observer)
         self._all_instructions: str = ""
         self._all_instructions_list: List[str] = []
         self.matching_mode = matching_mode
         self.timeout_regex: Final = 60
+        self.return_only_addresses: bool = return_only_address
 
     def consume_instruction(self, inst: Instruction) -> None:
         processed_inst = self._process_instruction(inst)
@@ -56,17 +63,25 @@ class CompleteConsumer(InstructionObserverConsumer):
         # Add stringified instructions to the observer to test them in test_parsing
         self._matched_observer.stringified_instructions = self._all_instructions
 
-        if self.matching_mode == MatchingSearchMode.first_find:  # return first finding
-            logger.info("Matching first occurence")
-            self.do_match_first_occurence()
+        # If return_only_addresses is True, then the observer will only return the addresses
+        if self.return_only_addresses:
+            return_matched_instructions = False
+        else:
+            return_matched_instructions = True
 
-        if self.matching_mode == MatchingSearchMode.all_finds:  # return all findings
-            logger.info("Matching all findings")
-            self.do_match_all_findings()
+        match self.matching_mode:
+
+            case MatchingSearchMode.first_find:  # return first finding
+                logger.info("Matching first occurence")
+                self.do_match_first_occurence(return_matched_instructions=return_matched_instructions)
+
+            case MatchingSearchMode.all_finds:  # return all findings
+                logger.info("Matching all findings")
+                self.do_match_all_findings(return_matched_instructions=return_matched_instructions)
 
         super().finalize()
 
-    def do_match_first_occurence(self) -> None:
+    def do_match_first_occurence(self, return_matched_instructions: bool) -> None:
         """Match the first occurence of the regex in the instructions"""
         try:
             match_result = regex.search(
@@ -78,10 +93,16 @@ class CompleteConsumer(InstructionObserverConsumer):
             raise ValueError("Regex timeout") from exc
 
         if match_result:
-            addr = self.get_first_addr_from_regex_result(match_result.group(0))
-            self._matched_observer.regex_matched(addr)
 
-    def do_match_all_findings(self) -> None:
+            if return_matched_instructions:
+                # Return address and main instruction
+                self._matched_observer.regex_matched(match_result.group(0))
+            else:
+                # Returning just the address
+                addr = self.get_first_addr_from_regex_result(match_result.group(0))
+                self._matched_observer.regex_matched(addr)
+
+    def do_match_all_findings(self, return_matched_instructions: bool) -> None:
         """Match all findings of the regex in the instructions"""
         try:
             match_iterator = regex.finditer(
@@ -95,8 +116,13 @@ class CompleteConsumer(InstructionObserverConsumer):
         if match_iterator:
             for match_result in match_iterator:
                 if match_result:
-                    addr = self.get_first_addr_from_regex_result(match_result.group(0))
-                    self._matched_observer.regex_matched(addr)
+                    if return_matched_instructions:
+                        # Return addresses and instructions
+                        self._matched_observer.regex_matched(match_result.group(0))
+                    else:
+                        # Returning just the address
+                        addr = self.get_first_addr_from_regex_result(match_result.group(0))
+                        self._matched_observer.regex_matched(addr)
 
 
 class StreamConsumer(InstructionObserverConsumer):

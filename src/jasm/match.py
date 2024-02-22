@@ -52,13 +52,17 @@ class ConsumerBuilder:
         iMatchedObserver: IMatchedObserver,
         consumer_type: ConsumerType,
         matching_mode: MatchingSearchMode,
+        return_only_address: bool,
     ) -> InstructionObserverConsumer:
         """Decide which consumer to create"""
 
         match consumer_type:
             case ConsumerType.complete:
                 return CompleteConsumer(
-                    regex_rule=regex_rule, matched_observer=iMatchedObserver, matching_mode=matching_mode
+                    regex_rule=regex_rule,
+                    matched_observer=iMatchedObserver,
+                    matching_mode=matching_mode,
+                    return_only_address=return_only_address,
                 )
             case ConsumerType.stream:
                 return StreamConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
@@ -97,8 +101,9 @@ class MasterOfPuppets:
         pattern_pathstr: str,
         input_file: str,
         input_file_type: InputFileType,
-        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,
-        return_mode: MatchingReturnMode = MatchingReturnMode.bool,
+        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,  # set default for compatibility
+        return_mode: MatchingReturnMode = MatchingReturnMode.bool,  # set default for compatibility
+        return_only_address: bool = True,  # set default for compatibility
     ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
@@ -118,6 +123,7 @@ class MasterOfPuppets:
             valid_addr_range=valid_addr_range,
             matching_mode=matching_mode,
             return_mode=return_mode,
+            return_only_address=return_only_address,
         )
 
     @staticmethod
@@ -147,9 +153,10 @@ class MasterOfPuppets:
         assembly_style: DisassStyle,
         input_file: str,
         input_file_type: InputFileType,
-        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,
-        valid_addr_range: Optional[ValidAddrRange] = None,
-        return_mode: MatchingReturnMode = MatchingReturnMode.bool,
+        return_only_address: bool,
+        matching_mode: MatchingSearchMode,
+        return_mode: MatchingReturnMode,
+        valid_addr_range: Optional[ValidAddrRange],
     ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
@@ -160,6 +167,7 @@ class MasterOfPuppets:
             iMatchedObserver=matched_observer,
             consumer_type=ConsumerType.complete,
             matching_mode=matching_mode,
+            return_only_address=return_only_address,
         )
 
         # Consumer call observers

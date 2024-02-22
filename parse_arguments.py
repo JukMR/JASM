@@ -17,6 +17,12 @@ def parse_args_from_console() -> argparse.Namespace:
     parser.add_argument(
         "--all-matches", default=False, action="store_true", help="Return all matches instead of only first match"
     )
+    parser.add_argument(
+        "--return_addrs_and_instructions",
+        default=False,
+        action="store_true",
+        help="Return instructions as long as addressess",
+    )
 
     # Create a mutually exclusive group for the two arguments
     group = parser.add_mutually_exclusive_group(required=True)

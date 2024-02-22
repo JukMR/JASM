@@ -9,7 +9,7 @@ from jasm.logging_config import logger
 from jasm.regex.file2regex import File2Regex
 
 # from jasm.regex.macro_expander.macro_expander import MacroExpander
-from jasm.regex.macro_expander.macro_expander import MacroExpander
+from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
 from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
@@ -43,7 +43,7 @@ class Yaml2Regex(File2Regex):
 
         return output_regex
 
-    def get_pattern(self) -> dict:
+    def get_pattern(self) -> PatternTree:
         # Load pattern
         patterns = self.loaded_file.get("pattern")
 
@@ -58,7 +58,7 @@ class Yaml2Regex(File2Regex):
 
         return pattern_with_top_node
 
-    def _generate_rule_tree(self, patterns: dict) -> PatternNode:
+    def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
         "Generate the rule tree from the patterns"
         # Generate the rule tree with no parents and type from root parent node downwards
         rule_tree: PatternNode = PatternNodeBuilderNoParents(command_dict=patterns).build()

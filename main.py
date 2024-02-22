@@ -35,12 +35,15 @@ def main() -> None:
     input_file_type = decide_assembly_or_binary(args=args)
 
     # Set assembly mode or binary mode
-    if input_file_type == InputFileType.assembly:
-        input_file = args.assembly
-    elif input_file_type == InputFileType.binary:
-        input_file = args.binary
-    else:
-        raise ValueError("Invalid input file type")
+    match input_file_type:
+        case InputFileType.assembly:
+            input_file = args.assembly
+
+        case InputFileType.binary:
+            input_file = args.binary
+
+        case _:
+            raise ValueError("Invalid input file type")
 
     # Set first matching only or full matches
     if args.all_matches:
@@ -48,11 +51,17 @@ def main() -> None:
     else:
         matching_mode = MatchingSearchMode.first_find
 
+    if args.return_addrs_and_instructions:
+        return_only_address = False
+    else:
+        return_only_address = True
+
     MasterOfPuppets().perform_matching(
         pattern_pathstr=args.pattern,
         input_file=input_file,
         input_file_type=input_file_type,
         matching_mode=matching_mode,
+        return_only_address=return_only_address,
     )
 
 

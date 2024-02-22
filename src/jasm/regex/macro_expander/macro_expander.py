@@ -126,7 +126,7 @@ class MacroExpander:
 
 class MacroArgsResolver:
 
-    def resolve(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
+    def resolve(self, macro: MacroTree, tree: PatternTree) -> MacroTree:
         mapping_dict = self.get_macro_mapping_arg_dict(macro=macro, tree=tree)
 
         macro = self.evaluate_args_in_macro(macro=macro, mapping_dict=mapping_dict)
@@ -207,7 +207,6 @@ class ArgsMappingGenerator:
                 for key, value in self.yield_key_value_pairs(tree):
                     if key == current_arg:
                         yield {key: value}
-        return None
 
     def yield_key_value_pairs(self, data: Union[Dict[Any, Any], List[Any]]) -> Generator[Tuple[Any, Any], None, None]:
         """
