@@ -207,7 +207,6 @@ class ArgsMappingGenerator:
                 for key, value in self.yield_key_value_pairs(tree):
                     if key == current_arg:
                         yield {key: value}
-        return None
 
     def yield_key_value_pairs(self, data: Union[Dict[Any, Any], List[Any]]) -> Generator[Tuple[Any, Any], None, None]:
         """
