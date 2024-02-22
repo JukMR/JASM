@@ -2,6 +2,9 @@
 pattern:
   - $and_any_order:
       - add
-      - rol
+      - $or:
+          - ro
+          - sh
+          - sa
       - "@any"
       - xor
