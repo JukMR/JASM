@@ -1,4 +1,8 @@
-
+; Pattern found in :
+;  8c7:	41 c1 c4 10          	rol    $0x10,%r12d
+;  8cb:	44 31 e1             	xor    %r12d,%ecx
+;  8ce:	44 8d 66 03          	lea    0x3(%rsi),%r12d
+;  8d2:	83 c6 04             	add    $0x4,%esi
 AesCore.o:     file format elf64-x86-64
 
 
@@ -25,7 +29,7 @@ Disassembly of section .text:
   2d:	0f 85 cf 04 00 00    	jne    502 <AesExpandKey+0x502>
   33:	48 8b 44 24 f0       	mov    -0x10(%rsp),%rax
   38:	44 8d 04 8d 1c 00 00 	lea    0x1c(,%rcx,4),%r8d
-  3f:	00 
+  3f:	00
   40:	89 08                	mov    %ecx,(%rax)
   42:	48 8d 50 04          	lea    0x4(%rax),%rdx
   46:	85 c9                	test   %ecx,%ecx
@@ -45,7 +49,7 @@ Disassembly of section .text:
   7b:	44 8d 4e ff          	lea    -0x1(%rsi),%r9d
   7f:	66 0f ef d2          	pxor   %xmm2,%xmm2
   83:	66 44 0f 6f 05 00 00 	movdqa 0x0(%rip),%xmm8        # 8c <AesExpandKey+0x8c>
-  8a:	00 00 
+  8a:	00 00
   8c:	49 c1 e1 06          	shl    $0x6,%r9
   90:	4e 8d 4c 0b 44       	lea    0x44(%rbx,%r9,1),%r9
   95:	0f 1f 00             	nopl   (%rax)
@@ -248,7 +252,7 @@ Disassembly of section .text:
  3a2:	8d 46 fc             	lea    -0x4(%rsi),%eax
  3a5:	4c 8d 34 82          	lea    (%rdx,%rax,4),%r14
  3a9:	4a 8d 04 8d 00 00 00 	lea    0x0(,%r9,4),%rax
- 3b0:	00 
+ 3b0:	00
  3b1:	48 89 44 24 e8       	mov    %rax,-0x18(%rsp)
  3b6:	41 8d 42 fc          	lea    -0x4(%r10),%eax
  3ba:	41 8b 1e             	mov    (%r14),%ebx
@@ -362,7 +366,7 @@ Disassembly of section .text:
  512:	41 89 c9             	mov    %ecx,%r9d
  515:	31 ff                	xor    %edi,%edi
  517:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
- 51e:	00 00 
+ 51e:	00 00
  520:	41 0f b6 44 ba 01    	movzbl 0x1(%r10,%rdi,4),%eax
  526:	41 0f b6 34 ba       	movzbl (%r10,%rdi,4),%esi
  52b:	c1 e0 10             	shl    $0x10,%eax
@@ -392,9 +396,9 @@ Disassembly of section .text:
  573:	53                   	push   %rbx
  574:	48 81 ec 38 02 00 00 	sub    $0x238,%rsp
  57b:	64 48 8b 14 25 28 00 	mov    %fs:0x28,%rdx
- 582:	00 00 
+ 582:	00 00
  584:	48 89 94 24 28 02 00 	mov    %rdx,0x228(%rsp)
- 58b:	00 
+ 58b:	00
  58c:	31 d2                	xor    %edx,%edx
  58e:	48 85 f6             	test   %rsi,%rsi
  591:	0f 94 c2             	sete   %dl
@@ -408,12 +412,12 @@ Disassembly of section .text:
  5af:	0f b6 50 03          	movzbl 0x3(%rax),%edx
  5b3:	48 89 f3             	mov    %rsi,%rbx
  5b6:	c7 44 24 40 04 00 00 	movl   $0x4,0x40(%rsp)
- 5bd:	00 
+ 5bd:	00
  5be:	44 0f b6 50 05       	movzbl 0x5(%rax),%r10d
  5c3:	44 0f b6 48 09       	movzbl 0x9(%rax),%r9d
  5c8:	48 8d 2d 00 00 00 00 	lea    0x0(%rip),%rbp        # 5cf <AesEncrypt+0x6f>
  5cf:	4c 8d a4 24 f4 00 00 	lea    0xf4(%rsp),%r12
- 5d6:	00 
+ 5d6:	00
  5d7:	41 c1 e3 18          	shl    $0x18,%r11d
  5db:	0f b6 48 0d          	movzbl 0xd(%rax),%ecx
  5df:	4c 8d 05 00 00 00 00 	lea    0x0(%rip),%r8        # 5e6 <AesEncrypt+0x86>
@@ -637,7 +641,7 @@ Disassembly of section .text:
  8de:	39 dd                	cmp    %ebx,%ebp
  8e0:	0f 85 f2 fe ff ff    	jne    7d8 <AesEncrypt+0x278>
  8e6:	44 8d 34 ad 00 00 00 	lea    0x0(,%rbp,4),%r14d
- 8ed:	00 
+ 8ed:	00
  8ee:	4c 89 f5             	mov    %r14,%rbp
  8f1:	49 c1 e6 02          	shl    $0x2,%r14
  8f5:	44 8d 6d 01          	lea    0x1(%rbp),%r13d
@@ -809,9 +813,9 @@ Disassembly of section .text:
  b61:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
  b68:	b8 01 00 00 00       	mov    $0x1,%eax
  b6d:	48 8b 94 24 28 02 00 	mov    0x228(%rsp),%rdx
- b74:	00 
+ b74:	00
  b75:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
- b7c:	00 00 
+ b7c:	00 00
  b7e:	75 38                	jne    bb8 <AesEncrypt+0x658>
  b80:	48 81 c4 38 02 00 00 	add    $0x238,%rsp
  b87:	5b                   	pop    %rbx

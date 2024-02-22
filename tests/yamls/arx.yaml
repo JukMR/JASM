@@ -1,5 +1,7 @@
 ---
 pattern:
-  - add
-  - rol
-  - xor
+  - $and_any_order:
+      - add
+      - rol
+      - "@any"
+      - xor
