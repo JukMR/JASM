@@ -39,7 +39,7 @@ class Yaml2Regex(File2Regex):
         output_regex = rule_tree.get_regex(rule_tree)
 
         # Log regex results
-        logger.info("The output regex is:\n%s\n", output_regex)
+        logger.debug("The output regex is:\n%s\n", output_regex)
 
         return output_regex
 

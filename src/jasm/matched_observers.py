@@ -32,3 +32,5 @@ class MatchedObserver(IMatchedObserver):
     def finalize(self) -> None:
         if not self._matched:
             logger.info("RESULT: Pattern not found\n")
+        else:
+            logger.info("RESULT: Pattern found\n")
