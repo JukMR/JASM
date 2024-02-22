@@ -28,18 +28,11 @@ def run_match_test(
     assert result == expected_result
 
 
-def pytest_generate_tests(metafunc):
-    # This function is called by pytest to parametrize the tests.
-    # It will be called once per test function, and you have the opportunity to
-    # call metafunc.parametrize() to dynamically set the parameters for the test.
-
-    if "config" in metafunc.fixturenames:  # Check if "config" is a parameter in your test
-        configs = load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching")
-        ids = [config["title"] for config in configs]  # Extract titles for test ids
-        metafunc.parametrize("config", configs, ids=ids, scope="function")
-
-
-@pytest.fixture(scope="function")
+@pytest.mark.parametrize(
+    "config",
+    load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
+    ids=lambda config: config["title"],
+)
 def test_all_patterns(config):
     """Test function for all configurations in configuration.yaml."""
     config_yaml = config["yaml"]

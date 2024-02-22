@@ -15,6 +15,7 @@ from jasm.global_definitions import (
     TimeType,
     dict_node,
 )
+from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
 
 
@@ -178,9 +179,7 @@ class PatternNode:
     @staticmethod
     def get_capture_group_index(
         pattern_node, capture_group_mode: CaptureGroupMode, capture_group_references: List[str]
-    ) -> "CaptureGroupIndex":
-        # Import done here to avoid circular imports
-        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+    ) -> CaptureGroupIndex:
 
         # For now only full instructions is supported
         return CaptureGroupIndex(

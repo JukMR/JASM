@@ -16,9 +16,11 @@ class CaptureGroupIndex:
         raise ValueError(f"Capture group reference {str_index} not found")
 
     def to_regex(self) -> str:
-        if self.mode == CaptureGroupMode.instruction:
-            return rf"{IGNORE_INST_ADDR}\{self.index},\|"
+        match self.mode:
+            case CaptureGroupMode.instruction:
+                return rf"{IGNORE_INST_ADDR}\{self.index},\|"
 
-        if self.mode == CaptureGroupMode.operand:
-            return rf"\{self.index},"
+            case CaptureGroupMode.operand:
+                return rf"\{self.index},"
+
         raise ValueError(f"Capture group mode {self.mode} not found")
