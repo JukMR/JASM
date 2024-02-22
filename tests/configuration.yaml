@@ -158,6 +158,16 @@ test_matching:
     assembly: "tests/assembly/zero_reg/main_O3.s"
     expected: True
 
+  - title: "AesCore rule asm"
+    yaml: "tests/yamls/arx.yaml"
+    assembly: "tests/assembly/AesCore.s"
+    expected: True
+
+  - title: "AesCore rule bin"
+    yaml: "tests/yamls/arx.yaml"
+    binary: "tests/binary/AesCore.bin"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"
