@@ -3,26 +3,9 @@ import re
 import pytest
 from conftest import load_test_configs
 
-from jasm.global_definitions import DisassStyle, InputFileType, MatchingReturnMode
+from jasm.global_definitions import DisassStyle, InputFileType, MatchingReturnMode, MatchingSearchMode
 from jasm.logging_config import logger
 from jasm.match import MasterOfPuppets
-
-
-def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_file_type: InputFileType) -> int:
-    """Parse file and return number of lines"""
-
-    all_instructions = MasterOfPuppets._do_matching_and_get_result(
-        regex_rule="",
-        assembly_style=DisassStyle.att,
-        input_file=input_file,
-        input_file_type=input_file_type,
-        return_mode=MatchingReturnMode.all_instructions_string,
-    )
-
-    if isinstance(all_instructions, bool):
-        raise ValueError("Result should not be bool")
-
-    return all_instructions.count("|")
 
 
 @pytest.mark.parametrize(
@@ -61,3 +44,23 @@ def test_parsing_number_of_lines(config) -> None:
         input_file=assembly, input_file_type=InputFileType.assembly
     )
     assert number_of_lines == parsed_number_of_lines
+
+
+def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_file_type: InputFileType) -> int:
+    """Parse file and return number of lines"""
+
+    all_instructions = MasterOfPuppets()._do_matching_and_get_result(  # pylint: disable=protected-access
+        regex_rule="",
+        assembly_style=DisassStyle.att,
+        input_file=input_file,
+        input_file_type=input_file_type,
+        return_mode=MatchingReturnMode.all_instructions_string,
+        matching_mode=MatchingSearchMode.first_find,
+        return_only_address=True,
+        valid_addr_range=None,
+    )
+
+    if isinstance(all_instructions, bool):
+        raise ValueError("Result should not be bool")
+
+    return all_instructions.count("|")

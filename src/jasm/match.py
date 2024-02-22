@@ -101,9 +101,9 @@ class MasterOfPuppets:
         pattern_pathstr: str,
         input_file: str,
         input_file_type: InputFileType,
-        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find, # set default for compatibility
-        return_mode: MatchingReturnMode = MatchingReturnMode.bool, # set default for compatibility
-        return_only_address: bool = True, # set default for compatibility
+        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,  # set default for compatibility
+        return_mode: MatchingReturnMode = MatchingReturnMode.bool,  # set default for compatibility
+        return_only_address: bool = True,  # set default for compatibility
     ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
@@ -153,10 +153,10 @@ class MasterOfPuppets:
         assembly_style: DisassStyle,
         input_file: str,
         input_file_type: InputFileType,
-        matching_mode: MatchingSearchMode = MatchingSearchMode.first_find,
-        valid_addr_range: Optional[ValidAddrRange] = None,
-        return_mode: MatchingReturnMode = MatchingReturnMode.bool,
         return_only_address: bool,
+        matching_mode: MatchingSearchMode,
+        return_mode: MatchingReturnMode,
+        valid_addr_range: Optional[ValidAddrRange],
     ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
