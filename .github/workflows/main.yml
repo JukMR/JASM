@@ -18,7 +18,7 @@ jobs:
         run: |
           echo "Installing dependencies..."
           python -m pip install --upgrade pip
-          pip install pytest pytest-xdist poetry pyyaml
+          pip install pytest pytest-xdist poetry pyyaml pytest-benchmark pytest-fail-slow
 
       - name: Install dependencies with poetry
         run: |
