@@ -15,6 +15,7 @@ from jasm.global_definitions import (
     TimeType,
     dict_node,
 )
+from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
 
 
@@ -40,7 +41,7 @@ class PatternNode:
         children: Optional[dict | List["PatternNode"]],
         pattern_node_type: Optional[PatternNodeTypes],
         parent: Optional["PatternNode"],
-        capture_group_references: List[str] = [],
+        capture_group_references: Optional[List[str]] = None,
     ) -> None:
         """
         Initialize a Command object.
@@ -167,25 +168,11 @@ class PatternNode:
 
     def get_capture_group_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
-        capture_group_instance = self.get_capture_group_index(
-            pattern_node, capture_group_mode=capture_group_mode, capture_group_references=self.capture_group_references
-        )
+        capture_group_instance = CaptureGroupIndex(str_index=str(pattern_node.name), mode=capture_group_mode)
 
         index = capture_group_instance.to_regex()
 
         return f"{index}"
-
-    @staticmethod
-    def get_capture_group_index(
-        pattern_node, capture_group_mode: CaptureGroupMode, capture_group_references: List[str]
-    ) -> "CaptureGroupIndex":
-        # Import done here to avoid circular imports
-        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
-
-        # For now only full instructions is supported
-        return CaptureGroupIndex(
-            pattern_node.name, mode=capture_group_mode, capture_groups_references=capture_group_references
-        )
 
     def get_capture_group_reference_operand(self) -> str:
         return r"([^,|]+),"  # Get the operand value

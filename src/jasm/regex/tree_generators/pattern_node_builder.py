@@ -93,10 +93,10 @@ class PatternNodeBuilderNoParents:
         assert isinstance(self.name, (str, int))
 
         return PatternNode(
-            pattern_node_dict=self.command,
             name=self.name,
             times=self.times,
             children=self.children,
+            pattern_node_dict=self.command,
             pattern_node_type=None,
             parent=None,
         )
