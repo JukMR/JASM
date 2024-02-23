@@ -116,6 +116,9 @@ class PatternNodeTypeBuilder:
 
     def has_any_ancester_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
+        assert self.command.root_node
+        assert hasattr(self.command.root_node, "capture_group_references")
+
         if self.command.root_node.capture_group_references is None:
             return False
 
@@ -125,6 +128,9 @@ class PatternNodeTypeBuilder:
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
+
+        assert self.command.root_node
+        assert hasattr(self.command.root_node, "capture_group_references")
 
         if self.command.root_node.capture_group_references is None:
             self.command.root_node.capture_group_references = []

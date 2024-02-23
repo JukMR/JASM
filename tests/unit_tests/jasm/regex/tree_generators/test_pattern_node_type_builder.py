@@ -6,7 +6,7 @@ from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeP
 from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
 
 
-def create_test_node(name: str, parent=None, children=None, capture_group_references=None) -> PatternNode:
+def create_test_node(name: str, parent=None, children=None) -> PatternNode:
     node = PatternNode(
         pattern_node_dict={},
         name=name,
@@ -14,9 +14,8 @@ def create_test_node(name: str, parent=None, children=None, capture_group_refere
         children=children or [],
         pattern_node_type=None,
         parent=parent,
+        root_node=parent,
     )
-    if capture_group_references is not None:
-        node.capture_group_references = capture_group_references
     return node
 
 
@@ -24,10 +23,9 @@ def create_test_node(name: str, parent=None, children=None, capture_group_refere
     "name, expected_type",
     [
         ("$deref", PatternNodeTypes.deref),
-        ("&capture_group", PatternNodeTypes.capture_group_reference),
         ("times", PatternNodeTypes.times),
-        ("1", PatternNodeTypes.mnemonic),
-        ("$or", PatternNodeTypes.node),
+        ("1", PatternNodeTypes.root),
+        ("$or", PatternNodeTypes.root),
     ],
 )
 def test_get_type(name, expected_type):

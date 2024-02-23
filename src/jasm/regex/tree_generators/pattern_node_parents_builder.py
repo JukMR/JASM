@@ -7,7 +7,7 @@ class PatternNodeParentsBuilder:
     def __init__(self, command: PatternNode) -> None:
         self.command = command
 
-    def set_parent(self, current_node: PatternNode) -> None:
+    def _set_parent(self, current_node: PatternNode) -> None:
         assert isinstance(current_node.children, List)
         children_nodes = current_node.children
 
@@ -22,8 +22,8 @@ class PatternNodeParentsBuilder:
             child.parent = current_node
             child.root_node = root_node
             if child.children:  # Recursively set parent for the child's children
-                self.set_parent(child)
+                self._set_parent(child)
 
     def build(self) -> None:
         if self.command.children:
-            self.set_parent(self.command)
+            self._set_parent(self.command)
