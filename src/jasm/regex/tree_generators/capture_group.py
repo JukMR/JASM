@@ -1,24 +1,30 @@
-from typing import List, Optional
+from typing import List
 
 from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode
+from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
 class CaptureGroupIndex:
     """Class to represent a capture group index."""
 
-    def __init__(self, str_index: str, mode: CaptureGroupMode) -> None:
-        self.index = self.get_capture_group_reference(str_index)
+    def __init__(self, pattern_node: PatternNode, mode: CaptureGroupMode) -> None:
+
+        str_index = str(pattern_node.name)
+        assert (
+            hasattr(pattern_node.root_node, "capture_group_references")
+            and pattern_node.root_node.capture_group_references is not None
+        )
+
+        capture_group_references = pattern_node.root_node.capture_group_references
+        self.index = self._get_capture_group_reference(str_index, capture_group_references)
         self.mode = mode
-        self.capture_group_references: Optional[List[str]]
 
-    def get_capture_group_reference(self, str_index: str) -> int:
+    @staticmethod
+    def _get_capture_group_reference(str_index: str, capture_group_references: List[str]) -> int:
         """Get the index of the capture group reference in the list of capture group references."""
-        if self.capture_group_references is None:
-            raise ValueError("capture_group_references not set")
-
-        for elem in self.capture_group_references:
+        for elem in capture_group_references:
             if elem == str_index:
-                return self.capture_group_references.index(elem) + 1
+                return capture_group_references.index(elem) + 1
         raise ValueError(f"Capture group reference {str_index} not found")
 
     def to_regex(self) -> str:

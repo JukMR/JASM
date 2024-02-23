@@ -86,6 +86,7 @@ class PatternNodeBuilderNoParents:
                 pattern_node_dict=name,
                 pattern_node_type=PatternNodeTypes.deref_property,
                 parent=None,
+                root_node=None,
             )
         ]
 
@@ -99,4 +100,5 @@ class PatternNodeBuilderNoParents:
             pattern_node_dict=self.command,
             pattern_node_type=None,
             parent=None,
+            root_node=None,
         )

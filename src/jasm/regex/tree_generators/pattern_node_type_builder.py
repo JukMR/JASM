@@ -61,6 +61,10 @@ class PatternNodeTypeBuilder:
                 return PatternNodeTypes.deref_property
             return PatternNodeTypes.operand
 
+        # Is root node
+        if self.command.parent is None:
+            return PatternNodeTypes.root
+
         # Is node
         if self.is_node(name):
             return PatternNodeTypes.node
@@ -112,22 +116,22 @@ class PatternNodeTypeBuilder:
 
     def has_any_ancester_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
-        if self.command.capture_group_references is None:
+        if self.command.root_node.capture_group_references is None:
             return False
 
-        if self.command.name in self.command.capture_group_references:
+        if self.command.name in self.command.root_node.capture_group_references:
             return True
         return False
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
 
-        if self.command.capture_group_references is None:
-            self.command.capture_group_references = []
+        if self.command.root_node.capture_group_references is None:
+            self.command.root_node.capture_group_references = []
 
-        if self.command.name not in self.command.capture_group_references:
+        if self.command.name not in self.command.root_node.capture_group_references:
             assert isinstance(self.command.name, str)
-            self.command.capture_group_references.append(self.command.name)
+            self.command.root_node.capture_group_references.append(self.command.name)
 
     def is_capture_group_operand(self) -> bool:
         "Check if the current node is a capture group operand"
@@ -151,6 +155,12 @@ class PatternNodeTypeBuilder:
 
     def build(self) -> None:
         self.set_type()
+
+        # Add the capture group references to the root node
+
+        if self.command.pattern_node_type == PatternNodeTypes.root:
+            setattr(self.command, "capture_group_references", [])
+
         if self.command.children:
             for child in self.command.children:
                 PatternNodeTypeBuilder(child).build()
