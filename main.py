@@ -1,3 +1,5 @@
+# PYTHON_ARGCOMPLETE_OK
+
 "Main entry module"
 from argparse import Namespace
 

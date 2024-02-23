@@ -1,5 +1,7 @@
-"Parse arguements module"
+"Parse arguments module"
 import argparse
+
+import argcomplete
 
 
 def parse_args_from_console() -> argparse.Namespace:
@@ -33,6 +35,7 @@ def parse_args_from_console() -> argparse.Namespace:
 
     # Return only a file_type argument
 
+    argcomplete.autocomplete(parser)
     parsed_args = parser.parse_args()
 
     return parsed_args
