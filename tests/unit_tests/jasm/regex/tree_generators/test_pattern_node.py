@@ -46,6 +46,7 @@ def pattern_node_fixture():
         children=[],
         pattern_node_type=PatternNodeTypes.operand,
         parent=None,
+        root_node=None,
     )
 
 
@@ -83,6 +84,7 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNode):
         children=None,
         pattern_node_type=PatternNodeTypes.operand,
         parent=pattern_node_fixture,
+        root_node=pattern_node_fixture,
     )
     pattern_node_fixture.children = [child_pattern_node]
     # Assuming generate_regex works correctly

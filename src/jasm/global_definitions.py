@@ -101,6 +101,7 @@ class PatternNodeTypes(Enum):
     capture_group_call = auto()
     capture_group_reference_operand = auto()
     capture_group_call_operand = auto()
+    root = auto()
 
 
 class MatchingSearchMode(Enum):

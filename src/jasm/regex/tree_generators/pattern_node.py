@@ -15,7 +15,6 @@ from jasm.global_definitions import (
     TimeType,
     dict_node,
 )
-from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
 
 
@@ -41,7 +40,7 @@ class PatternNode:
         children: Optional[dict | List["PatternNode"]],
         pattern_node_type: Optional[PatternNodeTypes],
         parent: Optional["PatternNode"],
-        capture_group_references: Optional[List[str]] = None,
+        root_node: Optional["PatternNode"],
     ) -> None:
         """
         Initialize a Command object.
@@ -59,7 +58,7 @@ class PatternNode:
         self.children = children
         self.pattern_node_type = pattern_node_type
         self.parent = parent
-        self.capture_group_references = capture_group_references
+        self.root_node = root_node
 
     def get_regex(self, pattern_node: "PatternNode") -> str:
         """Get regex from a leaf or call a recursion over the branch."""
@@ -90,6 +89,11 @@ class PatternNode:
 
             case PatternNodeTypes.deref_property_capture_group_call:
                 return self.get_capture_group_call(pattern_node, CaptureGroupMode.operand)
+
+            # This is the case of the root node $and
+            # In here we will be save the state of the capture group references
+            case PatternNodeTypes.root:
+                return self.process_branch(pattern_node)
 
             case _:
                 return self.process_branch(pattern_node)
@@ -168,7 +172,9 @@ class PatternNode:
 
     def get_capture_group_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
-        capture_group_instance = CaptureGroupIndex(str_index=str(pattern_node.name), mode=capture_group_mode)
+        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+
+        capture_group_instance = CaptureGroupIndex(pattern_node=pattern_node, mode=capture_group_mode)
 
         index = capture_group_instance.to_regex()
 

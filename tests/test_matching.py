@@ -4,6 +4,8 @@ from conftest import load_test_configs
 from jasm.global_definitions import InputFileType, MatchingReturnMode, MatchingSearchMode
 from jasm.match import MasterOfPuppets
 
+USE_BENCHMARK = False
+
 
 def run_match_test(
     pattern_pathstr: str,
@@ -33,7 +35,7 @@ def run_match_test(
     load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
     ids=lambda config: config["title"],
 )
-def test_all_patterns(config):
+def test_all_patterns(benchmark, config):
     """Test function for all configurations in configuration.yaml."""
     config_yaml = config["yaml"]
     expected_result = config["expected"]
@@ -64,11 +66,22 @@ def test_all_patterns(config):
     else:
         matching_mode = MatchingSearchMode.first_find
 
-    run_match_test(
-        pattern_pathstr=config_yaml,
-        input_file=input_file,
-        input_file_type=input_file_type,
-        expected_result=expected_result,
-        return_mode=return_mode,
-        matching_mode=matching_mode,
-    )
+    if USE_BENCHMARK:
+        benchmark(
+            run_match_test,
+            pattern_pathstr=config_yaml,
+            input_file=input_file,
+            input_file_type=input_file_type,
+            expected_result=expected_result,
+            return_mode=return_mode,
+            matching_mode=matching_mode,
+        )
+    else:
+        run_match_test(
+            pattern_pathstr=config_yaml,
+            input_file=input_file,
+            input_file_type=input_file_type,
+            expected_result=expected_result,
+            return_mode=return_mode,
+            matching_mode=matching_mode,
+        )
