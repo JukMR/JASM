@@ -5,45 +5,46 @@ from typing import Optional
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, Instruction
 
 
-class TagOutofAddrsRangeJumps(IConsumer):
-    "InstructionObserver implementation that only concatenates instructions"
+# TODO: Implement this observer
+# class TagOutofAddrsRangeJumps(IConsumer):
+#     "InstructionObserver implementation that only concatenates instructions"
 
-    def __init__(self, max_addr: str) -> None:
-        self.max_addr = max_addr
+#     def __init__(self, max_addr: str) -> None:
+#         self.max_addr = max_addr
 
-    def consume_instruction_normal(self, inst: Instruction) -> None:
-        if inst.addr > self.max_addr:
-            return self.deal_with_instruction_out_of_range(inst)
-        return inst
+#     def consume_instruction_normal(self, inst: Instruction) -> Instruction:
+#         if inst.addr > self.max_addr:
+#             return self.deal_with_instruction_out_of_range(inst)
+#         return inst
 
-    def deal_with_instruction_out_of_range(self, inst: Instruction) -> Instruction:
-        # TODO: implement
-        return inst
+#     def deal_with_instruction_out_of_range(self, inst: Instruction) -> Instruction:
+#         # TODO: implement
+#         return inst
 
+# TODO: Implement this observer
+# class CheckAddrRangeJumpsNearBadInstruction(IConsumer):
+#     "InstructionObserver implementation that only concatenates instructions"
 
-class CheckAddrRangeJumpsNearBadInstruction(IConsumer):
-    "InstructionObserver implementation that only concatenates instructions"
+#     def __init__(self, distance: int) -> None:
+#         # Set number of instructions the bad instruction may affect until alignment
+#         self.livehood = distance
+#         self.current_instructions_index = 0
 
-    def __init__(self, distance: int) -> None:
-        # Set number of instructions the bad instruction may affect until alignment
-        self.livehood = distance
-        self.current_instructions_index = 0
+#     def consume_instruction_normal(self, inst: Instruction) -> Instruction:
+#         # Check instructions
 
-    def consume_instruction_normal(self, inst: Instruction) -> None:
-        # Check instructions
+#         # Instructions in the range of a bad instruction
+#         if self.current_instructions_index <= self.livehood:
+#             self.current_instructions_index = 0
+#             return self.tag_instruction(inst)
 
-        # Instructions in the range of a bad instruction
-        if self.current_instructions_index <= self.livehood:
-            self.current_instructions_index = 0
-            return self.tag_instruction(inst)
+#         # Instruction out of the range of a bad instruction
+#         self.current_instructions_index += 1
+#         return inst
 
-        # Instruction out of the range of a bad instruction
-        self.current_instructions_index += 1
-        return inst
-
-    def tag_instruction(self, inst: Instruction) -> Instruction:
-        # TODO: implement
-        return inst
+#     def tag_instruction(self, inst: Instruction) -> Instruction:
+#         # TODO: implement
+#         return inst
 
 
 class RemoveEmptyInstructions(IInstructionObserver):
