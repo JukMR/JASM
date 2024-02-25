@@ -50,7 +50,7 @@ def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_fil
     """Parse file and return number of lines"""
 
     match_config = MatchConfig(
-        pattern_pathstr="",
+        pattern_pathstr="tests/yamls/1_call_plain.yaml",  # not using this file, just using it as a mock for the test
         input_file=input_file,
         input_file_type=input_file_type,
         return_mode=MatchingReturnMode.all_instructions_string,
