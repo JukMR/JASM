@@ -166,7 +166,7 @@ class MatchConfig:
     pattern_pathstr: str
     input_file: str
     input_file_type: InputFileType = InputFileType.assembly
-    return_only_address: bool = True
+    return_only_address: bool = False
     return_mode: MatchingReturnMode = MatchingReturnMode.bool
     matching_mode: MatchingSearchMode = MatchingSearchMode.first_find
 

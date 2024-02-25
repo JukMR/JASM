@@ -20,10 +20,10 @@ def parse_args_from_console() -> argparse.Namespace:
         "--all-matches", default=False, action="store_true", help="Return all matches instead of only first match"
     )
     parser.add_argument(
-        "--return_addrs_and_instructions",
+        "--return_only_address",
         default=False,
         action="store_true",
-        help="Return instructions as long as addressess",
+        help="Return only matched addresses",
     )
 
     # Create a mutually exclusive group for the two arguments

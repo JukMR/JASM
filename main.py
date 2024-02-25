@@ -53,17 +53,12 @@ def main() -> None:
     else:
         matching_mode = MatchingSearchMode.first_find
 
-    if args.return_addrs_and_instructions:
-        return_only_address = False
-    else:
-        return_only_address = True
-
     match_config = MatchConfig(
         pattern_pathstr=args.pattern,
         input_file=input_file,
         input_file_type=input_file_type,
         matching_mode=matching_mode,
-        return_only_address=return_only_address,
+        return_only_address=args.return_only_address,
     )
     MasterOfPuppets(match_config=match_config).perform_matching()
 

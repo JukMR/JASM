@@ -63,25 +63,18 @@ class CompleteConsumer(InstructionObserverConsumer):
         # Add stringified instructions to the observer to test them in test_parsing
         self._matched_observer.stringified_instructions = self._all_instructions
 
-        # If return_only_addresses is True, then the observer will only return the addresses
-        if self.return_only_addresses:
-            return_matched_instructions = False
-        else:
-            return_matched_instructions = True
-
         match self.matching_mode:
-
             case MatchingSearchMode.first_find:  # return first finding
                 logger.info("Matching first occurence")
-                self.do_match_first_occurence(return_matched_instructions=return_matched_instructions)
+                self.do_match_first_occurence()
 
             case MatchingSearchMode.all_finds:  # return all findings
                 logger.info("Matching all findings")
-                self.do_match_all_findings(return_matched_instructions=return_matched_instructions)
+                self.do_match_all_findings()
 
         super().finalize()
 
-    def do_match_first_occurence(self, return_matched_instructions: bool) -> None:
+    def do_match_first_occurence(self) -> None:
         """Match the first occurence of the regex in the instructions"""
         try:
             match_result = regex.search(
@@ -94,15 +87,15 @@ class CompleteConsumer(InstructionObserverConsumer):
 
         if match_result:
 
-            if return_matched_instructions:
-                # Return address and main instruction
-                self._matched_observer.regex_matched(match_result.group(0))
-            else:
+            if self.return_only_addresses:
                 # Returning just the address
                 addr = self.get_first_addr_from_regex_result(match_result.group(0))
                 self._matched_observer.regex_matched(addr)
+            else:
+                # Return address and main instruction
+                self._matched_observer.regex_matched(match_result.group(0))
 
-    def do_match_all_findings(self, return_matched_instructions: bool) -> None:
+    def do_match_all_findings(self) -> None:
         """Match all findings of the regex in the instructions"""
         try:
             match_iterator = regex.finditer(
@@ -116,13 +109,13 @@ class CompleteConsumer(InstructionObserverConsumer):
         if match_iterator:
             for match_result in match_iterator:
                 if match_result:
-                    if return_matched_instructions:
-                        # Return addresses and instructions
-                        self._matched_observer.regex_matched(match_result.group(0))
-                    else:
+                    if self.return_only_addresses:
                         # Returning just the address
                         addr = self.get_first_addr_from_regex_result(match_result.group(0))
                         self._matched_observer.regex_matched(addr)
+                    else:
+                        # Return addresses and instructions
+                        self._matched_observer.regex_matched(match_result.group(0))
 
 
 # TODO: Implement this Consumer
