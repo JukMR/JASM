@@ -1,14 +1,16 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+
 import pytest
+
 from jasm.regex.macro_expander.macro_expander import MacroExpander
 
 
 @pytest.fixture
-def macro_expander():
+def macro_expander() -> MacroExpander:
     return MacroExpander()
 
 
-def test_resolve_all_macros(macro_expander):
+def test_resolve_all_macros(macro_expander: MacroExpander):
     macros = [
         {"name": "MACRO1", "pattern": "replacement1"},
         {"name": "MACRO2", "pattern": "replacement2"},
@@ -16,7 +18,7 @@ def test_resolve_all_macros(macro_expander):
     tree = "test MACRO1 and MACRO2"
 
     with patch.object(
-        macro_expander, "resolve_macro", side_effect=lambda macro, tree: tree.replace(macro["name"], macro["pattern"])
+        macro_expander, "_resolve_macro", side_effect=lambda macro, tree: tree.replace(macro["name"], macro["pattern"])
     ) as mock_resolve_macro:
         result = macro_expander.resolve_all_macros(macros, tree)
         assert result == "test replacement1 and replacement2"

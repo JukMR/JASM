@@ -1,4 +1,4 @@
-@startuml sequence_diagram_match_module
+@startuml sequence_diagram_whole_match_module
 actor "main module" as Main
 participant "perform_matching()" as PerformMatching
 participant "get_regex_rule()" as GetRegexRule

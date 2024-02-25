@@ -22,11 +22,11 @@ class ArgsMappingGenerator:
                     yield {current_arg: tree}
 
             case dict():
-                for key, value in self.yield_key_value_pairs(tree):
+                for key, value in self._yield_key_value_pairs(tree):
                     if key == current_arg:
                         yield {key: value}
 
-    def yield_key_value_pairs(self, data: Union[Dict[Any, Any], List[Any]]) -> Generator[Tuple[Any, Any], None, None]:
+    def _yield_key_value_pairs(self, data: Union[Dict[Any, Any], List[Any]]) -> Generator[Tuple[Any, Any], None, None]:
         """
         Recursively yield key-value pairs from all levels of a nested structure
         containing dictionaries and lists.
@@ -39,9 +39,9 @@ class ArgsMappingGenerator:
                 yield key, value  # Yield the key-value pair of the dictionary
                 if isinstance(value, (dict, list)):
                     # Recursively yield from nested dictionaries/lists
-                    yield from self.yield_key_value_pairs(value)
+                    yield from self._yield_key_value_pairs(value)
         elif isinstance(data, list):
             for item in data:
                 if isinstance(item, (dict, list)):
                     # Recursively yield from items if they are dictionaries/lists
-                    yield from self.yield_key_value_pairs(item)
+                    yield from self._yield_key_value_pairs(item)

@@ -7,8 +7,6 @@ import yaml
 from jasm.global_definitions import DisassStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.file2regex import File2Regex
-
-# from jasm.regex.macro_expander.macro_expander import MacroExpander
 from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
 from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
@@ -51,10 +49,11 @@ class Yaml2Regex(File2Regex):
         pattern_with_top_node = {"$and": patterns}
 
         # Check if there are any macros setted
-        macros: dict | list = self.loaded_file.get("macros")
+        macros: list = self.loaded_file.get("macros", [])
+
+        assert isinstance(macros, list), "Invalid macros in the pattern file"
 
         if macros or self.macros_from_terminal_filepath:
-            assert isinstance(macros, list), "Invalid macros in the pattern file"
             # Replace macros with their values
 
             if self.macros_from_terminal_filepath:

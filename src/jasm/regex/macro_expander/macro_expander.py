@@ -1,4 +1,4 @@
-from typing import Dict, TypeAlias
+from typing import Dict, List, TypeAlias
 
 from jasm.regex.macro_expander.macro_args_resolver import MacroArgsResolver
 
@@ -10,27 +10,27 @@ MacroTree: TypeAlias = Dict
 class MacroExpander:
     """Expand macros in a tree or pattern rule"""
 
-    def resolve_all_macros(self, macros: Dict, tree: PatternTree) -> PatternTree:
+    def resolve_all_macros(self, macros: List[Dict], tree: PatternTree) -> PatternTree:
         """Expand all macros in the tree in the order they are defined in the macros list"""
         tmp_tree = tree
 
         for macro in macros:
-            tmp_tree = self.resolve_macro(macro=macro, tree=tmp_tree)
+            tmp_tree = self._resolve_macro(macro=macro, tree=tmp_tree)
         return tmp_tree
 
-    def resolve_macro(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
+    def _resolve_macro(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
         """Expand a macro in the tree"""
 
-        if self.macro_has_args(macro=macro):
+        if self._macro_has_args(macro=macro):
             macro = MacroArgsResolver().resolve(macro=macro, tree=tree)
 
-        return self.apply_macro_recursively(macro=macro, tree=tree)
+        return self._apply_macro_recursively(macro=macro, tree=tree)
 
-    def macro_has_args(self, macro: MacroTree) -> bool:
+    def _macro_has_args(self, macro: MacroTree) -> bool:
         """Check if a macro has arguments"""
         return "args" in macro
 
-    def apply_macro_recursively(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
+    def _apply_macro_recursively(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
         """Do the macro expansion in a tree recursively in order to allow modification of the tree while replacing"""
 
         macro_name = macro.get("name")
@@ -39,17 +39,17 @@ class MacroExpander:
         match tree:
             # String replacement macro mode
             case str():
-                return self.process_str_tree(tree=tree, macro_name=macro_name, macro=macro)
+                return self._process_str_tree(tree=tree, macro_name=macro_name, macro=macro)
 
             # Subtree replacement macro mode
             case dict():
-                return self.process_dict_tree(tree=tree, macro_name=macro_name, macro=macro)
+                return self._process_dict_tree(tree=tree, macro_name=macro_name, macro=macro)
 
             # Just in case, should never happen
             case _:
                 raise ValueError(f"Tree {tree} is not a valid type")
 
-    def process_str_tree(self, tree: str, macro_name: str, macro: MacroTree) -> PatternTree:
+    def _process_str_tree(self, tree: str, macro_name: str, macro: MacroTree) -> PatternTree:
         """
         Process the tree when is a string.
         This is the case when the macro is just a string substitution
@@ -57,39 +57,39 @@ class MacroExpander:
 
         # Case of full string matching
         if macro_name == tree:
-            return self.apply_macro_to_tree(node=tree, macro=macro)
+            return self._apply_macro_to_tree(node=tree, macro=macro)
 
         # Case of substring matching
         if macro_name in tree:
-            return self.apply_macro_to_tree_substring(node=tree, macro=macro)
+            return self._apply_macro_to_tree_substring(node=tree, macro=macro)
 
         return tree
 
-    def process_dict_tree(self, tree: Dict, macro_name: str, macro: MacroTree) -> PatternTree:
+    def _process_dict_tree(self, tree: Dict, macro_name: str, macro: MacroTree) -> PatternTree:
         """
         Process the tree when is a dictionary.
         This is the case when the macro is a subtree replacement
         """
 
         if macro_name in tree:
-            return self.apply_macro_to_tree(node=tree, macro=macro)
+            return self._apply_macro_to_tree(node=tree, macro=macro)
 
         # Continue recursion on all children
         for key, value in list(tree.items()):
             match value:
                 case dict():
                     # Recursively apply to dictionaries and update the tree directly
-                    tree[key] = self.apply_macro_recursively(macro=macro, tree=value)
+                    tree[key] = self._apply_macro_recursively(macro=macro, tree=value)
                 case list():
                     # Apply to each element in the list and update the list directly
-                    tree[key] = [self.apply_macro_recursively(tree=elem, macro=macro) for elem in value]
+                    tree[key] = [self._apply_macro_recursively(tree=elem, macro=macro) for elem in value]
                 case str():
                     # Case where the macro is just string substitution but on values
                     if value == macro.get("name"):
-                        tree[key] = self.apply_macro_to_tree(node=value, macro=macro)
+                        tree[key] = self._apply_macro_to_tree(node=value, macro=macro)
         return tree
 
-    def apply_macro_to_tree(self, node: PatternTree, macro: MacroTree) -> PatternTree:
+    def _apply_macro_to_tree(self, node: PatternTree, macro: MacroTree) -> PatternTree:
         """Apply the macro to the node"""
 
         macro_pattern = macro.get("pattern")
@@ -117,7 +117,7 @@ class MacroExpander:
 
         raise ValueError(f"Macro pattern {macro_pattern} is not a valid type")
 
-    def apply_macro_to_tree_substring(self, node: str, macro: MacroTree) -> str:
+    def _apply_macro_to_tree_substring(self, node: str, macro: MacroTree) -> str:
         macro_name, macro_pattern = macro.get("name"), macro.get("pattern")
         assert (
             macro_name and macro_pattern

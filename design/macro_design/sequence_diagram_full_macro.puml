@@ -1,0 +1,27 @@
+@startuml sequence_diagram_full_macro
+actor Yaml2Regex
+participant MacroExpander
+participant MacroArgsResolver
+participant ArgsMappingGenerator
+
+Yaml2Regex -> MacroExpander : resolve_all_macros(macros, tree)
+loop for each macro in macros
+    MacroExpander -> MacroExpander : resolve_macro(macro, tree)
+    alt macro has args
+        MacroExpander -> MacroArgsResolver : resolve(macro, tree)
+        MacroArgsResolver -> ArgsMappingGenerator : get_args_mapping_dict(tree, macro["args"])
+        ArgsMappingGenerator -> ArgsMappingGenerator : _get_args_mapping(tree, current_arg)
+        ArgsMappingGenerator -> ArgsMappingGenerator : yield_key_value_pairs(data)
+        MacroArgsResolver -> MacroArgsResolver : evaluate_args_in_macro(macro, mapping_dict)
+        loop for each arg_key, arg_value in mapping_dict
+            MacroArgsResolver -> MacroArgsResolver : iter_items_with_path(elems, path=())
+            MacroArgsResolver -> MacroArgsResolver : replace_item_in_structure(struct, path, new_value)
+        end
+        MacroExpander <-- MacroArgsResolver : resolved macro
+    else no args
+        MacroExpander -> MacroExpander : apply_macro_recursively(macro, tree)
+    end
+end
+MacroExpander --> Yaml2Regex : resolved pattern tree
+
+@enduml

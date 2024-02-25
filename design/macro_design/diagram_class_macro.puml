@@ -1,0 +1,52 @@
+@startuml diagram_class_macro
+class ArgsMappingGenerator {
+    +get_args_mapping_dict(tree: PatternTree, args: List[str]): Dict
+    -_get_args_mapping(tree: PatternTree, current_arg: str): Generator[Dict, None, None]
+    +yield_key_value_pairs(data: Union[Dict[Any, Any], List[Any]]): Generator[Tuple[Any, Any], None, None]
+}
+
+note right of ArgsMappingGenerator::_get_args_mapping
+Recursive method that matches
+arguments within a pattern tree
+and yields mappings.
+end note
+
+note right of ArgsMappingGenerator::yield_key_value_pairs
+Recursively yields key-value pairs from
+nested structures (dictionaries and lists).
+end note
+
+class MacroArgsResolver {
+    +resolve(macro: MacroTree, tree: PatternTree): MacroTree
+    +get_macro_mapping_arg_dict(macro: MacroTree, tree: PatternTree): MappingDict
+    +evaluate_args_in_macro(macro: MacroTree, mapping_dict: MappingDict): MacroTree
+    +iter_items_with_path(elems: Union[str, List, Dict], path: Tuple = ()): Generator[Tuple[Tuple, Any], None, None]
+    +replace_item_in_structure(struct: Union[Dict, List], path: Tuple, new_value: Any): None
+}
+
+class MacroExpander {
+    +resolve_all_macros(macros: Dict, tree: PatternTree): PatternTree
+    +resolve_macro(macro: MacroTree, tree: PatternTree): PatternTree
+    +macro_has_args(macro: MacroTree): bool
+    +apply_macro_recursively(macro: MacroTree, tree: PatternTree): PatternTree
+    +process_str_tree(tree: str, macro_name: str, macro: MacroTree): PatternTree
+    +process_dict_tree(tree: Dict, macro_name: str, macro: MacroTree): PatternTree
+    +apply_macro_to_tree(node: PatternTree, macro: MacroTree): PatternTree
+    +apply_macro_to_tree_substring(node: str, macro: MacroTree): str
+}
+
+MacroExpander --> MacroArgsResolver : uses
+MacroArgsResolver --> ArgsMappingGenerator : uses
+
+note right of MacroArgsResolver::resolve
+Resolve macro arguments using a pattern tree
+and applies these mappings to the macro.
+end note
+
+note right of MacroExpander::resolve_all_macros
+Expands all macros in a given pattern tree
+in the order they are defined.
+end note
+
+@enduml
+
