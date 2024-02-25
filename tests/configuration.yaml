@@ -109,6 +109,7 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     return_mode: "list"
     matching_mode: "all"
+    return_only_address: True
     expected: ["4014", "4021", "4027", "402d", "4033", "4039", "403f", "4045", "404b", "4051"]
 
   - title: "1_call_plain_with_single_finding"
@@ -116,6 +117,7 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     return_mode: "list"
     matching_mode: "single"
+    return_only_address: True
     expected: ["4014"]
 
   - title: "capture_group_two_push_with_same_reg"
@@ -229,3 +231,24 @@ test_parsing_lines:
   - title: "moonbounce_malware_jo_pn_instruction_9_lines.s"
     assembly: "tests/assembly/moonbounce_malware_jo_pn_instruction_9_lines.s"
     number_of_lines: 10
+
+test_capture_groups_references:
+  - title: "capture_groups_test_rule on binary_data_for_capture_groups"
+    yaml: "tests/yamls/capture_groups_test_rule.yaml"
+    cc_deref: ['\1']
+
+  - title: "capture_group_two_push_with_same_reg"
+    yaml: "tests/yamls/capture_group_2_push_with_same_reg.yaml"
+    cc_deref: ['\1']
+
+  - title: "capture_group_test_with_operands_working"
+    yaml: "tests/yamls/capture_groups_test_rule.yaml"
+    cc_deref: ['\1', '\2', '\3']
+
+  - title: "oren_rule_with_capture_groups"
+    yaml: "tests/yamls/oren_rule_att_with_capture_groups.yaml"
+    cc_deref: ['\1', '\2']
+
+  - title: "oren_rule_att_with_capture_groups_macro_subtree_expansion"
+    yaml: "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml"
+    cc_deref: ['\1', '\2']

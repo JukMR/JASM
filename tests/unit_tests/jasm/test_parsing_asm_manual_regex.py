@@ -1,4 +1,4 @@
-from jasm.stringify_asm.abstracts.abs_observer import Instruction
+from jasm.global_definitions import Instruction
 from jasm.stringify_asm.implementations.gnu_objdump.asm_manual_parser_w_regex import LineParser
 
 

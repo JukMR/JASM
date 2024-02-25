@@ -1,3 +1,4 @@
+# conftest.py
 from pathlib import Path
 
 import yaml
@@ -8,3 +9,11 @@ def load_test_configs(file_path: str, yaml_config_field: str):
     test_folder = Path("tests")
     with open(test_folder / file_path, "r", encoding="utf-8") as file_descriptor:
         return yaml.safe_load(file_descriptor)[yaml_config_field]
+
+
+def pytest_addoption(parser):
+    parser.addoption("--enable-benchmark", action="store_true", help="Enable benchmarking in tests")
+
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "benchmark: mark test to run with benchmarking")

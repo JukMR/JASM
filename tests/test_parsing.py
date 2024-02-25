@@ -3,7 +3,7 @@ import re
 import pytest
 from conftest import load_test_configs
 
-from jasm.global_definitions import DisassStyle, InputFileType, MatchingReturnMode, MatchingSearchMode
+from jasm.global_definitions import DisassStyle, InputFileType, MatchConfig, MatchingReturnMode, MatchingSearchMode
 from jasm.logging_config import logger
 from jasm.match import MasterOfPuppets
 
@@ -49,14 +49,19 @@ def test_parsing_number_of_lines(config) -> None:
 def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_file_type: InputFileType) -> int:
     """Parse file and return number of lines"""
 
-    all_instructions = MasterOfPuppets()._do_matching_and_get_result(  # pylint: disable=protected-access
-        regex_rule="",
-        assembly_style=DisassStyle.att,
+    match_config = MatchConfig(
+        pattern_pathstr="tests/yamls/1_call_plain.yaml",  # not using this file, just using it as a mock for the test
         input_file=input_file,
         input_file_type=input_file_type,
         return_mode=MatchingReturnMode.all_instructions_string,
         matching_mode=MatchingSearchMode.first_find,
         return_only_address=True,
+    )
+
+    # pylint: disable=protected-access
+    all_instructions = MasterOfPuppets(match_config=match_config)._do_matching_and_get_result(
+        regex_rule="",
+        assembly_style=DisassStyle.att,
         valid_addr_range=None,
     )
 

@@ -3,11 +3,11 @@
 "Main entry module"
 from argparse import Namespace
 
-from parse_arguments import parse_args_from_console
-from jasm.global_definitions import InputFileType, MatchingSearchMode
+from jasm.global_definitions import InputFileType, MatchConfig, MatchingSearchMode
 from jasm.logging_config import configure_logger
 from jasm.match import MasterOfPuppets
 from jasm.measure_performance import measure_performance
+from parse_arguments import parse_args_from_console
 
 
 def start_configurations() -> Namespace:
@@ -53,18 +53,14 @@ def main() -> None:
     else:
         matching_mode = MatchingSearchMode.first_find
 
-    if args.return_addrs_and_instructions:
-        return_only_address = False
-    else:
-        return_only_address = True
-
-    MasterOfPuppets().perform_matching(
+    match_config = MatchConfig(
         pattern_pathstr=args.pattern,
         input_file=input_file,
         input_file_type=input_file_type,
         matching_mode=matching_mode,
-        return_only_address=return_only_address,
+        return_only_address=args.return_only_address,
     )
+    MasterOfPuppets(match_config=match_config).perform_matching()
 
 
 def decide_assembly_or_binary(args: Namespace) -> InputFileType:

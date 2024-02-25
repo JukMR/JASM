@@ -4,8 +4,6 @@ import subprocess
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
 
-# from typing import override
-
 
 class ShellDisassembler(Disassembler):
     """A class to disassemble binaries using a shell program."""
@@ -14,6 +12,7 @@ class ShellDisassembler(Disassembler):
         self.program = program
         self.flags = flags
 
+    # @overrides
     def disassemble(self, input_file: str) -> str:
         """Run the shell program to disassemble the binary."""
         try:
@@ -32,9 +31,9 @@ class ShellDisassembler(Disassembler):
             raise ValueError(f"Error while disassembling file. Return code error: {result.stderr}")
 
         except FileNotFoundError as exc:
-            raise ValueError(
-                f"Error: program '{self.program}' not found. Ensure it's installed and in your system PATH."
-            ) from exc
+            logger.error("Error: program '%s' not found. Ensure it's installed and in your system PATH.", self.program)
+            raise FileNotFoundError() from exc
 
         except Exception as exc:
-            raise ValueError("Error while disassembling file.") from exc
+            logger.error("Error while disassembling file: %s", exc)
+            raise exc
