@@ -111,7 +111,7 @@ class MasterOfPuppets:
     def __init__(self, match_config: MatchConfig) -> None:
         self.match_config = match_config
 
-        yaml_2_regex_instance = Yaml2Regex(self.match_config.pattern_pathstr, macros_from_args=match_config.macros)
+        yaml_2_regex_instance = Yaml2Regex(self.match_config.pattern_pathstr, macros_from_terminal=match_config.macros)
 
         self.regex_rule = yaml_2_regex_instance.produce_regex()
         self.disass_style = yaml_2_regex_instance.get_assembly_style()

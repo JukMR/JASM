@@ -38,7 +38,7 @@ def test_macro_from_args() -> None:
     macro_2_filepath = macros_directory / "macro_2.yaml"
 
     regex = Yaml2Regex(
-        pattern_pathstr=str(yaml_file), macros_from_args=[str(macro_1_filepath), str(macro_2_filepath)]
+        pattern_pathstr=str(yaml_file), macros_from_terminal=[str(macro_1_filepath), str(macro_2_filepath)]
     ).produce_regex()  # pylint: disable=protected-access
 
     assert (

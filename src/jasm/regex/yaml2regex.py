@@ -19,9 +19,9 @@ from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeType
 class Yaml2Regex(File2Regex):
     "File2Regex class implementation with Yaml"
 
-    def __init__(self, pattern_pathstr: str, macros_from_args: Optional[List[str]] = None) -> None:
+    def __init__(self, pattern_pathstr: str, macros_from_terminal: Optional[List[str]] = None) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
-        self.macros_from_args_filepath = macros_from_args
+        self.macros_from_terminal_filepath = macros_from_terminal
 
     @staticmethod
     def load_file(file: str) -> Any:
@@ -53,11 +53,11 @@ class Yaml2Regex(File2Regex):
         # Check if there are any macros setted
         macros: dict | list = self.loaded_file.get("macros")
 
-        if macros or self.macros_from_args_filepath:
+        if macros or self.macros_from_terminal_filepath:
             assert isinstance(macros, list), "Invalid macros in the pattern file"
             # Replace macros with their values
 
-            if self.macros_from_args_filepath:
+            if self.macros_from_terminal_filepath:
                 # Add macros from args to the macros from the file
                 processed_macros = self.load_macros_from_args()
                 macros = processed_macros + macros
@@ -69,10 +69,10 @@ class Yaml2Regex(File2Regex):
     def load_macros_from_args(self) -> List[Dict]:
         "Load macros from a list of files"
 
-        assert self.macros_from_args_filepath, "No macros from args provided"
+        assert self.macros_from_terminal_filepath, "No macros from args provided"
 
         processed_macros = []
-        for macro_file in self.macros_from_args_filepath:
+        for macro_file in self.macros_from_terminal_filepath:
             macro_file_content = self.load_file(file=macro_file)
             new_macro = macro_file_content.get("macros")
             processed_macros.extend(new_macro)
