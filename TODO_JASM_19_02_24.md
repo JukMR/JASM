@@ -2,7 +2,7 @@
 
 1. [x] - Reemplazar # por @ u otra cosa (Reemplazado por & en capture groups)
 
-2. [ ] - Poder proveer un archivo de macros. Que se pre-pendean a las macros antes.
+2. [x] - Poder proveer un archivo de macros. Que se pre-pendean a las macros antes.
 
 3. [x] - Arreglar/chequear valiaddrrange observer, que use el operando y no el address
 
