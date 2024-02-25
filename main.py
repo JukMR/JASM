@@ -4,7 +4,7 @@
 from argparse import Namespace
 
 from jasm.global_definitions import InputFileType, MatchConfig, MatchingSearchMode
-from jasm.logging_config import configure_logger
+from jasm.logging_config import configure_logger, logger
 from jasm.match import MasterOfPuppets
 from jasm.measure_performance import measure_performance
 from parse_arguments import parse_args_from_console
@@ -59,7 +59,9 @@ def main() -> None:
         input_file_type=input_file_type,
         matching_mode=matching_mode,
         return_only_address=args.return_only_address,
+        macros=args.macros,
     )
+
     MasterOfPuppets(match_config=match_config).perform_matching()
 
 

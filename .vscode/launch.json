@@ -416,5 +416,23 @@
                 "tests/assembly/zero_reg/main_O3.s"
             ]
         },
+        {
+            "name": "macros_from_terminal",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/macros_from_terminal.yaml",
+                "-s",
+                "tests/yamls/1_call_plain.yaml",
+                "--macros",
+                "tests/macros/macro_1.yaml",
+                "tests/macros/macro_2.yaml"
+            ]
+        },
     ]
 }

@@ -1,0 +1,7 @@
+---
+macros:
+  - name: "macro_1"
+    pattern: "replace_1"
+
+  - name: "macro_2"
+    pattern: "replace_2"
