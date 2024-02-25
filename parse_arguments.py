@@ -35,6 +35,9 @@ def parse_args_from_console() -> argparse.Namespace:
 
     # Return only a file_type argument
 
+    # New argument for file paths list
+    parser.add_argument("--macros", nargs="+", help="List of extra macros file to use")
+
     argcomplete.autocomplete(parser)
     parsed_args = parser.parse_args()
 

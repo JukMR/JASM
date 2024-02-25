@@ -1,0 +1,4 @@
+---
+macros:
+  - name: "macro_3"
+    pattern: "replace_3"

@@ -161,6 +161,7 @@ class MatchConfig:
     `return_only_address`: return only the address, not address+instruction
     `return_mode`: the return mode, options are: `bool`, `matched_addrs_list` or `all_instructions_string` (see MatchingReturnMode)
     `matching_mode`: the matching mode, options are: `first_find` or `all_finds` (see MatchingSearchMode)
+    `macros`: list of extra macros path files to use
     """
 
     pattern_pathstr: str
@@ -169,6 +170,7 @@ class MatchConfig:
     return_only_address: bool = False
     return_mode: MatchingReturnMode = MatchingReturnMode.bool
     matching_mode: MatchingSearchMode = MatchingSearchMode.first_find
+    macros: Optional[List[str]] = None
 
 
 @dataclass

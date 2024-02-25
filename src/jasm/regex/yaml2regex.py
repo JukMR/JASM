@@ -1,6 +1,6 @@
 "File2regex Yaml implementation module"
 
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional
 
 import yaml
 
@@ -19,8 +19,9 @@ from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeType
 class Yaml2Regex(File2Regex):
     "File2Regex class implementation with Yaml"
 
-    def __init__(self, pattern_pathstr: str) -> None:
+    def __init__(self, pattern_pathstr: str, macros_from_args: Optional[List[str]] = None) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
+        self.macros_from_args_filepath = macros_from_args
 
     @staticmethod
     def load_file(file: str) -> Any:
@@ -31,7 +32,7 @@ class Yaml2Regex(File2Regex):
     def produce_regex(self) -> str:
         "Handle all patterns and returns the final regex string"
 
-        patterns = self.get_pattern()
+        patterns = self._get_pattern()
 
         rule_tree = self._generate_rule_tree(patterns=patterns)
 
@@ -43,20 +44,40 @@ class Yaml2Regex(File2Regex):
 
         return output_regex
 
-    def get_pattern(self) -> PatternTree:
+    def _get_pattern(self) -> PatternTree:
         # Load pattern
         patterns = self.loaded_file.get("pattern")
 
         pattern_with_top_node = {"$and": patterns}
 
         # Check if there are any macros setted
-        macros = self.loaded_file.get("macros")
+        macros: dict | list = self.loaded_file.get("macros")
 
-        if macros:
+        if macros or self.macros_from_args_filepath:
+            assert isinstance(macros, list), "Invalid macros in the pattern file"
             # Replace macros with their values
+
+            if self.macros_from_args_filepath:
+                # Add macros from args to the macros from the file
+                processed_macros = self.load_macros_from_args()
+                macros = processed_macros + macros
+
             pattern_with_top_node = MacroExpander().resolve_all_macros(macros=macros, tree=pattern_with_top_node)
 
         return pattern_with_top_node
+
+    def load_macros_from_args(self) -> List[Dict]:
+        "Load macros from a list of files"
+
+        assert self.macros_from_args_filepath, "No macros from args provided"
+
+        processed_macros = []
+        for macro_file in self.macros_from_args_filepath:
+            macro_file_content = self.load_file(file=macro_file)
+            new_macro = macro_file_content.get("macros")
+            processed_macros.extend(new_macro)
+
+        return processed_macros
 
     def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
         "Generate the rule tree from the patterns"
