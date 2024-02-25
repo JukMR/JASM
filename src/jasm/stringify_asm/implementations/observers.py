@@ -2,7 +2,8 @@
 
 from typing import Optional
 
-from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, Instruction
+from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver
+from jasm.global_definitions import Instruction
 
 
 # TODO: Implement this observer

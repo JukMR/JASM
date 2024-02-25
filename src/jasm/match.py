@@ -13,10 +13,11 @@ from jasm.global_definitions import (
     MatchingReturnMode,
     MatchingSearchMode,
     ValidAddrRange,
+    Instruction,
 )
 from jasm.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
-from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver, Instruction
+from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
 from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
 from jasm.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer

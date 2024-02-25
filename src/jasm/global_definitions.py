@@ -158,7 +158,7 @@ class MatchConfig:
     `pattern_pathstr`: the path to the pattern file
     `input_file`: the input file
     `input_file_type`: the input file type
-    `return_only_address`: return only the matched address, not address+instruction
+    `return_only_address`: return only the address, not address+instruction
     `return_mode`: the return mode, options are: `bool`, `matched_addrs_list` or `all_instructions_string` (see MatchingReturnMode)
     `matching_mode`: the matching mode, options are: `first_find` or `all_finds` (see MatchingSearchMode)
     """
@@ -169,3 +169,16 @@ class MatchConfig:
     return_only_address: bool = True
     return_mode: MatchingReturnMode = MatchingReturnMode.bool
     matching_mode: MatchingSearchMode = MatchingSearchMode.first_find
+
+
+@dataclass
+class Instruction:
+    "Main instruction class for match patterns"
+
+    addr: str
+    mnemonic: str
+    operands: List[str]
+
+    def stringify(self) -> str:
+        "Method for returning instruction as a string"
+        return f"{self.addr}::{self.mnemonic},{','.join(self.operands)}"

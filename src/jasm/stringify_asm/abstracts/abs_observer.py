@@ -1,21 +1,9 @@
 "Instruction and Instruction Observer module"
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import Final, List, Optional
+from typing import Final, Optional
 
-
-@dataclass
-class Instruction:
-    "Main instruction class for match patterns"
-
-    addr: str
-    mnemonic: str
-    operands: List[str]
-
-    def stringify(self) -> str:
-        "Method for returning instruction as a string"
-        return f"{self.addr}::{self.mnemonic},{','.join(self.operands)}"
+from jasm.global_definitions import Instruction
 
 
 class IMatchedObserver(ABC):

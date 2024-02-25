@@ -2,9 +2,9 @@ from typing import Final, List, Optional
 
 import regex
 
-from jasm.global_definitions import MatchingSearchMode
+from jasm.global_definitions import MatchingSearchMode, Instruction
 from jasm.logging_config import logger
-from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, Instruction, IMatchedObserver
+from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver
 
 
 class InstructionObserverConsumer(IConsumer):
