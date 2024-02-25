@@ -65,9 +65,7 @@ def main() -> None:
         matching_mode=matching_mode,
         return_only_address=return_only_address,
     )
-    MasterOfPuppets().perform_matching(
-        match_config=match_config,
-    )
+    MasterOfPuppets(match_config=match_config).perform_matching()
 
 
 def decide_assembly_or_binary(args: Namespace) -> InputFileType:

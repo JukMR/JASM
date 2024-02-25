@@ -229,3 +229,24 @@ test_parsing_lines:
   - title: "moonbounce_malware_jo_pn_instruction_9_lines.s"
     assembly: "tests/assembly/moonbounce_malware_jo_pn_instruction_9_lines.s"
     number_of_lines: 10
+
+test_capture_groups_references:
+  - title: "capture_groups_test_rule on binary_data_for_capture_groups"
+    yaml: "tests/yamls/capture_groups_test_rule.yaml"
+    cc_deref: ['\1']
+
+  - title: "capture_group_two_push_with_same_reg"
+    yaml: "tests/yamls/capture_group_2_push_with_same_reg.yaml"
+    cc_deref: ['\1']
+
+  - title: "capture_group_test_with_operands_working"
+    yaml: "tests/yamls/capture_groups_test_rule.yaml"
+    cc_deref: ['\1', '\2', '\3']
+
+  - title: "oren_rule_with_capture_groups"
+    yaml: "tests/yamls/oren_rule_att_with_capture_groups.yaml"
+    cc_deref: ['\1', '\2']
+
+  - title: "oren_rule_att_with_capture_groups_macro_subtree_expansion"
+    yaml: "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml"
+    cc_deref: ['\1', '\2']

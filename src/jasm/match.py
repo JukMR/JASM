@@ -106,19 +106,19 @@ class MasterOfPuppets:
     def __init__(self, match_config: MatchConfig) -> None:
         self.match_config = match_config
 
+        yaml_2_regex_instance = Yaml2Regex(self.match_config.pattern_pathstr)
+
+        self.regex_rule = yaml_2_regex_instance.produce_regex()
+        self.disass_style = yaml_2_regex_instance.get_assembly_style()
+        self.valid_addr_range = yaml_2_regex_instance.get_valid_addr_range()
+
     def perform_matching(self) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
-        yaml_2_regex_instance = Yaml2Regex(self.match_config.pattern_pathstr)
-
-        regex_rule = yaml_2_regex_instance.produce_regex()
-        disass_style = yaml_2_regex_instance.get_assembly_style()
-        valid_addr_range = yaml_2_regex_instance.get_valid_addr_range()
-
         return self._do_matching_and_get_result(
-            regex_rule=regex_rule,
-            assembly_style=disass_style,
-            valid_addr_range=valid_addr_range,
+            regex_rule=self.regex_rule,
+            assembly_style=self.disass_style,
+            valid_addr_range=self.valid_addr_range,
         )
 
     def _do_matching_and_get_result(
