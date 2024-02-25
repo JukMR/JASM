@@ -39,6 +39,13 @@ ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS: Final = True
 
 
 class InputFileType(Enum):
+    """
+    Enum for the input file type.
+
+    `binary`: input file is a binary file
+    `assembly`: input file is an assembly file
+    """
+
     binary = auto()
     assembly = auto()
 
@@ -50,7 +57,60 @@ class DisassStyle(Enum):
     att = auto()
 
 
+class MatchingSearchMode(Enum):
+    """
+    Enum for the matching search mode.
+
+    `first_find`: return and stop program on the first match
+    `all_finds`: return all matches
+    """
+
+    first_find = auto()
+    all_finds = auto()
+
+
+class MatchingReturnMode(Enum):
+    """
+    Enum for the matching return mode.
+
+    `bool`: return True or False if the pattern is found
+    `matched_addrs_list`: return a list of the matched addresses, empty list if no match
+    `all_instructions_string`: return all instructions as a string, only for testing purposes
+    """
+
+    bool = auto()
+    matched_addrs_list = auto()
+    all_instructions_string = auto()  # this enum is used for testing only
+
+
+class CaptureGroupMode(Enum):
+    """Enum for the capture group mode."""
+
+    instruction = auto()
+    operand = auto()
+
+
+class PatternNodeTypes(Enum):
+    """Enum for the pattern node types. This is used for setting the types of each node in the PatternNode Tree."""
+
+    node = auto()
+    operand = auto()
+    mnemonic = auto()
+    deref = auto()
+    deref_property = auto()
+    deref_property_capture_group_reference = auto()
+    deref_property_capture_group_call = auto()
+    times = auto()
+    capture_group_reference = auto()
+    capture_group_call = auto()
+    capture_group_reference_operand = auto()
+    capture_group_call_operand = auto()
+    root = auto()
+
+
 class HexType:
+    """Class for hex type."""
+
     def __init__(self, hex_str: str) -> None:
         if hex_str.startswith("0x"):
             only_int_part = hex_str[2:]
@@ -69,7 +129,7 @@ class HexType:
 
 
 class ValidAddrRange:
-    """Enum for the valid address mode."""
+    """Class for the valid address observer."""
 
     def __init__(self, min_addr: str, max_addr: str) -> None:
         self.min = HexType(min_addr)
@@ -84,49 +144,28 @@ class ValidAddrRange:
 
 @dataclass
 class TimeType:
+    """Dataclass for time type."""
+
     min_times: int
     max_times: int
 
 
-class PatternNodeTypes(Enum):
-    node = auto()
-    operand = auto()
-    mnemonic = auto()
-    deref = auto()
-    deref_property = auto()
-    deref_property_capture_group_reference = auto()
-    deref_property_capture_group_call = auto()
-    times = auto()
-    capture_group_reference = auto()
-    capture_group_call = auto()
-    capture_group_reference_operand = auto()
-    capture_group_call_operand = auto()
-    root = auto()
-
-
-class MatchingSearchMode(Enum):
-    first_find = auto()
-    all_finds = auto()
-
-
-class MatchingReturnMode(Enum):
-    bool = auto()
-    matched_addrs_list = auto()
-    all_instructions_string = auto()  # this enum is used for testing only
-
-
-class CaptureGroupMode(Enum):
-    instruction = auto()
-    operand = auto()
-
-
 @dataclass
 class MatchConfig:
-    """Dataclass for match configuration."""
+    """
+    Dataclass for match configuration.
+
+    `pattern_pathstr`: the path to the pattern file
+    `input_file`: the input file
+    `input_file_type`: the input file type
+    `return_only_address`: return only the matched address, not address+instruction
+    `return_mode`: the return mode, options are: `bool`, `matched_addrs_list` or `all_instructions_string` (see MatchingReturnMode)
+    `matching_mode`: the matching mode, options are: `first_find` or `all_finds` (see MatchingSearchMode)
+    """
 
     pattern_pathstr: str
     input_file: str
-    return_only_address: bool = True
     input_file_type: InputFileType = InputFileType.assembly
+    return_only_address: bool = True
     return_mode: MatchingReturnMode = MatchingReturnMode.bool
     matching_mode: MatchingSearchMode = MatchingSearchMode.first_find
