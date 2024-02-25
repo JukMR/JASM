@@ -126,7 +126,7 @@ class MatchConfig:
 
     pattern_pathstr: str
     input_file: str
-    input_file_type: InputFileType
-    expected_result: bool | str | list[str]
-    return_mode: MatchingReturnMode
-    matching_mode: MatchingSearchMode
+    return_only_address: bool = True
+    input_file_type: InputFileType = InputFileType.assembly
+    return_mode: MatchingReturnMode = MatchingReturnMode.bool
+    matching_mode: MatchingSearchMode = MatchingSearchMode.first_find
