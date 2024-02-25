@@ -14,6 +14,6 @@
 
             - Revision. Creo que estaria bueno hacerlos opcionales.
 
-7. [ ] - Actualizar diseño de macros
+7. [x] - Actualizar diseño de macros
 
 8. [x] - Agregar feature para devolver todas las instrucciones matcheadas
