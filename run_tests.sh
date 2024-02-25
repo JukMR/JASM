@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# This script is used to run tests with pytest
+
 set -eu
 
 # Initialize arguments for benchmark save and compare
@@ -12,12 +14,14 @@ while [ $# -gt 0 ]; do
     --benchmark-save)
         echo "Benchmark save: $2"
         BENCHMARK_SAVE="--benchmark-save=$2"
+        ENABLE_BENCHMARK=true
         shift 2
         ;;
     --benchmark-compare)
         echo "Benchmark compare: $2"
         BENCHMARK_COMPARE="--benchmark-compare=$2"
         shift 2
+        ENABLE_BENCHMARK=true
         ;;
     *)
         break
@@ -41,5 +45,13 @@ else
     export PYTHONPATH="$PYTHONPATH:."
 fi
 
-# Run pytest with fail-slow and benchmarking options
-pytest -vv --fail-slow 5s "$BENCHMARK_SAVE" "$BENCHMARK_COMPARE" "$ARG_1" "$@"
+# Check whetever ENABLE_BENCHMARK is set
+if [ -n "${ENABLE_BENCHMARK:-}" ]; then
+    echo "Running tests with benchmarking"
+    pytest -vv --fail-slow 5s --enable-benchmark "$BENCHMARK_SAVE" "$BENCHMARK_COMPARE" "$ARG_1" "$@"
+
+else
+    echo "Running tests without benchmarking"
+    pytest -vv --fail-slow 5s "$ARG_1" "$@"
+
+fi

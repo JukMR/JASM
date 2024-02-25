@@ -1,42 +1,15 @@
+# test_matching.py
+from typing import Any
 import pytest
 from conftest import load_test_configs
 
-from jasm.global_definitions import InputFileType, MatchingReturnMode, MatchingSearchMode
+from jasm.global_definitions import InputFileType, MatchingReturnMode, MatchingSearchMode, MatchConfig
 from jasm.match import MasterOfPuppets
 
-USE_BENCHMARK = False
 
+def config_builder(config) -> MatchConfig:
+    """Build a MatchConfig from the test configuration specs."""
 
-def run_match_test(
-    pattern_pathstr: str,
-    input_file: str,
-    input_file_type: InputFileType,
-    expected_result: bool | str | list[str],
-    return_mode: MatchingReturnMode,
-    matching_mode: MatchingSearchMode,
-) -> None:
-    """Run a single match test."""
-
-    mop_instance = MasterOfPuppets()
-
-    result = mop_instance.perform_matching(
-        pattern_pathstr=pattern_pathstr,
-        input_file=input_file,
-        input_file_type=input_file_type,
-        return_mode=return_mode,
-        matching_mode=matching_mode,
-        return_only_address=True,
-    )
-    assert result == expected_result
-
-
-@pytest.mark.parametrize(
-    "config",
-    load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
-    ids=lambda config: config["title"],
-)
-def test_all_patterns(benchmark, config):
-    """Test function for all configurations in configuration.yaml."""
     config_yaml = config["yaml"]
     expected_result = config["expected"]
     assembly = config.get("assembly", None)
@@ -66,22 +39,57 @@ def test_all_patterns(benchmark, config):
     else:
         matching_mode = MatchingSearchMode.first_find
 
-    if USE_BENCHMARK:
-        benchmark(
-            run_match_test,
-            pattern_pathstr=config_yaml,
-            input_file=input_file,
-            input_file_type=input_file_type,
-            expected_result=expected_result,
-            return_mode=return_mode,
-            matching_mode=matching_mode,
-        )
+    return MatchConfig(
+        pattern_pathstr=config_yaml,
+        input_file=input_file,
+        input_file_type=input_file_type,
+        expected_result=expected_result,
+        return_mode=return_mode,
+        matching_mode=matching_mode,
+    )
+
+
+def run_match_test(test_config: MatchConfig) -> None:
+    """Run a single match test."""
+
+    mop_instance = MasterOfPuppets()
+
+    pattern_pathstr = test_config.pattern_pathstr
+    input_file = test_config.input_file
+    input_file_type = test_config.input_file_type
+    expected_result = test_config.expected_result
+    return_mode = test_config.return_mode
+    matching_mode = test_config.matching_mode
+
+    result = mop_instance.perform_matching(
+        pattern_pathstr=pattern_pathstr,
+        input_file=input_file,
+        input_file_type=input_file_type,
+        return_mode=return_mode,
+        matching_mode=matching_mode,
+        return_only_address=True,
+    )
+    assert result == expected_result
+
+
+@pytest.fixture(scope="session")
+def is_benchmark_enabled(request) -> bool:
+    """Determine if benchmarking is enabled."""
+    return request.config.getoption("--enable-benchmark")
+
+
+@pytest.mark.parametrize(
+    "config",
+    load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
+    ids=lambda config: config["title"],
+)
+def test_all_patterns(config: Any, is_benchmark_enabled: bool, benchmark):
+    """Unified test function for all configurations in configuration.yaml."""
+
+    match_config = config_builder(config)
+
+    # Direct approach without checking if benchmark is callable
+    if is_benchmark_enabled:
+        benchmark(run_match_test, match_config)
     else:
-        run_match_test(
-            pattern_pathstr=config_yaml,
-            input_file=input_file,
-            input_file_type=input_file_type,
-            expected_result=expected_result,
-            return_mode=return_mode,
-            matching_mode=matching_mode,
-        )
+        run_match_test(match_config)

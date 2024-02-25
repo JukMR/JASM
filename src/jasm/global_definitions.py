@@ -118,3 +118,15 @@ class MatchingReturnMode(Enum):
 class CaptureGroupMode(Enum):
     instruction = auto()
     operand = auto()
+
+
+@dataclass
+class MatchConfig:
+    """Dataclass for match configuration."""
+
+    pattern_pathstr: str
+    input_file: str
+    input_file_type: InputFileType
+    expected_result: bool | str | list[str]
+    return_mode: MatchingReturnMode
+    matching_mode: MatchingSearchMode
