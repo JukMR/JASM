@@ -1,8 +1,13 @@
-from pathlib import Path
 import subprocess
+from pathlib import Path
+from subprocess import CalledProcessError
 
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
+
+
+class BinaryFileFormatNotSupported(Exception):
+    pass
 
 
 class ShellDisassembler(Disassembler):
@@ -33,6 +38,10 @@ class ShellDisassembler(Disassembler):
         except FileNotFoundError as exc:
             logger.error("Error: program '%s' not found. Ensure it's installed and in your system PATH.", self.program)
             raise FileNotFoundError() from exc
+
+        except CalledProcessError as exc:
+            # Error when calling decompliler, probably due to binary file format not supported
+            raise BinaryFileFormatNotSupported(exc.stderr) from exc
 
         except Exception as exc:
             logger.error("Error while disassembling file: %s", exc)
