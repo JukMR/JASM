@@ -34,6 +34,7 @@ def config_builder(config) -> Tuple[MatchConfig, Any]:
     binary = config.get("binary", None)
     return_mode = config.get("return_mode", None)
     matching_mode = config.get("matching_mode", None)
+    return_only_address = config.get("return_only_address", False)
 
     # Check if tests uses assembly or binary
     if assembly:
@@ -64,6 +65,7 @@ def config_builder(config) -> Tuple[MatchConfig, Any]:
             input_file_type=input_file_type,
             return_mode=return_mode,
             matching_mode=matching_mode,
+            return_only_address=return_only_address,
         ),
         expected_result,
     )

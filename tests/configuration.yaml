@@ -109,6 +109,7 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     return_mode: "list"
     matching_mode: "all"
+    return_only_address: True
     expected: ["4014", "4021", "4027", "402d", "4033", "4039", "403f", "4045", "404b", "4051"]
 
   - title: "1_call_plain_with_single_finding"
@@ -116,6 +117,7 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     return_mode: "list"
     matching_mode: "single"
+    return_only_address: True
     expected: ["4014"]
 
   - title: "capture_group_two_push_with_same_reg"
