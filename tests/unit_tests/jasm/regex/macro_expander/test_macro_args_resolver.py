@@ -32,7 +32,7 @@ def test_resolve(macro_args_resolver: MacroArgsResolver, sample_macro, sample_tr
 
 
 def test_get_macro_mapping_arg_dict(macro_args_resolver: MacroArgsResolver, sample_macro, sample_tree) -> None:
-    mapping_dict = macro_args_resolver.get_macro_mapping_arg_dict(sample_macro, sample_tree)
+    mapping_dict = macro_args_resolver._get_macro_mapping_arg_dict(sample_macro, sample_tree)
     expected_dict = {"arg1": "value1", "arg2": "value2"}
     assert mapping_dict == expected_dict
 
@@ -42,7 +42,7 @@ def test_get_macro_mapping_arg_dict(macro_args_resolver: MacroArgsResolver, samp
 
 def test_evaluate_args_in_macro(macro_args_resolver: MacroArgsResolver, sample_macro) -> None:
     mapping_dict = {"arg1": "value1", "arg2": "value2"}
-    updated_macro = macro_args_resolver.evaluate_args_in_macro(sample_macro, mapping_dict)
+    updated_macro = macro_args_resolver._evaluate_args_in_macro(sample_macro, mapping_dict)
     assert updated_macro["pattern"]["key1"] == "value1"
     assert updated_macro["pattern"]["key2"] == ["value2"]
 
@@ -50,7 +50,7 @@ def test_evaluate_args_in_macro(macro_args_resolver: MacroArgsResolver, sample_m
 # Tests for iter_items_with_path
 def test_iter_items_with_path(macro_args_resolver: MacroArgsResolver) -> None:
     elems = {"key": "value", "list_key": ["list_value1", "list_value2"]}
-    paths = list(macro_args_resolver.iter_items_with_path(elems))
+    paths = list(macro_args_resolver._iter_items_with_path(elems))
     expected_paths = [
         (("key",), ("key", "value")),  # Initially yields the key and its value as a tuple
         (("key",), "value"),  # Then yields the value for the key
@@ -65,5 +65,5 @@ def test_iter_items_with_path(macro_args_resolver: MacroArgsResolver) -> None:
 def test_replace_item_in_structure(macro_args_resolver: MacroArgsResolver) -> None:
     struct = {"key": "old_value"}
     path = ("key",)
-    macro_args_resolver.replace_item_in_structure(struct, path, "new_value")
+    macro_args_resolver._replace_item_in_structure(struct, path, "new_value")
     assert struct["key"] == "new_value"

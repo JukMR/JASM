@@ -16,7 +16,7 @@ def test_resolve_all_macros(macro_expander):
     tree = "test MACRO1 and MACRO2"
 
     with patch.object(
-        macro_expander, "resolve_macro", side_effect=lambda macro, tree: tree.replace(macro["name"], macro["pattern"])
+        macro_expander, "_resolve_macro", side_effect=lambda macro, tree: tree.replace(macro["name"], macro["pattern"])
     ) as mock_resolve_macro:
         result = macro_expander.resolve_all_macros(macros, tree)
         assert result == "test replacement1 and replacement2"
