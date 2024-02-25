@@ -24,12 +24,28 @@ class IMatchedObserver(ABC):
     @property
     @abstractmethod
     def matched(self) -> bool:
-        "Matched property for observer"
+        """
+        Matched property for observer
+        Subclasses must implement this property to get matched status.
+        """
+
+    @matched.setter
+    @abstractmethod
+    def matched(self, value: bool) -> None:
+        """Subclasses must implement this property to set match status."""
 
     @property
     @abstractmethod
     def stringified_instructions(self) -> str:
-        "Stringified instructions"
+        """
+        Stringified instructions
+        Subclasses must implement this property to get stringified instructions.
+        """
+
+    @stringified_instructions.setter
+    @abstractmethod
+    def stringified_instructions(self, value: str) -> None:
+        """Subclasses must implement this property to set stringified instructions."""
 
     @abstractmethod
     def regex_matched(self, addr: str) -> None:
@@ -44,9 +60,9 @@ class IConsumer(ABC):
     "Base abstract class for Instruction Observers"
 
     # Importing type here to prevent circular import
-    from jasm.matched_observers import MatchedObserver  # pylint: disable=import-outside-toplevel
+    from jasm.stringify_asm.abstracts.abs_observer import IMatchedObserver  # pylint: disable=import-outside-toplevel
 
-    def __init__(self, matched_observer: MatchedObserver) -> None:
+    def __init__(self, matched_observer: IMatchedObserver) -> None:
         self._matched_observer: Final = matched_observer
 
     @abstractmethod

@@ -7,7 +7,7 @@ class MatchedObserver(IMatchedObserver):
     """Observer that logs the matched address"""
 
     def __init__(self) -> None:
-        self._matched = False
+        self._matched: bool = False
         self._stringified_instructions: str = ""
         self.addr_list: List[str] = []
 
@@ -15,6 +15,11 @@ class MatchedObserver(IMatchedObserver):
     def matched(self) -> bool:
         "Matched property for observer"
         return self._matched
+
+    @matched.setter
+    def matched(self, value: bool) -> None:
+        "Matched property for observer"
+        self._matched = value
 
     @property
     def stringified_instructions(self) -> str:
@@ -25,12 +30,12 @@ class MatchedObserver(IMatchedObserver):
         self._stringified_instructions = value
 
     def regex_matched(self, addr: str) -> None:
-        self._matched = True
+        self.matched = True
         self.addr_list.append(addr)
         logger.info("Matched address: %s", addr)
 
     def finalize(self) -> None:
-        if not self._matched:
+        if not self.matched:
             logger.info("RESULT: Pattern not found\n")
         else:
             logger.info("RESULT: Pattern found\n")

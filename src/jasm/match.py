@@ -5,7 +5,7 @@ Main match module
 from enum import Enum, auto
 from typing import List, Optional
 
-from jasm.consumer import CompleteConsumer, InstructionObserverConsumer, StreamConsumer
+from jasm.consumer import CompleteConsumer, InstructionObserverConsumer
 from jasm.global_definitions import (
     DisassStyle,
     InputFileType,
@@ -71,8 +71,12 @@ class ConsumerBuilder:
                     matching_mode=matching_mode,
                     return_only_address=return_only_address,
                 )
-            case ConsumerType.stream:
-                return StreamConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
+            # TODO: implement this consumer
+            # case ConsumerType.stream:
+            #     return StreamConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
+
+            case _:
+                raise ValueError("Invalid consumer type")
 
 
 class ProducerBuilder:

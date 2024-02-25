@@ -4,7 +4,7 @@ import regex
 
 from jasm.global_definitions import MatchingSearchMode
 from jasm.logging_config import logger
-from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver, Instruction
+from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, Instruction, IMatchedObserver
 
 
 class InstructionObserverConsumer(IConsumer):
@@ -125,14 +125,15 @@ class CompleteConsumer(InstructionObserverConsumer):
                         self._matched_observer.regex_matched(addr)
 
 
-class StreamConsumer(InstructionObserverConsumer):
+# TODO: Implement this Consumer
+# class StreamConsumer(InstructionObserverConsumer):
 
-    def consume_instruction_normal(self, inst: Instruction) -> None:
-        processed_inst = self._process_instruction(inst)
-        if processed_inst:
-            # Evaluate the instruction in the streaming regex engine
-            # TODO: implement this
-            # regex_engine.process(processed_inst)
-            # if regex_engine.matched:
-            #     self._matched_observer.regex_matched(processed_inst.addrs)
-            pass
+#     def consume_instruction_normal(self, inst: Instruction) -> None:
+#         processed_inst = self._process_instruction(inst)
+#         if processed_inst:
+#             # Evaluate the instruction in the streaming regex engine
+#             # TODO: implement this
+#             # regex_engine.process(processed_inst)
+#             # if regex_engine.matched:
+#             #     self._matched_observer.regex_matched(processed_inst.addrs)
+#             pass
