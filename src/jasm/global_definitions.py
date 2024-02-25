@@ -7,7 +7,7 @@ from typing import Any, Dict, Final, List, Optional, TypeAlias
 
 
 # set this limit to asterisk to reduce backtracking regex explosion
-# WARNING: something setting this value too low would affect negative
+# WARNING: sometimes setting this value too low would affect negative
 # lookaheads failing to match the existing pattern
 ASTERISK_WITH_LIMIT = r"{0,1000}"
 
@@ -20,7 +20,7 @@ SKIP_TO_ANY_OPERAND_CHARS = f"[^|]{ASTERISK_WITH_LIMIT}"
 IGNORE_INST_ADDR = r"[\dabcedf]+::"
 
 IGNORE_NAME_PREFIX = f"[^,|]{ASTERISK_WITH_LIMIT}"
-IGNORE_NAME_SUFFIX = f"[^,|]{ASTERISK_WITH_LIMIT},"  # set a limit of
+IGNORE_NAME_SUFFIX = f"[^,|]{ASTERISK_WITH_LIMIT},"
 
 MAX_PYTHON_INT = sys.maxsize * 2
 
