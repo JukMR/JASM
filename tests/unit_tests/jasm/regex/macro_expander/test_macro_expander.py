@@ -1,14 +1,16 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+
 import pytest
+
 from jasm.regex.macro_expander.macro_expander import MacroExpander
 
 
 @pytest.fixture
-def macro_expander():
+def macro_expander() -> MacroExpander:
     return MacroExpander()
 
 
-def test_resolve_all_macros(macro_expander):
+def test_resolve_all_macros(macro_expander: MacroExpander):
     macros = [
         {"name": "MACRO1", "pattern": "replacement1"},
         {"name": "MACRO2", "pattern": "replacement2"},
