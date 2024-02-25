@@ -16,4 +16,4 @@
 
 7. [ ] - Actualizar diseño de macros
 
-8. [ ] - Agregar feature para devolver todas las instrucciones matcheadas
+8. [x] - Agregar feature para devolver todas las instrucciones matcheadas
