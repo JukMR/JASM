@@ -143,7 +143,10 @@ class MacroArgsResolver:
     def evaluate_args_in_macro(self, macro: MacroTree, mapping_dict: MappingDict) -> MacroTree:
         """This function will replace the macro getting the args evaluation from the pattern"""
 
-        macro_pattern = macro.get("pattern")
+        # This is done to ensure that the pattern is a dict or a list
+        _tmp_macro_pattern = macro.get("pattern")
+        assert isinstance(_tmp_macro_pattern, (dict, list))
+        macro_pattern = _tmp_macro_pattern
 
         for arg_key, arg_value in mapping_dict.items():
             for path, elem in self.iter_items_with_path(macro_pattern):
