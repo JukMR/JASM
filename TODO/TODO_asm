@@ -1,0 +1,36 @@
+cambiar command por pattern
+agregar flag include data sections
+cambiar flag -y por -p o --pattern
+considerar generar regex para argumentos
+hacer el dissambler una clase abstracta
+
+el parser tiene que ser una clase abstracta
+soportar binarios uefi
+no hablar de yaml, sino directamente de patterns
+
+ver si hay un flag para sacar la q, sino sacarselo en el parser
+
+soportar que uno pueda pasar un programa con unica funcion en python
+
+solo interpreto las directivas que tienen el $
+
+matchear los nemonicos con operandos sin importar lo que son
+
+
+parsear los mnemonicos y los operandos por separados
+generar un stream de una dataclass que sea un instructions
+  ie, un mnemonico y lista de operandos. (todos strings)
+
+
+
+si entra SI interesa seguimiento de saltos
+
+
+agregar el pattern observer para la generacion del string gigante
+tener una clase abstracta instruction observer que recibe una instruction y devuelve una instruction o none, en el caso que se decida suprimir la instruction y no agregarla
+por ahora el unico observer es el que las apendea todas juntas
+por cada instruction se llama a una lista de observer que pueden o no modificarla de acuerdo a algun criterio
+
+
+
+para el proximo lunes 14 de agosto, tener el diseño y la estructura del programa con observers y demas

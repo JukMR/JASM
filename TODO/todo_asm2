@@ -1,0 +1,11 @@
+permitir @patterns, hacer que el @nop sea nop
+cambiar times a count 
+agregar un preprocessor que expanda todos los nops para
+un any vacio matchea cualquier instruccion
+@pepe va a ser un any de una instruccion y voy a guardar lo que matcheo
+dividir yaml2regex yaml2dict and dict2rule. Una sola responsabilidad por clase
+leer el template method pattern
+cambiar instructions por directivas
+leer abstract factory
+leer chain of responsability
+para tener en cuenta, d no tiene data, D si tiene data. El flag es --include-data, entonces uso D, si no -d
