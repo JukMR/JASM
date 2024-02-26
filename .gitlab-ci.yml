@@ -1,0 +1,35 @@
+image: python:3.10
+
+stages:
+  - test
+  - publish
+
+before_script:
+  - echo "Installing dependencies..."
+  - python -m pip install --upgrade pip
+
+test:
+  stage: test
+  script:
+    - pip install pytest pytest-xdist poetry pyyaml
+    - echo "Installing dependencies with poetry ..."
+    - poetry install
+    - echo "Installing project..."
+    - pip install -e .
+    - echo "Running tests..."
+    - poetry run sh ./run_tests.sh
+
+upload-package:
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+  script:
+    - curl -sSL https://install.python-poetry.org | python3 - --git https://github.com/python-poetry/poetry.git@master
+    - export PATH="~/.local/bin:$PATH"
+    - poetry config virtualenvs.in-project false
+    - export PATH="~/.local/bin:$PATH"
+    - poetry version "${CI_COMMIT_TAG}"
+    - poetry build
+    - poetry config repositories.gitlab "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
+    - poetry publish -vvv --repository gitlab --username gitlab-ci-token --password "${CI_JOB_TOKEN}"
