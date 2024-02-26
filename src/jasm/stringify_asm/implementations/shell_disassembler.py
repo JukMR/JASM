@@ -2,12 +2,9 @@ import subprocess
 from pathlib import Path
 from subprocess import CalledProcessError
 
+from jasm.global_definitions import BinaryFileFormatNotSupported
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
-
-
-class BinaryFileFormatNotSupported(Exception):
-    pass
 
 
 class ShellDisassembler(Disassembler):

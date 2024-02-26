@@ -184,3 +184,7 @@ class Instruction:
     def stringify(self) -> str:
         "Method for returning instruction as a string"
         return f"{self.addr}::{self.mnemonic},{','.join(self.operands)}"
+
+
+class BinaryFileFormatNotSupported(Exception):
+    "Exception for binary file format not supported by disassembler"
