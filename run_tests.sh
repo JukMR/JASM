@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script is used to run tests with pytest
 
@@ -29,12 +29,13 @@ else
 fi
 
 # Check whetever ENABLE_BENCHMARK is set
-if [ "${DISABLE_BENCHMARK:-}" ]; then
-    echo "Running tests with benchmarking"
-    pytest -vv -x --fail-slow 15s --enable-benchmark --benchmark-save='benchmark' "$@"
+
+if [ -z $DISABLE_BENCHMARK ]; then
+    echo "Running tests without benchmarking"
+    pytest -vv -x --fail-slow 5s --ignore-glob='*benchmark*degradation*' "$@"
 
 else
-    echo "Running tests without benchmarking"
-    pytest -vv -x --fail-slow 5s --ignore-glob='test_benchmark_degradation' "$@"
+    echo "Running tests with benchmarking"
+    pytest -vv -x --fail-slow 15s --ignore-glob='*benchmark*degradation*' --enable-benchmark --benchmark-save='benchmark' "$@"
 
 fi
