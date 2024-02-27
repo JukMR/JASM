@@ -11,9 +11,12 @@ before_script:
 test:
   stage: test
   script:
-    - pip install pytest pytest-xdist poetry pyyaml
+    - echo "Installing poetry"
+    - pip install poetry
     - echo "Installing dependencies with poetry ..."
     - poetry install
+    - echo "Instaling development dependencies..."
+    - pip install -r dev-requirements.txt
     - echo "Installing project..."
     - pip install -e .
     - echo "Running tests..."
