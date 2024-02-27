@@ -219,9 +219,10 @@ class OperandsParser:
         if result is not None:
             return result
 
-        raise ValueError("Error in processing operand")
+        # Operand_elem passed all filters, returning it
+        return operand_elem
 
-    def parse_operand_types(self, operand_elem: str) -> str:
+    def parse_operand_types(self, operand_elem: str) -> Optional[str]:
         """Parse various operand types with reduced complexity."""
         for parse_method in [
             self.operand_is_int,
@@ -232,7 +233,7 @@ class OperandsParser:
             result = parse_method(operand_elem)
             if result is not None:
                 return result
-        raise ValueError("Error in processing operand")
+        return None
 
     @staticmethod
     def operand_is_int(operand_elem: str) -> Optional[str]:
