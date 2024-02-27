@@ -7,3 +7,4 @@ class LLvmObjdumpDisassembler(ShellDisassembler):
     def __init__(self, flags: str) -> None:
         # TODO: implement this
         # super().__init__(program="llvm-objdump", flags=flags)
+        pass

@@ -213,25 +213,50 @@ class OperandsParser:
 
         if isinstance(operand_elem, List):
             return f"{''.join(operand_elem[1])}+{operand_elem[0]}"
+
+        result = self.operand_is_int(operand_elem)
+        if result is not None:
+            return result
+
+        result = self.operand_is_hex(operand_elem)
+        if result is not None:
+            return result
+
+        # Parse the operand as a label
+        if operand_elem[0] == "<" and operand_elem[-1] == ">":
+            return operand_elem
+
+        # Parse the operand as a memory access
+        if operand_elem[0] == "*" and operand_elem[1] == "%":
+            return operand_elem
+
+        # Parse special operands
+
+        result = self.parse_special_operands(operand_elem)
+
+        if result is not None:
+            return result
+
+        raise ValueError("Error in processing operand")
+
+    @staticmethod
+    def operand_is_int(operand_elem: str) -> Optional[str]:
         try:
             int(operand_elem)
             return operand_elem
         except (ValueError, TypeError):
-            pass
+            return None
 
+    @staticmethod
+    def operand_is_hex(operand_elem: str) -> Optional[str]:
         try:
-            (("0x" + operand_elem).encode("utf-8")).hex()
+            int(operand_elem, 16)
             return operand_elem
-        except ValueError:
-            pass
-        except TypeError:
-            pass
+        except (ValueError, TypeError):
+            return None
 
-        if operand_elem[0] == "<" and operand_elem[-1] == ">":
-            return operand_elem
-
-        if operand_elem[0] == "*" and operand_elem[1] == "%":
-            return operand_elem
+    @staticmethod
+    def parse_special_operands(operand_elem: str) -> Optional[str]:
 
         if operand_elem == "jmp":
             return operand_elem
@@ -242,7 +267,7 @@ class OperandsParser:
         if operand_elem == "nopw":
             return operand_elem
 
-        raise ValueError("Error in processing operand")
+        return None
 
     @staticmethod
     def form_full_operand_with_4_elements(operand_elem) -> str:

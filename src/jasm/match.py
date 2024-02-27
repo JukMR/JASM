@@ -123,14 +123,12 @@ class MasterOfPuppets:
         return self._do_matching_and_get_result(
             regex_rule=self.regex_rule,
             assembly_style=self.disass_style,
-            valid_addr_range=self.valid_addr_range,
         )
 
     def _do_matching_and_get_result(
         self,
         regex_rule: str,
         assembly_style: DisassStyle,
-        valid_addr_range: Optional[ValidAddrRange],
     ) -> bool | str | List[str]:
         """Main function to perform regex matching on assembly or binary."""
 
@@ -145,11 +143,7 @@ class MasterOfPuppets:
         )
 
         # Consumer call observers
-        observer_list = ObserverBuilder().get_instruction_observers()
-
-        if valid_addr_range:
-            valid_addr_observer = ValidAddrObserver(valid_addr_range)
-            observer_list.append(valid_addr_observer)
+        observer_list = self.prepare_observers()
 
         for obs in observer_list:
             consumer.add_observer(obs)
@@ -172,6 +166,17 @@ class MasterOfPuppets:
                 return matched_observer.stringified_instructions
 
         raise ValueError("Invalid return mode")
+
+    def prepare_observers(self) -> List[IInstructionObserver]:
+        """Prepare the observers for the matching."""
+
+        observer_list = ObserverBuilder().get_instruction_observers()
+
+        if self.valid_addr_range:
+            valid_addr_observer = ValidAddrObserver(self.valid_addr_range)
+            observer_list.append(valid_addr_observer)
+
+        return observer_list
 
 
 class ValidAddrObserver(IInstructionObserver):
