@@ -33,16 +33,16 @@ def check_performance_degradation(baseline_file: Path, current_file: Path, thres
 
 def get_last_baseline_file() -> Path:
     """This function should return the path to the last baseline file"""
-    benchmark_directory = Path(".benchmarks")
+    benchmark_directory = Path("benchmark_baseline")
 
-    for folder in benchmark_directory.iterdir():
-        if folder.is_dir():
-            # Sort the files in reverse order to get the lastest file
-            for file in sorted(list(folder.iterdir()), reverse=True):
-                if file.is_file() and file.suffix == ".json":
-                    if "baseline" in file.name:
-                        print("Baseline file is:", file)
-                        return file
+    assert benchmark_directory.exists(), "No benchmark_baseline directory found. Check baseline file exist"
+
+    for file in sorted(list(benchmark_directory.iterdir()), reverse=True):
+        # Sort the files in reverse order to get the lastest file
+        if file.is_file() and file.suffix == ".json":
+            if "baseline" in file.name:
+                print("Baseline file is:", file)
+                return file
 
     raise ValueError("No baseline file found")
 
