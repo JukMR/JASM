@@ -32,10 +32,10 @@ fi
 
 if [ -z $DISABLE_BENCHMARK ]; then
     echo "Running tests without benchmarking"
-    pytest -vv -x --fail-slow 5s --ignore-glob='*benchmark*degradation*' "$@"
+    pytest -vv -x --fail-slow 5s "$@"
 
 else
     echo "Running tests with benchmarking"
-    pytest -vv -x --fail-slow 15s --ignore-glob='*benchmark*degradation*' --enable-benchmark --benchmark-save='benchmark' "$@"
+    pytest -vv -x --fail-slow 15s --enable-benchmark --benchmark-save='benchmark' "$@"
 
 fi
