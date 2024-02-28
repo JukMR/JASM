@@ -60,9 +60,7 @@ def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_fil
 
     # pylint: disable=protected-access
     all_instructions = MasterOfPuppets(match_config=match_config)._do_matching_and_get_result(
-        regex_rule="",
-        assembly_style=DisassStyle.att,
-        valid_addr_range=None,
+        regex_rule="", assembly_style=DisassStyle.att
     )
 
     if isinstance(all_instructions, bool):

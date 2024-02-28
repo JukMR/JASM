@@ -190,8 +190,8 @@ class OperandsParser:
         "Process operand element"
 
         # Operand is memory access
-        if operand_elem[0] == "(" and operand_elem[-1] == ")":
-            operand_elem = operand_elem.replace("(", "[").replace(")", "]")
+        if operand_elem.startswith("(") and operand_elem.endswith(")"):
+            operand_elem = "[" + operand_elem[1:-1] + "]"
             return operand_elem
 
         # The operand have a memory address access plus an inmediate
@@ -214,33 +214,30 @@ class OperandsParser:
         if isinstance(operand_elem, List):
             return f"{''.join(operand_elem[1])}+{operand_elem[0]}"
 
-        result = self.operand_is_int(operand_elem)
+        # Parse operand types with reduced complexity
+        result = self.parse_operand_types(operand_elem)
         if result is not None:
             return result
 
-        result = self.operand_is_hex(operand_elem)
-        if result is not None:
-            return result
+        # Operand_elem passed all filters, returning it
+        return operand_elem
 
-        # Parse the operand as a label
-        if operand_elem[0] == "<" and operand_elem[-1] == ">":
-            return operand_elem
-
-        # Parse the operand as a memory access
-        if operand_elem[0] == "*" and operand_elem[1] == "%":
-            return operand_elem
-
-        # Parse special operands
-
-        result = self.parse_special_operands(operand_elem)
-
-        if result is not None:
-            return result
-
-        raise ValueError("Error in processing operand")
+    def parse_operand_types(self, operand_elem: str) -> Optional[str]:
+        """Parse various operand types with reduced complexity."""
+        for parse_method in [
+            self.operand_is_int,
+            self.operand_is_hex,
+            self.label_or_reference,
+            self.parse_special_cases,
+        ]:
+            result = parse_method(operand_elem)
+            if result is not None:
+                return result
+        return None
 
     @staticmethod
     def operand_is_int(operand_elem: str) -> Optional[str]:
+        """Parse operand is int."""
         try:
             int(operand_elem)
             return operand_elem
@@ -249,6 +246,7 @@ class OperandsParser:
 
     @staticmethod
     def operand_is_hex(operand_elem: str) -> Optional[str]:
+        """Parse operand is hex."""
         try:
             int(operand_elem, 16)
             return operand_elem
@@ -256,15 +254,22 @@ class OperandsParser:
             return None
 
     @staticmethod
-    def parse_special_operands(operand_elem: str) -> Optional[str]:
+    def label_or_reference(operand_elem: str) -> Optional[str]:
+        """Parse label or reference."""
 
-        if operand_elem == "jmp":
+        # Parse label
+        if operand_elem[0] == "<" and operand_elem[-1] == ">":
             return operand_elem
 
-        if operand_elem == "11c0":
+        # Parse operand reference
+        if operand_elem[0] == "*" and operand_elem[1] == "%":
             return operand_elem
 
-        if operand_elem == "nopw":
+        return None
+
+    @staticmethod
+    def parse_special_cases(operand_elem: str) -> Optional[str]:
+        if operand_elem in ("jmp", "11c0", "nopw"):
             return operand_elem
 
         return None
