@@ -1,9 +1,8 @@
 from typing import Optional
 
 
-OPTIONAL_PLUS_SIGN = r"\+?"
-OPTIONAL_MULTIPLICATION_SING = r"\*?"
 OPTIONAL_PERCENTAGE_CHAR = "%?"
+OPTIONAL_HEX_CHAR = "(?:0x)?"
 
 
 class DerefObject:
@@ -24,9 +23,9 @@ class DerefObject:
     ) -> None:
 
         self.main_reg = f"{OPTIONAL_PERCENTAGE_CHAR}{main_reg}"
-        self.constant_offset = f"{OPTIONAL_PERCENTAGE_CHAR}{constant_offset}" if constant_offset else None
+        self.constant_offset = f"{OPTIONAL_HEX_CHAR}{constant_offset}" if constant_offset else None
         self.register_multiplier = f"{OPTIONAL_PERCENTAGE_CHAR}{register_multiplier}" if register_multiplier else None
-        self.constant_multiplier = f"{OPTIONAL_PERCENTAGE_CHAR}{constant_multiplier}" if constant_multiplier else None
+        self.constant_multiplier = f"{OPTIONAL_HEX_CHAR}{constant_multiplier}" if constant_multiplier else None
 
     def get_regex(self) -> str:
         """Returns regex from the given deref object."""
@@ -39,24 +38,26 @@ class DerefObject:
         regex = ""
 
         # add main_reg
-        regex += rf"\[{OPTIONAL_PERCENTAGE_CHAR}{self.main_reg}"
+        regex += rf"\[{self.main_reg}"
 
         # check if register_multiplier exists and add it
         if self.register_multiplier and self.constant_multiplier:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{self.register_multiplier}{OPTIONAL_MULTIPLICATION_SING}{self.constant_multiplier}"
+            regex += rf"\+{self.register_multiplier}\*{self.constant_multiplier}"
         elif self.register_multiplier:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{self.register_multiplier}"
+            regex += rf"\+{self.register_multiplier}"
         elif self.constant_multiplier:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{self.constant_multiplier}"
+            regex += rf"\+{self.constant_multiplier}"
 
         # check if constant_offset exists and add it
         if self.constant_offset:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{self.constant_offset}"
+            regex += rf"\+{self.constant_offset}"
 
         return regex + r"\]"  # add closing bracket
 
     def _get_regex_from_full_deref(self) -> str:
-        deref_child_regex = rf"\[{self.main_reg}{OPTIONAL_PLUS_SIGN}{self.register_multiplier}{OPTIONAL_MULTIPLICATION_SING}{self.constant_multiplier}{OPTIONAL_PLUS_SIGN}{self.constant_offset}\]"
+        deref_child_regex = (
+            rf"\[{self.main_reg}\+{self.register_multiplier}\*{self.constant_multiplier}\+{self.constant_offset}\]"
+        )
         return deref_child_regex
 
 

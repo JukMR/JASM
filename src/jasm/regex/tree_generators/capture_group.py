@@ -34,6 +34,6 @@ class CaptureGroupIndex:
                 return rf"{IGNORE_INST_ADDR}\{self.index},\|"
 
             case CaptureGroupMode.operand:
-                return rf"\{self.index},"
+                return rf"\{self.index}"
 
         raise ValueError(f"Capture group mode {self.mode} not found")

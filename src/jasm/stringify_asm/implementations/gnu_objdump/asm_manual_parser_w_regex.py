@@ -190,7 +190,13 @@ class OperandsParser:
         "Process operand element"
 
         # Operand is memory access
+        # Operand is of form (%rax,%rax,1) or (%rip)
         if operand_elem.startswith("(") and operand_elem.endswith(")"):
+            if "," in operand_elem:
+                # Operand is of form (%rax,%rax,1)
+                return self.form_full_operand_with_3_elements(operand_elem)
+
+            # Operand is of form (%rip)
             operand_elem = "[" + operand_elem[1:-1] + "]"
             return operand_elem
 
@@ -311,6 +317,20 @@ class OperandsParser:
             register = register[:-1]
 
         return f"[{register}+{immediate}]"
+
+    @staticmethod
+    def form_full_operand_with_3_elements(operand_elem) -> str:
+        """This parse the operand of form (%rax,%rax,1)"""
+
+        elements = operand_elem.split(",")
+
+        assert len(elements) == 3
+        main_reg, register_multiplier, constant_multiplier = elements
+
+        main_reg = main_reg.replace("(", "")
+        constant_multiplier = constant_multiplier.replace(")", "")
+
+        return f"[{main_reg}+{register_multiplier}*{constant_multiplier}]"
 
     def parse(self) -> List[str]:
         """Main class method.

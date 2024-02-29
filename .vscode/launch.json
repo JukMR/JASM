@@ -434,5 +434,21 @@
                 "tests/macros/macro_2.yaml"
             ]
         },
+        {
+            "name": "Jesse rule assembly matching only",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "--all-matches",
+                "-p",
+                "tests/yamls/jesse_rule.yaml",
+                "-s",
+                "tests/assembly/jesse_rule_asm.s",
+            ]
+        },
     ]
 }
