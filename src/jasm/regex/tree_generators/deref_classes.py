@@ -23,10 +23,10 @@ class DerefObject:
         constant_multiplier: Optional[str | int],
     ) -> None:
 
-        self.main_reg = main_reg
-        self.constant_offset = constant_offset
-        self.register_multiplier = register_multiplier
-        self.constant_multiplier = constant_multiplier
+        self.main_reg = f"{OPTIONAL_PERCENTAGE_CHAR}{main_reg}"
+        self.constant_offset = f"{OPTIONAL_PERCENTAGE_CHAR}{constant_offset}" if constant_offset else None
+        self.register_multiplier = f"{OPTIONAL_PERCENTAGE_CHAR}{register_multiplier}" if register_multiplier else None
+        self.constant_multiplier = f"{OPTIONAL_PERCENTAGE_CHAR}{constant_multiplier}" if constant_multiplier else None
 
     def get_regex(self) -> str:
         """Returns regex from the given deref object."""
@@ -43,20 +43,20 @@ class DerefObject:
 
         # check if register_multiplier exists and add it
         if self.register_multiplier and self.constant_multiplier:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.register_multiplier}\{OPTIONAL_MULTIPLICATION_SING}{self.constant_multiplier}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{self.register_multiplier}{OPTIONAL_MULTIPLICATION_SING}{self.constant_multiplier}"
         elif self.register_multiplier:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.register_multiplier}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{self.register_multiplier}"
         elif self.constant_multiplier:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_multiplier}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{self.constant_multiplier}"
 
         # check if constant_offset exists and add it
         if self.constant_offset:
-            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_offset}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{self.constant_offset}"
 
         return regex + r"\]"  # add closing bracket
 
     def _get_regex_from_full_deref(self) -> str:
-        deref_child_regex = rf"\[{OPTIONAL_PERCENTAGE_CHAR}{self.main_reg}{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.register_multiplier}{OPTIONAL_MULTIPLICATION_SING}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_multiplier}{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_offset}\]"
+        deref_child_regex = rf"\[{self.main_reg}{OPTIONAL_PLUS_SIGN}{self.register_multiplier}{OPTIONAL_MULTIPLICATION_SING}{self.constant_multiplier}{OPTIONAL_PLUS_SIGN}{self.constant_offset}\]"
         return deref_child_regex
 
 
