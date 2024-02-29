@@ -1,6 +1,9 @@
 from typing import Optional
 
 
+OPTIONAL_CHAR = "?"
+
+
 class DerefObject:
     """Represents a deref object."""
 
@@ -38,22 +41,20 @@ class DerefObject:
 
         # check if register_multiplier exists and add it
         if self.register_multiplier and self.constant_multiplier:
-            regex += rf"\+{self.register_multiplier}\*{self.constant_multiplier}"
+            regex += rf"\+{OPTIONAL_CHAR}{self.register_multiplier}\*{OPTIONAL_CHAR}{self.constant_multiplier}"
         elif self.register_multiplier:
-            regex += rf"\+{self.register_multiplier}"
+            regex += rf"\+{OPTIONAL_CHAR}{self.register_multiplier}"
         elif self.constant_multiplier:
-            regex += rf"\+{self.constant_multiplier}"
+            regex += rf"\+{OPTIONAL_CHAR}{self.constant_multiplier}"
 
         # check if constant_offset exists and add it
         if self.constant_offset:
-            regex += rf"\+{self.constant_offset}"
+            regex += rf"\+{OPTIONAL_CHAR}{self.constant_offset}"
 
         return regex + r"\]"  # add closing bracket
 
     def _get_regex_from_full_deref(self) -> str:
-        deref_child_regex = (
-            rf"\[{self.main_reg}\+{self.register_multiplier}\*{self.constant_multiplier}\+{self.constant_offset}\]"
-        )
+        deref_child_regex = rf"\[{self.main_reg}\+{OPTIONAL_CHAR}{self.register_multiplier}\*{OPTIONAL_CHAR}{self.constant_multiplier}\+{OPTIONAL_CHAR}{self.constant_offset}\]"
         return deref_child_regex
 
 
