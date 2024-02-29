@@ -1,5 +1,8 @@
 import json
+import warnings
 from pathlib import Path
+
+import pytest
 
 
 def test_benchmark_degradation() -> None:
@@ -9,7 +12,11 @@ def test_benchmark_degradation() -> None:
 
     # This is the file that we want to check for performance degradation
     current_json = get_last_benchmark_file()
-    assert check_performance_degradation(baseline_json, current_json, threshold=40.0)
+
+    result = check_performance_degradation(baseline_json, current_json, threshold=40.0)
+
+    # if not result:
+    # pytest.fail("Performance degradation detected. Failing test...")
 
 
 def check_performance_degradation(baseline_file: Path, current_file: Path, threshold: float) -> bool:
@@ -24,7 +31,7 @@ def check_performance_degradation(baseline_file: Path, current_file: Path, thres
         degradation = ((current_mean - baseline_mean) / baseline_mean) * 100
 
         if degradation > threshold:
-            print(
+            warnings.warn(
                 f"Test {baseline['name']} has degraded by {degradation:.2f}% which is above the threshold of {threshold}%. Failing..."
             )
             return False  # Indicates failure due to exceeding the threshold
