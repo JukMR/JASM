@@ -1,7 +1,9 @@
 from typing import Optional
 
 
-OPTIONAL_CHAR = "?"
+OPTIONAL_PLUS_SIGN = r"\+?"
+OPTIONAL_MULTIPLICATION_SING = r"\*?"
+OPTIONAL_PERCENTAGE_CHAR = "%?"
 
 
 class DerefObject:
@@ -37,24 +39,24 @@ class DerefObject:
         regex = ""
 
         # add main_reg
-        regex += rf"\[{self.main_reg}"
+        regex += rf"\[{OPTIONAL_PERCENTAGE_CHAR}{self.main_reg}"
 
         # check if register_multiplier exists and add it
         if self.register_multiplier and self.constant_multiplier:
-            regex += rf"\+{OPTIONAL_CHAR}{self.register_multiplier}\*{OPTIONAL_CHAR}{self.constant_multiplier}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.register_multiplier}\{OPTIONAL_MULTIPLICATION_SING}{self.constant_multiplier}"
         elif self.register_multiplier:
-            regex += rf"\+{OPTIONAL_CHAR}{self.register_multiplier}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.register_multiplier}"
         elif self.constant_multiplier:
-            regex += rf"\+{OPTIONAL_CHAR}{self.constant_multiplier}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_multiplier}"
 
         # check if constant_offset exists and add it
         if self.constant_offset:
-            regex += rf"\+{OPTIONAL_CHAR}{self.constant_offset}"
+            regex += rf"{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_offset}"
 
         return regex + r"\]"  # add closing bracket
 
     def _get_regex_from_full_deref(self) -> str:
-        deref_child_regex = rf"\[{self.main_reg}\+{OPTIONAL_CHAR}{self.register_multiplier}\*{OPTIONAL_CHAR}{self.constant_multiplier}\+{OPTIONAL_CHAR}{self.constant_offset}\]"
+        deref_child_regex = rf"\[{OPTIONAL_PERCENTAGE_CHAR}{self.main_reg}{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.register_multiplier}{OPTIONAL_MULTIPLICATION_SING}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_multiplier}{OPTIONAL_PLUS_SIGN}{OPTIONAL_PERCENTAGE_CHAR}{self.constant_offset}\]"
         return deref_child_regex
 
 
