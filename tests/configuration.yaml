@@ -200,7 +200,7 @@ test_matching:
     assembly: "tests/assembly/jesse_rule_matching.s"
     expected: True
 
-  - title: "Jesse rule assembly matching only"
+  - title: "Jesse rule assembly"
     yaml: "tests/yamls/jesse_rule.yaml"
     assembly: "tests/assembly/jesse_rule_asm.s"
     expected: True
