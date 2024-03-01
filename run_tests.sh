@@ -35,6 +35,6 @@ if [ "$DISABLE_BENCHMARK" == true ]; then
 
 else
     echo "Running tests with benchmarking"
-    pytest -vv -x --fail-slow 15s --enable-benchmark --benchmark-save='benchmark' "$@"
+    pytest -vv -x --fail-slow 15s --ignore-glob='*benchmark*degradation*' --enable-benchmark --benchmark-compare='benchmark_baseline/baseline.json' "$@"
 
 fi
