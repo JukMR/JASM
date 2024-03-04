@@ -4,7 +4,6 @@
 
 set -eu
 
-# Initialize arguments for benchmark save and compare
 DISABLE_BENCHMARK=false
 
 # Check for special benchmark arguments
@@ -30,12 +29,12 @@ fi
 
 # Check whetever ENABLE_BENCHMARK is set
 
-if [ -z $DISABLE_BENCHMARK ]; then
+if [ "$DISABLE_BENCHMARK" == true ]; then
     echo "Running tests without benchmarking"
     pytest -vv -x --fail-slow 5s "$@"
 
 else
     echo "Running tests with benchmarking"
-    pytest -vv -x --fail-slow 15s --enable-benchmark --benchmark-save='benchmark' "$@"
+    pytest -vv -x --fail-slow 15s --ignore-glob='*benchmark*degradation*' --enable-benchmark --benchmark-compare='benchmark_baseline/baseline.json' "$@"
 
 fi

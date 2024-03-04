@@ -1,0 +1,40 @@
+---
+config:
+  style: att
+  plugins:
+
+pattern:
+  - mov:
+      - 5a4d
+      - eax
+
+  - cmp:
+      - ax
+      - $deref:
+          main_reg: "&r1"
+
+  - jne
+
+  - mov:
+      - $deref:
+          main_reg: "%rcx"
+          constant_offset: 3c
+
+      - "&r2"
+
+  - cmp:
+      - 4550
+      - $deref:
+          main_reg: "&r2"
+          register_multiplier: "&r1"
+          constant_multiplier: 1
+# Documentation
+# Pattern that we want to match:
+# mov    $0x5a4d,%eax
+# cmp    %ax,(%rcx)
+# jne    0x180002ebf
+# movslq 0x3c(%rcx),%rax
+# cmpl   $0x4550,(%rax,%rcx,1)
+
+# We want to match the following instructions:
+# 180002e0c::mov,0x5a4d,%eax,|180002e11::cmp,%ax,[%rcx],|180002e14::jne,0x180002ebf,|180002e1a::movslq,[%rcx+0x3c],%rax,|180002e1e::cmpl,0x4550,[%rax,%rcx,1],|

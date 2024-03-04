@@ -6,13 +6,18 @@ config:
 pattern:
   - movb:
       - 48
-      - rax
+      - $deref:
+          main_reg: rax
   - movl
+
   - mov:
-      - rsp
+      - $deref:
+          main_reg: rsp
+          constant_offset: "0x8"
       - rax
 
   - pushf
+
   - push:
       times: 7
 
@@ -24,6 +29,7 @@ pattern:
             times:
               min: 1
               max: 2
+
           - call:
               - +5
             times: 2
@@ -34,14 +40,15 @@ pattern:
 
   - inc:
       - ecx
+
   - cmp:
       - 158878
       - ecx
   - jg
+
   - cmpl:
       - cb485541
-      - eax
-      - ecx
-      - $or:
-          - 1
-          - 2
+      - $deref:
+          main_reg: eax
+          register_multiplier: ecx
+          constant_multiplier: 1

@@ -1,6 +1,10 @@
 from typing import Optional
 
 
+OPTIONAL_PERCENTAGE_CHAR = "%?"
+OPTIONAL_HEX_CHAR = "(?:0x)?"
+
+
 class DerefObject:
     """Represents a deref object."""
 
@@ -18,10 +22,10 @@ class DerefObject:
         constant_multiplier: Optional[str | int],
     ) -> None:
 
-        self.main_reg = main_reg
-        self.constant_offset = constant_offset
-        self.register_multiplier = register_multiplier
-        self.constant_multiplier = constant_multiplier
+        self.main_reg = f"{OPTIONAL_PERCENTAGE_CHAR}{main_reg}"
+        self.constant_offset = f"{OPTIONAL_HEX_CHAR}{constant_offset}" if constant_offset else None
+        self.register_multiplier = f"{OPTIONAL_PERCENTAGE_CHAR}{register_multiplier}" if register_multiplier else None
+        self.constant_multiplier = f"{OPTIONAL_HEX_CHAR}{constant_multiplier}" if constant_multiplier else None
 
     def get_regex(self) -> str:
         """Returns regex from the given deref object."""

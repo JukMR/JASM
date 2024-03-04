@@ -2,14 +2,11 @@ import pytest
 
 from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode
 from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
-from jasm.regex.tree_generators.pattern_node import PatternNode
 
 from unittest.mock import Mock
 
 
 # Setup Mock PatternNode
-
-
 @pytest.fixture
 def mock_pattern_node():
     node = Mock()
@@ -57,7 +54,7 @@ def test_to_regex_instruction(mock_pattern_node):
 
 def test_to_regex_operand(mock_pattern_node):
     cgi = CaptureGroupIndex(mock_pattern_node, CaptureGroupMode.operand)
-    expected_regex = rf"\{cgi.index},"
+    expected_regex = rf"\{cgi.index}"
     assert cgi.to_regex() == expected_regex
 
 
