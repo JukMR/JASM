@@ -13,7 +13,7 @@ class PatternNodeTypeBuilder:
 
         name = self.command.name
 
-        if isinstance(name, str):
+        if isinstance(name, str):  # TODO: Move to a function
             # DEREF TYPES
             if name == "$deref":
                 return PatternNodeTypes.deref
@@ -52,7 +52,7 @@ class PatternNodeTypeBuilder:
                 return PatternNodeTypes.capture_group_reference
 
         # Is times
-        if name == "times":
+        if name == "times":  # TODO ALL-Oracle, should enter in the previous if
             return PatternNodeTypes.times
 
         # Is operand
