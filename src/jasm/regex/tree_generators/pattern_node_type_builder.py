@@ -1,3 +1,4 @@
+from typing import Optional
 from jasm.global_definitions import PatternNodeTypes
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
@@ -11,63 +12,22 @@ class PatternNodeTypeBuilder:
         if getattr(self.command, "name", None) is None:
             raise ValueError("Name is not defined")
 
-        name = self.command.name
-
-        if isinstance(name, str):  # TODO: Move to a function
-            # DEREF TYPES
-            if name == "$deref":
-                return PatternNodeTypes.deref
-
-            if self.is_ancestor_deref():
-                if self.is_deref_property_capture_group():
-
-                    if self.has_any_ancester_who_is_capture_group_reference():
-                        return PatternNodeTypes.deref_property_capture_group_call
-
-                    self.add_new_references_to_global_list()
-                    return PatternNodeTypes.deref_property_capture_group_reference
-                return PatternNodeTypes.deref_property
-
-            # CAPTURE GROUP TYPES
-            # Is a capture group reference
-            if name.startswith("&"):
-
-                # Is Capture Group in operand
-                if self.is_capture_group_operand():
-                    if self.has_any_ancester_who_is_capture_group_reference():
-                        return PatternNodeTypes.capture_group_call_operand
-
-                    self.add_new_references_to_global_list()
-                    return PatternNodeTypes.capture_group_reference_operand
-
-                # Is Capture Group in Mnemonic
-                # Add this macro to refence list
-                # First check it it should be a new reference or a call to an existing one
-                if self.has_any_ancester_who_is_capture_group_reference():
-                    # This is the using the reference
-                    return PatternNodeTypes.capture_group_call
-
-                # This is creating the reference
-                self.add_new_references_to_global_list()
-                return PatternNodeTypes.capture_group_reference
-
-        # Is times
-        if name == "times":  # TODO ALL-Oracle, should enter in the previous if
-            return PatternNodeTypes.times
-
-        # Is operand
-        if isinstance(name, int):
-            if self.is_ancestor_deref():
-                return PatternNodeTypes.deref_property
-            return PatternNodeTypes.operand
+        name: str | int = self.command.name
 
         # Is root node
         if self.command.parent is None:
             return PatternNodeTypes.root
 
-        # Is node
-        if self.is_node(name):
-            return PatternNodeTypes.node
+        if isinstance(name, str):
+            result = self.get_type_when_str(name)
+            if result is not None:
+                return result
+
+        # Is operand
+        if isinstance(name, int):
+            result = self.get_type_when_int()
+            if result is not None:
+                return result
 
         if self.is_father_is_mnemonic():
             return PatternNodeTypes.operand
@@ -77,6 +37,62 @@ class PatternNodeTypeBuilder:
 
         # Else is mnemonic
         return PatternNodeTypes.mnemonic
+
+    def get_type_when_str(self, name: str) -> Optional[PatternNodeTypes]:
+        """Get the type of the node when the name is a string."""
+
+        if name == "$deref":
+            return PatternNodeTypes.deref
+
+        if self.is_ancestor_deref():
+            if self.is_deref_property_capture_group():
+
+                if self.has_any_ancester_who_is_capture_group_reference():
+                    return PatternNodeTypes.deref_property_capture_group_call
+
+                self.add_new_references_to_global_list()
+                return PatternNodeTypes.deref_property_capture_group_reference
+            return PatternNodeTypes.deref_property
+
+        # CAPTURE GROUP TYPES
+        # Is a capture group reference
+        if name.startswith("&"):
+            return self.process_capture_group()
+
+        # Is times
+        if name == "times":
+            return PatternNodeTypes.times
+
+        # Is node
+        if self.is_node(name):
+            return PatternNodeTypes.node
+
+        return None
+
+    def process_capture_group(self) -> PatternNodeTypes:
+        # Is Capture Group in operand
+        if self.is_capture_group_operand():
+            if self.has_any_ancester_who_is_capture_group_reference():
+                return PatternNodeTypes.capture_group_call_operand
+
+            self.add_new_references_to_global_list()
+            return PatternNodeTypes.capture_group_reference_operand
+
+        # Is Capture Group in Mnemonic
+        # Add this macro to refence list
+        # First check it it should be a new reference or a call to an existing one
+        if self.has_any_ancester_who_is_capture_group_reference():
+            # This is the using the reference
+            return PatternNodeTypes.capture_group_call
+
+        # This is creating the reference
+        self.add_new_references_to_global_list()
+        return PatternNodeTypes.capture_group_reference
+
+    def get_type_when_int(self) -> PatternNodeTypes:
+        if self.is_ancestor_deref():
+            return PatternNodeTypes.deref_property
+        return PatternNodeTypes.operand
 
     @staticmethod
     def is_node(name: str) -> bool:
@@ -164,7 +180,6 @@ class PatternNodeTypeBuilder:
         self.set_type()
 
         # Add the capture group references to the root node
-
         if self.command.pattern_node_type == PatternNodeTypes.root:
             setattr(self.command, "capture_group_references", [])
 

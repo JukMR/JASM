@@ -24,28 +24,42 @@ def create_test_node(name: str, parent=None, children=None) -> PatternNode:
     [
         ("$deref", PatternNodeTypes.deref),
         ("times", PatternNodeTypes.times),
-        ("1", PatternNodeTypes.root),
-        ("$or", PatternNodeTypes.root),
+        ("1", PatternNodeTypes.mnemonic),
+        ("$or", PatternNodeTypes.node),
     ],
 )
 def test_get_type(name, expected_type):
+
+    root_node = create_test_node("$and")
     node = create_test_node(name)
-    builder = PatternNodeTypeBuilder(node)
-    assert builder._get_type() == expected_type
+    root_node.children = [node]
+
+    # Transform parents of all nodes to commands
+    PatternNodeParentsBuilder(root_node).build()
+
+    # Add the command_type to each node
+    PatternNodeTypeBuilder(root_node).build()
+
+    assert root_node.children[0].pattern_node_type == expected_type
 
 
 def test_is_ancestor_deref():
     child = create_test_node("child", parent=[], children=[])
-    parent = create_test_node("$deref", children=[child])
-    builder = PatternNodeTypeBuilder(parent)
-    builder.build()
+    parent = create_test_node("$deref", parent=[], children=[child])
 
-    assert builder.command.pattern_node_type == PatternNodeTypes.deref
-    assert builder.command.children
-    assert builder.command.children[0]
-    assert builder.command.children[0].pattern_node_type == PatternNodeTypes.mnemonic
+    PatternNodeParentsBuilder(parent).build()
+    PatternNodeTypeBuilder(parent).build()
 
-    child2 = create_test_node("child2", parent=builder.command)
+    assert parent.pattern_node_type == PatternNodeTypes.deref
+    assert parent.children
+    assert parent.children[0]
+    assert parent.children[0].pattern_node_type == PatternNodeTypes.deref_property
+
+    child2 = create_test_node("child2", parent=parent, children=[])
+
+    PatternNodeParentsBuilder(child2).build()
+    PatternNodeTypeBuilder(child2).build()
+
     child2_builder = PatternNodeTypeBuilder(child2)
     assert child2_builder.is_ancestor_deref() is True
 
@@ -54,17 +68,15 @@ def test_any_ancestor_is_mnemonic():
     child = create_test_node("child")
     parent = create_test_node("parent", children=[child])
     grandparent = create_test_node("mnemonic", children=[parent])
+    root = create_test_node("$and", children=[grandparent])
 
-    parent_builder = PatternNodeParentsBuilder(grandparent)
-    parent_builder.build()
+    PatternNodeParentsBuilder(root).build()
 
-    builder_type = PatternNodeTypeBuilder(grandparent)
-    builder_type.build()
+    PatternNodeTypeBuilder(root).build()
 
-    type_builder = PatternNodeTypeBuilder(child)
-    type_builder.build()
+    child_pattern_type = PatternNodeTypeBuilder(child)
 
-    assert type_builder.any_ancestor_is_mnemonic() is True
+    assert child_pattern_type.any_ancestor_is_mnemonic() is True
 
 
 def test_recursive_build():

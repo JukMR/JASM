@@ -9,11 +9,11 @@ from jasm.consumer import CompleteConsumer, InstructionObserverConsumer
 from jasm.global_definitions import (
     DisassStyle,
     InputFileType,
+    Instruction,
     MatchConfig,
     MatchingReturnMode,
     MatchingSearchMode,
     ValidAddrRange,
-    Instruction,
 )
 from jasm.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
