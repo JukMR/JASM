@@ -70,12 +70,28 @@ class PatternNodeTypeBuilder:
         return None
 
     def process_capture_group(self) -> PatternNodeTypes:
+        # TODO: fix the logic in this function, make it clearer
+
+        # Check in the this commit which modified this
+
+
+
+
         # Is Capture Group in operand
         if self.is_capture_group_operand():
+            # Has this capture group been referenced before?
             if self.has_any_ancester_who_is_capture_group_reference():
+                # Is this a registry capture group?
+                if self.is_registry_capture_group():
+                    return PatternNodeTypes.capture_group_call_register
+                # This is a simple reference
                 return PatternNodeTypes.capture_group_call_operand
 
+            # Return the reference
+            # Add the reference to the list of references
             self.add_new_references_to_global_list()
+            if self.is_registry_capture_group():
+                return PatternNodeTypes.capture_group_reference_register
             return PatternNodeTypes.capture_group_reference_operand
 
         # Is Capture Group in Mnemonic
@@ -172,6 +188,18 @@ class PatternNodeTypeBuilder:
             raise ValueError("Parent is not defined")
 
         if isinstance(self.command.name, str) and self.command.name.startswith("&"):
+            return True
+
+        return False
+
+    def is_registry_capture_group(self) -> bool:
+        "Check if the current node is a registry capture group"
+        if not self.command.name:
+            raise ValueError("Name is not defined")
+
+        assert isinstance(self.command.name, str)
+
+        if self.command.name.startswith("&anyreg"):
             return True
 
         return False

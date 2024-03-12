@@ -105,6 +105,8 @@ class PatternNodeTypes(Enum):
     capture_group_call = auto()
     capture_group_reference_operand = auto()
     capture_group_call_operand = auto()
+    capture_group_reference_register = auto()
+    capture_group_call_register = auto()
     root = auto()
 
 

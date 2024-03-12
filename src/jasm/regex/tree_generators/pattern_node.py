@@ -5,11 +5,11 @@ from typing import List, Optional
 
 from jasm.global_definitions import (
     ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
+    ASTERISK_WITH_LIMIT,
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_PATTERN_NODE,
-    ASTERISK_WITH_LIMIT,
     CaptureGroupMode,
     PatternNodeTypes,
     TimeType,
@@ -89,6 +89,14 @@ class PatternNode:
 
             case PatternNodeTypes.deref_property_capture_group_call:
                 return self.get_capture_group_call(pattern_node, CaptureGroupMode.operand)
+
+            case PatternNodeTypes.capture_group_reference_register:
+                # return self.get_capture_group_reference_register()
+                raise NotImplementedError("Capture group reference register is not implemented")
+
+            case PatternNodeTypes.capture_group_call_register:
+                # return self.get_capture_group_register_call(pattern_node, CaptureGroupMode.operand)
+                raise NotImplementedError("Capture group call register is not implemented")
 
             # This is the case of the root node $and
             # In here we will be save the state of the capture group references
@@ -185,6 +193,21 @@ class PatternNode:
 
     def get_capture_group_reference_deref(self) -> str:
         return r"([^,|]+)"  # Get the deref property value
+
+    # TODO: implement this
+    def get_capture_group_reference_register(self) -> str:
+        return "[re]?(.)[xhl],"
+
+    # TODO: implement this
+    # def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
+
+    #     from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+
+    #     capture_group_instance = CaptureGroupIndex(pattern_node=pattern_node, mode=capture_group_mode)
+
+    #     index = capture_group_instance.to_regex()
+
+    #     return f"{index}"
 
 
 class RegexWithOperandsCreator:
