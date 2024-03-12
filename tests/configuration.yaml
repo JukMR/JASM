@@ -211,17 +211,17 @@ test_matching:
     expected: True
 
   - title: "Jesse rule assembly matching only variation 1"
-    yaml: "tests/yamls/test_jesse_rule_variation_1_reg_with_%.yaml"
+    yaml: "tests/yamls/jesse_rule_variation_1_reg_with_%.yaml"
     assembly: "tests/assembly/jesse_rule_matching.s"
     expected: True
 
   - title: "Jesse rule assembly matching only variation 2"
-    yaml: "tests/yamls/test_jesse_rule_variation_2_number_without_0x.yaml"
+    yaml: "tests/yamls/jesse_rule_variation_2_number_without_0x.yaml"
     assembly: "tests/assembly/jesse_rule_matching.s"
     expected: True
 
   - title: "Jesse rule assembly matching only variation 3"
-    yaml: "tests/yamls/test_jesse_rule_variation_3_number_without_0x_and_as_int_instead_of_str.yaml"
+    yaml: "tests/yamls/jesse_rule_variation_3_number_without_0x_and_as_int_instead_of_str.yaml"
     assembly: "tests/assembly/jesse_rule_matching.s"
     expected: True
 
