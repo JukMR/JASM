@@ -225,6 +225,11 @@ test_matching:
     assembly: "tests/assembly/jesse_rule_matching.s"
     expected: True
 
+  - title: "Jesse rule assembly register capture group"
+    yaml: "tests/yamls/jesse_rule_with_register_capture_group.yaml"
+    assembly: "tests/assembly/jesse_rule_matching.s"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"
