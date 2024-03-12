@@ -1,0 +1,13 @@
+---
+config:
+  style: att
+  plugins:
+
+pattern:
+  - add:
+      - 1
+      - "&anyreg-edi"
+  - mov:
+      - "&anyreg-edi.i"
+      - "&anyreg-edi"
+  - jmp
