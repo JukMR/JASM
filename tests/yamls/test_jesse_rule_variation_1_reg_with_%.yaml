@@ -17,7 +17,7 @@ pattern:
 
   - mov:
       - $deref:
-          main_reg: "%rcx"
+          main_reg: "&1"
           constant_offset: "0x3c"
 
       - "&r2"
