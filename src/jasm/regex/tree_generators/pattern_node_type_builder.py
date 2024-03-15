@@ -70,43 +70,52 @@ class PatternNodeTypeBuilder:
         return None
 
     def process_capture_group(self) -> PatternNodeTypes:
-        # Is Capture Group in operand
-        if self.is_capture_group_operand():
-            return self.process_capture_group_operand()
+        # Is Capture Group in operand or is a special register capture
+        if self._is_capture_group_operand_or_special_register_capture():
+            return self._process_capture_group_operand_or_special_register_capture()
 
         # Is Capture Group in Mnemonic
-        return self.process_capture_group_mnemonic()
+        return self._process_capture_group_mnemonic()
 
-    def process_capture_group_operand(self) -> PatternNodeTypes:
+    def _process_capture_group_operand_or_special_register_capture(self) -> PatternNodeTypes:
         # Has this capture group been referenced before?
         if self.has_any_ancester_who_is_capture_group_reference():
-            # Is this a registry capture group?
-            if self.is_registry_capture_group():
-                return PatternNodeTypes.capture_group_call_register
-            # This is a simple reference
-            return PatternNodeTypes.capture_group_call_operand
+            return self._process_operand_or_register_call()
 
-        # Return the reference
-        # Add the reference to the list of references
+        return self._process_operand_or_register_reference()
+
+    def _process_operand_or_register_call(self) -> PatternNodeTypes:
+        # Is this a registry capture group?
+        if self.is_registry_capture_group():
+            return PatternNodeTypes.capture_group_call_register
+
+        # Else is a simple reference
+        return PatternNodeTypes.capture_group_call_operand
+
+    def _process_operand_or_register_reference(self) -> PatternNodeTypes:
+        # Return reference
+        # Add reference to the list of references
         self.add_new_references_to_global_list()
         if self.is_registry_capture_group():
             return PatternNodeTypes.capture_group_reference_register
+
         return PatternNodeTypes.capture_group_reference_operand
 
-    def process_capture_group_mnemonic(self) -> PatternNodeTypes:
+    def _process_capture_group_mnemonic(self) -> PatternNodeTypes:
         # Add this macro to refence list
-        # First check it it should be a new reference or a call to an existing one
+        # Check it it should be a new reference or a call to an existing one
         if self.has_any_ancester_who_is_capture_group_reference():
-            # This is the using the reference
+            # Do the call
             return PatternNodeTypes.capture_group_call
 
-        # This is creating the reference
+        # Create the reference
         self.add_new_references_to_global_list()
         return PatternNodeTypes.capture_group_reference
 
     def get_type_when_int(self) -> PatternNodeTypes:
         if self.is_ancestor_deref():
             return PatternNodeTypes.deref_property
+
         return PatternNodeTypes.operand
 
     @staticmethod
@@ -171,7 +180,7 @@ class PatternNodeTypeBuilder:
             assert isinstance(self.command.name, str)
             self.command.root_node.capture_group_references.append(self.command.name)
 
-    def is_capture_group_operand(self) -> bool:
+    def _is_capture_group_operand_or_special_register_capture(self) -> bool:
         "Check if the current node is a capture group operand"
         if not self.command.parent:
             return False
