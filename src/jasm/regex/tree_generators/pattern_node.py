@@ -91,12 +91,10 @@ class PatternNode:
                 return self.get_capture_group_call(pattern_node, CaptureGroupMode.operand)
 
             case PatternNodeTypes.capture_group_reference_register:
-                # return self.get_capture_group_reference_register()
-                raise NotImplementedError("Capture group reference register is not implemented")
+                return self.get_capture_group_reference_register()
 
             case PatternNodeTypes.capture_group_call_register:
-                # return self.get_capture_group_register_call(pattern_node, CaptureGroupMode.operand)
-                raise NotImplementedError("Capture group call register is not implemented")
+                return self.get_capture_group_register_call(pattern_node, CaptureGroupMode.operand)
 
             # This is the case of the root node $and
             # In here we will be save the state of the capture group references
@@ -177,7 +175,6 @@ class PatternNode:
         return rf"{IGNORE_INST_ADDR}([^|]+),\|"  # Get all the instruction
 
     # Capture group call
-
     def get_capture_group_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
         from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
@@ -199,15 +196,49 @@ class PatternNode:
         return "[re]?(.)[xhl],"
 
     # TODO: implement this
-    # def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
+    def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
-    #     from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
 
-    #     capture_group_instance = CaptureGroupIndex(pattern_node=pattern_node, mode=capture_group_mode)
+        capture_group_instance = CaptureGroupIndex(pattern_node=pattern_node, mode=capture_group_mode)
+        index = capture_group_instance.to_regex()
 
-    #     index = capture_group_instance.to_regex()
+        pattern_name = pattern_node.name
+        assert isinstance(pattern_name, str), "Name must be a string"
 
-    #     return f"{index}"
+        matching_rule = self.process_register_capture_group_name(pattern_name=pattern_name, index=index)
+
+        # return f"{index}"
+        return matching_rule
+
+    @staticmethod
+    def process_register_capture_group_name(pattern_name: str, index: str) -> str:
+        """Process the register capture group name.
+
+        Map values
+        # .rx:    r\1x
+        # .ex:   e\1x
+        # .x:     \1x
+        # .h:    \1h
+        # .l:    \1l
+        # .i:    \1i
+
+        """
+
+        if pattern_name.endswith(".rx"):
+            return "r" + index + "x"
+        if pattern_name.endswith(".ex"):
+            return "e" + index + "x"
+        if pattern_name.endswith(".x"):
+            return index + "x"
+        if pattern_name.endswith(".h"):
+            return index + "h"
+        if pattern_name.endswith(".l"):
+            return index + "l"
+        if pattern_name.endswith(".i"):
+            return index + "i"
+
+        raise NotImplementedError("Register capture group name not implemented")
 
 
 class RegexWithOperandsCreator:

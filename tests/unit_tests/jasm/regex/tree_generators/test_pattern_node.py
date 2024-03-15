@@ -138,14 +138,14 @@ def test_process_branch_and(pattern_node_fixture: PatternNode):
     # mock_child2.get_regex.assert_called_once()
 
 
-def test_generate_regex_with_operands():
+def test_generate_regex_with_operands() -> None:
     creator = RegexWithOperandsCreator(name="pattern_node", operands=[MagicMock()], times=None)
     assert isinstance(creator.operands, List)
     creator.operands[0].get_regex = MagicMock(return_value="operand_regex")
     assert "operand_regex" in creator.generate_regex()
 
 
-def test_generate_regex_without_operands():
+def test_generate_regex_without_operands() -> None:
     creator = RegexWithOperandsCreator(name="pattern_node", operands=None, times=None)
     assert "pattern_node" in creator.generate_regex()
 
@@ -153,6 +153,18 @@ def test_generate_regex_without_operands():
 from jasm.regex.tree_generators.pattern_node import BranchProcessor
 
 
-def test_branch_processor_and():
+def test_branch_processor_and() -> None:
     processor = BranchProcessor()
     assert processor.process_and(["regex1", "regex2"], None) == "(?:regex1regex2)"
+
+
+def test_process_register_capture_group_name():
+    assert PatternNode.process_register_capture_group_name("pattern.rx", "1") == "r1x"
+    assert PatternNode.process_register_capture_group_name("pattern.ex", "2") == "e2x"
+    assert PatternNode.process_register_capture_group_name("pattern.x", "3") == "3x"
+    assert PatternNode.process_register_capture_group_name("pattern.h", "4") == "4h"
+    assert PatternNode.process_register_capture_group_name("pattern.l", "5") == "5l"
+    assert PatternNode.process_register_capture_group_name("pattern.i", "6") == "6i"
+
+    with pytest.raises(NotImplementedError):
+        PatternNode.process_register_capture_group_name("pattern.unknown", "7")
