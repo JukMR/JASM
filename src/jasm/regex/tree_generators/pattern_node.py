@@ -16,6 +16,7 @@ from jasm.global_definitions import (
     TimeType,
     dict_node,
 )
+from jasm.logging_config import logger
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
 
 
@@ -194,7 +195,7 @@ class PatternNode:
 
     # TODO: implement this
     def get_capture_group_reference_register(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhli],"
 
     def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
@@ -237,7 +238,10 @@ class PatternNode:
         if pattern_name.endswith(".i"):
             return index + "i"
 
-        raise NotImplementedError("Register capture group name not implemented")
+        logger.info("Register capture group name not implemented or calling full register")
+        # raise NotImplementedError("Register capture group name not implemented")
+        # TODO: find a cleaner way to handle this
+        return "[re]" + index + "[xhli]"
 
 
 class RegexWithOperandsCreator:
