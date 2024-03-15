@@ -70,31 +70,30 @@ class PatternNodeTypeBuilder:
         return None
 
     def process_capture_group(self) -> PatternNodeTypes:
-        # TODO: fix the logic in this function, make it clearer
-
-        # Check in the this commit which modified this
-
-
-
-
         # Is Capture Group in operand
         if self.is_capture_group_operand():
-            # Has this capture group been referenced before?
-            if self.has_any_ancester_who_is_capture_group_reference():
-                # Is this a registry capture group?
-                if self.is_registry_capture_group():
-                    return PatternNodeTypes.capture_group_call_register
-                # This is a simple reference
-                return PatternNodeTypes.capture_group_call_operand
-
-            # Return the reference
-            # Add the reference to the list of references
-            self.add_new_references_to_global_list()
-            if self.is_registry_capture_group():
-                return PatternNodeTypes.capture_group_reference_register
-            return PatternNodeTypes.capture_group_reference_operand
+            return self.process_capture_group_operand()
 
         # Is Capture Group in Mnemonic
+        return self.process_capture_group_mnemonic()
+
+    def process_capture_group_operand(self) -> PatternNodeTypes:
+        # Has this capture group been referenced before?
+        if self.has_any_ancester_who_is_capture_group_reference():
+            # Is this a registry capture group?
+            if self.is_registry_capture_group():
+                return PatternNodeTypes.capture_group_call_register
+            # This is a simple reference
+            return PatternNodeTypes.capture_group_call_operand
+
+        # Return the reference
+        # Add the reference to the list of references
+        self.add_new_references_to_global_list()
+        if self.is_registry_capture_group():
+            return PatternNodeTypes.capture_group_reference_register
+        return PatternNodeTypes.capture_group_reference_operand
+
+    def process_capture_group_mnemonic(self) -> PatternNodeTypes:
         # Add this macro to refence list
         # First check it it should be a new reference or a call to an existing one
         if self.has_any_ancester_who_is_capture_group_reference():
