@@ -3,7 +3,7 @@ import pytest
 from jasm.global_definitions import TimeType
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeTypes
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
-from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder, RegisterCaptureGroupProcessor
 
 
 def create_test_node(name: str, parent=None, children=None) -> PatternNode:
@@ -97,3 +97,14 @@ def test_recursive_build():
 
     assert parent.pattern_node_type == PatternNodeTypes.deref
     assert child.pattern_node_type == PatternNodeTypes.deref_property
+
+
+def test_remove_access_suffix():
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.rx") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.ex") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.x") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.h") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.l") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.i") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.other") == "pattern.other"

@@ -1,7 +1,7 @@
 from typing import Optional
+from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
 
 
-OPTIONAL_PERCENTAGE_CHAR = "%?"
 OPTIONAL_HEX_CHAR = "(?:0x)?"
 
 

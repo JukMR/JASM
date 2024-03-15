@@ -9,6 +9,7 @@ from jasm.global_definitions import (
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
+    OPTIONAL_PERCENTAGE_CHAR,
     SKIP_TO_END_OF_PATTERN_NODE,
     CaptureGroupMode,
     PatternNodeTypes,
@@ -94,7 +95,7 @@ class PatternNode:
                 return self.get_capture_group_reference_register()
 
             case PatternNodeTypes.capture_group_call_register:
-                return self.get_capture_group_register_call(pattern_node, CaptureGroupMode.operand)
+                return self.get_capture_group_register_call(pattern_node, CaptureGroupMode.register)
 
             # This is the case of the root node $and
             # In here we will be save the state of the capture group references
@@ -193,9 +194,8 @@ class PatternNode:
 
     # TODO: implement this
     def get_capture_group_reference_register(self) -> str:
-        return "[re]?(.)[xhl],"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],"
 
-    # TODO: implement this
     def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
         from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
@@ -208,8 +208,7 @@ class PatternNode:
 
         matching_rule = self.process_register_capture_group_name(pattern_name=pattern_name, index=index)
 
-        # return f"{index}"
-        return matching_rule
+        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
 
     @staticmethod
     def process_register_capture_group_name(pattern_name: str, index: str) -> str:

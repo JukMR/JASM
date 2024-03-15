@@ -22,6 +22,7 @@ IGNORE_INST_ADDR = r"[\dabcedf]+::"
 IGNORE_NAME_PREFIX = f"[^,|]{ASTERISK_WITH_LIMIT}"
 IGNORE_NAME_SUFFIX = f"[^,|]{ASTERISK_WITH_LIMIT},"
 
+OPTIONAL_PERCENTAGE_CHAR = "%?"
 MAX_PYTHON_INT = sys.maxsize * 2
 
 PatternDict: TypeAlias = Dict[str, Any]
@@ -88,6 +89,7 @@ class CaptureGroupMode(Enum):
 
     instruction = auto()
     operand = auto()
+    register = auto()
 
 
 class PatternNodeTypes(Enum):

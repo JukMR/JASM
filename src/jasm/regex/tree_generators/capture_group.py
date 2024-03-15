@@ -9,7 +9,11 @@ class CaptureGroupIndex:
 
     def __init__(self, pattern_node: PatternNode, mode: CaptureGroupMode) -> None:
 
-        str_index = str(pattern_node.name)
+        if mode == CaptureGroupMode.register:
+            str_index = self.remove_access_suffix(str(pattern_node.name))
+        else:
+            str_index = str(pattern_node.name)
+
         assert (
             hasattr(pattern_node.root_node, "capture_group_references")
             and pattern_node.root_node.capture_group_references is not None
@@ -18,6 +22,16 @@ class CaptureGroupIndex:
         capture_group_references = pattern_node.root_node.capture_group_references
         self.index = self._get_capture_group_reference(str_index, capture_group_references)
         self.mode = mode
+
+    @staticmethod
+    def remove_access_suffix(pattern_name: str) -> str:
+        "Remove the access suffix from the pattern name"
+
+        parts = pattern_name.split(".")
+        if parts[-1] in ["rx", "ex", "x", "h", "l", "i"]:
+            return ".".join(parts[:-1])
+
+        return pattern_name
 
     @staticmethod
     def _get_capture_group_reference(str_index: str, capture_group_references: List[str]) -> int:
@@ -34,6 +48,9 @@ class CaptureGroupIndex:
                 return rf"{IGNORE_INST_ADDR}\{self.index},\|"
 
             case CaptureGroupMode.operand:
+                return rf"\{self.index}"
+
+            case CaptureGroupMode.register:
                 return rf"\{self.index}"
 
         raise ValueError(f"Capture group mode {self.mode} not found")

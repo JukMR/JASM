@@ -72,34 +72,40 @@ class PatternNodeTypeBuilder:
     def process_capture_group(self) -> PatternNodeTypes:
         # Is Capture Group in operand or is a special register capture
         if self._is_capture_group_operand_or_special_register_capture():
-            return self._process_capture_group_operand_or_special_register_capture()
+            return self._process_capture_operand_and_register_capture()
 
         # Is Capture Group in Mnemonic
         return self._process_capture_group_mnemonic()
 
-    def _process_capture_group_operand_or_special_register_capture(self) -> PatternNodeTypes:
-        # Has this capture group been referenced before?
-        if self.has_any_ancester_who_is_capture_group_reference():
-            return self._process_operand_or_register_call()
+    def _is_capture_group_operand_or_special_register_capture(self) -> bool:
+        "Check if the current node is a capture group operand"
+        if not self.command.parent:
+            return False
 
-        return self._process_operand_or_register_reference()
+        if self.command.parent.pattern_node_type == PatternNodeTypes.mnemonic:
+            return True
 
-    def _process_operand_or_register_call(self) -> PatternNodeTypes:
-        # Is this a registry capture group?
+        return False
+
+    def _process_capture_operand_and_register_capture(self) -> PatternNodeTypes:
         if self.is_registry_capture_group():
-            return PatternNodeTypes.capture_group_call_register
+            # Register capture group
+            return RegisterCaptureGroupProcessor(self).process()
 
-        # Else is a simple reference
-        return PatternNodeTypes.capture_group_call_operand
+        # Operand capture group
+        return OperandCaptureGroupProcessor(self).process()
 
-    def _process_operand_or_register_reference(self) -> PatternNodeTypes:
-        # Return reference
-        # Add reference to the list of references
-        self.add_new_references_to_global_list()
-        if self.is_registry_capture_group():
-            return PatternNodeTypes.capture_group_reference_register
+    def is_registry_capture_group(self) -> bool:
+        "Check if the current node is a registry capture group"
+        if not self.command.name:
+            raise ValueError("Name is not defined")
 
-        return PatternNodeTypes.capture_group_reference_operand
+        assert isinstance(self.command.name, str)
+
+        if self.command.name.startswith("&anyreg"):
+            return True
+
+        return False
 
     def _process_capture_group_mnemonic(self) -> PatternNodeTypes:
         # Add this macro to refence list
@@ -180,34 +186,12 @@ class PatternNodeTypeBuilder:
             assert isinstance(self.command.name, str)
             self.command.root_node.capture_group_references.append(self.command.name)
 
-    def _is_capture_group_operand_or_special_register_capture(self) -> bool:
-        "Check if the current node is a capture group operand"
-        if not self.command.parent:
-            return False
-
-        if self.command.parent.pattern_node_type == PatternNodeTypes.mnemonic:
-            return True
-
-        return False
-
     def is_deref_property_capture_group(self) -> bool:
         "Check if the current node is a deref property capture group"
         if not self.command.parent:
             raise ValueError("Parent is not defined")
 
         if isinstance(self.command.name, str) and self.command.name.startswith("&"):
-            return True
-
-        return False
-
-    def is_registry_capture_group(self) -> bool:
-        "Check if the current node is a registry capture group"
-        if not self.command.name:
-            raise ValueError("Name is not defined")
-
-        assert isinstance(self.command.name, str)
-
-        if self.command.name.startswith("&anyreg"):
             return True
 
         return False
@@ -222,3 +206,113 @@ class PatternNodeTypeBuilder:
         if self.command.children:
             for child in self.command.children:
                 PatternNodeTypeBuilder(child).build()
+
+
+class OperandCaptureGroupProcessor:
+
+    def __init__(self, pattern_node_type_builder: PatternNodeTypeBuilder) -> None:
+        self.pattern_node = pattern_node_type_builder
+
+    def process(self) -> PatternNodeTypes:
+        return self._process_capture_group_operand()
+
+    def _process_capture_group_operand(self) -> PatternNodeTypes:
+        # Has this capture group been referenced before?
+        if self.has_any_ancester_who_is_capture_group_reference():
+            return self._process_operand_call()
+
+        return self._process_operand_reference()
+
+    def has_any_ancester_who_is_capture_group_reference(self) -> bool:
+        "Check if any ancestor is a capture group reference"
+
+        assert self.pattern_node.command.root_node
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            return False
+
+        if self.pattern_node.command.name in self.pattern_node.command.root_node.capture_group_references:
+            return True
+        return False
+
+    def _process_operand_call(self) -> PatternNodeTypes:
+        return PatternNodeTypes.capture_group_call_operand
+
+    def _process_operand_reference(self) -> PatternNodeTypes:
+        # Return reference
+        # Add reference to the list of references
+        self.add_new_references_to_global_list()
+        return PatternNodeTypes.capture_group_reference_operand
+
+    def add_new_references_to_global_list(self) -> None:
+        """Add new references to global list"""
+
+        assert self.pattern_node.command.root_node
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            self.pattern_node.command.root_node.capture_group_references = []
+
+        if self.pattern_node.command.name not in self.pattern_node.command.root_node.capture_group_references:
+            assert isinstance(self.pattern_node.command.name, str)
+            self.pattern_node.command.root_node.capture_group_references.append(self.pattern_node.command.name)
+
+
+class RegisterCaptureGroupProcessor:
+
+    def __init__(self, pattern_node: PatternNodeTypeBuilder) -> None:
+        self.pattern_node = pattern_node
+
+    def process(self) -> PatternNodeTypes:
+        return self.process_registry_capture_group()
+
+    def process_registry_capture_group(self) -> PatternNodeTypes:
+        if self.has_any_ancester_who_is_capture_group_reference_register():
+            return PatternNodeTypes.capture_group_call_register
+
+        self.add_new_references_to_global_list()
+        return PatternNodeTypes.capture_group_reference_register
+
+    def has_any_ancester_who_is_capture_group_reference_register(self) -> bool:
+        "Check if any ancestor is a capture group reference"
+
+        assert self.pattern_node.command.root_node
+        pattern_node_name = self.pattern_node.command.name
+        assert isinstance(pattern_node_name, str)
+
+        main_reference_name = self.remove_access_suffix(pattern_node_name)
+
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            return False
+
+        if main_reference_name in self.pattern_node.command.root_node.capture_group_references:
+            return True
+        return False
+
+    @staticmethod
+    def remove_access_suffix(pattern_name: str) -> str:
+        "Remove the access suffix from the pattern name"
+
+        parts = pattern_name.split(".")
+        if parts[-1] in ["rx", "ex", "x", "h", "l", "i"]:
+            return ".".join(parts[:-1])
+
+        return pattern_name
+
+    def add_new_references_to_global_list(self) -> None:
+        "Add new references to global list"
+        assert self.pattern_node.command.root_node
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            self.pattern_node.command.root_node.capture_group_references = []
+
+        assert isinstance(self.pattern_node.command.name, str)
+        pattern_node_name_without_suffix = self.remove_access_suffix(self.pattern_node.command.name)
+
+        if pattern_node_name_without_suffix not in self.pattern_node.command.root_node.capture_group_references:
+            assert isinstance(pattern_node_name_without_suffix, str)
+            self.pattern_node.command.root_node.capture_group_references.append(pattern_node_name_without_suffix)
