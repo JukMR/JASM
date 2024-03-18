@@ -1,5 +1,6 @@
 "PatternNode definition file"
 
+from abc import abstractmethod
 from itertools import permutations
 from typing import List, Optional
 
@@ -33,6 +34,12 @@ def get_pattern_node_name(
         return f"{name_prefix}{name}{name_suffix}"
     return name
 
+class PatterNodeInterface():
+
+    @abstractmethod
+     def get_regex() -> str:
+
+class DerefPropertyNode(PatternNodeInterface):
 
 class PatternNode:
     def __init__(
@@ -62,6 +69,8 @@ class PatternNode:
         self.pattern_node_type = pattern_node_type
         self.parent = parent
         self.root_node = root_node
+
+
 
     def get_regex(self, pattern_node: "PatternNode") -> str:
         """Get regex from a leaf or call a recursion over the branch."""
