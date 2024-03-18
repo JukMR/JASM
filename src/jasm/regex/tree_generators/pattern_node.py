@@ -76,7 +76,7 @@ class PatternNode:
         """Get regex from a leaf or call a recursion over the branch."""
 
         # TODO: refactor this method in `feature/refactor-pattern-node-class` branch
-        match pattern_node.pattern_node_type:
+        match self.pattern_node_type:
             case PatternNodeTypes.mnemonic | PatternNodeTypes.operand:
                 return self.process_leaf(pattern_node)
 
