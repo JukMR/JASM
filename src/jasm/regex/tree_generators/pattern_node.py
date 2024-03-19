@@ -15,6 +15,7 @@ from jasm.global_definitions import (
     PatternNodeTypes,
     TimeType,
     dict_node,
+    RegisterCaptureSuffixs,
 )
 from jasm.logging_config import logger
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
@@ -207,41 +208,136 @@ class PatternNode:
         pattern_name = pattern_node.name
         assert isinstance(pattern_name, str), "Name must be a string"
 
-        matching_rule = self.process_register_capture_group_name(pattern_name=pattern_name, index=index)
+        matching_rule = self.process_register_capture_group_name_genreg(pattern_name=pattern_name, index=index)
 
         return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
 
     @staticmethod
-    def process_register_capture_group_name(pattern_name: str, index: str) -> str:
-        """Process the register capture group name.
+    def process_register_capture_group_name_genreg(pattern_name: str, index: str) -> str:
+        """Process the register capture group name in case of genreg.
 
-        Map values
-        # .rx:    r\1x
-        # .ex:   e\1x
-        # .x:     \1x
-        # .h:    \1h
-        # .l:    \1l
-        # .i:    \1i
+        These are:
+            RAX, EAX, AX, AH, AL,
+            RBX, EBX, BX, BH, BL,
+            RCX, ECX, CX, CH, CL,
+            RDX, EDX, DX, DH, DL,
 
         """
 
-        if pattern_name.endswith(".rx"):
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
             return "r" + index + "x"
-        if pattern_name.endswith(".ex"):
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
             return "e" + index + "x"
-        if pattern_name.endswith(".x"):
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
             return index + "x"
-        if pattern_name.endswith(".h"):
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8H.value):
             return index + "h"
-        if pattern_name.endswith(".l"):
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
             return index + "l"
-        if pattern_name.endswith(".i"):
+
+        # return "[re]" + index + "[xhli]"
+        raise NotImplementedError("Register capture group name not implemented")
+
+    @staticmethod
+    def process_register_capture_group_name_indreg_d(pattern_name: str, index: str) -> str:
+        """Process the register capture group name in case of indreg.
+
+        These are:
+            RDI, EDI, DI, DIL
+        """
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
+            # Capturing an RDI or RSI
+            return "r" + index + "i"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
+            # Capturing an EDI or ESI
+            return "e" + index + "i"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
+            # Capturing an DI or SI
             return index + "i"
 
-        logger.info("Register capture group name not implemented or calling full register")
-        # raise NotImplementedError("Register capture group name not implemented")
-        # TODO: find a cleaner way to handle this
-        return "[re]" + index + "[xhli]"
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
+            # Capturing an DIL or SIL
+            return "d" + index + "l"
+
+        raise NotImplementedError("Register capture group name not implemented")
+
+    @staticmethod
+    def process_register_capture_group_name_indreg_s(pattern_name: str, index: str) -> str:
+        """Process the register capture group name in case of indreg.
+
+        These are:
+            RSI, ESI, SI, SIL
+        """
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
+            # Capturing an RDI or RSI
+            return "r" + index + "i"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
+            # Capturing an EDI or ESI
+            return "e" + index + "i"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
+            # Capturing an DI or SI
+            return index + "i"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
+            # Capturing an DIL or SIL
+            return "s" + index + "l"
+
+        raise NotImplementedError("Register capture group name not implemented")
+
+    @staticmethod
+    def process_register_capture_group_name_stackreg(pattern_name: str, index: str) -> str:
+        """Process the register capture group name in case of stackreg.
+        These are:
+            RSP, ESP, SP, SPL
+
+        """
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
+            # Capturing an RSP
+            return "r" + index + "p"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
+            # Capturing an ESP
+            return "e" + index + "p"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
+            # Capturing an SP
+            return index + "p"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
+            # Capturing an SPL
+            return "s" + index + "l"
+
+        raise NotImplementedError("Register capture group name not implemented")
+
+    @staticmethod
+    def process_register_capture_group_name_basereg(pattern_name: str, index: str) -> str:
+        """Process the register capture group name in case of basereg.
+        These are:
+            RBP, EBP, BP, BPL
+        """
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
+            # Capturing an RBP
+            return "r" + index + "p"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
+            # Capturing an EBP
+            return "e" + index + "p"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
+            # Capturing an BP
+            return index + "p"
+
+        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
+            # Capturing an BPL
+            return "b" + index + "l"
+
+        raise NotImplementedError("Register capture group name not implemented")
 
 
 class RegexWithOperandsCreator:

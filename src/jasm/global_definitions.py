@@ -192,3 +192,19 @@ class Instruction:
 
 class BinaryFileFormatNotSupported(Exception):
     "Exception for binary file format not supported by disassembler"
+
+
+class RegisterCaptureSuffixs(Enum):
+    SUFFIX_64 = "64"
+    SUFFIX_32 = "32"
+    SUFFIX_16 = "16"
+    SUFFIX_8H = "8h"
+    SUFFIX_8L = "8l"
+
+
+class RegisterCapturePrefix(Enum):
+    genreg = auto()
+    indreg_d = auto()
+    indreg_s = auto()
+    stackreg = auto()
+    basereg = auto()
