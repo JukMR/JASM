@@ -292,3 +292,7 @@ test_capture_groups_references:
   - title: "oren_rule_att_with_capture_groups_macro_subtree_expansion"
     yaml: "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml"
     cc_deref: ['\1', '\2']
+
+  - title: "jesse_rule_with_special_register_capture_group"
+    yaml: "tests/yamls/jesse_rule_with_register_capture_group.yaml"
+    cc_deref: ['\1', '\2', '\3']
