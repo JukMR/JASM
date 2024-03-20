@@ -196,21 +196,45 @@ class PatternNode:
 
     # TODO: implement this
     def get_capture_group_reference_register(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhli],"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[rebp]?(.)[xhlip],"
 
     def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
-        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex  # pylint:disable=import-outside-toplevel
 
         capture_group_instance = CaptureGroupIndex(pattern_node=pattern_node, mode=capture_group_mode)
         index = capture_group_instance.to_regex()
 
+        matching_rule = self.process_register_capture_group_name_based_on_register_type(
+            pattern_node=pattern_node, index=index
+        )
+
+        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
+
+    def process_register_capture_group_name_based_on_register_type(
+        self, pattern_node: "PatternNode", index: str
+    ) -> str:
+        """Process the register capture group name based on the register special type."""
+
         pattern_name = pattern_node.name
         assert isinstance(pattern_name, str), "Name must be a string"
 
-        matching_rule = self.process_register_capture_group_name_genreg(pattern_name=pattern_name, index=index)
+        if pattern_name.startswith("&genreg"):
+            return self.process_register_capture_group_name_genreg(pattern_name=pattern_name, index=index)
 
-        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
+        if pattern_name.startswith("&indreg_d"):
+            return self.process_register_capture_group_name_indreg_d(pattern_name=pattern_name, index=index)
+
+        if pattern_name.startswith("&indreg_s"):
+            return self.process_register_capture_group_name_indreg_s(pattern_name=pattern_name, index=index)
+
+        if pattern_name.startswith("&stackreg"):
+            return self.process_register_capture_group_name_stackreg(pattern_name=pattern_name, index=index)
+
+        if pattern_name.startswith("&basereg"):
+            return self.process_register_capture_group_name_basereg(pattern_name=pattern_name, index=index)
+
+        raise NotImplementedError(f"Register capture group name {pattern_name} not implemented")
 
     @staticmethod
     def process_register_capture_group_name_genreg(pattern_name: str, index: str) -> str:
@@ -240,7 +264,7 @@ class PatternNode:
 
     @staticmethod
     def process_register_capture_group_name_indreg_d(pattern_name: str, index: str) -> str:
-        """Process the register capture group name in case of indreg.
+        """Process the register capture group name in case of indreg_d.
 
         These are:
             RDI, EDI, DI, DIL
@@ -266,7 +290,7 @@ class PatternNode:
 
     @staticmethod
     def process_register_capture_group_name_indreg_s(pattern_name: str, index: str) -> str:
-        """Process the register capture group name in case of indreg.
+        """Process the register capture group name in case of indreg_s.
 
         These are:
             RSI, ESI, SI, SIL

@@ -100,9 +100,16 @@ class PatternNodeTypeBuilder:
         if not self.command.name:
             raise ValueError("Name is not defined")
 
-        assert isinstance(self.command.name, str)
+        com_name = self.command.name
+        assert isinstance(com_name, str)
 
-        if self.command.name.startswith("&anyreg"):
+        if (
+            com_name.startswith("&genreg")
+            or com_name.startswith("&indreg_d")
+            or com_name.startswith("&indreg_s")
+            or com_name.startswith("&stackreg")
+            or com_name.startswith("&basereg")
+        ):
             return True
 
         return False

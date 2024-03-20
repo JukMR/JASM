@@ -6,8 +6,8 @@ config:
 pattern:
   - add:
       - 1
-      - "&indreg_d-1"
+      - "&basereg-1"
   - mov:
-      - "&indreg_d-1.16"
-      - "&indreg_d-1.32"
+      - "&basereg-1.16"
+      - "&basereg-1.32"
   - jmp

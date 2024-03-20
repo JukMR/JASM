@@ -1,6 +1,6 @@
 from typing import List
 
-from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode
+from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode, RegisterCaptureSuffixs
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
@@ -28,7 +28,8 @@ class CaptureGroupIndex:
         "Remove the access suffix from the pattern name"
 
         parts = pattern_name.split(".")
-        if parts[-1] in ["rx", "ex", "x", "h", "l", "i"]:
+        possible_register_suffix = [suffix.value for suffix in RegisterCaptureSuffixs]
+        if parts[-1] in possible_register_suffix:
             return ".".join(parts[:-1])
 
         return pattern_name

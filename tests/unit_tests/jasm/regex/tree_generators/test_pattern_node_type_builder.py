@@ -100,11 +100,9 @@ def test_recursive_build():
 
 
 def test_remove_access_suffix():
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.rx") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.ex") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.x") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.h") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.l") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.i") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.32") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.16") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.8l") == "pattern"
+    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.8h") == "pattern"
     assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern") == "pattern"
     assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.other") == "pattern.other"

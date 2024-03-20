@@ -230,10 +230,35 @@ test_matching:
     assembly: "tests/assembly/jesse_rule_matching.s"
     expected: True
 
+  - title: "Jesse rule assembly register capture group and special capture group notation"
+    yaml: "tests/yamls/jesse_rule_with_register_capture_group_and_special_capture_group_notation.yaml"
+    assembly: "tests/assembly/jesse_rule_matching.s"
+    expected: True
+
   - title: "Register capture group example 1"
     yaml: "tests/yamls/register_capture_group_example.yaml"
     assembly: "tests/source_test_files/register_capture_groups/main.s"
     expected: True
+
+  - title: "Register capture group example 2"
+    yaml: "tests/yamls/register_capture_group_example_2.yaml"
+    assembly: "tests/source_test_files/register_capture_groups/main.s"
+    expected: False
+
+  - title: "Register capture group example 3"
+    yaml: "tests/yamls/register_capture_group_example_3.yaml"
+    assembly: "tests/source_test_files/register_capture_groups/main.s"
+    expected: False
+
+  - title: "Register capture group example 4"
+    yaml: "tests/yamls/register_capture_group_example_4.yaml"
+    assembly: "tests/source_test_files/register_capture_groups/main.s"
+    expected: False
+
+  - title: "Register capture group example 5"
+    yaml: "tests/yamls/register_capture_group_example_5.yaml"
+    assembly: "tests/source_test_files/register_capture_groups/main.s"
+    expected: False
 
 test_parsing_lines:
   - title: "binary_data.s"
@@ -293,6 +318,30 @@ test_capture_groups_references:
     yaml: "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml"
     cc_deref: ['\1', '\2']
 
-  - title: "jesse_rule_with_special_register_capture_group"
+  - title: "jesse_rule_with_register_capture_group"
     yaml: "tests/yamls/jesse_rule_with_register_capture_group.yaml"
     cc_deref: ['\1', '\2', '\3']
+
+  - title: "jesse_rule_with_register_capture_group and special capture group notation"
+    yaml: "tests/yamls/jesse_rule_with_register_capture_group_and_special_capture_group_notation.yaml"
+    cc_deref: ['\1', '\2', '\3']
+
+  - title: "register_capture_group_example"
+    yaml: "tests/yamls/register_capture_group_example.yaml"
+    cc_deref: ['\1']
+
+  - title: "register_capture_group_example"
+    yaml: "tests/yamls/register_capture_group_example_2.yaml"
+    cc_deref: ['\1']
+
+  - title: "register_capture_group_example"
+    yaml: "tests/yamls/register_capture_group_example_3.yaml"
+    cc_deref: ['\1']
+
+  - title: "register_capture_group_example"
+    yaml: "tests/yamls/register_capture_group_example_4.yaml"
+    cc_deref: ['\1']
+
+  - title: "register_capture_group_example"
+    yaml: "tests/yamls/register_capture_group_example_5.yaml"
+    cc_deref: ['\1']

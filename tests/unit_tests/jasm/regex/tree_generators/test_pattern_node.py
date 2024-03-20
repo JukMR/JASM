@@ -159,12 +159,12 @@ def test_branch_processor_and() -> None:
 
 
 def test_process_register_capture_group_name():
-    assert PatternNode.process_register_capture_group_name("pattern.rx", "1") == "r1x"
-    assert PatternNode.process_register_capture_group_name("pattern.ex", "2") == "e2x"
-    assert PatternNode.process_register_capture_group_name("pattern.x", "3") == "3x"
-    assert PatternNode.process_register_capture_group_name("pattern.h", "4") == "4h"
-    assert PatternNode.process_register_capture_group_name("pattern.l", "5") == "5l"
-    assert PatternNode.process_register_capture_group_name("pattern.i", "6") == "6i"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.64", "1") == "r1x"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.32", "2") == "e2x"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.16", "3") == "3x"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.8h", "4") == "4h"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.8l", "5") == "5l"
+    assert PatternNode.process_register_capture_group_name_indreg_s("&indreg_s.16", "6") == "6i"
 
     with pytest.raises(NotImplementedError):
-        PatternNode.process_register_capture_group_name("pattern.unknown", "7")
+        PatternNode.process_register_capture_group_name_genreg("&pattern.unknown", "7")
