@@ -207,19 +207,39 @@ class PatternNode:
         return r"([^,|]+)"  # Get the deref property value
 
     def get_capture_group_reference_register_genreg(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],"
+        # The comma is optional just for when this is under a deref
+        # On deref the comma should not be present
+        # TODO: find a way to implement this cleaner
+        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],?"
 
     def get_capture_group_reference_register_indreg_d(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(di)l?,"
+        # The comma is optional just for when this is under a deref
+        # On deref the comma should not be present
+        # TODO: find a way to implement this cleaner
+        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(di)l?,"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(di)l?,?"
 
     def get_capture_group_reference_register_indreg_s(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(si)l?,"
+        # The comma is optional just for when this is under a deref
+        # On deref the comma should not be present
+        # TODO: find a way to implement this cleaner
+        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(si)l?,"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(si)l?,?"
 
     def get_capture_group_reference_register_stackreg(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?,"
+        # The comma is optional just for when this is under a deref
+        # On deref the comma should not be present
+        # TODO: find a way to implement this cleaner
+        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?,"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?,?"
 
     def get_capture_group_reference_register_basereg(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?,"
+        # The comma is optional just for when this is under a deref
+        # On deref the comma should not be present
+        # TODO: find a way to implement this cleaner
+        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?,"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?,?"
 
     def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
@@ -232,7 +252,11 @@ class PatternNode:
             pattern_node=pattern_node, index=index
         )
 
-        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
+        # return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
+        # The comma is optional just for when this is under a deref
+        # On deref the comma should not be present
+        # TODO: find a way to implement this cleaner
+        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ",?"
 
     def process_register_capture_group_name_based_on_register_type(
         self, pattern_node: "PatternNode", index: str

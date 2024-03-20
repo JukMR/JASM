@@ -451,6 +451,22 @@
             ]
         },
         {
+            "name": "Jesse rule assembly matching only with register capture and special capture group notation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "--all-matches",
+                "-p",
+                "tests/yamls/jesse_rule_with_register_capture_group_and_special_capture_group_notation.yaml",
+                "-s",
+                "tests/assembly/jesse_rule_matching.s",
+            ]
+        },
+        {
             "name": "Register capture group example 1",
             "type": "debugpy",
             "request": "launch",

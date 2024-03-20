@@ -42,11 +42,17 @@ class PatternNodeTypeBuilder:
     def get_type_when_str(self, name: str) -> Optional[PatternNodeTypes]:
         """Get the type of the node when the name is a string."""
 
+        # CAPTURE GROUP TYPES
+        # Is a capture group reference
+
         if name == "$deref":
             return PatternNodeTypes.deref
 
         if self.is_ancestor_deref():
             if self.is_deref_property_capture_group():
+
+                if self.is_registry_capture_group():
+                    return RegisterCaptureGroupProcessor(self).process()
 
                 if self.has_any_ancester_who_is_capture_group_reference():
                     return PatternNodeTypes.deref_property_capture_group_call
@@ -55,8 +61,6 @@ class PatternNodeTypeBuilder:
                 return PatternNodeTypes.deref_property_capture_group_reference
             return PatternNodeTypes.deref_property
 
-        # CAPTURE GROUP TYPES
-        # Is a capture group reference
         if name.startswith("&"):
             return self.process_capture_group()
 
