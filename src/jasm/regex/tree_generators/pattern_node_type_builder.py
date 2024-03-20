@@ -1,4 +1,5 @@
 from typing import Optional
+
 from jasm.global_definitions import PatternNodeTypes, RegisterCaptureSuffixs
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
@@ -279,7 +280,9 @@ class RegisterCaptureGroupProcessor:
             return PatternNodeTypes.capture_group_call_register
 
         self.add_new_references_to_global_list()
-        return PatternNodeTypes.capture_group_reference_register
+
+        # Decide which type of register capture group it is
+        return SpecialRegisterCaptureGroupTypeDecider(pattern_node=self.pattern_node).process()
 
     def has_any_ancester_who_is_capture_group_reference_register(self) -> bool:
         "Check if any ancestor is a capture group reference"
@@ -324,3 +327,59 @@ class RegisterCaptureGroupProcessor:
         if pattern_node_name_without_suffix not in self.pattern_node.command.root_node.capture_group_references:
             assert isinstance(pattern_node_name_without_suffix, str)
             self.pattern_node.command.root_node.capture_group_references.append(pattern_node_name_without_suffix)
+
+
+class SpecialRegisterCaptureGroupTypeDecider:
+
+    def __init__(self, pattern_node: PatternNodeTypeBuilder) -> None:
+        self.pattern_node: PatternNodeTypeBuilder = pattern_node
+
+        assert isinstance(pattern_node.command.name, str)
+        self.pattern_name: str = pattern_node.command.name
+
+    def process(self) -> PatternNodeTypes:
+        return self._decide_and_process_capture_group_reference_register_based_on_type()
+
+    def _decide_and_process_capture_group_reference_register_based_on_type(self) -> PatternNodeTypes:
+
+        if self.is_genreg():
+            return PatternNodeTypes.capture_group_reference_register_genreg
+        if self.is_indreg_d():
+            return PatternNodeTypes.capture_group_reference_register_indreg_d
+        if self.is_indreg_s():
+            return PatternNodeTypes.capture_group_reference_register_indreg_s
+        if self.is_stackreg():
+            return PatternNodeTypes.capture_group_reference_register_stackreg
+        if self.is_basereg():
+            return PatternNodeTypes.capture_group_reference_register_basereg
+        raise ValueError("Register type not found")
+
+    def is_genreg(self) -> bool:
+        "Check if the current node is a genreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&genreg")
+
+    def is_indreg_d(self) -> bool:
+        "Check if the current node is an indreg_d"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&indreg_d")
+
+    def is_indreg_s(self) -> bool:
+        "Check if the current node is an indreg_s"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&indreg_s")
+
+    def is_stackreg(self) -> bool:
+        "Check if the current node is a stackreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&stackreg")
+
+    def is_basereg(self) -> bool:
+        "Check if the current node is a basereg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&basereg")

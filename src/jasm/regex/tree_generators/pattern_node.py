@@ -93,8 +93,20 @@ class PatternNode:
             case PatternNodeTypes.deref_property_capture_group_call:
                 return self.get_capture_group_call(pattern_node, CaptureGroupMode.operand)
 
-            case PatternNodeTypes.capture_group_reference_register:
-                return self.get_capture_group_reference_register()
+            case PatternNodeTypes.capture_group_reference_register_genreg:
+                return self.get_capture_group_reference_register_genreg()
+
+            case PatternNodeTypes.capture_group_reference_register_indreg_d:
+                return self.get_capture_group_reference_register_indreg_d()
+
+            case PatternNodeTypes.capture_group_reference_register_indreg_s:
+                return self.get_capture_group_reference_register_indreg_s()
+
+            case PatternNodeTypes.capture_group_reference_register_stackreg:
+                return self.get_capture_group_reference_register_stackreg()
+
+            case PatternNodeTypes.capture_group_reference_register_basereg:
+                return self.get_capture_group_reference_register_basereg()
 
             case PatternNodeTypes.capture_group_call_register:
                 return self.get_capture_group_register_call(pattern_node, CaptureGroupMode.register)
@@ -194,9 +206,20 @@ class PatternNode:
     def get_capture_group_reference_deref(self) -> str:
         return r"([^,|]+)"  # Get the deref property value
 
-    # TODO: implement this
-    def get_capture_group_reference_register(self) -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[rebp]?(.)[xhlip],"
+    def get_capture_group_reference_register_genreg(self) -> str:
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],"
+
+    def get_capture_group_reference_register_indreg_d(self) -> str:
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(di)l?,"
+
+    def get_capture_group_reference_register_indreg_s(self) -> str:
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(si)l?,"
+
+    def get_capture_group_reference_register_stackreg(self) -> str:
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?,"
+
+    def get_capture_group_reference_register_basereg(self) -> str:
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?,"
 
     def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
@@ -249,17 +272,25 @@ class PatternNode:
         """
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
+            # Capturing an RAX, RBX, RCX, RDX
             return "r" + index + "x"
+
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
+            # Capturing an EAX, EBX, ECX, EDX
             return "e" + index + "x"
+
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
+            # Capturing an AX, BX, CX, DX
             return index + "x"
+
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8H.value):
+            # Capturing an AH, BH, CH, DH
             return index + "h"
+
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
+            # Capturing an AL, BL, CL, DL
             return index + "l"
 
-        # return "[re]" + index + "[xhli]"
         raise NotImplementedError("Register capture group name not implemented")
 
     @staticmethod
@@ -271,20 +302,20 @@ class PatternNode:
         """
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
-            # Capturing an RDI or RSI
-            return "r" + index + "i"
+            # Capturing an RDI
+            return "r" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
-            # Capturing an EDI or ESI
-            return "e" + index + "i"
+            # Capturing an EDI
+            return "e" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
-            # Capturing an DI or SI
-            return index + "i"
+            # Capturing an DI
+            return index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
-            # Capturing an DIL or SIL
-            return "d" + index + "l"
+            # Capturing an DIL
+            return index + "l"
 
         raise NotImplementedError("Register capture group name not implemented")
 
@@ -297,20 +328,20 @@ class PatternNode:
         """
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
-            # Capturing an RDI or RSI
-            return "r" + index + "i"
+            # Capturing an RSI
+            return "r" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
-            # Capturing an EDI or ESI
-            return "e" + index + "i"
+            # Capturing an ESI
+            return "e" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
-            # Capturing an DI or SI
-            return index + "i"
+            # Capturing an SI
+            return index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
-            # Capturing an DIL or SIL
-            return "s" + index + "l"
+            # Capturing an SIL
+            return index + "l"
 
         raise NotImplementedError("Register capture group name not implemented")
 
@@ -323,19 +354,19 @@ class PatternNode:
         """
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
             # Capturing an RSP
-            return "r" + index + "p"
+            return "r" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
             # Capturing an ESP
-            return "e" + index + "p"
+            return "e" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
             # Capturing an SP
-            return index + "p"
+            return index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
             # Capturing an SPL
-            return "s" + index + "l"
+            return index + "l"
 
         raise NotImplementedError("Register capture group name not implemented")
 
@@ -347,19 +378,19 @@ class PatternNode:
         """
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
             # Capturing an RBP
-            return "r" + index + "p"
+            return "r" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
             # Capturing an EBP
-            return "e" + index + "p"
+            return "e" + index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
             # Capturing an BP
-            return index + "p"
+            return index
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
             # Capturing an BPL
-            return "b" + index + "l"
+            return index + "l"
 
         raise NotImplementedError("Register capture group name not implemented")
 

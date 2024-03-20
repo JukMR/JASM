@@ -236,7 +236,7 @@ test_matching:
     expected: True
 
   - title: "Register capture group example 1"
-    yaml: "tests/yamls/register_capture_group_example.yaml"
+    yaml: "tests/yamls/register_capture_group_example_1.yaml"
     assembly: "tests/source_test_files/register_capture_groups/main.s"
     expected: True
 
@@ -326,22 +326,22 @@ test_capture_groups_references:
     yaml: "tests/yamls/jesse_rule_with_register_capture_group_and_special_capture_group_notation.yaml"
     cc_deref: ['\1', '\2', '\3']
 
-  - title: "register_capture_group_example"
-    yaml: "tests/yamls/register_capture_group_example.yaml"
+  - title: "register_capture_group_example 1"
+    yaml: "tests/yamls/register_capture_group_example_1.yaml"
     cc_deref: ['\1']
 
-  - title: "register_capture_group_example"
+  - title: "register_capture_group_example 2"
     yaml: "tests/yamls/register_capture_group_example_2.yaml"
     cc_deref: ['\1']
 
-  - title: "register_capture_group_example"
+  - title: "register_capture_group_example 3"
     yaml: "tests/yamls/register_capture_group_example_3.yaml"
     cc_deref: ['\1']
 
-  - title: "register_capture_group_example"
+  - title: "register_capture_group_example 4"
     yaml: "tests/yamls/register_capture_group_example_4.yaml"
     cc_deref: ['\1']
 
-  - title: "register_capture_group_example"
+  - title: "register_capture_group_example 5"
     yaml: "tests/yamls/register_capture_group_example_5.yaml"
     cc_deref: ['\1']
