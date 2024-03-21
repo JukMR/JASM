@@ -110,8 +110,7 @@ class PatternNodeTypeBuilder:
 
         if (
             com_name.startswith("&genreg")
-            or com_name.startswith("&indreg_d")
-            or com_name.startswith("&indreg_s")
+            or com_name.startswith("&indreg")
             or com_name.startswith("&stackreg")
             or com_name.startswith("&basereg")
         ):
@@ -348,14 +347,13 @@ class SpecialRegisterCaptureGroupTypeDecider:
 
         if self.is_genreg():
             return PatternNodeTypes.capture_group_reference_register_genreg
-        if self.is_indreg_d():
-            return PatternNodeTypes.capture_group_reference_register_indreg_d
-        if self.is_indreg_s():
-            return PatternNodeTypes.capture_group_reference_register_indreg_s
+        if self.is_indreg():
+            return PatternNodeTypes.capture_group_reference_register_indreg
         if self.is_stackreg():
             return PatternNodeTypes.capture_group_reference_register_stackreg
         if self.is_basereg():
             return PatternNodeTypes.capture_group_reference_register_basereg
+
         raise ValueError("Register type not found")
 
     def is_genreg(self) -> bool:
@@ -364,17 +362,11 @@ class SpecialRegisterCaptureGroupTypeDecider:
             return False
         return self.pattern_name.startswith("&genreg")
 
-    def is_indreg_d(self) -> bool:
-        "Check if the current node is an indreg_d"
+    def is_indreg(self) -> bool:
+        "Check if the current node is an indreg"
         if not self.pattern_name:
             return False
-        return self.pattern_name.startswith("&indreg_d")
-
-    def is_indreg_s(self) -> bool:
-        "Check if the current node is an indreg_s"
-        if not self.pattern_name:
-            return False
-        return self.pattern_name.startswith("&indreg_s")
+        return self.pattern_name.startswith("&indreg")
 
     def is_stackreg(self) -> bool:
         "Check if the current node is a stackreg"

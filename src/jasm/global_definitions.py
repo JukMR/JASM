@@ -11,6 +11,8 @@ from typing import Any, Dict, Final, List, Optional, TypeAlias
 # lookaheads failing to match the existing pattern
 ASTERISK_WITH_LIMIT = r"{0,1000}"
 
+OPTIONAL_COMMA = r",?"
+
 INSTRUCTION_SEPARATOR = r"\|"
 SKIP_TO_END_OF_OPERAND = f"[^,|]{ASTERISK_WITH_LIMIT},"
 SKIP_TO_END_OF_PATTERN_NODE = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
@@ -108,8 +110,7 @@ class PatternNodeTypes(Enum):
     capture_group_reference_operand = auto()
     capture_group_call_operand = auto()
     capture_group_reference_register_genreg = auto()
-    capture_group_reference_register_indreg_d = auto()
-    capture_group_reference_register_indreg_s = auto()
+    capture_group_reference_register_indreg = auto()
     capture_group_reference_register_stackreg = auto()
     capture_group_reference_register_basereg = auto()
 
@@ -209,7 +210,6 @@ class RegisterCaptureSuffixs(Enum):
 
 class RegisterCapturePrefix(Enum):
     genreg = auto()
-    indreg_d = auto()
-    indreg_s = auto()
+    indreg = auto()
     stackreg = auto()
     basereg = auto()

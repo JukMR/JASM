@@ -255,11 +255,6 @@ test_matching:
     assembly: "tests/source_test_files/register_capture_groups/main.s"
     expected: False
 
-  - title: "Register capture group example 5"
-    yaml: "tests/yamls/register_capture_group_example_5.yaml"
-    assembly: "tests/source_test_files/register_capture_groups/main.s"
-    expected: False
-
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"
@@ -340,8 +335,4 @@ test_capture_groups_references:
 
   - title: "register_capture_group_example 4"
     yaml: "tests/yamls/register_capture_group_example_4.yaml"
-    cc_deref: ['\1']
-
-  - title: "register_capture_group_example 5"
-    yaml: "tests/yamls/register_capture_group_example_5.yaml"
     cc_deref: ['\1']

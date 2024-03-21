@@ -9,6 +9,7 @@ from jasm.global_definitions import (
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
+    OPTIONAL_COMMA,
     OPTIONAL_PERCENTAGE_CHAR,
     SKIP_TO_END_OF_PATTERN_NODE,
     CaptureGroupMode,
@@ -96,11 +97,8 @@ class PatternNode:
             case PatternNodeTypes.capture_group_reference_register_genreg:
                 return self.get_capture_group_reference_register_genreg()
 
-            case PatternNodeTypes.capture_group_reference_register_indreg_d:
-                return self.get_capture_group_reference_register_indreg_d()
-
-            case PatternNodeTypes.capture_group_reference_register_indreg_s:
-                return self.get_capture_group_reference_register_indreg_s()
+            case PatternNodeTypes.capture_group_reference_register_indreg:
+                return self.get_capture_group_reference_register_indreg()
 
             case PatternNodeTypes.capture_group_reference_register_stackreg:
                 return self.get_capture_group_reference_register_stackreg()
@@ -210,36 +208,33 @@ class PatternNode:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
+
         # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],"
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl],?"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl]{OPTIONAL_COMMA}"
 
-    def get_capture_group_reference_register_indreg_d(self) -> str:
+    def get_capture_group_reference_register_indreg(self) -> str:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
-        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(di)l?,"
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(di)l?,?"
 
-    def get_capture_group_reference_register_indreg_s(self) -> str:
-        # The comma is optional just for when this is under a deref
-        # On deref the comma should not be present
-        # TODO: find a way to implement this cleaner
-        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(si)l?,"
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(si)l?,?"
+        # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?([sd])il?,"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?([sd])il?{OPTIONAL_COMMA}"
 
     def get_capture_group_reference_register_stackreg(self) -> str:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
+
         # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?,"
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?,?"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?{OPTIONAL_COMMA}"
 
     def get_capture_group_reference_register_basereg(self) -> str:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
+
         # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?,"
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?,?"
+        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?{OPTIONAL_COMMA}"
 
     def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
 
@@ -256,7 +251,8 @@ class PatternNode:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
-        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ",?"
+
+        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + OPTIONAL_COMMA
 
     def process_register_capture_group_name_based_on_register_type(
         self, pattern_node: "PatternNode", index: str
@@ -269,11 +265,8 @@ class PatternNode:
         if pattern_name.startswith("&genreg"):
             return self.process_register_capture_group_name_genreg(pattern_name=pattern_name, index=index)
 
-        if pattern_name.startswith("&indreg_d"):
-            return self.process_register_capture_group_name_indreg_d(pattern_name=pattern_name, index=index)
-
-        if pattern_name.startswith("&indreg_s"):
-            return self.process_register_capture_group_name_indreg_s(pattern_name=pattern_name, index=index)
+        if pattern_name.startswith("&indreg"):
+            return self.process_register_capture_group_name_indreg(pattern_name=pattern_name, index=index)
 
         if pattern_name.startswith("&stackreg"):
             return self.process_register_capture_group_name_stackreg(pattern_name=pattern_name, index=index)
@@ -318,54 +311,30 @@ class PatternNode:
         raise NotImplementedError("Register capture group name not implemented")
 
     @staticmethod
-    def process_register_capture_group_name_indreg_d(pattern_name: str, index: str) -> str:
-        """Process the register capture group name in case of indreg_d.
+    def process_register_capture_group_name_indreg(pattern_name: str, index: str) -> str:
+        """Process the register capture group name in case of indreg_d and indreg_s.
 
         These are:
             RDI, EDI, DI, DIL
+            RSI, ESI, SI, SIL
+
         """
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
             # Capturing an RDI
-            return "r" + index
+            return "r" + index + "i"
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
             # Capturing an EDI
-            return "e" + index
+            return "e" + index + "i"
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
             # Capturing an DI
-            return index
+            return index + "i"
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
             # Capturing an DIL
-            return index + "l"
-
-        raise NotImplementedError("Register capture group name not implemented")
-
-    @staticmethod
-    def process_register_capture_group_name_indreg_s(pattern_name: str, index: str) -> str:
-        """Process the register capture group name in case of indreg_s.
-
-        These are:
-            RSI, ESI, SI, SIL
-        """
-
-        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
-            # Capturing an RSI
-            return "r" + index
-
-        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
-            # Capturing an ESI
-            return "e" + index
-
-        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
-            # Capturing an SI
-            return index
-
-        if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
-            # Capturing an SIL
-            return index + "l"
+            return index + "il"
 
         raise NotImplementedError("Register capture group name not implemented")
 

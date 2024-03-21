@@ -165,15 +165,10 @@ def test_process_register_capture_group_name():
     assert PatternNode.process_register_capture_group_name_genreg("&genreg.8h", "4") == "4h"
     assert PatternNode.process_register_capture_group_name_genreg("&genreg.8l", "5") == "5l"
 
-    assert PatternNode.process_register_capture_group_name_indreg_s("&indreg_s.64", "1") == "r1"
-    assert PatternNode.process_register_capture_group_name_indreg_s("&indreg_s.32", "2") == "e2"
-    assert PatternNode.process_register_capture_group_name_indreg_s("&indreg_s.16", "3") == "3"
-    assert PatternNode.process_register_capture_group_name_indreg_s("&indreg_s.8l", "4") == "4l"
-
-    assert PatternNode.process_register_capture_group_name_indreg_d("&indreg_d.64", "1") == "r1"
-    assert PatternNode.process_register_capture_group_name_indreg_d("&indreg_d.32", "2") == "e2"
-    assert PatternNode.process_register_capture_group_name_indreg_d("&indreg_d.16", "3") == "3"
-    assert PatternNode.process_register_capture_group_name_indreg_d("&indreg_d.8l", "4") == "4l"
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.64", "1") == "r1i"
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.32", "2") == "e2i"
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.16", "3") == "3i"
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.8l", "4") == "4il"
 
     assert PatternNode.process_register_capture_group_name_basereg("&basereg.64", "1") == "r1"
     assert PatternNode.process_register_capture_group_name_basereg("&basereg.32", "2") == "e2"

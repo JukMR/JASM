@@ -477,7 +477,7 @@
                 "--debug",
                 "--all-matches",
                 "-p",
-                "tests/yamls/register_capture_group_example.yaml",
+                "tests/yamls/register_capture_group_example_1.yaml",
                 "-s",
                 "tests/source_test_files/register_capture_groups/main.s",
             ]
