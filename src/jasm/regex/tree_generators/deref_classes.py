@@ -80,7 +80,7 @@ class DerefObjectBuilder:
         # Transform PatterNode into regexs
 
         get_regex_function = self.parent.get_regex
-        main_reg_regex = get_regex_function(main_reg)
+        main_reg_regex = get_regex_function()
         constant_offset_regex = get_regex_function(constant_offset) if constant_offset else None
         register_multiplier_regex = get_regex_function(register_multiplier) if register_multiplier else None
         constant_multiplier_regex = get_regex_function(constant_multiplier) if constant_multiplier else None

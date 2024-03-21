@@ -53,14 +53,14 @@ def pattern_node_fixture():
 def test_get_regex_mnemonic(pattern_node_fixture: PatternNode) -> None:
     pattern_node_fixture.pattern_node_type = PatternNodeTypes.mnemonic
     pattern_node_fixture.process_leaf = MagicMock(return_value="leaf_regex")
-    assert pattern_node_fixture.get_regex(pattern_node_fixture) == "leaf_regex"
+    assert pattern_node_fixture.get_regex() == "leaf_regex"
     pattern_node_fixture.process_leaf.assert_called_once()
 
 
 def test_get_regex_operand(pattern_node_fixture: PatternNode) -> None:
     pattern_node_fixture.pattern_node_type = PatternNodeTypes.operand
     pattern_node_fixture.process_leaf = MagicMock(return_value="leaf_regex")
-    assert pattern_node_fixture.get_regex(pattern_node_fixture) == "leaf_regex"
+    assert pattern_node_fixture.get_regex() == "leaf_regex"
     pattern_node_fixture.process_leaf.assert_called_once()
 
 
@@ -69,9 +69,7 @@ def test_process_leaf_no_children(pattern_node_fixture: PatternNode):
     pattern_node_fixture.pattern_node_type = PatternNodeTypes.operand
     pattern_node_fixture.children = None
     # Assuming sanitize_operand_name works correctly
-    assert (
-        pattern_node_fixture.process_leaf(pattern_node_fixture) == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
-    )
+    assert pattern_node_fixture.process_leaf() == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
 
 
 def test_process_leaf_with_children(pattern_node_fixture: PatternNode):
@@ -88,7 +86,7 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNode):
     )
     pattern_node_fixture.children = [child_pattern_node]
     # Assuming generate_regex works correctly
-    assert "pattern_node_with_children" in pattern_node_fixture.process_leaf(pattern_node_fixture)
+    assert "pattern_node_with_children" in pattern_node_fixture.process_leaf()
 
 
 def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNode):
@@ -125,7 +123,7 @@ def test_process_branch_and(pattern_node_fixture: PatternNode):
     pattern_node_fixture.name = "$and"
     pattern_node_fixture.pattern_node_type = PatternNodeTypes.node  # or appropriate type
 
-    regex = pattern_node_fixture.process_branch(pattern_node_fixture)
+    regex = pattern_node_fixture.process_branch()
 
     print(mock_child1.name)
     assert (

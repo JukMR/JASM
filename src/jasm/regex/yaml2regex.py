@@ -35,7 +35,7 @@ class Yaml2Regex(File2Regex):
         rule_tree = self._generate_rule_tree(patterns=patterns)
 
         # Process the rule tree and generate the regex
-        output_regex = rule_tree.get_regex(rule_tree)
+        output_regex = rule_tree.get_regex()
 
         # Log regex results
         logger.debug("The output regex is:\n%s\n", output_regex)

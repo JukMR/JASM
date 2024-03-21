@@ -34,12 +34,14 @@ def get_pattern_node_name(
         return f"{name_prefix}{name}{name_suffix}"
     return name
 
-class PatterNodeInterface():
 
-    @abstractmethod
-     def get_regex() -> str:
+# class PatterNodeInterface():
 
-class DerefPropertyNode(PatternNodeInterface):
+#     @abstractmethod
+#      def get_regex() -> str:
+
+# class DerefPropertyNode(PatternNodeInterface):
+
 
 class PatternNode:
     def __init__(
@@ -70,18 +72,16 @@ class PatternNode:
         self.parent = parent
         self.root_node = root_node
 
-
-
-    def get_regex(self, pattern_node: "PatternNode") -> str:
+    def get_regex(self) -> str:
         """Get regex from a leaf or call a recursion over the branch."""
 
         # TODO: refactor this method in `feature/refactor-pattern-node-class` branch
         match self.pattern_node_type:
             case PatternNodeTypes.mnemonic | PatternNodeTypes.operand:
-                return self.process_leaf(pattern_node)
+                return self.process_leaf()
 
             case PatternNodeTypes.deref_property:
-                return self.process_deref_child(pattern_node)
+                return self.process_deref_child()
 
             case PatternNodeTypes.times:
                 return ""
@@ -90,19 +90,19 @@ class PatternNode:
                 return self.get_capture_group_reference()
 
             case PatternNodeTypes.capture_group_call:
-                return self.get_capture_group_call(pattern_node, CaptureGroupMode.instruction)
+                return self.get_capture_group_call(CaptureGroupMode.instruction)
 
             case PatternNodeTypes.capture_group_reference_operand:
                 return self.get_capture_group_reference_operand()
 
             case PatternNodeTypes.capture_group_call_operand:
-                return self.get_capture_group_call(pattern_node, CaptureGroupMode.operand)
+                return self.get_capture_group_call(CaptureGroupMode.operand)
 
             case PatternNodeTypes.deref_property_capture_group_reference:
                 return self.get_capture_group_reference_deref()
 
             case PatternNodeTypes.deref_property_capture_group_call:
-                return self.get_capture_group_call(pattern_node, CaptureGroupMode.operand)
+                return self.get_capture_group_call(CaptureGroupMode.operand)
 
             case PatternNodeTypes.capture_group_reference_register_genreg:
                 return self.get_capture_group_reference_register_genreg()
@@ -117,27 +117,27 @@ class PatternNode:
                 return self.get_capture_group_reference_register_basereg()
 
             case PatternNodeTypes.capture_group_call_register:
-                return self.get_capture_group_register_call(pattern_node, CaptureGroupMode.register)
+                return self.get_capture_group_register_call(CaptureGroupMode.register)
 
             # This is the case of the root node $and
             # In here we will be save the state of the capture group references
             case PatternNodeTypes.root:
-                return self.process_branch(pattern_node)
+                return self.process_branch()
 
             case _:
-                return self.process_branch(pattern_node)
+                return self.process_branch()
 
-    def process_leaf(self, pattern: "PatternNode") -> str:
-        name = pattern.name
-        children = pattern.children
-        times = pattern.times
+    def process_leaf(self) -> str:
+        name = self.name
+        children = self.children
+        times = self.times
 
         # Leaf is operand
-        if not children and pattern.pattern_node_type == PatternNodeTypes.operand:
+        if not children and self.pattern_node_type == PatternNodeTypes.operand:
             # Is an operand
             return str(self.sanitize_operand_name(name))
         # Is a mnemonic with no operands
-        print(f"Found a mnemonic with no operands in yaml rule: {pattern.name}")
+        print(f"Found a mnemonic with no operands in yaml rule: {self.name}")
 
         assert isinstance(children, List) or (not children), "Children must be a list or None"
         # This line shouldn't be necessary but the linter complains children could be dict
@@ -170,48 +170,49 @@ class PatternNode:
         pattern_nod_name = get_pattern_node_name(name)
         return pattern_nod_name
 
-    def process_branch(self, pattern_node: "PatternNode") -> str:
-        child_regexes = self.process_children(pattern_node)
-        times_regex: Optional[str] = global_get_min_max_regex(times=pattern_node.times)
-        return BranchProcessor().process_pattern_node(
-            parent=pattern_node, child_regexes=child_regexes, times_regex=times_regex
-        )
+    def process_branch(self) -> str:
+        child_regexes = self.process_children()
+        times_regex: Optional[str] = global_get_min_max_regex(times=self.times)
+        return BranchProcessor().process_pattern_node(parent=self, child_regexes=child_regexes, times_regex=times_regex)
 
-    def process_children(self, pattern_node: "PatternNode") -> List[str]:
-        if pattern_node.children:
-            return [self.get_regex(child) for child in pattern_node.children]
+    def process_children(self) -> List[str]:
+        if self.children:
+            return [child.get_regex() for child in self.children]
         raise ValueError("Children list is empty")
 
-    def process_deref_child(self, pattern_node: "PatternNode") -> str:
-        if pattern_node.children:
-            assert isinstance(pattern_node.children, list)
-            assert len(pattern_node.children) == 1
+    def process_deref_child(self) -> str:
+        if self.children:
+            assert isinstance(self.children, list)
+            assert len(self.children) == 1
 
-            child_regex = self.get_regex(pattern_node.children[0])
+            child_regex = self.children[0].get_regex()
             return child_regex
 
-        return str(pattern_node.name)
+        return str(self.name)
 
     # Capture group reference
 
-    def get_capture_group_reference(self) -> str:
+    @staticmethod
+    def get_capture_group_reference() -> str:
         return rf"{IGNORE_INST_ADDR}([^|]+),\|"  # Get all the instruction
 
     # Capture group call
-    def get_capture_group_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
+    def get_capture_group_call(self, capture_group_mode: CaptureGroupMode) -> str:
 
         from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
 
-        capture_group_instance = CaptureGroupIndex(pattern_node=pattern_node, mode=capture_group_mode)
+        capture_group_instance = CaptureGroupIndex(pattern_node=self, mode=capture_group_mode)
 
         index = capture_group_instance.to_regex()
 
         return f"{index}"
 
-    def get_capture_group_reference_operand(self) -> str:
+    @staticmethod
+    def get_capture_group_reference_operand() -> str:
         return r"([^,|]+),"  # Get the operand value
 
-    def get_capture_group_reference_deref(self) -> str:
+    @staticmethod
+    def get_capture_group_reference_deref() -> str:
         return r"([^,|]+)"  # Get the deref property value
 
     def get_capture_group_reference_register_genreg(self) -> str:
@@ -246,11 +247,11 @@ class PatternNode:
         # return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?,"
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?{OPTIONAL_COMMA}"
 
-    def get_capture_group_register_call(self, pattern_node: "PatternNode", capture_group_mode: CaptureGroupMode) -> str:
+    def get_capture_group_register_call(self, capture_group_mode: CaptureGroupMode) -> str:
 
         from jasm.regex.tree_generators.capture_group import CaptureGroupIndex  # pylint:disable=import-outside-toplevel
 
-        capture_group_instance = CaptureGroupIndex(pattern_node=pattern_node, mode=capture_group_mode)
+        capture_group_instance = CaptureGroupIndex(pattern_node=self, mode=capture_group_mode)
         index = capture_group_instance.to_regex()
 
         matching_rule = self.process_register_capture_group_name_based_on_register_type(
@@ -269,7 +270,23 @@ class PatternNode:
     ) -> str:
         """Process the register capture group name based on the register special type."""
 
-        pattern_name = pattern_node.name
+        matching_rule = self.process_register_capture_group_name_based_on_register_type(
+            pattern_node=pattern_node, index=index
+        )
+
+        # return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
+        # The comma is optional just for when this is under a deref
+        # On deref the comma should not be present
+        # TODO: find a way to implement this cleaner
+
+        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + OPTIONAL_COMMA
+
+    def process_register_capture_group_name_based_on_register_type(
+        self, pattern_node: "PatternNode", index: str
+    ) -> str:
+        """Process the register capture group name based on the register special type."""
+
+        pattern_name = self.name
         assert isinstance(pattern_name, str), "Name must be a string"
 
         if pattern_name.startswith("&genreg"):
@@ -416,7 +433,7 @@ class RegexWithOperandsCreator:
         if not self.operands:
             return None
 
-        return "".join(operand.get_regex(operand) for operand in self.operands)
+        return "".join(operand.get_regex() for operand in self.operands)
 
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
