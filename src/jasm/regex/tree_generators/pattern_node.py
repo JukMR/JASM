@@ -174,7 +174,7 @@ class PatternNode:
 
     def process_branch(self) -> str:
         child_regexes = self.process_children()
-        times_regex: Optional[str] = global_get_min_max_regex(times=self.times)
+        times_regex: Optional[str] = TimeTypeBuilder().get_min_max_regex(times=self.times)
         return BranchProcessor().process_pattern_node(parent=self, child_regexes=child_regexes, times_regex=times_regex)
 
     def process_children(self) -> List[str]:
@@ -183,7 +183,7 @@ class PatternNode:
         raise ValueError("Children list is empty")
 
     def process_deref(self) -> str:
-        times_regex = global_get_min_max_regex(times=self.times)
+        times_regex = TimeTypeBuilder().get_min_max_regex(times=self.times)
 
         deref_object: DerefObject = DerefObjectBuilder(self).build()
         deref_regex = deref_object.get_regex()
@@ -449,7 +449,7 @@ class RegexWithOperandsCreator:
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
             return None
-        return global_get_min_max_regex(times=self.times)
+        return TimeTypeBuilder().get_min_max_regex(times=self.times)
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         # Add prefix and suffix to name to allow matching only substring
@@ -547,10 +547,12 @@ class BranchProcessor:
         return joined_by_bar_instructions
 
 
-def global_get_min_max_regex(times: TimeType) -> Optional[str]:
+class TimeTypeBuilder:
+    @staticmethod
+    def get_min_max_regex(times: TimeType) -> Optional[str]:
 
-    if times.min_times == 1 and times.max_times == 1:
-        return None
-    if times.min_times == times.max_times:
-        return f"{{{times.min_times}}}"
-    return f"{{{times.min_times},{times.max_times}}}"
+        if times.min_times == 1 and times.max_times == 1:
+            return None
+        if times.min_times == times.max_times:
+            return f"{{{times.min_times}}}"
+        return f"{{{times.min_times},{times.max_times}}}"
