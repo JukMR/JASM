@@ -67,7 +67,8 @@ class DerefObjectBuilder:
     def __init__(self, parent: "PatternNode") -> None:
         self.parent = parent
 
-    def build(self):
+    def build(self) -> DerefObject:
+        """Builds a deref object from the given command dict."""
         main_reg = self._child_getter(parent=self.parent, child_name="main_reg")
 
         if not main_reg:
@@ -77,13 +78,11 @@ class DerefObjectBuilder:
         register_multiplier = self._child_getter(parent=self.parent, child_name="register_multiplier")
         constant_multiplier = self._child_getter(parent=self.parent, child_name="constant_multiplier")
 
-        # Transform PatterNode into regexs
-
-        get_regex_function = self.parent.get_regex
-        main_reg_regex = get_regex_function()
-        constant_offset_regex = get_regex_function(constant_offset) if constant_offset else None
-        register_multiplier_regex = get_regex_function(register_multiplier) if register_multiplier else None
-        constant_multiplier_regex = get_regex_function(constant_multiplier) if constant_multiplier else None
+        # Get regex for each child
+        main_reg_regex = main_reg.get_regex()
+        constant_offset_regex = constant_offset.get_regex() if constant_offset else None
+        register_multiplier_regex = register_multiplier.get_regex() if register_multiplier else None
+        constant_multiplier_regex = constant_multiplier.get_regex() if constant_multiplier else None
 
         return DerefObject(
             main_reg=main_reg_regex,

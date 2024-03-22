@@ -83,6 +83,9 @@ class PatternNode:
             case PatternNodeTypes.deref_property:
                 return self.process_deref_child()
 
+            case PatternNodeTypes.deref:
+                return self.process_deref()
+
             case PatternNodeTypes.times:
                 return ""
 
@@ -179,6 +182,10 @@ class PatternNode:
         if self.children:
             return [child.get_regex() for child in self.children]
         raise ValueError("Children list is empty")
+
+    def process_deref(self) -> str:
+        deref_object = DerefObjectBuilder(self).build()
+        return deref_object.get_regex()
 
     def process_deref_child(self) -> str:
         if self.children:
@@ -483,9 +490,6 @@ class BranchProcessor:
             #     return self.process_perm(child_regexes, times_regex=times_regex)
             case "$and_any_order":
                 return self.process_and_any_order(child_regexes, times_regex=times_regex)
-            case "$deref":
-                deref_object = DerefObjectBuilder(parent).build()
-                return self.process_deref(deref_object, times_regex=times_regex)
             case _:
                 raise ValueError("Unknown pattern_node type")
 
@@ -520,7 +524,8 @@ class BranchProcessor:
 
         return self.process_or(regex_list, times_regex)
 
-    def process_deref(self, deref_object: DerefObject, times_regex: Optional[str]) -> str:
+    @staticmethod
+    def process_deref(deref_object: DerefObject, times_regex: Optional[str]) -> str:
         deref_regex = deref_object.get_regex()
         if times_regex:
             return f"(?:{deref_regex},){times_regex}"
@@ -545,6 +550,7 @@ class BranchProcessor:
 
 
 def global_get_min_max_regex(times: TimeType) -> Optional[str]:
+
     if times.min_times == 1 and times.max_times == 1:
         return None
     if times.min_times == times.max_times:
