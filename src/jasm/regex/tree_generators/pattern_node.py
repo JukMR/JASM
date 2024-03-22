@@ -184,8 +184,14 @@ class PatternNode:
         raise ValueError("Children list is empty")
 
     def process_deref(self) -> str:
+        times_regex = global_get_min_max_regex(times=self.times)
+
         deref_object = DerefObjectBuilder(self).build()
-        return deref_object.get_regex()
+        deref_regex = deref_object.get_regex()
+
+        if times_regex:
+            return f"(?:{deref_regex},){times_regex}"
+        return f"{deref_regex},"
 
     def process_deref_child(self) -> str:
         if self.children:
@@ -523,13 +529,6 @@ class BranchProcessor:
             regex_list.append(self.process_and(child_regexes=list_regex, times_regex=None))
 
         return self.process_or(regex_list, times_regex)
-
-    @staticmethod
-    def process_deref(deref_object: DerefObject, times_regex: Optional[str]) -> str:
-        deref_regex = deref_object.get_regex()
-        if times_regex:
-            return f"(?:{deref_regex},){times_regex}"
-        return f"{deref_regex},"
 
     @staticmethod
     def generate_any_order_permutation(child_regexes: List[str]) -> List[List[str]]:
