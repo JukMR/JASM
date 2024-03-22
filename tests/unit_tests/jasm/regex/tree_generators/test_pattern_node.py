@@ -115,8 +115,8 @@ def test_process_branch_and(pattern_node_fixture: PatternNode):
         mock_child.get_regex = MagicMock(return_value=f"{mock_child.name}")
 
     # Set up the return value for get_regex method on mock children
-    mock_child1.get_regex.return_value = "child1_regex"
-    mock_child2.get_regex.return_value = "child2_regex"
+    mock_child1.get_regex.return_value = "[^,|]{0,1000}mock_child1[^,|]{0,1000},"
+    mock_child2.get_regex.return_value = "[^,|]{0,1000}mock_child2[^,|]{0,1000},"
 
     # Assign these mock children to the pattern_node_fixture
     pattern_node_fixture.children = [mock_child1, mock_child2]
