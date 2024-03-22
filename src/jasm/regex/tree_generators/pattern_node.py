@@ -1,6 +1,5 @@
 "PatternNode definition file"
 
-from abc import abstractmethod
 from itertools import permutations
 from typing import List, Optional
 
@@ -186,7 +185,7 @@ class PatternNode:
     def process_deref(self) -> str:
         times_regex = global_get_min_max_regex(times=self.times)
 
-        deref_object = DerefObjectBuilder(self).build()
+        deref_object: DerefObject = DerefObjectBuilder(self).build()
         deref_regex = deref_object.get_regex()
 
         if times_regex:
