@@ -191,7 +191,6 @@ class PatternNode:
         return str(self.name)
 
     # Capture group reference
-
     @staticmethod
     def get_capture_group_reference() -> str:
         return rf"{IGNORE_INST_ADDR}([^|]+),\|"  # Get all the instruction
