@@ -14,11 +14,10 @@ from jasm.global_definitions import (
     SKIP_TO_END_OF_PATTERN_NODE,
     CaptureGroupMode,
     PatternNodeTypes,
+    RegisterCaptureSuffixs,
     TimeType,
     dict_node,
-    RegisterCaptureSuffixs,
 )
-from jasm.logging_config import logger
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
 
 
