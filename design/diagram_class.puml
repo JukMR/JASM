@@ -151,13 +151,13 @@ package Regex {
 
     package command_pkg {
         class Command {
-            -command_dict: dict_node
+            -command_dict: DictNode
             -name: str | int
             -times: TimeType
             -children: Optional[dict | List["Command"]]
             -command_type: Optional[CommandTypes]
             -parent: Optional["Command"]
-            +__init__(command_dict: dict_node, name: str | int, times: TimeType, children: Optional[dict | List["Command"]], command_type: Optional[CommandTypes], parent: Optional["Command"]): None
+            +__init__(command_dict: DictNode, name: str | int, times: TimeType, children: Optional[dict | List["Command"]], command_type: Optional[CommandTypes], parent: Optional["Command"]): None
             +get_regex(command: "Command"): str
             +process_leaf(com: "Command"): str
             +sanitize_operand_name(name: str | int): str | int
@@ -192,14 +192,14 @@ package Regex {
     package tree_builder_pkg {
 
         class CommandBuilderNoParents {
-            -command: dict_node | str | int
+            -command: DictNode | str | int
             -name: str | int
             -times: TimeType
             -children: Optional[dict | List["Command"]]
-            +__init__(command_dict: dict_node | str | int): None
-            +_get_name(command_dict: dict_node): str
-            +_get_times(command_dict: dict_node): TimeType
-            +_get_children(name: str, command: dict_node): List[Command]
+            +__init__(command_dict: DictNode | str | int): None
+            +_get_name(command_dict: DictNode): str
+            +_get_times(command_dict: DictNode): TimeType
+            +_get_children(name: str, command: DictNode): List[Command]
             +build(): Command
         }
 

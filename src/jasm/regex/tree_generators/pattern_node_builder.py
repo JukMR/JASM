@@ -1,11 +1,11 @@
 from typing import List, Optional
 
-from jasm.global_definitions import PatternNodeTypes, TimeType, dict_node
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.global_definitions import TimeType, DictNode
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase
 
 
 class PatternNodeBuilderNoParents:
-    def __init__(self, command_dict: dict_node) -> None:
+    def __init__(self, command_dict: DictNode) -> None:
         self.command = command_dict
 
         # Check if is instance of int or str
@@ -31,11 +31,11 @@ class PatternNodeBuilderNoParents:
                 raise ValueError(f"Command {self.command} is not a valid type")
 
     @staticmethod
-    def _get_name(command_dict: dict_node) -> str:
+    def _get_name(command_dict: DictNode) -> str:
         assert isinstance(command_dict, dict)
         return list(command_dict.keys())[0]
 
-    def _get_times(self, command_dict: dict_node) -> TimeType:
+    def _get_times(self, command_dict: DictNode) -> TimeType:
         assert isinstance(command_dict, dict)
 
         def _get_time_object(command_dict: dict) -> Optional[dict]:
@@ -65,7 +65,7 @@ class PatternNodeBuilderNoParents:
         return TimeType(min_times=1, max_times=1)
 
     @staticmethod
-    def _get_children(name: str, command: dict_node) -> List[PatternNode]:
+    def _get_children(name: str, command: DictNode) -> List[PatternNodeBase]:
         assert isinstance(command, dict)
 
         match command[name]:
@@ -77,28 +77,26 @@ class PatternNodeBuilderNoParents:
         raise ValueError("Command is not a list or a dict")
 
     @staticmethod
-    def get_simple_child(name: str) -> List[PatternNode]:
+    def get_simple_child(name: str) -> List[PatternNodeBase]:
         return [
-            PatternNode(
+            PatternNodeBase(
                 name=name,
                 times=TimeType(min_times=1, max_times=1),
                 children=None,
                 pattern_node_dict=name,
-                pattern_node_type=PatternNodeTypes.deref_property,
                 parent=None,
                 root_node=None,
             )
         ]
 
-    def build(self) -> PatternNode:
+    def build(self) -> PatternNodeBase:
         assert isinstance(self.name, (str, int))
 
-        return PatternNode(
+        return PatternNodeBase(
             name=self.name,
             times=self.times,
             children=self.children,
             pattern_node_dict=self.command,
-            pattern_node_type=None,
             parent=None,
             root_node=None,
         )

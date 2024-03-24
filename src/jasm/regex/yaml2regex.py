@@ -8,7 +8,7 @@ from jasm.global_definitions import DisassStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.file2regex import File2Regex
 from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
 from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
@@ -78,16 +78,16 @@ class Yaml2Regex(File2Regex):
 
         return processed_macros
 
-    def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
+    def _generate_rule_tree(self, patterns: PatternTree) -> PatternNodeBase:
         "Generate the rule tree from the patterns"
         # Generate the rule tree with no parents and type from root parent node downwards
-        rule_tree: PatternNode = PatternNodeBuilderNoParents(command_dict=patterns).build()
+        rule_tree: PatternNodeBase = PatternNodeBuilderNoParents(command_dict=patterns).build()
 
         # Transform parents of all nodes to commands
         PatternNodeParentsBuilder(rule_tree).build()
 
         # Add the command_type to each node
-        PatternNodeTypeBuilder(rule_tree).build()
+        rule_tree = PatternNodeTypeBuilder(rule_tree, parent=None).build()
 
         return rule_tree
 

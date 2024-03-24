@@ -1,17 +1,16 @@
 from typing import List
 
 from jasm.global_definitions import TimeType
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
 
 
-def create_pattern_node(name: str, children: List = []) -> PatternNode:
-    return PatternNode(
+def create_pattern_node(name: str, children: List = []) -> PatternNodeBase:
+    return PatternNodeBase(
         pattern_node_dict={},
         name=name,
         times=TimeType(min_times=1, max_times=1),
         children=children,
-        pattern_node_type=None,
         parent=None,
         root_node=None,
     )

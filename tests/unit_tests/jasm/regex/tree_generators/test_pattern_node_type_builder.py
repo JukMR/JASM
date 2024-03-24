@@ -3,16 +3,23 @@ import pytest
 from jasm.global_definitions import TimeType, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeTypes
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
-from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder, RegisterCaptureGroupProcessor
+from src.jasm.regex.tree_generators.pattern_node import PatternNodeBase
+from src.jasm.regex.tree_generators.pattern_node_implementations import (
+    PatternNodeDeref,
+    PatternNodeDerefProperty,
+    PatternNodeMnemonic,
+    PatternNodeNode,
+    PatternNodeTimes,
+)
 
 
-def create_test_node(name: str, parent=None, children=None) -> PatternNode:
-    node = PatternNode(
+def create_test_node(name: str, parent=None, children=None) -> PatternNodeBase:
+    node = PatternNodeBase(
         pattern_node_dict={},
         name=name,
         times=TimeType(min_times=1, max_times=1),
         children=children or [],
-        pattern_node_type=None,
         parent=parent,
         root_node=parent,
     )
@@ -22,10 +29,10 @@ def create_test_node(name: str, parent=None, children=None) -> PatternNode:
 @pytest.mark.parametrize(
     "name, expected_type",
     [
-        ("$deref", PatternNodeTypes.deref),
-        ("times", PatternNodeTypes.times),
-        ("1", PatternNodeTypes.mnemonic),
-        ("$or", PatternNodeTypes.node),
+        ("$deref", PatternNodeDeref),
+        ("times", PatternNodeTimes),
+        ("1", PatternNodeMnemonic),
+        ("$or", PatternNodeNode),
     ],
 )
 def test_get_type(name, expected_type):
@@ -38,9 +45,9 @@ def test_get_type(name, expected_type):
     PatternNodeParentsBuilder(root_node).build()
 
     # Add the command_type to each node
-    PatternNodeTypeBuilder(root_node).build()
+    PatternNodeTypeBuilder(root_node, parent=None).build()
 
-    assert root_node.children[0].pattern_node_type == expected_type
+    assert isinstance(root_node.children[0], expected_type)
 
 
 def test_is_ancestor_deref():
@@ -48,19 +55,19 @@ def test_is_ancestor_deref():
     parent = create_test_node("$deref", parent=[], children=[child])
 
     PatternNodeParentsBuilder(parent).build()
-    PatternNodeTypeBuilder(parent).build()
+    PatternNodeTypeBuilder(parent, parent=None).build()
 
-    assert parent.pattern_node_type == PatternNodeTypes.deref
+    assert isinstance(parent, PatternNodeDeref)
     assert parent.children
     assert parent.children[0]
-    assert parent.children[0].pattern_node_type == PatternNodeTypes.deref_property
+    assert isinstance(parent.children[0], PatternNodeDerefProperty)
 
     child2 = create_test_node("child2", parent=parent, children=[])
 
     PatternNodeParentsBuilder(child2).build()
-    PatternNodeTypeBuilder(child2).build()
+    PatternNodeTypeBuilder(child2, parent=parent).build()
 
-    child2_builder = PatternNodeTypeBuilder(child2)
+    child2_builder = PatternNodeTypeBuilder(child2, parent=parent)
     assert child2_builder.is_ancestor_deref() is True
 
 
@@ -72,9 +79,9 @@ def test_any_ancestor_is_mnemonic():
 
     PatternNodeParentsBuilder(root).build()
 
-    PatternNodeTypeBuilder(root).build()
+    PatternNodeTypeBuilder(root, parent=None).build()
 
-    child_pattern_type = PatternNodeTypeBuilder(child)
+    child_pattern_type = PatternNodeTypeBuilder(child, parent=root)
 
     assert child_pattern_type.any_ancestor_is_mnemonic() is True
 
@@ -87,16 +94,16 @@ def test_recursive_build():
     parent_builder = PatternNodeParentsBuilder(grandparent)
     parent_builder.build()
 
-    builder_type = PatternNodeTypeBuilder(grandparent)
+    builder_type = PatternNodeTypeBuilder(grandparent, parent=None)
     builder_type.build()
 
-    type_builder = PatternNodeTypeBuilder(child)
+    type_builder = PatternNodeTypeBuilder(child, parent=parent)
     type_builder.build()
-    builder = PatternNodeTypeBuilder(parent)
+    builder = PatternNodeTypeBuilder(parent, parent=grandparent)
     builder.build()
 
-    assert parent.pattern_node_type == PatternNodeTypes.deref
-    assert child.pattern_node_type == PatternNodeTypes.deref_property
+    assert isinstance(parent, PatternNodeDeref)
+    assert isinstance(child, PatternNodeDerefProperty)
 
 
 def test_remove_access_suffix():

@@ -1,13 +1,17 @@
 from typing import List
 
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase
 
 
 class PatternNodeParentsBuilder:
-    def __init__(self, command: PatternNode) -> None:
+    def __init__(self, command: PatternNodeBase) -> None:
         self.command = command
 
-    def _set_parent(self, current_node: PatternNode) -> None:
+    def build(self) -> None:
+        if self.command.children:
+            self._set_parent(self.command)
+
+    def _set_parent(self, current_node: PatternNodeBase) -> None:
         assert isinstance(current_node.children, List)
         children_nodes = current_node.children
 
@@ -23,7 +27,3 @@ class PatternNodeParentsBuilder:
             child.root_node = root_node
             if child.children:  # Recursively set parent for the child's children
                 self._set_parent(child)
-
-    def build(self) -> None:
-        if self.command.children:
-            self._set_parent(self.command)

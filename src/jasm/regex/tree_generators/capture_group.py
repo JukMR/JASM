@@ -10,6 +10,9 @@ class CaptureGroupIndex:
     # TODO: modify this class to use SubClasses instead of the mode attribute
     # Do this in the branch `feature/refactor-pattern-node-class`
 
+    # TODO: modify this class to use SubClasses instead of the mode attribute
+    # Do this in the branch `feature/refactor-pattern-node-class`
+
     def __init__(self, pattern_node: PatternNode, mode: CaptureGroupMode) -> None:
 
         if mode == CaptureGroupMode.register:

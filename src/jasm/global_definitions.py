@@ -33,7 +33,7 @@ IncludeExcludeListType: TypeAlias = Optional[List[str]]
 OperandListType: TypeAlias = Optional[List[Any]]
 OperandType: TypeAlias = Optional[Dict[str, Any]]
 
-dict_node: TypeAlias = Dict[str, Any] | str | int
+DictNode: TypeAlias = Dict[str, Any] | str | int
 
 
 # Move this to a global config class
