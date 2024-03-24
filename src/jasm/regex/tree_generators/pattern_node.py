@@ -320,19 +320,19 @@ class PatternNode:
         """
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_64.value):
-            # Capturing an RDI
+            # Capturing an RDI or RSI
             return "r" + index + "i"
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_32.value):
-            # Capturing an EDI
+            # Capturing an EDI or ESI
             return "e" + index + "i"
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_16.value):
-            # Capturing an DI
+            # Capturing an DI or SI
             return index + "i"
 
         if pattern_name.endswith(RegisterCaptureSuffixs.SUFFIX_8L.value):
-            # Capturing an DIL
+            # Capturing an DIL or SIL
             return index + "il"
 
         raise NotImplementedError("Register capture group name not implemented")
