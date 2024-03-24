@@ -88,6 +88,7 @@ class MatchingReturnMode(Enum):
 class CaptureGroupMode(Enum):
     """Enum for the capture group mode."""
 
+    # TODO: review this in the patterNode Refactor
     instruction = auto()
     operand = auto()
     register = auto()
