@@ -5,26 +5,25 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
-
 # set this limit to asterisk to reduce backtracking regex explosion
 # WARNING: sometimes setting this value too low would affect negative
 # lookaheads failing to match the existing pattern
-ASTERISK_WITH_LIMIT = r"{0,1000}"
+ASTERISK_WITH_LIMIT: Final = r"{0,1000}"
 
-OPTIONAL_COMMA = r",?"
+OPTIONAL_COMMA: Final = r",?"
 
-INSTRUCTION_SEPARATOR = r"\|"
-SKIP_TO_END_OF_OPERAND = f"[^,|]{ASTERISK_WITH_LIMIT},"
-SKIP_TO_END_OF_PATTERN_NODE = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
-SKIP_TO_START_OF_OPERAND = f"[^|,]{ASTERISK_WITH_LIMIT}"
-SKIP_TO_ANY_OPERAND_CHARS = f"[^|]{ASTERISK_WITH_LIMIT}"
+INSTRUCTION_SEPARATOR: Final = r"\|"
+SKIP_TO_END_OF_OPERAND: Final = f"[^,|]{ASTERISK_WITH_LIMIT},"
+SKIP_TO_END_OF_PATTERN_NODE: Final = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
+SKIP_TO_START_OF_OPERAND: Final = f"[^|,]{ASTERISK_WITH_LIMIT}"
+SKIP_TO_ANY_OPERAND_CHARS: Final = f"[^|]{ASTERISK_WITH_LIMIT}"
 
-IGNORE_INST_ADDR = r"[\dabcedf]+::"
+IGNORE_INST_ADDR: Final = r"[\dabcedf]+::"
 
-IGNORE_NAME_PREFIX = f"[^,|]{ASTERISK_WITH_LIMIT}"
-IGNORE_NAME_SUFFIX = f"[^,|]{ASTERISK_WITH_LIMIT},"
+IGNORE_NAME_PREFIX: Final = f"[^,|]{ASTERISK_WITH_LIMIT}"
+IGNORE_NAME_SUFFIX: Final = f"[^,|]{ASTERISK_WITH_LIMIT},"
 
-OPTIONAL_PERCENTAGE_CHAR = "%?"
+OPTIONAL_PERCENTAGE_CHAR: Final = "%?"
 MAX_PYTHON_INT = sys.maxsize * 2
 
 PatternDict: TypeAlias = Dict[str, Any]

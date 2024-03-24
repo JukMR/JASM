@@ -1,8 +1,8 @@
-from typing import Optional
+from typing import Final, Optional
 from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
 
 
-OPTIONAL_HEX_CHAR = "(?:0x)?"
+OPTIONAL_HEX_CHAR: Final = "(?:0x)?"
 
 
 class DerefObject:
