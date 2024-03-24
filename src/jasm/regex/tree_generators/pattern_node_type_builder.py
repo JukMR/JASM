@@ -108,15 +108,12 @@ class PatternNodeTypeBuilder:
         com_name = self.command.name
         assert isinstance(com_name, str)
 
-        if (
+        return (
             com_name.startswith("&genreg")
             or com_name.startswith("&indreg")
             or com_name.startswith("&stackreg")
             or com_name.startswith("&basereg")
-        ):
-            return True
-
-        return False
+        )
 
     def _process_capture_group_mnemonic(self) -> PatternNodeTypes:
         # Add this macro to refence list
