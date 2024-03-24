@@ -8,7 +8,7 @@ from jasm.global_definitions import DisassStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.file2regex import File2Regex
 from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
-from jasm.regex.tree_generators.pattern_node import PatternNodeBase
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase, PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
 from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
@@ -78,7 +78,7 @@ class Yaml2Regex(File2Regex):
 
         return processed_macros
 
-    def _generate_rule_tree(self, patterns: PatternTree) -> PatternNodeBase:
+    def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
         "Generate the rule tree from the patterns"
         # Generate the rule tree with no parents and type from root parent node downwards
         rule_tree: PatternNodeBase = PatternNodeBuilderNoParents(command_dict=patterns).build()
@@ -87,9 +87,9 @@ class Yaml2Regex(File2Regex):
         PatternNodeParentsBuilder(rule_tree).build()
 
         # Add the command_type to each node
-        rule_tree = PatternNodeTypeBuilder(rule_tree, parent=None).build()
+        rule_tree_complete = PatternNodeTypeBuilder(rule_tree, parent=None, root_node=rule_tree).build()
 
-        return rule_tree
+        return rule_tree_complete
 
     def get_assembly_style(self) -> DisassStyle:
         "Get the file style from the pattern file or return the default att"

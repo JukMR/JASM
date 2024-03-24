@@ -22,7 +22,7 @@ from jasm.regex.tree_generators.pattern_node_implementations import (
 
 
 class PatternNodeTypeBuilder:
-    def __init__(self, pattern_node: PatternNodeBase, parent: Optional[PatternNodeBase]) -> None:
+    def __init__(self, pattern_node: PatternNodeBase, parent: Optional[PatternNode]) -> None:
 
         assert isinstance(pattern_node, PatternNodeBase)
         self.pattern_node = pattern_node
