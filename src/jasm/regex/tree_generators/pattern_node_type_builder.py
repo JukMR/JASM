@@ -224,11 +224,15 @@ class PatternNodeTypeBuilder:
 
     def build(self) -> PatternNode:
 
+        if self.pattern_node.parent:
+            self.pattern_node.root_node = self.pattern_node.parent.root_node
+
         new_concrete_instance = self.set_type()
 
         # Add the capture group references to the root node
         if isinstance(new_concrete_instance, PatternNodeRoot):
             setattr(new_concrete_instance, "capture_group_references", [])
+            new_concrete_instance.root_node = new_concrete_instance
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [

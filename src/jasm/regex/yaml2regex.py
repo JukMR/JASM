@@ -87,7 +87,7 @@ class Yaml2Regex(File2Regex):
         PatternNodeParentsBuilder(rule_tree).build()
 
         # Add the command_type to each node
-        rule_tree_complete = PatternNodeTypeBuilder(rule_tree, parent=None, root_node=rule_tree).build()
+        rule_tree_complete = PatternNodeTypeBuilder(rule_tree, parent=None).build()
 
         return rule_tree_complete
 

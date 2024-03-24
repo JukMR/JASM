@@ -15,6 +15,7 @@ class PatternNodeParentsBuilder:
         assert isinstance(current_node.children, List)
         children_nodes = current_node.children
 
+        # Set the root node
         if current_node.parent is None:
             # This is the root node
             root_node = current_node
@@ -22,6 +23,7 @@ class PatternNodeParentsBuilder:
             # Spread the root_node down the tree
             root_node = current_node.root_node
 
+        # Set parents
         for child in children_nodes:
             child.parent = current_node
             child.root_node = root_node

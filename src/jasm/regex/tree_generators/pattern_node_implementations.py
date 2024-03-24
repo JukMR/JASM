@@ -1,9 +1,7 @@
 from itertools import permutations
 from typing import List, Optional
 
-from jasm.logging_config import logger
-from jasm.regex.tree_generators.pattern_node import PatternNodeBase, PatternNodeBase, get_pattern_node_name
-from src.jasm.global_definitions import (
+from jasm.global_definitions import (
     IGNORE_INST_ADDR,
     OPTIONAL_PERCENTAGE_CHAR,
     SKIP_TO_END_OF_PATTERN_NODE,
@@ -11,7 +9,9 @@ from src.jasm.global_definitions import (
     PatternNodeTypes,
     TimeType,
 )
-from src.jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
+from jasm.logging_config import logger
+from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase, get_pattern_node_name
 
 
 class PatternNodeDerefProperty(PatternNodeBase):

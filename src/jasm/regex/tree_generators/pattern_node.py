@@ -58,9 +58,9 @@ class PatternNode(ABC):
         pattern_node_dict: DictNode,
         name: str | int,
         times: TimeType,
-        children: Optional[dict | List["PatternNodeBase"]],
-        parent: Optional["PatternNodeBase"],
-        root_node: Optional["PatternNodeBase"],
+        children: Optional[dict | List["PatternNode"]],
+        parent: Optional["PatternNode"],
+        root_node: Optional["PatternNode"],
     ) -> None:
         """
         Initialize a Command object.

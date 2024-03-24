@@ -4,8 +4,8 @@ from jasm.global_definitions import TimeType, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeTypes
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
 from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder, RegisterCaptureGroupProcessor
-from src.jasm.regex.tree_generators.pattern_node import PatternNodeBase
-from src.jasm.regex.tree_generators.pattern_node_implementations import (
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase
+from jasm.regex.tree_generators.pattern_node_implementations import (
     PatternNodeDeref,
     PatternNodeDerefProperty,
     PatternNodeMnemonic,

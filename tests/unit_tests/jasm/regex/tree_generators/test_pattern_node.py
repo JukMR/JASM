@@ -5,8 +5,8 @@ from unittest.mock import MagicMock
 import pytest
 
 from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX, PatternNodeTypes
-from src.jasm.regex.tree_generators.pattern_node import PatternNodeBase
-from src.jasm.regex.tree_generators.pattern_node_implementations import (
+from jasm.regex.tree_generators.pattern_node import PatternNodeBase
+from jasm.regex.tree_generators.pattern_node_implementations import (
     BranchProcessor,
     PatternNodeCaptureGroupCallRegister,
     PatternNodeMnemonic,
