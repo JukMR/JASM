@@ -7,6 +7,9 @@ from jasm.regex.tree_generators.pattern_node import PatternNode
 class CaptureGroupIndex:
     """Class to represent a capture group index."""
 
+    # TODO: modify this class to use SubClasses instead of the mode attribute
+    # Do this in the branch `feature/refactor-pattern-node-class`
+
     def __init__(self, pattern_node: PatternNode, mode: CaptureGroupMode) -> None:
 
         if mode == CaptureGroupMode.register:
