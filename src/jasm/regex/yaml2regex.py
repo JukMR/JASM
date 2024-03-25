@@ -83,9 +83,9 @@ class Yaml2Regex(File2Regex):
         rule_tree: PatternNodeBase = PatternNodeBuilderNoParents(command_dict=patterns).build()
 
         # Add the command_type to each node
-        rule_tree_complete: PatternNode = PatternNodeTypeBuilder(rule_tree, parent=None).build()
+        rule_tree_typed: PatternNode = PatternNodeTypeBuilder(rule_tree, parent=None).build()
 
-        return rule_tree_complete
+        return rule_tree_typed
 
     def get_assembly_style(self) -> DisassStyle:
         """Get the file style from the pattern file or return the default att"""
