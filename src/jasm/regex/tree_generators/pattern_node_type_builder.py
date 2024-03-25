@@ -1,5 +1,6 @@
 from typing import Optional
-from jasm.global_definitions import PatternNodeTypes
+
+from jasm.global_definitions import PatternNodeTypes, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
@@ -41,11 +42,17 @@ class PatternNodeTypeBuilder:
     def get_type_when_str(self, name: str) -> Optional[PatternNodeTypes]:
         """Get the type of the node when the name is a string."""
 
+        # CAPTURE GROUP TYPES
+        # Is a capture group reference
+
         if name == "$deref":
             return PatternNodeTypes.deref
 
         if self.is_ancestor_deref():
             if self.is_deref_property_capture_group():
+
+                if self.is_registry_capture_group():
+                    return RegisterCaptureGroupProcessor(self).process()
 
                 if self.has_any_ancester_who_is_capture_group_reference():
                     return PatternNodeTypes.deref_property_capture_group_call
@@ -54,8 +61,6 @@ class PatternNodeTypeBuilder:
                 return PatternNodeTypes.deref_property_capture_group_reference
             return PatternNodeTypes.deref_property
 
-        # CAPTURE GROUP TYPES
-        # Is a capture group reference
         if name.startswith("&"):
             return self.process_capture_group()
 
@@ -70,28 +75,61 @@ class PatternNodeTypeBuilder:
         return None
 
     def process_capture_group(self) -> PatternNodeTypes:
-        # Is Capture Group in operand
-        if self.is_capture_group_operand():
-            if self.has_any_ancester_who_is_capture_group_reference():
-                return PatternNodeTypes.capture_group_call_operand
-
-            self.add_new_references_to_global_list()
-            return PatternNodeTypes.capture_group_reference_operand
+        # Is Capture Group in operand or is a special register capture
+        if self._is_capture_group_operand_or_special_register_capture():
+            return self._process_capture_operand_and_register_capture()
 
         # Is Capture Group in Mnemonic
+        return self._process_capture_group_mnemonic()
+
+    def _is_capture_group_operand_or_special_register_capture(self) -> bool:
+        "Check if the current node is a capture group operand"
+        if not self.command.parent:
+            return False
+
+        if self.command.parent.pattern_node_type == PatternNodeTypes.mnemonic:
+            return True
+
+        return False
+
+    def _process_capture_operand_and_register_capture(self) -> PatternNodeTypes:
+        if self.is_registry_capture_group():
+            # Register capture group
+            return RegisterCaptureGroupProcessor(self).process()
+
+        # Operand capture group
+        return OperandCaptureGroupProcessor(self).process()
+
+    def is_registry_capture_group(self) -> bool:
+        "Check if the current node is a registry capture group"
+        if not self.command.name:
+            raise ValueError("Name is not defined")
+
+        com_name = self.command.name
+        assert isinstance(com_name, str)
+
+        return (
+            com_name.startswith("&genreg")
+            or com_name.startswith("&indreg")
+            or com_name.startswith("&stackreg")
+            or com_name.startswith("&basereg")
+        )
+
+    def _process_capture_group_mnemonic(self) -> PatternNodeTypes:
         # Add this macro to refence list
-        # First check it it should be a new reference or a call to an existing one
+        # Check it it should be a new reference or a call to an existing one
         if self.has_any_ancester_who_is_capture_group_reference():
-            # This is the using the reference
+            # Do the call
             return PatternNodeTypes.capture_group_call
 
-        # This is creating the reference
+        # Create the reference
         self.add_new_references_to_global_list()
         return PatternNodeTypes.capture_group_reference
 
     def get_type_when_int(self) -> PatternNodeTypes:
         if self.is_ancestor_deref():
             return PatternNodeTypes.deref_property
+
         return PatternNodeTypes.operand
 
     @staticmethod
@@ -156,16 +194,6 @@ class PatternNodeTypeBuilder:
             assert isinstance(self.command.name, str)
             self.command.root_node.capture_group_references.append(self.command.name)
 
-    def is_capture_group_operand(self) -> bool:
-        "Check if the current node is a capture group operand"
-        if not self.command.parent:
-            return False
-
-        if self.command.parent.pattern_node_type == PatternNodeTypes.mnemonic:
-            return True
-
-        return False
-
     def is_deref_property_capture_group(self) -> bool:
         "Check if the current node is a deref property capture group"
         if not self.command.parent:
@@ -186,3 +214,154 @@ class PatternNodeTypeBuilder:
         if self.command.children:
             for child in self.command.children:
                 PatternNodeTypeBuilder(child).build()
+
+
+class OperandCaptureGroupProcessor:
+
+    def __init__(self, pattern_node_type_builder: PatternNodeTypeBuilder) -> None:
+        self.pattern_node = pattern_node_type_builder
+
+    def process(self) -> PatternNodeTypes:
+        return self._process_capture_group_operand()
+
+    def _process_capture_group_operand(self) -> PatternNodeTypes:
+        # Has this capture group been referenced before?
+        if self.has_any_ancester_who_is_capture_group_reference():
+            return self._process_operand_call()
+
+        return self._process_operand_reference()
+
+    def has_any_ancester_who_is_capture_group_reference(self) -> bool:
+        "Check if any ancestor is a capture group reference"
+
+        assert self.pattern_node.command.root_node
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            return False
+
+        if self.pattern_node.command.name in self.pattern_node.command.root_node.capture_group_references:
+            return True
+        return False
+
+    def _process_operand_call(self) -> PatternNodeTypes:
+        return PatternNodeTypes.capture_group_call_operand
+
+    def _process_operand_reference(self) -> PatternNodeTypes:
+        # Return reference
+        # Add reference to the list of references
+        self.add_new_references_to_global_list()
+        return PatternNodeTypes.capture_group_reference_operand
+
+    def add_new_references_to_global_list(self) -> None:
+        """Add new references to global list"""
+
+        assert self.pattern_node.command.root_node
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            self.pattern_node.command.root_node.capture_group_references = []
+
+        if self.pattern_node.command.name not in self.pattern_node.command.root_node.capture_group_references:
+            assert isinstance(self.pattern_node.command.name, str)
+            self.pattern_node.command.root_node.capture_group_references.append(self.pattern_node.command.name)
+
+
+class RegisterCaptureGroupProcessor:
+
+    def __init__(self, pattern_node: PatternNodeTypeBuilder) -> None:
+        self.pattern_node = pattern_node
+
+    def process(self) -> PatternNodeTypes:
+        return self.process_registry_capture_group()
+
+    def process_registry_capture_group(self) -> PatternNodeTypes:
+        if self.has_any_ancester_who_is_capture_group_reference_register():
+            return PatternNodeTypes.capture_group_call_register
+
+        self.add_new_references_to_global_list()
+
+        # Decide which type of register capture group it is
+        return SpecialRegisterCaptureGroupTypeDecider(pattern_node=self.pattern_node).process()
+
+    def has_any_ancester_who_is_capture_group_reference_register(self) -> bool:
+        "Check if any ancestor is a capture group reference"
+
+        assert self.pattern_node.command.root_node
+        pattern_node_name = self.pattern_node.command.name
+        assert isinstance(pattern_node_name, str)
+
+        main_reference_name = remove_access_suffix(pattern_node_name)
+
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            return False
+
+        if main_reference_name in self.pattern_node.command.root_node.capture_group_references:
+            return True
+        return False
+
+    def add_new_references_to_global_list(self) -> None:
+        "Add new references to global list"
+        assert self.pattern_node.command.root_node
+        assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
+
+        if self.pattern_node.command.root_node.capture_group_references is None:
+            self.pattern_node.command.root_node.capture_group_references = []
+
+        assert isinstance(self.pattern_node.command.name, str)
+        pattern_node_name_without_suffix = remove_access_suffix(self.pattern_node.command.name)
+
+        if pattern_node_name_without_suffix not in self.pattern_node.command.root_node.capture_group_references:
+            assert isinstance(pattern_node_name_without_suffix, str)
+            self.pattern_node.command.root_node.capture_group_references.append(pattern_node_name_without_suffix)
+
+
+class SpecialRegisterCaptureGroupTypeDecider:
+
+    def __init__(self, pattern_node: PatternNodeTypeBuilder) -> None:
+        self.pattern_node: PatternNodeTypeBuilder = pattern_node
+
+        assert isinstance(pattern_node.command.name, str)
+        self.pattern_name: str = pattern_node.command.name
+
+    def process(self) -> PatternNodeTypes:
+        return self._decide_and_process_capture_group_reference_register_based_on_type()
+
+    def _decide_and_process_capture_group_reference_register_based_on_type(self) -> PatternNodeTypes:
+
+        if self.is_genreg():
+            return PatternNodeTypes.capture_group_reference_register_genreg
+        if self.is_indreg():
+            return PatternNodeTypes.capture_group_reference_register_indreg
+        if self.is_stackreg():
+            return PatternNodeTypes.capture_group_reference_register_stackreg
+        if self.is_basereg():
+            return PatternNodeTypes.capture_group_reference_register_basereg
+
+        raise ValueError("Register type not found")
+
+    def is_genreg(self) -> bool:
+        "Check if the current node is a genreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&genreg")
+
+    def is_indreg(self) -> bool:
+        "Check if the current node is an indreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&indreg")
+
+    def is_stackreg(self) -> bool:
+        "Check if the current node is a stackreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&stackreg")
+
+    def is_basereg(self) -> bool:
+        "Check if the current node is a basereg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&basereg")

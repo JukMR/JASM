@@ -5,23 +5,25 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
-
 # set this limit to asterisk to reduce backtracking regex explosion
 # WARNING: sometimes setting this value too low would affect negative
 # lookaheads failing to match the existing pattern
-ASTERISK_WITH_LIMIT = r"{0,1000}"
+ASTERISK_WITH_LIMIT: Final = r"{0,1000}"
 
-INSTRUCTION_SEPARATOR = r"\|"
-SKIP_TO_END_OF_OPERAND = f"[^,|]{ASTERISK_WITH_LIMIT},"
-SKIP_TO_END_OF_PATTERN_NODE = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
-SKIP_TO_START_OF_OPERAND = f"[^|,]{ASTERISK_WITH_LIMIT}"
-SKIP_TO_ANY_OPERAND_CHARS = f"[^|]{ASTERISK_WITH_LIMIT}"
+OPTIONAL_COMMA: Final = r",?"
 
-IGNORE_INST_ADDR = r"[\dabcedf]+::"
+INSTRUCTION_SEPARATOR: Final = r"\|"
+SKIP_TO_END_OF_OPERAND: Final = f"[^,|]{ASTERISK_WITH_LIMIT},"
+SKIP_TO_END_OF_PATTERN_NODE: Final = f"[^|]{ASTERISK_WITH_LIMIT}" + INSTRUCTION_SEPARATOR
+SKIP_TO_START_OF_OPERAND: Final = f"[^|,]{ASTERISK_WITH_LIMIT}"
+SKIP_TO_ANY_OPERAND_CHARS: Final = f"[^|]{ASTERISK_WITH_LIMIT}"
 
-IGNORE_NAME_PREFIX = f"[^,|]{ASTERISK_WITH_LIMIT}"
-IGNORE_NAME_SUFFIX = f"[^,|]{ASTERISK_WITH_LIMIT},"
+IGNORE_INST_ADDR: Final = r"[\dabcedf]+::"
 
+IGNORE_NAME_PREFIX: Final = f"[^,|]{ASTERISK_WITH_LIMIT}"
+IGNORE_NAME_SUFFIX: Final = f"[^,|]{ASTERISK_WITH_LIMIT},"
+
+OPTIONAL_PERCENTAGE_CHAR: Final = "%?"
 MAX_PYTHON_INT = sys.maxsize * 2
 
 PatternDict: TypeAlias = Dict[str, Any]
@@ -86,8 +88,10 @@ class MatchingReturnMode(Enum):
 class CaptureGroupMode(Enum):
     """Enum for the capture group mode."""
 
+    # TODO: review this in the patterNode Refactor
     instruction = auto()
     operand = auto()
+    register = auto()
 
 
 class PatternNodeTypes(Enum):
@@ -105,6 +109,12 @@ class PatternNodeTypes(Enum):
     capture_group_call = auto()
     capture_group_reference_operand = auto()
     capture_group_call_operand = auto()
+    capture_group_reference_register_genreg = auto()
+    capture_group_reference_register_indreg = auto()
+    capture_group_reference_register_stackreg = auto()
+    capture_group_reference_register_basereg = auto()
+
+    capture_group_call_register = auto()
     root = auto()
 
 
@@ -188,3 +198,29 @@ class Instruction:
 
 class BinaryFileFormatNotSupported(Exception):
     "Exception for binary file format not supported by disassembler"
+
+
+class RegisterCaptureSuffixs(Enum):
+    SUFFIX_64 = "64"
+    SUFFIX_32 = "32"
+    SUFFIX_16 = "16"
+    SUFFIX_8H = "8h"
+    SUFFIX_8L = "8l"
+
+
+class RegisterCapturePrefix(Enum):
+    genreg = auto()
+    indreg = auto()
+    stackreg = auto()
+    basereg = auto()
+
+
+def remove_access_suffix(pattern_name: str) -> str:
+    "Remove the access suffix from the pattern name"
+
+    parts = pattern_name.split(".")
+    possible_register_suffix = [suffix.value for suffix in RegisterCaptureSuffixs]
+    if parts[-1] in possible_register_suffix:
+        return ".".join(parts[:-1])
+
+    return pattern_name

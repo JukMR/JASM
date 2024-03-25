@@ -1,0 +1,13 @@
+---
+config:
+  style: att
+  plugins:
+
+pattern:
+  - add:
+      - 1
+      - "&indreg-1"
+  - mov:
+      - "&indreg-1.16"
+      - "&indreg-1.32"
+  - jmp

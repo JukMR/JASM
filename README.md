@@ -68,3 +68,41 @@ where:
 * `constant_offset: k`
 
 So the example would match a command like `nopw 0x0(%rax,%rax,1)` turning it to `[%rax+%rax*1+0x0]`
+
+## Special registry capture groups
+
+The x86 registers are the following:
+
+![x86 registers](x86_registers.png)
+
+we support the following convention for using special register captures.
+
+Use the capture group special names for capturing the registers:
+
+* `&genreg`
+
+* `&indreg`
+
+* `&stackreg`
+
+* `&basereg`
+
+And these suffix for accessing the specific parts of the registers:
+
+* `.64`
+
+* `.32`
+
+* `.16`
+
+* `.8H`
+
+* `.8L`
+
+So for example:
+
+* if you want to capture the `rax` register you can use `&genreg.64` and it will capture the `rax` register.
+* if you want to capture the `eax` register you can use `&genreg.32` and it will capture the `eax` register.
+* if you want to capture the `ax` register you can use `&genreg.16` and it will capture the `ax` register.
+* if you want to capture the `ah` register you can use `&genreg.8H` and it will capture the `ah` register.
+* if you want to capture the `al` register you can use `&genreg.8L` and it will capture the `al` register.

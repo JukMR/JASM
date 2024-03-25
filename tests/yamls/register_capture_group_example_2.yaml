@@ -1,0 +1,13 @@
+---
+config:
+  style: att
+  plugins:
+
+pattern:
+  - add:
+      - 1
+      - "&genreg-1"
+  - mov:
+      - "&genreg-1.16"
+      - "&genreg-1.32"
+  - jmp

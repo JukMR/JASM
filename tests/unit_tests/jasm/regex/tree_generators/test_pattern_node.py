@@ -138,14 +138,14 @@ def test_process_branch_and(pattern_node_fixture: PatternNode):
     # mock_child2.get_regex.assert_called_once()
 
 
-def test_generate_regex_with_operands():
+def test_generate_regex_with_operands() -> None:
     creator = RegexWithOperandsCreator(name="pattern_node", operands=[MagicMock()], times=None)
     assert isinstance(creator.operands, List)
     creator.operands[0].get_regex = MagicMock(return_value="operand_regex")
     assert "operand_regex" in creator.generate_regex()
 
 
-def test_generate_regex_without_operands():
+def test_generate_regex_without_operands() -> None:
     creator = RegexWithOperandsCreator(name="pattern_node", operands=None, times=None)
     assert "pattern_node" in creator.generate_regex()
 
@@ -153,6 +153,32 @@ def test_generate_regex_without_operands():
 from jasm.regex.tree_generators.pattern_node import BranchProcessor
 
 
-def test_branch_processor_and():
+def test_branch_processor_and() -> None:
     processor = BranchProcessor()
     assert processor.process_and(["regex1", "regex2"], None) == "(?:regex1regex2)"
+
+
+def test_process_register_capture_group_name():
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.64", "1") == "r1x"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.32", "2") == "e2x"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.16", "3") == "3x"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.8h", "4") == "4h"
+    assert PatternNode.process_register_capture_group_name_genreg("&genreg.8l", "5") == "5l"
+
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.64", "1") == "r1i"
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.32", "2") == "e2i"
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.16", "3") == "3i"
+    assert PatternNode.process_register_capture_group_name_indreg("&indreg.8l", "4") == "4il"
+
+    assert PatternNode.process_register_capture_group_name_basereg("&basereg.64", "1") == "r1"
+    assert PatternNode.process_register_capture_group_name_basereg("&basereg.32", "2") == "e2"
+    assert PatternNode.process_register_capture_group_name_basereg("&basereg.16", "3") == "3"
+    assert PatternNode.process_register_capture_group_name_basereg("&basereg.8l", "4") == "4l"
+
+    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.64", "1") == "r1"
+    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.32", "2") == "e2"
+    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.16", "3") == "3"
+    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.8l", "4") == "4l"
+
+    with pytest.raises(NotImplementedError):
+        PatternNode.process_register_capture_group_name_genreg("&pattern.unknown", "7")

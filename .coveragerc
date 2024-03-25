@@ -2,5 +2,5 @@
 skip_empty = true
 
 [run]
-omit =
-    tests/*
+source = src/
+omit = tests/*
