@@ -14,7 +14,7 @@ from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeType
 
 
 class Yaml2Regex(File2Regex):
-    "File2Regex class implementation with Yaml"
+    """File2Regex class implementation with Yaml"""
 
     def __init__(self, pattern_pathstr: str, macros_from_terminal: Optional[List[str]] = None) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
@@ -22,12 +22,12 @@ class Yaml2Regex(File2Regex):
 
     @staticmethod
     def load_file(file: str) -> Any:
-        "Read a yaml file and return the parsed content"
+        """Read a yaml file and return the parsed content"""
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
     def produce_regex(self) -> str:
-        "Handle all patterns and returns the final regex string"
+        """Handle all patterns and returns the final regex string"""
 
         patterns = self._get_pattern()
 
@@ -42,7 +42,7 @@ class Yaml2Regex(File2Regex):
         return output_regex
 
     def _get_pattern(self) -> PatternTree:
-        # Load pattern
+        """Load pattern from file"""
         patterns = self.loaded_file.get("pattern")
 
         pattern_with_top_node = {"$and": patterns}
@@ -65,7 +65,7 @@ class Yaml2Regex(File2Regex):
         return pattern_with_top_node
 
     def load_macros_from_args(self) -> List[Dict]:
-        "Load macros from a list of files"
+        """Load macros from a list of files"""
 
         assert self.macros_from_terminal_filepath, "No macros from args provided"
 
@@ -78,7 +78,7 @@ class Yaml2Regex(File2Regex):
         return processed_macros
 
     def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
-        "Generate the rule tree from the patterns"
+        """Generate the rule tree from the patterns"""
         # Generate the rule tree with no parents and type from root parent node downwards
         rule_tree: PatternNodeBase = PatternNodeBuilderNoParents(command_dict=patterns).build()
 
@@ -88,7 +88,7 @@ class Yaml2Regex(File2Regex):
         return rule_tree_complete
 
     def get_assembly_style(self) -> DisassStyle:
-        "Get the file style from the pattern file or return the default att"
+        """Get the file style from the pattern file or return the default att"""
         config = self.loaded_file.get("config")
         if config:
             style = config.get("style")
@@ -103,7 +103,7 @@ class Yaml2Regex(File2Regex):
         return DisassStyle.att
 
     def get_valid_addr_range(self) -> Optional[ValidAddrRange]:
-        "Get the valid address range from the pattern file"
+        """Get the valid address range from the pattern file"""
         config = self.loaded_file.get("config")
         if config:
             valid_addr = config.get("valid_addr_range")
