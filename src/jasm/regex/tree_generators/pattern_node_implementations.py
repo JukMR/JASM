@@ -5,8 +5,6 @@ from jasm.global_definitions import (
     IGNORE_INST_ADDR,
     OPTIONAL_PERCENTAGE_CHAR,
     SKIP_TO_END_OF_PATTERN_NODE,
-    CaptureGroupMode,
-    PatternNodeTypes,
     TimeType,
 )
 from jasm.logging_config import logger
@@ -134,14 +132,14 @@ class PatternNodeDerefPropertyCaptureGroupCall(PatternNodeBase):
         )
 
     def get_regex(self) -> str:
-        return self.get_capture_group_call(CaptureGroupMode.operand)
+        return self.get_capture_group_call_operand()
 
     # Capture group call
-    def get_capture_group_call(self, capture_group_mode: CaptureGroupMode) -> str:
+    def get_capture_group_call_operand(self) -> str:
 
-        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+        from jasm.regex.tree_generators.capture_group import CaptureGroupIndexOperand
 
-        capture_group_instance = CaptureGroupIndex(pattern_node=self, mode=capture_group_mode)
+        capture_group_instance = CaptureGroupIndexOperand(pattern_node=self)
 
         index = capture_group_instance.to_regex()
 
@@ -180,14 +178,14 @@ class PatternNodeCaptureGroupCall(PatternNodeBase):
         )
 
     def get_regex(self) -> str:
-        return self.get_capture_group_call(CaptureGroupMode.instruction)
+        return self.get_capture_group_call_instruction()
 
     # Capture group call
-    def get_capture_group_call(self, capture_group_mode: CaptureGroupMode) -> str:
+    def get_capture_group_call_instruction(self) -> str:
 
-        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+        from jasm.regex.tree_generators.capture_group import CaptureGroupIndexInstruction
 
-        capture_group_instance = CaptureGroupIndex(pattern_node=self, mode=capture_group_mode)
+        capture_group_instance = CaptureGroupIndexInstruction(pattern_node=self)
 
         index = capture_group_instance.to_regex()
 
@@ -206,14 +204,14 @@ class PatternNodeCaptureGroupCallOperand(PatternNodeBase):
         )
 
     def get_regex(self) -> str:
-        return self.get_capture_group_call(CaptureGroupMode.operand)
+        return self.get_capture_group_call_operand()
 
     # Capture group call
-    def get_capture_group_call(self, capture_group_mode: CaptureGroupMode) -> str:
+    def get_capture_group_call_operand(self) -> str:
 
-        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+        from jasm.regex.tree_generators.capture_group import CaptureGroupIndexOperand
 
-        capture_group_instance = CaptureGroupIndex(pattern_node=self, mode=capture_group_mode)
+        capture_group_instance = CaptureGroupIndexOperand(pattern_node=self)
 
         index = capture_group_instance.to_regex()
 
@@ -251,13 +249,13 @@ class PatternNodeCaptureGroupCallRegister(PatternNodeBase):
         )
 
     def get_regex(self) -> str:
-        return self.get_capture_group_register_call(CaptureGroupMode.register)
+        return self.get_capture_group_register_call_register()
 
-    def get_capture_group_register_call(self, capture_group_mode: CaptureGroupMode) -> str:
+    def get_capture_group_register_call_register(self) -> str:
 
-        from jasm.regex.tree_generators.capture_group import CaptureGroupIndex
+        from jasm.regex.tree_generators.capture_group import CaptureGroupIndexRegister
 
-        capture_group_instance = CaptureGroupIndex(pattern_node=self, mode=capture_group_mode)
+        capture_group_instance = CaptureGroupIndexRegister(pattern_node=self)
         index = capture_group_instance.to_regex()
 
         pattern_name = self.name

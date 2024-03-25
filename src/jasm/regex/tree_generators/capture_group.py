@@ -1,24 +1,14 @@
+from abc import ABC, abstractmethod
 from typing import List
 
 from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
-class CaptureGroupIndex:
+class CaptureGroupIndex(ABC):
     """Class to represent a capture group index."""
 
-    # TODO: modify this class to use SubClasses instead of the mode attribute
-    # Do this in the branch `feature/refactor-pattern-node-class`
-
-    # TODO: modify this class to use SubClasses instead of the mode attribute
-    # Do this in the branch `feature/refactor-pattern-node-class`
-
-    def __init__(self, pattern_node: PatternNode, mode: CaptureGroupMode) -> None:
-
-        if mode == CaptureGroupMode.register:
-            str_index = remove_access_suffix(str(pattern_node.name))
-        else:
-            str_index = str(pattern_node.name)
+    def __init__(self, pattern_node: PatternNodeBase, str_index: str) -> None:
 
         assert (
             hasattr(pattern_node.root_node, "capture_group_references")
@@ -37,13 +27,39 @@ class CaptureGroupIndex:
                 return capture_group_references.index(elem) + 1
         raise ValueError(f"Capture group reference {str_index} not found")
 
+    @abstractmethod
     def to_regex(self) -> str:
         """Return the regex representation of the capture group index."""
-        match self.mode:
-            case CaptureGroupMode.instruction:
-                return rf"{IGNORE_INST_ADDR}\{self.index},\|"
 
-            case CaptureGroupMode.operand | CaptureGroupMode.register:
-                return rf"\{self.index}"
 
-        raise ValueError(f"Capture group mode {self.mode} not found")
+class CaptureGroupIndexInstruction(CaptureGroupIndex):
+    """Class to represent a capture group index for an instruction."""
+
+    def __init__(self, pattern_node: PatternNodeBase) -> None:
+        str_index = str(pattern_node.name)
+        super().__init__(pattern_node=pattern_node, str_index=str_index)
+
+    def to_regex(self) -> str:
+        return rf"{IGNORE_INST_ADDR}\{self.index},\|"
+
+
+class CaptureGroupIndexOperand(CaptureGroupIndex):
+    """Class to represent a capture group index for an operand."""
+
+    def __init__(self, pattern_node: PatternNodeBase) -> None:
+        str_index = str(pattern_node.name)
+        super().__init__(pattern_node=pattern_node, str_index=str_index)
+
+    def to_regex(self) -> str:
+        return rf"\{self.index}"
+
+
+class CaptureGroupIndexRegister(CaptureGroupIndex):
+    """Class to represent a capture group index for a register."""
+
+    def __init__(self, pattern_node: PatternNodeBase) -> None:
+        str_index = self.remove_access_suffix(str(pattern_node.name))
+        super().__init__(pattern_node=pattern_node, str_index=str_index)
+
+    def to_regex(self) -> str:
+        return rf"\{self.index}"
