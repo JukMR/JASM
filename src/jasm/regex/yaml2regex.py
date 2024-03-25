@@ -83,7 +83,7 @@ class Yaml2Regex(File2Regex):
         rule_tree: PatternNodeBase = PatternNodeBuilderNoParents(command_dict=patterns).build()
 
         # Add the command_type to each node
-        rule_tree_complete = PatternNodeTypeBuilder(rule_tree, parent=None).build()
+        rule_tree_complete: PatternNode = PatternNodeTypeBuilder(rule_tree, parent=None).build()
 
         return rule_tree_complete
 
