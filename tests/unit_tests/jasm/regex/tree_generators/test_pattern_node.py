@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX, PatternNodeTypes
+from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX
 from jasm.regex.tree_generators.pattern_node import PatternNodeBase
 from jasm.regex.tree_generators.pattern_node_implementations import (
     BranchProcessor,
@@ -117,7 +117,6 @@ def test_process_branch_and(pattern_node_fixture: PatternNodeBase):
         mock_child.name = f"mock_child{i_mock + 1}"
         mock_child.times = TimeType(min_times=1, max_times=1)
         mock_child.children = []
-        mock_child.pattern_node_type = PatternNodeTypes.operand
         mock_child.get_regex = MagicMock(return_value=f"{mock_child.name}")
 
     # Set up the return value for get_regex method on mock children
@@ -128,7 +127,6 @@ def test_process_branch_and(pattern_node_fixture: PatternNodeBase):
     pattern_node_node = PatternNodeNode(pattern_node_fixture)
     pattern_node_node.children = [mock_child1, mock_child2]
     pattern_node_node.name = "$and"
-    pattern_node_node.pattern_node_type = PatternNodeTypes.node  # or appropriate type
 
     regex = pattern_node_node.process_branch()
 

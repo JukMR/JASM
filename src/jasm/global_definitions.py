@@ -85,30 +85,6 @@ class MatchingReturnMode(Enum):
     all_instructions_string = auto()  # this enum is used for testing only
 
 
-class PatternNodeTypes(Enum):
-    """Enum for the pattern node types. This is used for setting the types of each node in the PatternNode Tree."""
-
-    node = auto()
-    operand = auto()
-    mnemonic = auto()
-    deref = auto()
-    deref_property = auto()
-    deref_property_capture_group_reference = auto()
-    deref_property_capture_group_call = auto()
-    times = auto()
-    capture_group_reference = auto()
-    capture_group_call = auto()
-    capture_group_reference_operand = auto()
-    capture_group_call_operand = auto()
-    capture_group_reference_register_genreg = auto()
-    capture_group_reference_register_indreg = auto()
-    capture_group_reference_register_stackreg = auto()
-    capture_group_reference_register_basereg = auto()
-
-    capture_group_call_register = auto()
-    root = auto()
-
-
 class HexType:
     """Class for hex type."""
 
