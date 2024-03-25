@@ -10,7 +10,6 @@ from jasm.regex.file2regex import File2Regex
 from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeBase
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
-from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
 from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
 
 
@@ -82,9 +81,6 @@ class Yaml2Regex(File2Regex):
         "Generate the rule tree from the patterns"
         # Generate the rule tree with no parents and type from root parent node downwards
         rule_tree: PatternNodeBase = PatternNodeBuilderNoParents(command_dict=patterns).build()
-
-        # Transform parents of all nodes to commands
-        PatternNodeParentsBuilder(rule_tree).build()
 
         # Add the command_type to each node
         rule_tree_complete = PatternNodeTypeBuilder(rule_tree, parent=None).build()
