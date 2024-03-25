@@ -2,7 +2,7 @@
 
 import sys
 from dataclasses import dataclass
-from enum import Enum, StrEnum, auto
+from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
 # set this limit to asterisk to reduce backtracking regex explosion
@@ -200,7 +200,7 @@ class BinaryFileFormatNotSupported(Exception):
     "Exception for binary file format not supported by disassembler"
 
 
-class RegisterCaptureSuffixs(StrEnum):
+class RegisterCaptureSuffixs(Enum):
     SUFFIX_64 = "64"
     SUFFIX_32 = "32"
     SUFFIX_16 = "16"
