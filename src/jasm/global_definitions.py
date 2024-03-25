@@ -85,15 +85,6 @@ class MatchingReturnMode(Enum):
     all_instructions_string = auto()  # this enum is used for testing only
 
 
-class CaptureGroupMode(Enum):
-    """Enum for the capture group mode."""
-
-    # TODO: review this in the patterNode Refactor
-    instruction = auto()
-    operand = auto()
-    register = auto()
-
-
 class PatternNodeTypes(Enum):
     """Enum for the pattern node types. This is used for setting the types of each node in the PatternNode Tree."""
 
