@@ -1,9 +1,9 @@
 import pytest
 
-from jasm.global_definitions import TimeType
+from jasm.global_definitions import TimeType, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeTypes
 from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
-from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder, RegisterCaptureGroupProcessor
+from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
 
 
 def create_test_node(name: str, parent=None, children=None) -> PatternNode:
@@ -100,9 +100,9 @@ def test_recursive_build():
 
 
 def test_remove_access_suffix():
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.32") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.16") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.8l") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.8h") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern") == "pattern"
-    assert RegisterCaptureGroupProcessor.remove_access_suffix("pattern.other") == "pattern.other"
+    assert remove_access_suffix("pattern.32") == "pattern"
+    assert remove_access_suffix("pattern.16") == "pattern"
+    assert remove_access_suffix("pattern.8l") == "pattern"
+    assert remove_access_suffix("pattern.8h") == "pattern"
+    assert remove_access_suffix("pattern") == "pattern"
+    assert remove_access_suffix("pattern.other") == "pattern.other"

@@ -1,6 +1,6 @@
 from typing import List
 
-from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode, RegisterCaptureSuffixs
+from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
@@ -13,7 +13,7 @@ class CaptureGroupIndex:
     def __init__(self, pattern_node: PatternNode, mode: CaptureGroupMode) -> None:
 
         if mode == CaptureGroupMode.register:
-            str_index = self.remove_access_suffix(str(pattern_node.name))
+            str_index = remove_access_suffix(str(pattern_node.name))
         else:
             str_index = str(pattern_node.name)
 
@@ -25,17 +25,6 @@ class CaptureGroupIndex:
         capture_group_references = pattern_node.root_node.capture_group_references
         self.index = self._get_capture_group_reference(str_index, capture_group_references)
         self.mode = mode
-
-    @staticmethod
-    def remove_access_suffix(pattern_name: str) -> str:
-        "Remove the access suffix from the pattern name"
-
-        parts = pattern_name.split(".")
-        possible_register_suffix = [suffix.value for suffix in RegisterCaptureSuffixs]
-        if parts[-1] in possible_register_suffix:
-            return ".".join(parts[:-1])
-
-        return pattern_name
 
     @staticmethod
     def _get_capture_group_reference(str_index: str, capture_group_references: List[str]) -> int:

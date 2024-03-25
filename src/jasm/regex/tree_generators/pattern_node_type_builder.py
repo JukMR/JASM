@@ -1,6 +1,6 @@
 from typing import Optional
 
-from jasm.global_definitions import PatternNodeTypes, RegisterCaptureSuffixs
+from jasm.global_definitions import PatternNodeTypes, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
@@ -291,7 +291,7 @@ class RegisterCaptureGroupProcessor:
         pattern_node_name = self.pattern_node.command.name
         assert isinstance(pattern_node_name, str)
 
-        main_reference_name = self.remove_access_suffix(pattern_node_name)
+        main_reference_name = remove_access_suffix(pattern_node_name)
 
         assert hasattr(self.pattern_node.command.root_node, "capture_group_references")
 
@@ -302,17 +302,6 @@ class RegisterCaptureGroupProcessor:
             return True
         return False
 
-    @staticmethod
-    def remove_access_suffix(pattern_name: str) -> str:
-        "Remove the access suffix from the pattern name"
-
-        parts = pattern_name.split(".")
-        possible_register_suffix = [suffix.value for suffix in RegisterCaptureSuffixs]
-        if parts[-1] in possible_register_suffix:
-            return ".".join(parts[:-1])
-
-        return pattern_name
-
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
         assert self.pattern_node.command.root_node
@@ -322,7 +311,7 @@ class RegisterCaptureGroupProcessor:
             self.pattern_node.command.root_node.capture_group_references = []
 
         assert isinstance(self.pattern_node.command.name, str)
-        pattern_node_name_without_suffix = self.remove_access_suffix(self.pattern_node.command.name)
+        pattern_node_name_without_suffix = remove_access_suffix(self.pattern_node.command.name)
 
         if pattern_node_name_without_suffix not in self.pattern_node.command.root_node.capture_group_references:
             assert isinstance(pattern_node_name_without_suffix, str)

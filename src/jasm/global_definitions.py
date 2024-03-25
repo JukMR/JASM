@@ -213,3 +213,14 @@ class RegisterCapturePrefix(Enum):
     indreg = auto()
     stackreg = auto()
     basereg = auto()
+
+
+def remove_access_suffix(pattern_name: str) -> str:
+    "Remove the access suffix from the pattern name"
+
+    parts = pattern_name.split(".")
+    possible_register_suffix = [suffix.value for suffix in RegisterCaptureSuffixs]
+    if parts[-1] in possible_register_suffix:
+        return ".".join(parts[:-1])
+
+    return pattern_name
