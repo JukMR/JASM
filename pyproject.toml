@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "JASM"
-version = "0.12.0"
+version = "0.13.0"
 description = "JASM - Assembly Regex Generator"
 authors = ["Julian Merida <julianmr97@gmail.com>"]
 readme = "README.md"
