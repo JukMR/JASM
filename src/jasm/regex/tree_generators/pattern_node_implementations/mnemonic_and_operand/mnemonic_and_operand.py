@@ -2,11 +2,11 @@ from typing import List, Optional
 
 from jasm.global_definitions import (
     ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
+    ASTERISK_WITH_LIMIT,
     IGNORE_INST_ADDR,
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_PATTERN_NODE,
-    ASTERISK_WITH_LIMIT,
     TimeType,
 )
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
