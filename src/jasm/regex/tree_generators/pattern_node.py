@@ -77,7 +77,7 @@ class PatternNode(ABC):
         """Get regex from a leaf or call a recursion over the branch."""
 
 
-class PatternNode(PatternNode):
+class PatternNodeBase(PatternNode):
     """
     Base class for the pattern node with dummy implementation of the get_regex method.
     This is a temporary solution until the node type is defined and we can implement the actual concrete class

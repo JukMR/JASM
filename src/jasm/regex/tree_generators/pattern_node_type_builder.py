@@ -1,26 +1,30 @@
 from typing import Optional
 
-from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNode
 from jasm.global_definitions import remove_access_suffix
-from jasm.regex.tree_generators.pattern_node_implementations import (
-    PatternNodeCaptureGroupRegisterCall,
-    PatternNodeCaptureGroupRegisterReferenceGenreg,
-    PatternNodeCaptureGroupRegisterReferenceIndreg,
-    PatternNodeCaptureGroupRegisterReferenceStackreg,
-    PatternNodeCaptureGroupRegisterReferenceBasereg,
+from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_implementations.capture_group import (
     PatternNodeCaptureGroupCall,
     PatternNodeCaptureGroupCallOperand,
     PatternNodeCaptureGroupReference,
+    PatternNodeCaptureGroupRegisterCall,
+    PatternNodeCaptureGroupRegisterReferenceBasereg,
+    PatternNodeCaptureGroupRegisterReferenceGenreg,
+    PatternNodeCaptureGroupRegisterReferenceIndreg,
+    PatternNodeCaptureGroupRegisterReferenceStackreg,
+    PattterNodeCaptureGroupReferenceOperand,
+)
+from jasm.regex.tree_generators.pattern_node_implementations.deref import (
     PatternNodeDeref,
     PatternNodeDerefProperty,
     PatternNodeDerefPropertyCaptureGroupCall,
     PatternNodeDerefPropertyCaptureGroupReference,
+)
+from jasm.regex.tree_generators.pattern_node_implementations.pattern_node_implementations import (
     PatternNodeMnemonic,
     PatternNodeNode,
     PatternNodeOperand,
     PatternNodeRoot,
     PatternNodeTimes,
-    PattterNodeCaptureGroupReferenceOperand,
 )
 
 

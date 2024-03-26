@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from jasm.global_definitions import TimeType, DictNode
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeBase
 
 
 class PatternNodeBuilderNoParents:
@@ -77,9 +77,9 @@ class PatternNodeBuilderNoParents:
         raise ValueError("Command is not a list or a dict")
 
     @staticmethod
-    def get_simple_child(name: str) -> List[PatternNode]:
+    def get_simple_child(name: str) -> List[PatternNodeBase]:
         return [
-            PatternNode(
+            PatternNodeBase(
                 name=name,
                 times=TimeType(min_times=1, max_times=1),
                 children=None,
@@ -89,10 +89,10 @@ class PatternNodeBuilderNoParents:
             )
         ]
 
-    def build(self) -> PatternNode:
+    def build(self) -> PatternNodeBase:
         assert isinstance(self.name, (str, int))
 
-        return PatternNode(
+        return PatternNodeBase(
             name=self.name,
             times=self.times,
             children=self.children,
