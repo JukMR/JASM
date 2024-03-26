@@ -1,6 +1,4 @@
-from jasm.regex.tree_generators.capture_group_index import (
-    CaptureGroupIndex,
-)
+from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndex
 
 
 class CaptureGroupCallRegexBuilder:
@@ -10,8 +8,8 @@ class CaptureGroupCallRegexBuilder:
 
     Currently used by:
     - deref.py: PatternNodeDerefPropertyCaptureGroupCall
-    - capture_group.py: PatternNodeCaptureGroupCallInstruction
-    - capture_group.py: PatternNodeCaptureGroupCallOperand
+    - capture_group_instruction.py: PatternNodeCaptureGroupCallInstruction
+    - capture_group_operand.py: PatternNodeCaptureGroupCallOperand
     """
 
     def __init__(self, capture_group_instance: CaptureGroupIndex) -> None:
