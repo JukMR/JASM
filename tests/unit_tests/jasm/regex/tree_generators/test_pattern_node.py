@@ -5,10 +5,10 @@ from unittest.mock import MagicMock
 import pytest
 
 from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX
-from jasm.regex.tree_generators.pattern_node import PatternNodeBase
+from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations import (
     BranchProcessor,
-    PatternNodeCaptureGroupCallRegister,
+    PatternNodeCaptureGroupRegisterCall,
     PatternNodeMnemonic,
     PatternNodeNode,
     PatternNodeOperand,
@@ -41,9 +41,9 @@ def test_get_pattern_node_name_with_string():
 
 
 @pytest.fixture
-def pattern_node_fixture() -> PatternNodeBase:
+def pattern_node_fixture() -> PatternNode:
     # Create a basic pattern_node fixture
-    return PatternNodeBase(
+    return PatternNode(
         pattern_node_dict={},
         name="test",
         times=TimeType(min_times=1, max_times=1),
@@ -53,21 +53,21 @@ def pattern_node_fixture() -> PatternNodeBase:
     )
 
 
-def test_get_regex_mnemonic(pattern_node_fixture: PatternNodeBase) -> None:
+def test_get_regex_mnemonic(pattern_node_fixture: PatternNode) -> None:
     pattern_node_mnemonic = PatternNodeMnemonic(pattern_node_fixture)
     pattern_node_mnemonic.process_leaf = MagicMock(return_value="leaf_regex")
     assert pattern_node_mnemonic.get_regex() == "leaf_regex"
     pattern_node_mnemonic.process_leaf.assert_called_once()
 
 
-def test_get_regex_operand(pattern_node_fixture: PatternNodeBase) -> None:
+def test_get_regex_operand(pattern_node_fixture: PatternNode) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     pattern_node_operand.process_leaf = MagicMock(return_value="leaf_regex")
     assert pattern_node_operand.get_regex() == "leaf_regex"
     pattern_node_operand.process_leaf.assert_called_once()
 
 
-def test_process_leaf_no_children(pattern_node_fixture: PatternNodeBase) -> None:
+def test_process_leaf_no_children(pattern_node_fixture: PatternNode) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     pattern_node_operand.name = "operand"
     pattern_node_operand.children = None
@@ -75,10 +75,10 @@ def test_process_leaf_no_children(pattern_node_fixture: PatternNodeBase) -> None
     assert pattern_node_operand.process_leaf() == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
 
 
-def test_process_leaf_with_children(pattern_node_fixture: PatternNodeBase) -> None:
+def test_process_leaf_with_children(pattern_node_fixture: PatternNode) -> None:
     pattern_node_mnemonic = PatternNodeMnemonic(pattern_node_fixture)
     pattern_node_mnemonic.name = "pattern_node_with_children"
-    child_pattern_node_base = PatternNodeBase(
+    child_pattern_node_base = PatternNode(
         pattern_node_dict={},
         name="child",
         times=TimeType(min_times=1, max_times=1),
@@ -93,13 +93,13 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeBase) -> No
     assert "pattern_node_with_children" in pattern_node_mnemonic.process_leaf()
 
 
-def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNodeBase):
+def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNode):
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     hex_name = "A3h"
     assert pattern_node_operand.sanitize_operand_name(hex_name) == "0xA3"
 
 
-def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNodeBase) -> None:
+def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNode) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     non_hex_name = "operand"
     assert (
@@ -107,10 +107,10 @@ def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNodeBase) ->
     )
 
 
-def test_process_branch_and(pattern_node_fixture: PatternNodeBase):
+def test_process_branch_and(pattern_node_fixture: PatternNode):
     # Create mock pattern_node instances for children
-    mock_child1 = MagicMock(spec=PatternNodeBase)
-    mock_child2 = MagicMock(spec=PatternNodeBase)
+    mock_child1 = MagicMock(spec=PatternNode)
+    mock_child2 = MagicMock(spec=PatternNode)
 
     # Manually set up necessary attributes for the mock children
     for i_mock, mock_child in enumerate([mock_child1, mock_child2]):
@@ -159,26 +159,26 @@ def test_branch_processor_and() -> None:
 
 
 def test_process_register_capture_group_name():
-    assert PatternNode.process_register_capture_group_name_genreg("&genreg.64", "1") == "r1x"
-    assert PatternNode.process_register_capture_group_name_genreg("&genreg.32", "2") == "e2x"
-    assert PatternNode.process_register_capture_group_name_genreg("&genreg.16", "3") == "3x"
-    assert PatternNode.process_register_capture_group_name_genreg("&genreg.8h", "4") == "4h"
-    assert PatternNode.process_register_capture_group_name_genreg("&genreg.8l", "5") == "5l"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.64", "1") == "r1x"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.32", "2") == "e2x"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.16", "3") == "3x"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.8h", "4") == "4h"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.8l", "5") == "5l"
 
-    assert PatternNode.process_register_capture_group_name_indreg("&indreg.64", "1") == "r1i"
-    assert PatternNode.process_register_capture_group_name_indreg("&indreg.32", "2") == "e2i"
-    assert PatternNode.process_register_capture_group_name_indreg("&indreg.16", "3") == "3i"
-    assert PatternNode.process_register_capture_group_name_indreg("&indreg.8l", "4") == "4il"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_indreg("&indreg.64", "1") == "r1i"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_indreg("&indreg.32", "2") == "e2i"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_indreg("&indreg.16", "3") == "3i"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_indreg("&indreg.8l", "4") == "4il"
 
-    assert PatternNode.process_register_capture_group_name_basereg("&basereg.64", "1") == "r1"
-    assert PatternNode.process_register_capture_group_name_basereg("&basereg.32", "2") == "e2"
-    assert PatternNode.process_register_capture_group_name_basereg("&basereg.16", "3") == "3"
-    assert PatternNode.process_register_capture_group_name_basereg("&basereg.8l", "4") == "4l"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_basereg("&basereg.64", "1") == "r1"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_basereg("&basereg.32", "2") == "e2"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_basereg("&basereg.16", "3") == "3"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_basereg("&basereg.8l", "4") == "4l"
 
-    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.64", "1") == "r1"
-    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.32", "2") == "e2"
-    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.16", "3") == "3"
-    assert PatternNode.process_register_capture_group_name_stackreg("&stackreg.8l", "4") == "4l"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_stackreg("&stackreg.64", "1") == "r1"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_stackreg("&stackreg.32", "2") == "e2"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_stackreg("&stackreg.16", "3") == "3"
+    assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_stackreg("&stackreg.8l", "4") == "4l"
 
     with pytest.raises(NotImplementedError):
-        PatternNode.process_register_capture_group_name_genreg("&pattern.unknown", "7")
+        PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&pattern.unknown", "7")

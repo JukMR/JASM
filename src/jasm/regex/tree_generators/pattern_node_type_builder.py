@@ -1,13 +1,16 @@
 from typing import Optional
 
-from jasm.regex.tree_generators.pattern_node import PatternNodeBase, PatternNode
+from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNode
+from jasm.global_definitions import remove_access_suffix
 from jasm.regex.tree_generators.pattern_node_implementations import (
-    PatternNodeBranch,
+    PatternNodeCaptureGroupRegisterCall,
+    PatternNodeCaptureGroupRegisterReferenceGenreg,
+    PatternNodeCaptureGroupRegisterReferenceIndreg,
+    PatternNodeCaptureGroupRegisterReferenceStackreg,
+    PatternNodeCaptureGroupRegisterReferenceBasereg,
     PatternNodeCaptureGroupCall,
     PatternNodeCaptureGroupCallOperand,
-    PatternNodeCaptureGroupCallRegister,
     PatternNodeCaptureGroupReference,
-    PatternNodeCaptureGroupReferenceRegister,
     PatternNodeDeref,
     PatternNodeDerefProperty,
     PatternNodeDerefPropertyCaptureGroupCall,
@@ -22,9 +25,9 @@ from jasm.regex.tree_generators.pattern_node_implementations import (
 
 
 class PatternNodeTypeBuilder:
-    def __init__(self, pattern_node: PatternNodeBase, parent: Optional[PatternNode]) -> None:
+    def __init__(self, pattern_node: PatternNode, parent: Optional[PatternNode]) -> None:
 
-        assert isinstance(pattern_node, PatternNodeBase)
+        assert isinstance(pattern_node, PatternNode)
         self.pattern_node = pattern_node
         self.pattern_node.parent = parent
 
@@ -248,10 +251,10 @@ class OperandCaptureGroupProcessor:
     def __init__(self, pattern_node_type_builder: PatternNodeTypeBuilder) -> None:
         self.pattern_node = pattern_node_type_builder
 
-    def process(self) -> PatternNodeBase:
+    def process(self) -> PatternNode:
         return self._process_capture_group_operand()
 
-    def _process_capture_group_operand(self) -> PatternNodeBase:
+    def _process_capture_group_operand(self) -> PatternNode:
         # Has this capture group been referenced before?
         if self.has_any_ancester_who_is_capture_group_reference():
             return self._process_operand_call()
@@ -271,10 +274,10 @@ class OperandCaptureGroupProcessor:
             return True
         return False
 
-    def _process_operand_call(self) -> PatternNodeBase:
+    def _process_operand_call(self) -> PatternNode:
         return PatternNodeCaptureGroupCallOperand(self.pattern_node.pattern_node)
 
-    def _process_operand_reference(self) -> PatternNodeBase:
+    def _process_operand_reference(self) -> PatternNode:
         # Return reference
         # Add reference to the list of references
         self.add_new_references_to_global_list()
@@ -301,12 +304,12 @@ class RegisterCaptureGroupProcessor:
     def __init__(self, pattern_node: PatternNodeTypeBuilder) -> None:
         self.pattern_node = pattern_node
 
-    def process(self) -> PatternNodeBase:
+    def process(self) -> PatternNode:
         return self.process_registry_capture_group()
 
-    def process_registry_capture_group(self) -> PatternNodeBase:
+    def process_registry_capture_group(self) -> PatternNode:
         if self.has_any_ancester_who_is_capture_group_reference_register():
-            return PatternNodeCaptureGroupCallRegister(self.pattern_node.pattern_node)
+            return PatternNodeCaptureGroupRegisterCall(self.pattern_node.pattern_node)
 
         self.add_new_references_to_global_list()
 
@@ -340,8 +343,57 @@ class RegisterCaptureGroupProcessor:
             self.pattern_node.pattern_node.root_node.capture_group_references = []
 
         assert isinstance(self.pattern_node.pattern_node.name, str)
-        pattern_node_name_without_suffix = self.remove_access_suffix(self.pattern_node.command.name)
+        pattern_node_name_without_suffix = remove_access_suffix(self.pattern_node.pattern_node.name)
 
         if pattern_node_name_without_suffix not in self.pattern_node.pattern_node.root_node.capture_group_references:
             assert isinstance(pattern_node_name_without_suffix, str)
             self.pattern_node.pattern_node.root_node.capture_group_references.append(pattern_node_name_without_suffix)
+
+
+class SpecialRegisterCaptureGroupTypeDecider:
+
+    def __init__(self, pattern_node: PatternNodeTypeBuilder) -> None:
+        self.pattern_node_type_builder: PatternNodeTypeBuilder = pattern_node
+
+        assert isinstance(pattern_node.pattern_node.name, str)
+        self.pattern_name: str = pattern_node.pattern_node.name
+
+    def process(self) -> PatternNode:
+        return self._decide_and_process_capture_group_reference_register_based_on_type()
+
+    def _decide_and_process_capture_group_reference_register_based_on_type(self) -> PatternNode:
+
+        if self.is_genreg():
+            return PatternNodeCaptureGroupRegisterReferenceGenreg(self.pattern_node_type_builder.pattern_node)
+        if self.is_indreg():
+            return PatternNodeCaptureGroupRegisterReferenceIndreg(self.pattern_node_type_builder.pattern_node)
+        if self.is_stackreg():
+            return PatternNodeCaptureGroupRegisterReferenceStackreg(self.pattern_node_type_builder.pattern_node)
+        if self.is_basereg():
+            return PatternNodeCaptureGroupRegisterReferenceBasereg(self.pattern_node_type_builder.pattern_node)
+
+        raise ValueError("Register type not found")
+
+    def is_genreg(self) -> bool:
+        "Check if the current node is a genreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&genreg")
+
+    def is_indreg(self) -> bool:
+        "Check if the current node is an indreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&indreg")
+
+    def is_stackreg(self) -> bool:
+        "Check if the current node is a stackreg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&stackreg")
+
+    def is_basereg(self) -> bool:
+        "Check if the current node is a basereg"
+        if not self.pattern_name:
+            return False
+        return self.pattern_name.startswith("&basereg")

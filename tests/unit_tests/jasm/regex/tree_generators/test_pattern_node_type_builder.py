@@ -1,29 +1,25 @@
 from typing import Optional
-from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 import pytest
 
 from jasm.global_definitions import TimeType, remove_access_suffix
-from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeTypes
-from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
-from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder, RegisterCaptureGroupProcessor
-from jasm.regex.tree_generators.pattern_node import PatternNodeBase
+from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations import (
     PatternNodeDeref,
     PatternNodeDerefProperty,
     PatternNodeMnemonic,
     PatternNodeNode,
-    PatternNodeRoot,
     PatternNodeTimes,
 )
 
 
 def pattern_node_base_creator(
-    parent: Optional[PatternNodeBase] = None,
-    children: list[PatternNodeBase] = [],
-    root_node: Optional[PatternNodeBase] = None,
+    parent: Optional[PatternNode] = None,
+    children: list[PatternNode] = [],
+    root_node: Optional[PatternNode] = None,
     name: str = "PatternNodeBase",
-) -> PatternNodeBase:
-    return PatternNodeBase(
+) -> PatternNode:
+    return PatternNode(
         pattern_node_dict={},
         name=name,
         times=TimeType(min_times=1, max_times=1),
@@ -79,9 +75,9 @@ def test_is_ancestor_deref() -> None:
 
     child2 = pattern_node_base_creator(name="child2", parent=parent, root_node=root_node)
 
-    child2 = PatternNodeTypeBuilder(child2, parent=parent).build()
-
     child2_builder = PatternNodeTypeBuilder(child2, parent=parent)
+    child2 = child2_builder.build()
+
     assert child2_builder.is_ancestor_deref()
 
 
@@ -98,7 +94,7 @@ def test_any_ancestor_is_mnemonic():
 
     child_pattern_type = PatternNodeTypeBuilder(child, parent=parent)
 
-    assert child_pattern_type.any_ancestor_is_mnemonic() is True
+    assert child_pattern_type.any_ancestor_is_mnemonic()
 
 
 def test_recursive_build():

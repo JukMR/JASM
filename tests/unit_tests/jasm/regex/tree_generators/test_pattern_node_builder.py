@@ -1,7 +1,7 @@
 import pytest
 
 from jasm.global_definitions import TimeType
-from jasm.regex.tree_generators.pattern_node import PatternNodeBase
+from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 
 
@@ -15,7 +15,7 @@ def test_pattern_node_builder_no_parents_with_dict():
     assert builder.times == TimeType(min_times=1, max_times=3)
     assert isinstance(builder.children, list)
     assert len(builder.children) == 2
-    assert all(isinstance(child, PatternNodeBase) for child in builder.children)
+    assert all(isinstance(child, PatternNode) for child in builder.children)
     assert all(child.name in ["times", "operands"] for child in builder.children)
     assert builder.children[0].times == TimeType(min_times=1, max_times=1)
     assert builder.children[1].times == TimeType(min_times=1, max_times=1)

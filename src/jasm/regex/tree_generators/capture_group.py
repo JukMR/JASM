@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from jasm.global_definitions import IGNORE_INST_ADDR, CaptureGroupMode, remove_access_suffix
+from jasm.global_definitions import IGNORE_INST_ADDR, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
 class CaptureGroupIndex(ABC):
     """Class to represent a capture group index."""
 
-    def __init__(self, pattern_node: PatternNodeBase, str_index: str) -> None:
+    def __init__(self, pattern_node: PatternNode, str_index: str) -> None:
 
         assert (
             hasattr(pattern_node.root_node, "capture_group_references")
@@ -17,7 +17,6 @@ class CaptureGroupIndex(ABC):
 
         capture_group_references = pattern_node.root_node.capture_group_references
         self.index = self._get_capture_group_reference(str_index, capture_group_references)
-        self.mode = mode
 
     @staticmethod
     def _get_capture_group_reference(str_index: str, capture_group_references: List[str]) -> int:
@@ -35,7 +34,7 @@ class CaptureGroupIndex(ABC):
 class CaptureGroupIndexInstruction(CaptureGroupIndex):
     """Class to represent a capture group index for an instruction."""
 
-    def __init__(self, pattern_node: PatternNodeBase) -> None:
+    def __init__(self, pattern_node: PatternNode) -> None:
         str_index = str(pattern_node.name)
         super().__init__(pattern_node=pattern_node, str_index=str_index)
 
@@ -46,7 +45,7 @@ class CaptureGroupIndexInstruction(CaptureGroupIndex):
 class CaptureGroupIndexOperand(CaptureGroupIndex):
     """Class to represent a capture group index for an operand."""
 
-    def __init__(self, pattern_node: PatternNodeBase) -> None:
+    def __init__(self, pattern_node: PatternNode) -> None:
         str_index = str(pattern_node.name)
         super().__init__(pattern_node=pattern_node, str_index=str_index)
 
@@ -57,8 +56,8 @@ class CaptureGroupIndexOperand(CaptureGroupIndex):
 class CaptureGroupIndexRegister(CaptureGroupIndex):
     """Class to represent a capture group index for a register."""
 
-    def __init__(self, pattern_node: PatternNodeBase) -> None:
-        str_index = self.remove_access_suffix(str(pattern_node.name))
+    def __init__(self, pattern_node: PatternNode) -> None:
+        str_index = remove_access_suffix(str(pattern_node.name))
         super().__init__(pattern_node=pattern_node, str_index=str_index)
 
     def to_regex(self) -> str:
