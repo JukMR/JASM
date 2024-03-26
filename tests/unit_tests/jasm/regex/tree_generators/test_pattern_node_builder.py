@@ -1,7 +1,7 @@
 import pytest
 
 from jasm.global_definitions import TimeType
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 
 

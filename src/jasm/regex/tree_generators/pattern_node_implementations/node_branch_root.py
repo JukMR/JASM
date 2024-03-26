@@ -4,7 +4,7 @@ from typing import List, Optional
 from jasm.global_definitions import (
     SKIP_TO_END_OF_PATTERN_NODE,
 )
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimeTypeBuilder
 
 

@@ -1,7 +1,8 @@
 from typing import List, Optional
 
 from jasm.global_definitions import TimeType, DictNode
-from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeBase
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
+from jasm.regex.tree_generators.pattern_node_base import PatternNodeBase
 
 
 class PatternNodeBuilderNoParents:

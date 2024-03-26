@@ -4,28 +4,9 @@ from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from jasm.global_definitions import (
-    ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
-    ASTERISK_WITH_LIMIT,
-    IGNORE_NAME_PREFIX,
-    IGNORE_NAME_SUFFIX,
     DictNode,
     TimeType,
 )
-
-
-def get_pattern_node_name(
-    name: str | int,
-    allow_matching_substrings: bool = ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
-    name_prefix: str = IGNORE_NAME_PREFIX,
-    name_suffix: str = IGNORE_NAME_SUFFIX,
-) -> str | int:
-    if name == "@any":
-        name = (
-            rf"[^, ]{ASTERISK_WITH_LIMIT}"  # Set a limit of 1000 characters for the name for reducing regex complexity
-        )
-    if allow_matching_substrings:
-        return f"{name_prefix}{name}{name_suffix}"
-    return name
 
 
 class PatternNode(ABC):
@@ -59,13 +40,3 @@ class PatternNode(ABC):
     @abstractmethod
     def get_regex(self) -> str:
         """Get regex from a leaf or call a recursion over the branch."""
-
-
-class PatternNodeBase(PatternNode):
-    """
-    Base class for the pattern node with dummy implementation of the get_regex method.
-    This is a temporary solution until the node type is defined and we can implement the actual concrete class
-    """
-
-    def get_regex(self) -> str:
-        raise NotImplementedError("This is a base class and should not be used directly.")

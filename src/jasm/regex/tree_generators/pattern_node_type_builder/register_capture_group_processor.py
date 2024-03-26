@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from jasm.global_definitions import remove_access_suffix
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_register import (
     PatternNodeCaptureGroupRegisterCall,
 )

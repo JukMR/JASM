@@ -1,6 +1,6 @@
 from typing import Optional
 
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_instruction import (
     PatternNodeCaptureGroupCallInstruction,
     PatternNodeCaptureGroupReferenceInstruction,

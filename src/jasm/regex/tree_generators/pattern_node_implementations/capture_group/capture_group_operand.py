@@ -2,7 +2,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
     CaptureGroupCallRegexBuilder,
 )
 from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexOperand
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
 class PatternNodeCaptureGroupCallOperand(PatternNode):

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from jasm.global_definitions import IGNORE_INST_ADDR, remove_access_suffix
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
 class CaptureGroupIndex(ABC):

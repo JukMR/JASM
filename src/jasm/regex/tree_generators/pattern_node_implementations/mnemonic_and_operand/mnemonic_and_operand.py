@@ -1,12 +1,31 @@
 from typing import List, Optional
 
 from jasm.global_definitions import (
+    ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
     IGNORE_INST_ADDR,
+    IGNORE_NAME_PREFIX,
+    IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_PATTERN_NODE,
+    ASTERISK_WITH_LIMIT,
     TimeType,
 )
-from jasm.regex.tree_generators.pattern_node import PatternNode, get_pattern_node_name
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimeTypeBuilder
+
+
+def get_pattern_node_name(
+    name: str | int,
+    allow_matching_substrings: bool = ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS,
+    name_prefix: str = IGNORE_NAME_PREFIX,
+    name_suffix: str = IGNORE_NAME_SUFFIX,
+) -> str | int:
+    if name == "@any":
+        name = (
+            rf"[^, ]{ASTERISK_WITH_LIMIT}"  # Set a limit of 1000 characters for the name for reducing regex complexity
+        )
+    if allow_matching_substrings:
+        return f"{name_prefix}{name}{name_suffix}"
+    return name
 
 
 class _PatternNodeMnemonicOrOperandProcessor(PatternNode):

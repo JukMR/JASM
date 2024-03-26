@@ -1,7 +1,7 @@
 from typing import Final, Optional
 
 from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 OPTIONAL_HEX_CHAR: Final = "(?:0x)?"
 
