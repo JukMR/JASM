@@ -28,22 +28,6 @@ def get_pattern_node_name(
     return name
 
 
-# class PatterNodeInterface():
-
-#     @abstractmethod
-#      def get_regex() -> str:
-
-# class DerefPropertyNode(PatternNodeInterface):
-
-
-# class PatterNodeInterface():
-
-#     @abstractmethod
-#      def get_regex() -> str:
-
-# class DerefPropertyNode(PatternNodeInterface):
-
-
 class PatternNode(ABC):
     def __init__(
         self,
