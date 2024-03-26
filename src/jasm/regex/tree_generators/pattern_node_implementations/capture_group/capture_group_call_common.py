@@ -1,4 +1,4 @@
-from jasm.regex.tree_generators.capture_group import (
+from jasm.regex.tree_generators.capture_group_index import (
     CaptureGroupIndex,
 )
 

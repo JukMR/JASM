@@ -2,7 +2,7 @@ from jasm.global_definitions import IGNORE_INST_ADDR
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_call_common import (
     CaptureGroupCallRegexBuilder,
 )
-from jasm.regex.tree_generators.capture_group import (
+from jasm.regex.tree_generators.capture_group_index import (
     CaptureGroupIndexInstruction,
     CaptureGroupIndexOperand,
 )

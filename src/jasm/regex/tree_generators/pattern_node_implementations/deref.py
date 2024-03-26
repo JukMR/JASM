@@ -1,4 +1,4 @@
-from jasm.regex.tree_generators.capture_group import CaptureGroupIndexOperand
+from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexOperand
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
 from jasm.regex.tree_generators.pattern_node import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_call_common import (

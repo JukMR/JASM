@@ -1,5 +1,5 @@
 from jasm.global_definitions import OPTIONAL_COMMA, OPTIONAL_PERCENTAGE_CHAR, RegisterCaptureSuffixs
-from jasm.regex.tree_generators.capture_group import CaptureGroupIndexRegister
+from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexRegister
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 

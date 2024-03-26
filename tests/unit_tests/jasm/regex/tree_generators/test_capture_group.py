@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import pytest
 
 from jasm.global_definitions import IGNORE_INST_ADDR
-from jasm.regex.tree_generators.capture_group import CaptureGroupIndexInstruction, CaptureGroupIndexOperand
+from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexInstruction, CaptureGroupIndexOperand
 
 
 # Setup Mock PatternNode
