@@ -2,7 +2,6 @@
 participant "Yaml2Regex" as Y
 participant "Command" as C
 participant "CommandBuilderNoParents" as CNP
-participant "CommandParentsBuilder" as CPB
 participant "CommandsTypeBuilder" as CTB
 participant "MacroExpander" as ME
 
@@ -24,11 +23,6 @@ Y -> CNP : CommandBuilderNoParents(patterns).build()
 activate CNP
 CNP -> Y : return command_rule_tree
 deactivate CNP
-
-Y -> CPB : CommandParentsBuilder(rule_tree).build()
-activate CPB
-CPB -> Y: return command_rule_tree
-deactivate CPB
 
 
 Y -> CTB : CommandsTypeBuilder(rule_tree).build()
