@@ -34,11 +34,11 @@ class PatternNodeBuilderNoParents {
     -name: str | int
     -times: TimeType
     -children: Optional[dict | List[PatternNode]]
-    +build(): PatternNodeBase
+    +build(): PatternNodeTmpUntyped
     -_get_name(command_dict: DictNode): str
     -_get_times(command_dict: DictNode): TimeType
     -_get_children(name: str, command: DictNode): List[PatternNode]
-    {static} get_simple_child(name: str): List[PatternNodeBase]
+    {static} get_simple_child(name: str): List[PatternNodeTmpUntyped]
 }
 
 abstract class PatternNode {
@@ -97,7 +97,7 @@ class DerefObjectBuilder {
     +build(): DerefObject
 }
 
-class PatternNodeBase {
+class PatternNodeTmpUntyped {
     +get_regex(): str
 }
 
@@ -194,7 +194,7 @@ MacroExpander ..> PatternTree : uses >
 PatternNodeBuilderNoParents ..> PatternNode : creates >
 PatternNodeTypeBuilder ..> PatternNode : creates >
 
-PatternNode <|-- PatternNodeBase
+PatternNode <|-- PatternNodeTmpUntyped
 PatternNode <|-- PatternNodeMnemonic
 PatternNode <|-- PatternNodeOperand
 PatternNode <|-- PatternNodeBranchRoot
