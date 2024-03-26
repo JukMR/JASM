@@ -22,10 +22,12 @@ from jasm.regex.tree_generators.pattern_node_implementations.deref import (
     PatternNodeDerefPropertyCaptureGroupCall,
     PatternNodeDerefPropertyCaptureGroupReference,
 )
-from jasm.regex.tree_generators.pattern_node_implementations.pattern_node_implementations import (
+from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operand.mnemonic_and_operand import (
     PatternNodeMnemonic,
-    PatternNodeNode,
     PatternNodeOperand,
+)
+from jasm.regex.tree_generators.pattern_node_implementations.pattern_node_implementations import (
+    PatternNodeNode,
     PatternNodeRoot,
     PatternNodeTimes,
 )

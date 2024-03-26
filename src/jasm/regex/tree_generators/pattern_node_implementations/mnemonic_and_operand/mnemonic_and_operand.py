@@ -1,0 +1,118 @@
+from typing import List, Optional
+
+from jasm.global_definitions import (
+    IGNORE_INST_ADDR,
+    SKIP_TO_END_OF_PATTERN_NODE,
+    TimeType,
+)
+from jasm.regex.tree_generators.pattern_node import PatternNode, get_pattern_node_name
+from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimeTypeBuilder
+
+
+class _PatternNodeMnemonicOrOperandProcessor(PatternNode):
+    """This class is used to process PatternNodeMnemonic and PatternNodeOperand classes."""
+
+    def __init__(self, pattern_node: PatternNode) -> None:
+        super().__init__(
+            pattern_node_dict=pattern_node.pattern_node_dict,
+            name=pattern_node.name,
+            times=pattern_node.times,
+            children=pattern_node.children,
+            parent=pattern_node.parent,
+            root_node=pattern_node.root_node,
+        )
+
+    def get_regex(self) -> str:
+        return self.process_leaf()
+
+    def process_leaf(self) -> str:
+        name = self.name
+        children = self.children
+        times = self.times
+
+        # Leaf is operand
+        if not children and isinstance(self, PatternNodeOperand):
+            # Is an operand
+            return str(self.sanitize_operand_name(name))
+        # Is a mnemonic with no operands
+        print(f"Found a mnemonic with no operands in yaml rule: {self.name}")
+
+        assert isinstance(children, List) or (not children), "Children must be a list or None"
+        # This line shouldn't be necessary but the linter complains children could be dict
+        assert not isinstance(children, dict), "Children must be a list or None"
+        return _RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
+
+    def sanitize_operand_name(self, name: str | int) -> str | int:
+        def _is_hex_operand(name: str | int) -> bool:
+            if isinstance(name, int):
+                return False
+            if name.endswith("h"):
+                tmp = name.removesuffix("h")
+                try:
+                    int(tmp, base=16)
+                    return True
+                except ValueError:
+                    return False
+            return False
+
+        if _is_hex_operand(name):
+
+            def _process_hex_operand(hex_operand_elem: str) -> str:
+                operand_elem = "0x" + hex_operand_elem.removesuffix("h")
+                return operand_elem
+
+            # Match hex operand
+            assert isinstance(name, str), "Operand name must be a string"
+            return _process_hex_operand(name)
+
+        pattern_nod_name = get_pattern_node_name(name)
+        return pattern_nod_name
+
+
+class PatternNodeMnemonic(_PatternNodeMnemonicOrOperandProcessor):
+    pass
+
+
+class PatternNodeOperand(_PatternNodeMnemonicOrOperandProcessor):
+    pass
+
+
+class _RegexWithOperandsCreator:
+    def __init__(self, name: str | int, operands: Optional[List[PatternNode]], times: Optional[TimeType]) -> None:
+        self.name = name
+        self.operands = operands
+        self.times = times
+
+    def generate_regex(self) -> str:
+        operands_regex: Optional[str] = self.get_operand_regex()
+        times_regex: Optional[str] = self.get_min_max_regex()
+
+        if times_regex:
+            return self._form_regex_with_time(operands_regex=operands_regex, times_regex=times_regex)
+        return self._form_regex_without_time(operands_regex=operands_regex)
+
+    def get_operand_regex(self) -> Optional[str]:
+        if not self.operands:
+            return None
+
+        return "".join(operand.get_regex() for operand in self.operands)
+
+    def get_min_max_regex(self) -> Optional[str]:
+        if not self.times:
+            return None
+        return TimeTypeBuilder().get_min_max_regex(times=self.times)
+
+    def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
+        # Add prefix and suffix to name to allow matching only substring
+        pattern_nod_name = get_pattern_node_name(self.name)
+
+        if operands_regex:
+            return f"(?:{IGNORE_INST_ADDR}(?:{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})){times_regex}"
+        return f"(?:{IGNORE_INST_ADDR}(?:{pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE})){times_regex}"
+
+    def _form_regex_without_time(self, operands_regex: Optional[str]) -> str:
+        pattern_nod_name = get_pattern_node_name(self.name)
+
+        if operands_regex:
+            return f"{IGNORE_INST_ADDR}(?:{pattern_nod_name}{operands_regex}{SKIP_TO_END_OF_PATTERN_NODE})"
+        return f"{IGNORE_INST_ADDR}(?:{pattern_nod_name}{SKIP_TO_END_OF_PATTERN_NODE})"

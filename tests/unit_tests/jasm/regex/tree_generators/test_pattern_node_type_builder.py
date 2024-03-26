@@ -1,12 +1,14 @@
 from typing import Optional
 
+from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operand.mnemonic_and_operand import (
+    PatternNodeMnemonic,
+)
 import pytest
 
 from jasm.global_definitions import TimeType, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeBase
 from jasm.regex.tree_generators.pattern_node_implementations.deref import PatternNodeDeref, PatternNodeDerefProperty
 from jasm.regex.tree_generators.pattern_node_implementations.pattern_node_implementations import (
-    PatternNodeMnemonic,
     PatternNodeNode,
     PatternNodeTimes,
 )
@@ -15,7 +17,7 @@ from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeType
 
 def pattern_node_base_creator(
     parent: Optional[PatternNode] = None,
-    children: list[PatternNode] = [],
+    children: Optional[list[PatternNode]] = None,
     root_node: Optional[PatternNode] = None,
     name: str = "PatternNodeBase",
 ) -> PatternNode:
