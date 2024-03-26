@@ -4,7 +4,7 @@ import pytest
 
 from jasm.global_definitions import TimeType, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_base import PatternNodeBase
+from jasm.regex.tree_generators.pattern_node_tmp import PatternNodeTmp
 from jasm.regex.tree_generators.pattern_node_implementations.deref import PatternNodeDeref, PatternNodeDerefProperty
 from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operand.mnemonic_and_operand import (
     PatternNodeMnemonic,
@@ -19,7 +19,7 @@ def pattern_node_base_creator(
     root_node: Optional[PatternNode] = None,
     name: str = "PatternNodeBase",
 ) -> PatternNode:
-    return PatternNodeBase(
+    return PatternNodeTmp(
         pattern_node_dict={},
         name=name,
         times=TimeType(min_times=1, max_times=1),

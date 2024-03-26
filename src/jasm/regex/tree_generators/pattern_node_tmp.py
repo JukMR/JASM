@@ -1,7 +1,7 @@
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
-class PatternNodeBase(PatternNode):
+class PatternNodeTmp(PatternNode):
     """
     Base class for the pattern node with dummy implementation of the get_regex method.
     This is a temporary solution until the node type is defined and we can implement the actual concrete class
