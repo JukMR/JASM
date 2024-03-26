@@ -95,7 +95,7 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeBase) -> No
     assert "pattern_node_with_children" in pattern_node_mnemonic.process_leaf()
 
 
-def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNodeBase):
+def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNodeBase) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     hex_name = "A3h"
     assert pattern_node_operand.sanitize_operand_name(hex_name) == "0xA3"
@@ -109,7 +109,7 @@ def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNodeBase) ->
     )
 
 
-def test_process_branch_and(pattern_node_fixture: PatternNodeBase):
+def test_process_branch_and(pattern_node_fixture: PatternNodeBase) -> None:
     # Create mock pattern_node instances for children
     mock_child1 = MagicMock(spec=PatternNode)
     mock_child2 = MagicMock(spec=PatternNode)

@@ -3,25 +3,6 @@ from jasm.regex.tree_generators.capture_group import CaptureGroupIndexRegister
 from jasm.regex.tree_generators.pattern_node import PatternNode
 
 
-class PatternNodeCaptureGroupReferenceRegister(PatternNode):
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            root_node=pattern_node.root_node,
-        )
-
-    def get_regex(self) -> str:
-        return self.get_capture_group_reference_register()
-
-    @staticmethod
-    def get_capture_group_reference_register() -> str:
-        return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhli],"
-
-
 class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
