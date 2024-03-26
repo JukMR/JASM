@@ -6,7 +6,7 @@ import pytest
 
 from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeBase
-from jasm.regex.tree_generators.pattern_node_implementations.capture_group_register import (
+from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_register import (
     PatternNodeCaptureGroupRegisterCall,
 )
 from jasm.regex.tree_generators.pattern_node_implementations.pattern_node_implementations import (

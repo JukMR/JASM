@@ -1,6 +1,7 @@
 from typing import Final, Optional
-from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
 
+from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
+from jasm.regex.tree_generators.pattern_node import PatternNode
 
 OPTIONAL_HEX_CHAR: Final = "(?:0x)?"
 
@@ -64,7 +65,7 @@ class DerefObject:
 class DerefObjectBuilder:
     """Builds a deref object from the given command dict."""
 
-    def __init__(self, parent: "PatternNode") -> None:
+    def __init__(self, parent: PatternNode) -> None:
         self.parent = parent
 
     def build(self) -> DerefObject:
@@ -92,7 +93,7 @@ class DerefObjectBuilder:
         )
 
     @staticmethod
-    def _child_getter(parent: "PatternNode", child_name: str) -> Optional["PatternNode"]:
+    def _child_getter(parent: PatternNode, child_name: str) -> Optional[PatternNode]:
         """Get the child of the given parent."""
         for child in parent.children:
             if child.name == child_name:

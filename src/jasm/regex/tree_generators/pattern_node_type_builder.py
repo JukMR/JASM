@@ -2,7 +2,7 @@ from typing import Optional
 
 from jasm.global_definitions import remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode
-from jasm.regex.tree_generators.pattern_node_implementations.capture_group_register import (
+from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_register import (
     PatternNodeCaptureGroupRegisterCall,
     PatternNodeCaptureGroupRegisterReferenceBasereg,
     PatternNodeCaptureGroupRegisterReferenceGenreg,
@@ -10,11 +10,11 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group_regis
     PatternNodeCaptureGroupRegisterReferenceStackreg,
 )
 
-from jasm.regex.tree_generators.pattern_node_implementations.capture_group import (
+from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group import (
     PattterNodeCaptureGroupReferenceOperand,
-    PatternNodeCaptureGroupCall,
+    PatternNodeCaptureGroupCallInstruction,
     PatternNodeCaptureGroupCallOperand,
-    PatternNodeCaptureGroupReference,
+    PatternNodeCaptureGroupReferenceInstruction,
 )
 from jasm.regex.tree_generators.pattern_node_implementations.deref import (
     PatternNodeDeref,
@@ -149,11 +149,11 @@ class PatternNodeTypeBuilder:
         # Check it it should be a new reference or a call to an existing one
         if self.has_any_ancester_who_is_capture_group_reference():
             # Do the call
-            return PatternNodeCaptureGroupCall(self.pattern_node)
+            return PatternNodeCaptureGroupCallInstruction(self.pattern_node)
 
         # Create the reference
         self.add_new_references_to_global_list()
-        return PatternNodeCaptureGroupReference(self.pattern_node)
+        return PatternNodeCaptureGroupReferenceInstruction(self.pattern_node)
 
     def get_type_when_int(self) -> PatternNode:
         if self.is_ancestor_deref():
