@@ -1,0 +1,233 @@
+@startuml regex_module_class_diagram
+
+abstract class File2Regex {
+    {static} +load_file(file): Any
+    +produce_regex()
+    +get_assembly_style(): DisassStyle
+}
+
+class Yaml2Regex {
+    -loaded_file: Any
+    -macros_from_terminal_filepath: Optional[List[str]]
+    {static} +load_file(file: str): Any
+    +produce_regex(): str
+    -_get_pattern(): PatternTree
+    -load_macros_from_args(): List[Dict]
+    -_generate_rule_tree(patterns: PatternTree): PatternNode
+    +get_assembly_style(): DisassStyle
+    +get_valid_addr_range(): Optional[ValidAddrRange]
+}
+
+class MacroExpander {
+    +resolve_all_macros(macros: List[Dict], tree: PatternTree): PatternTree
+    -_resolve_macro(macro: MacroTree, tree: PatternTree): PatternTree
+    -_macro_has_args(macro: MacroTree): bool
+    -_apply_macro_recursively(macro: MacroTree, tree: PatternTree): PatternTree
+    -_process_str_tree(tree: str, macro_name: str, macro: MacroTree): PatternTree
+    -_process_dict_tree(tree: Dict, macro_name: str, macro: MacroTree): PatternTree
+    -_apply_macro_to_tree(node: PatternTree, macro: MacroTree): PatternTree
+    -_apply_macro_to_tree_substring(node: str, macro: MacroTree): str
+}
+
+class PatternNodeBuilderNoParents {
+    -command: DictNode
+    -name: str | int
+    -times: TimeType
+    -children: Optional[dict | List[PatternNode]]
+    +build(): PatternNodeBase
+    -_get_name(command_dict: DictNode): str
+    -_get_times(command_dict: DictNode): TimeType
+    -_get_children(name: str, command: DictNode): List[PatternNode]
+    {static} get_simple_child(name: str): List[PatternNodeBase]
+}
+
+abstract class PatternNode {
+    +pattern_node_dict: DictNode
+    +name: str | int
+    +times: TimeType
+    +children: Optional[dict | List[PatternNode]]
+    +parent: Optional[PatternNode]
+    +root_node: Optional[PatternNode]
+    +{abstract} get_regex(): str
+}
+
+class PatternNodeTypeBuilder {
+    -pattern_node: PatternNode
+    -parent: Optional[PatternNode]
+    +set_type(): PatternNode
+    +build(): PatternNode
+}
+
+class ArgsMappingGenerator {
+    +get_args_mapping_dict(tree: PatternTree, args: List[str]): Dict
+    -_get_args_mapping(tree: PatternTree, current_arg: str): Generator[Dict, None, None]
+    -_yield_key_value_pairs(data: Union[Dict[Any, Any], List[Any]]): Generator[Tuple[Any, Any], None, None]
+}
+
+class MacroArgsResolver {
+    +resolve(macro: MacroTree, tree: PatternTree): MacroTree
+    -_get_macro_mapping_arg_dict(macro: MacroTree, tree: PatternTree): MappingDict
+    -_evaluate_args_in_macro(macro: MacroTree, mapping_dict: MappingDict): MacroTree
+    -_iter_items_with_path(elems: Union[str, List, Dict], path: Tuple = ()): Generator[Tuple[Tuple, Any], None, None]
+    -_replace_item_in_structure(struct: Union[Dict, List], path: Tuple, new_value: Any): None
+}
+
+class CaptureGroupIndex {
+    +index: int
+    +to_regex(): str
+}
+
+class CaptureGroupIndexInstruction {
+    +to_regex(): str
+}
+
+class CaptureGroupIndexOperand {
+    +to_regex(): str
+}
+
+class CaptureGroupIndexRegister {
+    +to_regex(): str
+}
+
+class DerefObject {
+    +get_regex(): str
+}
+
+class DerefObjectBuilder {
+    +build(): DerefObject
+}
+
+class PatternNodeBase {
+    +get_regex(): str
+}
+
+class PatternNodeMnemonic {
+    +get_regex(): str
+}
+
+class PatternNodeOperand {
+    +get_regex(): str
+}
+
+class PatternNodeBranchRoot {
+    +get_regex(): str
+}
+
+class PatternNodeRoot {
+}
+
+class PatternNodeBranch {
+}
+
+class PatternNodeNode {
+}
+
+class PatternNodeTimes {
+    +get_regex(): str
+}
+
+class CaptureGroupCallRegexBuilder {
+    +build(): str
+}
+
+class PatternNodeDerefProperty {
+    +get_regex(): str
+}
+
+class PatternNodeDeref {
+    +get_regex(): str
+}
+
+class PatternNodeDerefPropertyCaptureGroupReference {
+    +get_regex(): str
+}
+class PatternNodeDerefPropertyCaptureGroupCall {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupCallInstruction {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupReferenceInstruction {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupCallOperand {
+    +get_regex(): str
+}
+
+class PattterNodeCaptureGroupReferenceOperand {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceGenreg {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceIndreg {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceStackreg {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceBasereg {
+    +get_regex(): str
+}
+
+PatternNode <|-- PatternNodeCaptureGroupCallInstruction
+PatternNode <|-- PatternNodeCaptureGroupReferenceInstruction
+PatternNode <|-- PatternNodeCaptureGroupCallOperand
+PatternNode <|-- PattterNodeCaptureGroupReferenceOperand
+PatternNode <|-- PatternNodeCaptureGroupRegisterReferenceGenreg
+PatternNode <|-- PatternNodeCaptureGroupRegisterReferenceIndreg
+PatternNode <|-- PatternNodeCaptureGroupRegisterReferenceStackreg
+PatternNode <|-- PatternNodeCaptureGroupRegisterReferenceBasereg
+
+
+
+Yaml2Regex --|> File2Regex
+PatternNodeTypeBuilder o-- PatternNode
+MacroExpander ..> PatternTree : uses >
+PatternNodeBuilderNoParents ..> PatternNode : creates >
+PatternNodeTypeBuilder ..> PatternNode : creates >
+
+PatternNode <|-- PatternNodeBase
+PatternNode <|-- PatternNodeMnemonic
+PatternNode <|-- PatternNodeOperand
+PatternNode <|-- PatternNodeBranchRoot
+PatternNodeBranchRoot <|-- PatternNodeRoot
+PatternNodeBranchRoot <|-- PatternNodeBranch
+PatternNodeBranchRoot <|-- PatternNodeNode
+PatternNode <|-- PatternNodeTimes
+
+PatternNodeBranchRoot *-- PatternNode : contains
+PatternNodeTypeBuilder o-- "1" PatternNode : builds >
+ArgsMappingGenerator ..> PatternTree : uses >
+MacroArgsResolver ..> MacroTree : uses >
+CaptureGroupIndex <|-- CaptureGroupIndexInstruction
+CaptureGroupIndex <|-- CaptureGroupIndexOperand
+CaptureGroupIndex <|-- CaptureGroupIndexRegister
+
+DerefObjectBuilder ..> DerefObject : builds >
+DerefObjectBuilder ..> PatternNode : uses >
+
+PatternNode -- "1" PatternNode : parent >
+PatternNode *-- "0..*" PatternNode : children >
+
+PatternNode ..> CaptureGroupIndex : uses >
+CaptureGroupCallRegexBuilder ..> CaptureGroupIndex : uses >
+
+PatternNode <|-- PatternNodeDerefProperty
+PatternNode <|-- PatternNodeDeref
+PatternNode <|-- PatternNodeDerefPropertyCaptureGroupReference
+PatternNode <|-- PatternNodeDerefPropertyCaptureGroupCall
+
+PatternNodeDeref  .> DerefObject : uses >
+
+
+
+
+@enduml
