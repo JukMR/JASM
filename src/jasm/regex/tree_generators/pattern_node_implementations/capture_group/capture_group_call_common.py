@@ -9,9 +9,9 @@ class CaptureGroupCallRegexBuilder:
     This builder is used to build the regex for a capture group call
 
     Currently used by:
-    - PatternNodeDerefPropertyCaptureGroupCall
-    - PatternNodeCaptureGroupCallInstruction
-    - PatternNodeCaptureGroupCallOperand
+    - deref.py: PatternNodeDerefPropertyCaptureGroupCall
+    - capture_group.py: PatternNodeCaptureGroupCallInstruction
+    - capture_group.py: PatternNodeCaptureGroupCallOperand
     """
 
     def __init__(self, capture_group_instance: CaptureGroupIndex) -> None:
