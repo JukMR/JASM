@@ -8,11 +8,11 @@ import pytest
 from jasm.global_definitions import TimeType, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node import PatternNode, PatternNodeBase
 from jasm.regex.tree_generators.pattern_node_implementations.deref import PatternNodeDeref, PatternNodeDerefProperty
-from jasm.regex.tree_generators.pattern_node_implementations.pattern_node_implementations import (
+from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root import (
     PatternNodeNode,
     PatternNodeTimes,
 )
-from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
 
 
 def pattern_node_base_creator(

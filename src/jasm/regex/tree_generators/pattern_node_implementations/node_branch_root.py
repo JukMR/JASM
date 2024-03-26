@@ -23,7 +23,7 @@ class PatternNodeTimes(PatternNode):
         return ""
 
 
-class PatternNodeBranchNodeRoot(PatternNode):
+class PatternNodeBranchRoot(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
             pattern_node_dict=pattern_node.pattern_node_dict,
@@ -50,18 +50,18 @@ class PatternNodeBranchNodeRoot(PatternNode):
         raise ValueError("Children list is empty")
 
 
-class PatternNodeBranch(PatternNodeBranchNodeRoot):
+class PatternNodeBranch(PatternNodeBranchRoot):
     pass
 
 
-class PatternNodeRoot(PatternNodeBranchNodeRoot):
+class PatternNodeRoot(PatternNodeBranchRoot):
     """
     This is the case of the root node $and
     In here we will be save the state of the capture group references
     """
 
 
-class PatternNodeNode(PatternNodeBranchNodeRoot):
+class PatternNodeNode(PatternNodeBranchRoot):
     pass
 
 

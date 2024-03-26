@@ -16,7 +16,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operan
     _RegexWithOperandsCreator,
     get_pattern_node_name,
 )
-from jasm.regex.tree_generators.pattern_node_implementations.pattern_node_implementations import (
+from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root import (
     _BranchProcessor,
     PatternNodeNode,
 )
