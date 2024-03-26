@@ -6,7 +6,7 @@ import pytest
 
 from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_tmp import PatternNodeTmp
+from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_register import (
     PatternNodeCaptureGroupRegisterCall,
 )
@@ -43,9 +43,9 @@ def test_get_pattern_node_name_with_string():
 
 
 @pytest.fixture
-def pattern_node_fixture() -> PatternNodeTmp:
+def pattern_node_fixture() -> PatternNodeTmpUntyped:
     # Create a basic pattern_node fixture
-    return PatternNodeTmp(
+    return PatternNodeTmpUntyped(
         pattern_node_dict={},
         name="test",
         times=TimeType(min_times=1, max_times=1),
@@ -55,21 +55,21 @@ def pattern_node_fixture() -> PatternNodeTmp:
     )
 
 
-def test_get_regex_mnemonic(pattern_node_fixture: PatternNodeTmp) -> None:
+def test_get_regex_mnemonic(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_mnemonic = PatternNodeMnemonic(pattern_node_fixture)
     pattern_node_mnemonic.process_leaf = MagicMock(return_value="leaf_regex")
     assert pattern_node_mnemonic.get_regex() == "leaf_regex"
     pattern_node_mnemonic.process_leaf.assert_called_once()
 
 
-def test_get_regex_operand(pattern_node_fixture: PatternNodeTmp) -> None:
+def test_get_regex_operand(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     pattern_node_operand.process_leaf = MagicMock(return_value="leaf_regex")
     assert pattern_node_operand.get_regex() == "leaf_regex"
     pattern_node_operand.process_leaf.assert_called_once()
 
 
-def test_process_leaf_no_children(pattern_node_fixture: PatternNodeTmp) -> None:
+def test_process_leaf_no_children(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     pattern_node_operand.name = "operand"
     pattern_node_operand.children = None
@@ -77,10 +77,10 @@ def test_process_leaf_no_children(pattern_node_fixture: PatternNodeTmp) -> None:
     assert pattern_node_operand.process_leaf() == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
 
 
-def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmp) -> None:
+def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_mnemonic = PatternNodeMnemonic(pattern_node_fixture)
     pattern_node_mnemonic.name = "pattern_node_with_children"
-    child_pattern_node_base = PatternNodeTmp(
+    child_pattern_node_base = PatternNodeTmpUntyped(
         pattern_node_dict={},
         name="child",
         times=TimeType(min_times=1, max_times=1),
@@ -95,13 +95,13 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmp) -> Non
     assert "pattern_node_with_children" in pattern_node_mnemonic.process_leaf()
 
 
-def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNodeTmp) -> None:
+def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     hex_name = "A3h"
     assert pattern_node_operand.sanitize_operand_name(hex_name) == "0xA3"
 
 
-def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNodeTmp) -> None:
+def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     non_hex_name = "operand"
     assert (
@@ -109,7 +109,7 @@ def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNodeTmp) -> 
     )
 
 
-def test_process_branch_and(pattern_node_fixture: PatternNodeTmp) -> None:
+def test_process_branch_and(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     # Create mock pattern_node instances for children
     mock_child1 = MagicMock(spec=PatternNode)
     mock_child2 = MagicMock(spec=PatternNode)

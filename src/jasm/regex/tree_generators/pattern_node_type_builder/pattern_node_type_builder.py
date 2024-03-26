@@ -20,7 +20,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
     PatternNodeRoot,
     PatternNodeTimes,
 )
-from jasm.regex.tree_generators.pattern_node_tmp import PatternNodeTmp
+from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
     OperandCaptureGroupProcessor,
 )
@@ -30,9 +30,9 @@ from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group
 
 
 class PatternNodeTypeBuilder:
-    def __init__(self, pattern_node: PatternNodeTmp, parent: Optional[PatternNode]) -> None:
+    def __init__(self, pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> None:
 
-        assert isinstance(pattern_node, PatternNodeTmp)
+        assert isinstance(pattern_node, PatternNodeTmpUntyped)
         self.pattern_node = pattern_node
         self.pattern_node.parent = parent
 
