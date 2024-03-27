@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Final, Optional
 
 from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
@@ -62,6 +63,15 @@ class DerefObject:
         return deref_child_regex
 
 
+class DerefChildNames(Enum):
+    """Represents the child names of a deref object."""
+
+    MAIN_REG = "main_reg"
+    CONSTANT_OFFSET = "constant_offset"
+    REGISTER_MULTIPLIER = "register_multiplier"
+    CONSTANT_MULTIPLIER = "constant_multiplier"
+
+
 class DerefObjectBuilder:
     """Builds a deref object from the given command dict."""
 
@@ -70,14 +80,14 @@ class DerefObjectBuilder:
 
     def build(self) -> DerefObject:
         """Builds a deref object from the given command dict."""
-        main_reg = self._child_getter(parent=self.parent, child_name="main_reg")
+        main_reg = self._child_getter(parent=self.parent, child_name=DerefChildNames.MAIN_REG)
 
         if not main_reg:
             raise ValueError("main_reg is required for deref object")
 
-        constant_offset = self._child_getter(parent=self.parent, child_name="constant_offset")
-        register_multiplier = self._child_getter(parent=self.parent, child_name="register_multiplier")
-        constant_multiplier = self._child_getter(parent=self.parent, child_name="constant_multiplier")
+        constant_offset = self._child_getter(parent=self.parent, child_name=DerefChildNames.CONSTANT_OFFSET)
+        register_multiplier = self._child_getter(parent=self.parent, child_name=DerefChildNames.REGISTER_MULTIPLIER)
+        constant_multiplier = self._child_getter(parent=self.parent, child_name=DerefChildNames.CONSTANT_MULTIPLIER)
 
         # Get regex for each child
         main_reg_regex = main_reg.get_regex()
@@ -93,9 +103,12 @@ class DerefObjectBuilder:
         )
 
     @staticmethod
-    def _child_getter(parent: PatternNode, child_name: str) -> Optional[PatternNode]:
+    def _child_getter(parent: PatternNode, child_name: DerefChildNames) -> Optional[PatternNode]:
         """Get the child of the given parent."""
+        if not parent.children:
+            return None
+
         for child in parent.children:
-            if child.name == child_name:
+            if child.name == child_name.value:
                 return child
         return None
