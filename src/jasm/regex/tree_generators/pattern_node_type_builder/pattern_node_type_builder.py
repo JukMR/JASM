@@ -200,28 +200,28 @@ class PatternNodeTypeBuilder:
     def has_any_ancester_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
-        assert self.pattern_node.root_node
-        assert hasattr(self.pattern_node.root_node, "capture_group_references")
+        assert self.pattern_node.shared_context
+        assert hasattr(self.pattern_node.shared_context, "capture_group_references")
 
-        if self.pattern_node.root_node.capture_group_references is None:
+        if self.pattern_node.shared_context.capture_group_references is None:
             return False
 
-        if self.pattern_node.name in self.pattern_node.root_node.capture_group_references:
+        if self.pattern_node.name in self.pattern_node.shared_context.capture_group_references:
             return True
         return False
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
 
-        assert self.pattern_node.root_node
-        assert hasattr(self.pattern_node.root_node, "capture_group_references")
+        assert self.pattern_node.shared_context
+        assert hasattr(self.pattern_node.shared_context, "capture_group_references")
 
-        if self.pattern_node.root_node.capture_group_references is None:
-            self.pattern_node.root_node.capture_group_references = []
+        if self.pattern_node.shared_context.capture_group_references is None:
+            self.pattern_node.shared_context.capture_group_references = []
 
-        if self.pattern_node.name not in self.pattern_node.root_node.capture_group_references:
+        if self.pattern_node.name not in self.pattern_node.shared_context.capture_group_references:
             assert isinstance(self.pattern_node.name, str)
-            self.pattern_node.root_node.capture_group_references.append(self.pattern_node.name)
+            self.pattern_node.shared_context.capture_group_references.append(self.pattern_node.name)
 
     def is_deref_property_capture_group(self) -> bool:
         "Check if the current node is a deref property capture group"
@@ -236,14 +236,14 @@ class PatternNodeTypeBuilder:
     def build(self) -> PatternNode:
 
         if self.pattern_node.parent:
-            self.pattern_node.root_node = self.pattern_node.parent.root_node
+            self.pattern_node.shared_context = self.pattern_node.parent.shared_context
 
         new_concrete_instance = self.set_type()
 
         # Add the capture group references to the root node
         if isinstance(new_concrete_instance, PatternNodeRoot):
             setattr(new_concrete_instance, "capture_group_references", [])
-            new_concrete_instance.root_node = new_concrete_instance
+            new_concrete_instance.shared_context = new_concrete_instance
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [

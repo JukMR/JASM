@@ -1,35 +1,40 @@
 from typing import List, Optional
 
 from jasm.global_definitions import TimeType, DictNode
-from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
+from jasm.regex.tree_generators.shared_context import SharedContext
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 
 
 class PatternNodeBuilderNoParents:
-    def __init__(self, command_dict: DictNode) -> None:
+    def __init__(self, command_dict: DictNode, shared_context: SharedContext) -> None:
         self.command = command_dict
+        self.shared_context = shared_context
+
+        self.name: str | int
+        self.times: TimeType
+        self.children: Optional[List[PatternNodeTmpUntyped]]
 
         # Check if is instance of int or str
-        match self.command:
+        match command_dict:
             case int() | str():
-                self.name = self.command
+                self.name = command_dict
                 self.times = TimeType(min_times=1, max_times=1)
                 self.children = None
 
             case dict():
-                self.name = self._get_name(self.command)
-                self.times = self._get_times(self.command)
-                self.children = self._get_children(name=self.name, command=self.command)
+                self.name = self._get_name(command_dict)
+                self.times = self._get_times(command_dict)
+                self.children = self._get_children(name=self.name, command=command_dict, shared_context=shared_context)
 
             # Case when PatternNode is from a deref
             case tuple():
-                self.name = self.command[0]
-                # self.time = self._get_times(self.command) # TODO: Fix this
+                self.name = command_dict[0]
+                # self.time = self._get_times(command_dict) # TODO: Fix this
                 self.times = TimeType(min_times=1, max_times=1)
-                self.children = self._get_simple_child(self.command[1])
+                self.children = self._get_simple_child(name=command_dict[1], shared_context=shared_context)
 
             case _:
-                raise ValueError(f"Command {self.command} is not a valid type")
+                raise ValueError(f"Command {command_dict} is not a valid type")
 
     @staticmethod
     def _get_name(command_dict: DictNode) -> str:
@@ -66,26 +71,34 @@ class PatternNodeBuilderNoParents:
         return TimeType(min_times=1, max_times=1)
 
     @staticmethod
-    def _get_children(name: str, command: DictNode) -> List[PatternNode]:
+    def _get_children(name: str, command: DictNode, shared_context: SharedContext) -> List[PatternNodeTmpUntyped]:
         assert isinstance(command, dict)
 
         match command[name]:
             case list():
-                return [PatternNodeBuilderNoParents(com).build() for com in command[name] if com != "times"]
+                return [
+                    PatternNodeBuilderNoParents(command_dict=com, shared_context=shared_context).build()
+                    for com in command[name]
+                    if com != "times"
+                ]
             case dict():
-                return [PatternNodeBuilderNoParents(com).build() for com in command[name].items() if com != "times"]
+                return [
+                    PatternNodeBuilderNoParents(command_dict=com, shared_context=shared_context).build()
+                    for com in command[name].items()
+                    if com != "times"
+                ]
 
         raise ValueError("Command is not a list or a dict")
 
     @staticmethod
-    def _get_simple_child(name: str) -> List[PatternNodeTmpUntyped]:
+    def _get_simple_child(name: str, shared_context: SharedContext) -> List[PatternNodeTmpUntyped]:
         return [
             PatternNodeTmpUntyped(
                 name=name,
                 times=TimeType(min_times=1, max_times=1),
                 children=None,
                 parent=None,
-                root_node=None,
+                shared_context=shared_context,
             )
         ]
 
@@ -97,5 +110,5 @@ class PatternNodeBuilderNoParents:
             times=self.times,
             children=self.children,
             parent=None,
-            root_node=None,
+            shared_context=self.shared_context,
         )

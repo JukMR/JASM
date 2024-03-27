@@ -6,12 +6,20 @@ from jasm.global_definitions import IGNORE_INST_ADDR
 from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexInstruction, CaptureGroupIndexOperand
 
 
+# Setup Mock SharedContext
+@pytest.fixture
+def mock_shared_context():
+    shared_context = Mock()
+    shared_context.capture_group_references = ["1", "2", "3"]
+    return shared_context
+
+
 # Setup Mock PatternNode
 @pytest.fixture
-def mock_pattern_node():
+def mock_pattern_node(mock_shared_context):
     node = Mock()
     node.name = "1"
-    node.root_node.capture_group_references = ["1", "2", "3"]
+    node.shared_context = mock_shared_context
     return node
 
 
@@ -25,7 +33,7 @@ def test_initialization_with_valid_node(mock_pattern_node) -> None:
 
 
 def test_initialization_without_capture_group_references(mock_pattern_node) -> None:
-    mock_pattern_node.root_node.capture_group_references = None
+    mock_pattern_node.shared_context.capture_group_references = None
     with pytest.raises(AssertionError):
         CaptureGroupIndexInstruction(mock_pattern_node)
 

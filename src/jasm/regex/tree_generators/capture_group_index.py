@@ -11,11 +11,11 @@ class CaptureGroupIndex(ABC):
     def __init__(self, pattern_node: PatternNode, str_index: str) -> None:
 
         assert (
-            hasattr(pattern_node.root_node, "capture_group_references")
-            and pattern_node.root_node.capture_group_references is not None
+            hasattr(pattern_node.shared_context, "capture_group_references")
+            and pattern_node.shared_context.capture_group_references is not None
         )
 
-        capture_group_references = pattern_node.root_node.capture_group_references
+        capture_group_references = pattern_node.shared_context.capture_group_references
         self.index = self._get_capture_group_reference(str_index, capture_group_references)
 
     @staticmethod

@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from jasm.global_definitions import TimeType
+from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 class PatternNode(ABC):
@@ -13,7 +14,7 @@ class PatternNode(ABC):
         times: TimeType,
         children: Optional[dict | List["PatternNode"]],
         parent: Optional["PatternNode"],
-        root_node: Optional["PatternNode"],
+        shared_context: SharedContext,
     ) -> None:
         """
         Initialize a Command object.
@@ -22,13 +23,13 @@ class PatternNode(ABC):
         :param times: Repeating information for the pattern_node execution.
         :param children: Sub-pattern_nods or child pattern_nods.
         :param parent: The parent pattern_node, if any.
-        :param root_node: The root pattern_node of the pattern_node tree. This collects the capture group references.
+        :param shared_context: Shared context for the pattern_node. This is used for storing capture group references.
         """
         self.name = name
         self.times = times
         self.children = children
         self.parent = parent
-        self.root_node = root_node
+        self.shared_context = shared_context
 
     @abstractmethod
     def get_regex(self) -> str:

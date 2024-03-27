@@ -1,3 +1,4 @@
+from jasm.regex.tree_generators.shared_context import SharedContext
 import pytest
 
 from jasm.global_definitions import TimeType
@@ -5,11 +6,16 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 
 
-def test_pattern_node_builder_no_parents_with_dict():
+@pytest.fixture
+def mock_shared_context() -> SharedContext:
+    return SharedContext(capture_group_references=[])
+
+
+def test_pattern_node_builder_no_parents_with_dict(mock_shared_context):
     # Sample input representing a command dictionary
     command_dict = {"test_command": {"times": {"min": 1, "max": 3}, "operands": ["op1", "op2"]}}
 
-    builder = PatternNodeBuilderNoParents(command_dict)
+    builder = PatternNodeBuilderNoParents(command_dict=command_dict, shared_context=mock_shared_context)
 
     assert builder.name == "test_command"
     assert builder.times == TimeType(min_times=1, max_times=3)
@@ -41,7 +47,9 @@ def test_get_name():
         ({}, TimeType(min_times=1, max_times=1)),  # Testing default behavior
     ],
 )
-def test_get_times(input_times, expected):
+def test_get_times(input_times, expected, mock_shared_context: SharedContext):
     command_dict = {"command": {"times": input_times}} if isinstance(input_times, dict) else input_times
-    times = PatternNodeBuilderNoParents(command_dict)._get_times(command_dict if isinstance(command_dict, dict) else {})
+    times = PatternNodeBuilderNoParents(command_dict=command_dict, shared_context=mock_shared_context)._get_times(
+        command_dict if isinstance(command_dict, dict) else {}
+    )
     assert times == expected

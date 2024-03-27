@@ -15,7 +15,7 @@ class PatternNodeTimes(PatternNode):
             times=pattern_node.times,
             children=pattern_node.children,
             parent=pattern_node.parent,
-            root_node=pattern_node.root_node,
+            shared_context=pattern_node.shared_context,
         )
 
     def get_regex(self) -> str:
@@ -29,7 +29,7 @@ class PatternNodeBranchRoot(PatternNode):
             times=pattern_node.times,
             children=pattern_node.children,
             parent=pattern_node.parent,
-            root_node=pattern_node.root_node,
+            shared_context=pattern_node.shared_context,
         )
 
     def get_regex(self) -> str:

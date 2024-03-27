@@ -34,32 +34,37 @@ class RegisterCaptureGroupProcessor:
     def has_any_ancester_who_is_capture_group_reference_register(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
-        assert self.pattern_node.pattern_node.root_node
+        assert self.pattern_node.pattern_node.shared_context
         pattern_node_name = self.pattern_node.pattern_node.name
         assert isinstance(pattern_node_name, str)
 
         main_reference_name = remove_access_suffix(pattern_node_name)
 
-        assert hasattr(self.pattern_node.pattern_node.root_node, "capture_group_references")
+        assert hasattr(self.pattern_node.pattern_node.shared_context, "capture_group_references")
 
-        if self.pattern_node.pattern_node.root_node.capture_group_references is None:
+        if self.pattern_node.pattern_node.shared_context.capture_group_references is None:
             return False
 
-        if main_reference_name in self.pattern_node.pattern_node.root_node.capture_group_references:
+        if main_reference_name in self.pattern_node.pattern_node.shared_context.capture_group_references:
             return True
         return False
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
-        assert self.pattern_node.pattern_node.root_node
-        assert hasattr(self.pattern_node.pattern_node.root_node, "capture_group_references")
+        assert self.pattern_node.pattern_node.shared_context
+        assert hasattr(self.pattern_node.pattern_node.shared_context, "capture_group_references")
 
-        if self.pattern_node.pattern_node.root_node.capture_group_references is None:
-            self.pattern_node.pattern_node.root_node.capture_group_references = []
+        if self.pattern_node.pattern_node.shared_context.capture_group_references is None:
+            self.pattern_node.pattern_node.shared_context.capture_group_references = []
 
         assert isinstance(self.pattern_node.pattern_node.name, str)
         pattern_node_name_without_suffix = remove_access_suffix(self.pattern_node.pattern_node.name)
 
-        if pattern_node_name_without_suffix not in self.pattern_node.pattern_node.root_node.capture_group_references:
+        if (
+            pattern_node_name_without_suffix
+            not in self.pattern_node.pattern_node.shared_context.capture_group_references
+        ):
             assert isinstance(pattern_node_name_without_suffix, str)
-            self.pattern_node.pattern_node.root_node.capture_group_references.append(pattern_node_name_without_suffix)
+            self.pattern_node.pattern_node.shared_context.capture_group_references.append(
+                pattern_node_name_without_suffix
+            )

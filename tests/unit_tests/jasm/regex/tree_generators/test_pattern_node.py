@@ -50,7 +50,7 @@ def pattern_node_fixture() -> PatternNodeTmpUntyped:
         times=TimeType(min_times=1, max_times=1),
         children=[],
         parent=None,
-        root_node=None,
+        shared_context=None,
     )
 
 
@@ -84,7 +84,7 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmpUntyped)
         times=TimeType(min_times=1, max_times=1),
         children=None,
         parent=pattern_node_mnemonic,
-        root_node=pattern_node_mnemonic,
+        shared_context=pattern_node_mnemonic,
     )
     child_pattern_node = PatternNodeOperand(child_pattern_node_base)
 

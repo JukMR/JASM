@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
+from jasm.regex.tree_generators.shared_context import SharedContext
 import yaml
 
 from jasm.global_definitions import DisassStyle, ValidAddrRange
@@ -80,8 +81,13 @@ class Yaml2Regex(File2Regex):
     def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
         """Generate the rule tree from the patterns"""
 
+        # Initialize shared_context with empty capture group references
+        shared_context = SharedContext(capture_group_references=[])
+
         # Generate the rule tree with no parents and all nodes untyped (PatternNodeTmpUntyped)
-        rule_tree: PatternNode = PatternNodeBuilderNoParents(command_dict=patterns).build()
+        rule_tree: PatternNode = PatternNodeBuilderNoParents(
+            command_dict=patterns, shared_context=shared_context
+        ).build()
 
         # Transform each node in the rule tree to a typed node
         rule_tree_typed: PatternNode = PatternNodeTypeBuilder(rule_tree, parent=None).build()

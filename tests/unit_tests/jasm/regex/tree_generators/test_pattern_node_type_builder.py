@@ -1,5 +1,6 @@
 from typing import Optional
 
+from jasm.regex.tree_generators.shared_context import SharedContext
 import pytest
 
 from jasm.global_definitions import TimeType, remove_access_suffix
@@ -13,18 +14,24 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
 from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
 
 
+@pytest.fixture
+def mock_shared_context() -> SharedContext:
+    shared_context = SharedContext(capture_group_references=[])
+    return shared_context
+
+
 def pattern_node_base_creator(
     parent: Optional[PatternNode] = None,
     children: Optional[list[PatternNode]] = None,
-    root_node: Optional[PatternNode] = None,
     name: str = "PatternNodeBase",
+    mock_shared_context: SharedContext = mock_shared_context,
 ) -> PatternNode:
     return PatternNodeTmpUntyped(
         name=name,
         times=TimeType(min_times=1, max_times=1),
         children=children,
-        parent=parent or None,
-        root_node=root_node or None,
+        parent=parent,
+        shared_context=mock_shared_context,
     )
 
 
@@ -41,9 +48,10 @@ def test_get_type(name, expected_type):
 
     root_node = pattern_node_base_creator(name="$and")
 
-    root_node.root_node = root_node
-
-    node = pattern_node_base_creator(name=name, parent=root_node, root_node=root_node)
+    node = pattern_node_base_creator(
+        name=name,
+        parent=root_node,
+    )
 
     root_node.children = [node]
 
@@ -57,9 +65,9 @@ def test_is_ancestor_deref() -> None:
 
     root_node = pattern_node_base_creator(name="$and")
 
-    child = pattern_node_base_creator(name="child", root_node=root_node)
+    child = pattern_node_base_creator(name="child")
 
-    parent = pattern_node_base_creator(name="$deref", parent=root_node, children=[child], root_node=root_node)
+    parent = pattern_node_base_creator(name="$deref", parent=root_node, children=[child])
 
     root_node.children = [parent]
     root_node = PatternNodeTypeBuilder(root_node, parent=None).build()
@@ -72,7 +80,7 @@ def test_is_ancestor_deref() -> None:
     assert child
     assert isinstance(child, PatternNodeDerefProperty)
 
-    child2 = pattern_node_base_creator(name="child2", parent=parent, root_node=root_node)
+    child2 = pattern_node_base_creator(name="child2", parent=parent)
 
     child2_builder = PatternNodeTypeBuilder(child2, parent=parent)
     child2 = child2_builder.build()
@@ -80,7 +88,7 @@ def test_is_ancestor_deref() -> None:
     assert child2_builder.is_ancestor_deref()
 
 
-def test_any_ancestor_is_mnemonic():
+def test_any_ancestor_is_mnemonic(mock_shared_context):
     child = pattern_node_base_creator(name="child")
     parent = pattern_node_base_creator(name="parent", children=[child])
     grandparent = pattern_node_base_creator(name="mnemonic", children=[parent])

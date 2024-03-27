@@ -29,13 +29,16 @@ class OperandCaptureGroupProcessor:
     def has_any_ancester_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
-        assert self.pattern_node.pattern_node.root_node
-        assert hasattr(self.pattern_node.pattern_node.root_node, "capture_group_references")
+        assert self.pattern_node.pattern_node.shared_context
+        assert hasattr(self.pattern_node.pattern_node.shared_context, "capture_group_references")
 
-        if self.pattern_node.pattern_node.root_node.capture_group_references is None:
+        if self.pattern_node.pattern_node.shared_context.capture_group_references is None:
             return False
 
-        if self.pattern_node.pattern_node.name in self.pattern_node.pattern_node.root_node.capture_group_references:
+        if (
+            self.pattern_node.pattern_node.name
+            in self.pattern_node.pattern_node.shared_context.capture_group_references
+        ):
             return True
         return False
 
@@ -51,14 +54,17 @@ class OperandCaptureGroupProcessor:
     def add_new_references_to_global_list(self) -> None:
         """Add new references to global list"""
 
-        assert self.pattern_node.pattern_node.root_node
-        assert hasattr(self.pattern_node.pattern_node.root_node, "capture_group_references")
+        assert self.pattern_node.pattern_node.shared_context
+        assert hasattr(self.pattern_node.pattern_node.shared_context, "capture_group_references")
 
-        if self.pattern_node.pattern_node.root_node.capture_group_references is None:
-            self.pattern_node.pattern_node.root_node.capture_group_references = []
+        if self.pattern_node.pattern_node.shared_context.capture_group_references is None:
+            self.pattern_node.pattern_node.shared_context.capture_group_references = []
 
-        if self.pattern_node.pattern_node.name not in self.pattern_node.pattern_node.root_node.capture_group_references:
+        if (
+            self.pattern_node.pattern_node.name
+            not in self.pattern_node.pattern_node.shared_context.capture_group_references
+        ):
             assert isinstance(self.pattern_node.pattern_node.name, str)
-            self.pattern_node.pattern_node.root_node.capture_group_references.append(
+            self.pattern_node.pattern_node.shared_context.capture_group_references.append(
                 self.pattern_node.pattern_node.name
             )
