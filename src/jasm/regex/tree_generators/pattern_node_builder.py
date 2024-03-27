@@ -26,7 +26,7 @@ class PatternNodeBuilderNoParents:
                 self.name = self.command[0]
                 # self.time = self._get_times(self.command) # TODO: Fix this
                 self.times = TimeType(min_times=1, max_times=1)
-                self.children = self.get_simple_child(self.command[1])
+                self.children = self._get_simple_child(self.command[1])
 
             case _:
                 raise ValueError(f"Command {self.command} is not a valid type")
@@ -78,7 +78,7 @@ class PatternNodeBuilderNoParents:
         raise ValueError("Command is not a list or a dict")
 
     @staticmethod
-    def get_simple_child(name: str) -> List[PatternNodeTmpUntyped]:
+    def _get_simple_child(name: str) -> List[PatternNodeTmpUntyped]:
         return [
             PatternNodeTmpUntyped(
                 name=name,

@@ -79,10 +79,11 @@ class Yaml2Regex(File2Regex):
 
     def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
         """Generate the rule tree from the patterns"""
-        # Generate the rule tree with no parents and type from root parent node downwards
+
+        # Generate the rule tree with no parents and all nodes untyped (PatternNodeTmpUntyped)
         rule_tree: PatternNode = PatternNodeBuilderNoParents(command_dict=patterns).build()
 
-        # Add the command_type to each node
+        # Transform each node in the rule tree to a typed node
         rule_tree_typed: PatternNode = PatternNodeTypeBuilder(rule_tree, parent=None).build()
 
         return rule_tree_typed
