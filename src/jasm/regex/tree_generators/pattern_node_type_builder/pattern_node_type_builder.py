@@ -39,6 +39,9 @@ class PatternNodeTypeBuilder:
         self.pattern_node = pattern_node
         self.pattern_node.parent = parent
 
+    def _set_type(self) -> PatternNode:
+        return self._get_type()
+
     def _get_type(self) -> PatternNode:
         if getattr(self.pattern_node, "name", None) is None:
             raise ValueError("Name is not defined")
@@ -56,7 +59,7 @@ class PatternNodeTypeBuilder:
 
         # Is operand
         if isinstance(name, int):
-            result = self.get_type_when_int()
+            result = self._get_type_when_int()
             if result is not None:
                 return result
 
@@ -79,9 +82,9 @@ class PatternNodeTypeBuilder:
             return PatternNodeDeref(self.pattern_node)
 
         if self.is_ancestor_deref():
-            if self.is_deref_property_capture_group():
+            if self._is_deref_property_capture_group():
 
-                if self.is_registry_capture_group():
+                if self._is_registry_capture_group():
                     return RegisterCaptureGroupProcessor(self).process()
 
                 if self.has_any_ancester_who_is_capture_group_reference():
@@ -92,19 +95,19 @@ class PatternNodeTypeBuilder:
             return PatternNodeDerefProperty(self.pattern_node)
 
         if name.startswith("&"):
-            return self.process_capture_group()
+            return self._process_capture_group()
 
         # Is times
         if name == "times":
             return PatternNodeTimes(self.pattern_node)
 
         # Is node
-        if self.is_node(name):
+        if self._is_node(name):
             return PatternNodeNode(self.pattern_node)
 
         return None
 
-    def process_capture_group(self) -> PatternNode:
+    def _process_capture_group(self) -> PatternNode:
         # Is Capture Group in operand or is a special register capture
         if self._is_capture_group_operand_or_special_register_capture():
             return self._process_capture_operand_and_register_capture()
@@ -123,14 +126,14 @@ class PatternNodeTypeBuilder:
         return False
 
     def _process_capture_operand_and_register_capture(self) -> PatternNode:
-        if self.is_registry_capture_group():
+        if self._is_registry_capture_group():
             # Register capture group
             return RegisterCaptureGroupProcessor(self).process()
 
         # Operand capture group
         return OperandCaptureGroupProcessor(self).process()
 
-    def is_registry_capture_group(self) -> bool:
+    def _is_registry_capture_group(self) -> bool:
         "Check if the current node is a registry capture group"
         if not self.pattern_node.name:
             raise ValueError("Name is not defined")
@@ -156,20 +159,17 @@ class PatternNodeTypeBuilder:
         self.add_new_references_to_global_list()
         return PatternNodeCaptureGroupInstructionReference(self.pattern_node)
 
-    def get_type_when_int(self) -> PatternNode:
+    def _get_type_when_int(self) -> PatternNode:
         if self.is_ancestor_deref():
             return PatternNodeDerefProperty(self.pattern_node)
 
         return PatternNodeOperand(self.pattern_node)
 
     @staticmethod
-    def is_node(name: str) -> bool:
+    def _is_node(name: str) -> bool:
         if name in ["$or", "$and", "$not", "$and_any_order"]:
             return True
         return False
-
-    def set_type(self) -> PatternNode:
-        return self._get_type()
 
     def is_father_is_mnemonic(self) -> bool:
         "Check if the parent is a mnemonic"
@@ -221,9 +221,9 @@ class PatternNodeTypeBuilder:
 
         if self.pattern_node.name not in self.pattern_node.shared_context.capture_group_references:
             assert isinstance(self.pattern_node.name, str)
-            self.pattern_node.shared_context.capture_group_references.append(self.pattern_node.name)
+            self.pattern_node.shared_context.add_capture(self.pattern_node.name)
 
-    def is_deref_property_capture_group(self) -> bool:
+    def _is_deref_property_capture_group(self) -> bool:
         "Check if the current node is a deref property capture group"
         if not self.pattern_node.parent:
             raise ValueError("Parent is not defined")
@@ -235,14 +235,7 @@ class PatternNodeTypeBuilder:
 
     def build(self) -> PatternNode:
 
-        if self.pattern_node.parent:
-            self.pattern_node.shared_context = self.pattern_node.parent.shared_context
-
-        new_concrete_instance = self.set_type()
-
-        # Add the capture group references to the root node
-        if isinstance(new_concrete_instance, PatternNodeRoot):
-            setattr(new_concrete_instance, "capture_group_references", [])
+        new_concrete_instance = self._set_type()
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [
