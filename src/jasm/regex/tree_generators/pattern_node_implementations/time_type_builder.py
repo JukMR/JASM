@@ -1,11 +1,11 @@
 from typing import Optional
 
-from jasm.global_definitions import TimeType
+from jasm.global_definitions import TimesType
 
 
-class TimeTypeBuilder:
+class TimesTypeBuilder:
     @staticmethod
-    def get_min_max_regex(times: TimeType) -> Optional[str]:
+    def get_min_max_regex(times: TimesType) -> Optional[str]:
 
         if times.min_times == 1 and times.max_times == 1:
             return None

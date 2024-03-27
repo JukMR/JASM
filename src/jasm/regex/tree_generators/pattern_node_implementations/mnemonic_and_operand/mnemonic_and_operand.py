@@ -8,10 +8,10 @@ from jasm.global_definitions import (
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_PATTERN_NODE,
     PatternNodeName,
-    TimeType,
+    TimesType,
 )
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimeTypeBuilder
+from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimesTypeBuilder
 
 
 def get_pattern_node_name(
@@ -88,7 +88,9 @@ class PatternNodeOperand(_PatternNodeMnemonicOrOperandProcessor):
 
 
 class _RegexWithOperandsCreator:
-    def __init__(self, name: PatternNodeName, operands: Optional[List[PatternNode]], times: Optional[TimeType]) -> None:
+    def __init__(
+        self, name: PatternNodeName, operands: Optional[List[PatternNode]], times: Optional[TimesType]
+    ) -> None:
         self.name = name
         self.operands = operands
         self.times = times
@@ -110,7 +112,7 @@ class _RegexWithOperandsCreator:
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
             return None
-        return TimeTypeBuilder().get_min_max_regex(times=self.times)
+        return TimesTypeBuilder().get_min_max_regex(times=self.times)
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         # Add prefix and suffix to name to allow matching only substring

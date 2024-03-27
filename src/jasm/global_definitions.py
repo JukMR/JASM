@@ -125,7 +125,7 @@ class ValidAddrRange:
 
 
 @dataclass
-class TimeType:
+class TimesType:
     """Dataclass for time type."""
 
     min_times: int

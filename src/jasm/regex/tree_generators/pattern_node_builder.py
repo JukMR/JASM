@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from jasm.global_definitions import DictNode, TimeType
+from jasm.global_definitions import DictNode, TimesType
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNodeData
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.shared_context import SharedContext
@@ -12,14 +12,14 @@ class PatternNodeBuilderNoParents:
         self.shared_context = shared_context
 
         self.name: str | int
-        self.times: TimeType
+        self.times: TimesType
         self.children: Optional[List[PatternNodeTmpUntyped]]
 
         # Check if is instance of int or str
         match command_dict:
             case int() | str():
                 self.name = command_dict
-                self.times = TimeType(min_times=1, max_times=1)
+                self.times = TimesType(min_times=1, max_times=1)
                 self.children = None
 
             case dict():
@@ -31,7 +31,7 @@ class PatternNodeBuilderNoParents:
             case tuple():
                 self.name = command_dict[0]
                 # self.time = self._get_times(command_dict) # TODO: Fix this
-                self.times = TimeType(min_times=1, max_times=1)
+                self.times = TimesType(min_times=1, max_times=1)
                 self.children = self._get_simple_child(name=command_dict[1], shared_context=shared_context)
 
             case _:
@@ -42,7 +42,7 @@ class PatternNodeBuilderNoParents:
         assert isinstance(command_dict, dict)
         return list(command_dict.keys())[0]
 
-    def _get_times(self, command_dict: DictNode) -> TimeType:
+    def _get_times(self, command_dict: DictNode) -> TimesType:
         assert isinstance(command_dict, dict)
 
         def _get_time_object(command_dict: dict) -> Optional[dict]:
@@ -62,14 +62,14 @@ class PatternNodeBuilderNoParents:
 
             match times:
                 case int():
-                    return TimeType(min_times=times, max_times=times)
+                    return TimesType(min_times=times, max_times=times)
 
                 case dict():
                     min_time = times.get("min", 1)
                     max_time = times.get("max", 1)
-                    return TimeType(min_times=min_time, max_times=max_time)
+                    return TimesType(min_times=min_time, max_times=max_time)
 
-        return TimeType(min_times=1, max_times=1)
+        return TimesType(min_times=1, max_times=1)
 
     @staticmethod
     def _get_children(name: str, command: DictNode, shared_context: SharedContext) -> List[PatternNodeTmpUntyped]:
@@ -96,7 +96,7 @@ class PatternNodeBuilderNoParents:
 
         pattern_node_data = PatternNodeData(
             name=name,
-            times=TimeType(min_times=1, max_times=1),
+            times=TimesType(min_times=1, max_times=1),
             children=None,
             parent=None,
             shared_context=shared_context,

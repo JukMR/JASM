@@ -12,7 +12,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
 from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operand.mnemonic_and_operand import (
     PatternNodeMnemonic,
     PatternNodeOperand,
-    TimeType,
+    TimesType,
     _RegexWithOperandsCreator,
     get_pattern_node_name,
 )
@@ -49,7 +49,7 @@ def pattern_node_fixture() -> PatternNodeTmpUntyped:
     return PatternNodeTmpUntyped(
         PatternNodeData(
             name="test",
-            times=TimeType(min_times=1, max_times=1),
+            times=TimesType(min_times=1, max_times=1),
             children=[],
             parent=None,
             shared_context=SharedContext(),
@@ -85,7 +85,7 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmpUntyped)
     child_pattern_node_base = PatternNodeTmpUntyped(
         PatternNodeData(
             name="child",
-            times=TimeType(min_times=1, max_times=1),
+            times=TimesType(min_times=1, max_times=1),
             children=None,
             parent=pattern_node_mnemonic,
             shared_context=SharedContext(),
@@ -120,7 +120,7 @@ def test_process_branch_and(pattern_node_fixture: PatternNodeTmpUntyped) -> None
     # Manually set up necessary attributes for the mock children
     for i_mock, mock_child in enumerate([mock_child1, mock_child2]):
         mock_child.name = f"mock_child{i_mock + 1}"
-        mock_child.times = TimeType(min_times=1, max_times=1)
+        mock_child.times = TimesType(min_times=1, max_times=1)
         mock_child.children = []
         mock_child.get_regex = MagicMock(return_value=f"{mock_child.name}")
 

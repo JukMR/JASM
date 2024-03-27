@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from jasm.global_definitions import SKIP_TO_END_OF_PATTERN_NODE
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimeTypeBuilder
+from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimesTypeBuilder
 
 
 class PatternNodeTimes(PatternNode):
@@ -19,7 +19,7 @@ class PatternNodeBranchRoot(PatternNode):
 
     def process_branch(self) -> str:
         child_regexes = self.process_children()
-        times_regex: Optional[str] = TimeTypeBuilder().get_min_max_regex(times=self.times)
+        times_regex: Optional[str] = TimesTypeBuilder().get_min_max_regex(times=self.times)
         return _BranchProcessor().process_pattern_node(
             parent=self, child_regexes=child_regexes, times_regex=times_regex
         )

@@ -4,14 +4,14 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import List, Optional
 
-from jasm.global_definitions import TimeType
+from jasm.global_definitions import TimesType
 from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 @dataclass
 class PatternNodeData:
     name: str | int
-    times: TimeType
+    times: TimesType
     children: Optional[List["PatternNode"]]
     parent: Optional["PatternNode"]
     shared_context: SharedContext
