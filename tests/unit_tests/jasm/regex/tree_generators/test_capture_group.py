@@ -13,7 +13,12 @@ from jasm.regex.tree_generators.capture_group_index import (
 # Setup Mock SharedContext
 @pytest.fixture
 def mock_shared_context() -> SharedContext:
-    return SharedContext(capture_group_references=["1", "2", "3"])
+    shared_context = SharedContext()
+    shared_context.initialize()
+    shared_context.add_capture("1")
+    shared_context.add_capture("2")
+    shared_context.add_capture("3")
+    return shared_context
 
 
 # Setup Mock PatternNode
@@ -35,8 +40,10 @@ def test_initialization_with_valid_node(mock_pattern_node) -> None:
 
 
 def test_initialization_without_capture_group_references(mock_pattern_node) -> None:
-    mock_pattern_node.shared_context.capture_group_references = None
-    with pytest.raises(AssertionError):
+    shared_context = SharedContext()
+    mock_pattern_node.shared_context = shared_context
+
+    with pytest.raises(ValueError):
         CaptureGroupIndexInstructionCall(mock_pattern_node)
 
 

@@ -1,24 +1,42 @@
-from dataclasses import dataclass
-from typing import Optional
-
-
-@dataclass
 class SharedContext:
-    capture_group_references: Optional[list[str]] = None
+    _capture_group_references: list[str]
+    _initialized: bool = False
+
+    def initialize(self) -> None:
+        if self._initialized:
+            raise ValueError("SharedContext already initialized")
+
+        self._initialized = True
+        self._capture_group_references = []
+
+    def is_initialized(self) -> bool:
+        return self._initialized
+
+    @property
+    def capture_group_references(self) -> list[str]:
+        if not self._initialized:
+            raise ValueError("SharedContext not initialized")
+
+        return self._capture_group_references
 
     def add_capture(self, entry: str) -> None:
-        if self.capture_group_references is None:
-            raise ValueError("Capture group references is None")
+        if not self._initialized:
+            raise ValueError("SharedContext not initialized")
 
-        self.capture_group_references.append(entry)
+        self._capture_group_references.append(entry)
 
     def get_capture_index(self, capture: str) -> int:
+        if not self._initialized:
+            raise ValueError("SharedContext not initialized")
 
-        if self.capture_group_references is None:
-            raise ValueError("Capture group references is None")
-
-        for i, entry in enumerate(self.capture_group_references):
+        for i, entry in enumerate(self._capture_group_references):
             if entry == capture:
                 return i + 1
 
-        raise ValueError(f"Capture group {capture} not found in {self.capture_group_references}")
+        raise ValueError(f"Capture group {capture} not found in {self._capture_group_references}")
+
+    def capture_is_registered(self, capture: str) -> bool:
+        if not self._initialized:
+            raise ValueError("SharedContext not initialized")
+
+        return capture in self._capture_group_references

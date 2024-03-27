@@ -8,6 +8,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
 from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_decider import (
     SpecialRegisterCaptureGroupTypeDecider,
 )
+from jasm.regex.tree_generators.shared_context import SharedContext
 
 # Used this to import PatternNodeTypeBuilder type hint avoiding circular import
 if TYPE_CHECKING:
@@ -33,38 +34,32 @@ class RegisterCaptureGroupProcessor:
 
     def has_any_ancester_who_is_capture_group_reference_register(self) -> bool:
         "Check if any ancestor is a capture group reference"
-
-        assert self.pattern_node.pattern_node.shared_context
+        shared_context = self.pattern_node.pattern_node.shared_context
         pattern_node_name = self.pattern_node.pattern_node.name
+
+        assert isinstance(shared_context, SharedContext)
         assert isinstance(pattern_node_name, str)
 
         main_reference_name = remove_access_suffix(pattern_node_name)
 
-        assert hasattr(self.pattern_node.pattern_node.shared_context, "capture_group_references")
-
-        if self.pattern_node.pattern_node.shared_context.capture_group_references is None:
+        if not shared_context.is_initialized():
             return False
 
-        if main_reference_name in self.pattern_node.pattern_node.shared_context.capture_group_references:
-            return True
-        return False
+        return shared_context.capture_is_registered(main_reference_name)
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
-        assert self.pattern_node.pattern_node.shared_context
-        assert hasattr(self.pattern_node.pattern_node.shared_context, "capture_group_references")
 
-        if self.pattern_node.pattern_node.shared_context.capture_group_references is None:
-            self.pattern_node.pattern_node.shared_context.capture_group_references = []
+        shared_context = self.pattern_node.pattern_node.shared_context
+        pattern_node_name = self.pattern_node.pattern_node.name
 
-        assert isinstance(self.pattern_node.pattern_node.name, str)
-        pattern_node_name_without_suffix = remove_access_suffix(self.pattern_node.pattern_node.name)
+        assert isinstance(shared_context, SharedContext)
+        assert isinstance(pattern_node_name, str)
 
-        if (
-            pattern_node_name_without_suffix
-            not in self.pattern_node.pattern_node.shared_context.capture_group_references
-        ):
-            assert isinstance(pattern_node_name_without_suffix, str)
-            self.pattern_node.pattern_node.shared_context.capture_group_references.append(
-                pattern_node_name_without_suffix
-            )
+        if not shared_context.is_initialized():
+            shared_context.initialize()
+
+        pattern_node_name_without_suffix = remove_access_suffix(pattern_node_name)
+
+        if not shared_context.capture_is_registered(pattern_node_name_without_suffix):
+            shared_context.add_capture(pattern_node_name_without_suffix)

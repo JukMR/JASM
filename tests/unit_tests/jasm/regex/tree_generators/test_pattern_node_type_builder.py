@@ -16,7 +16,8 @@ from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_buil
 
 @pytest.fixture
 def mock_shared_context() -> SharedContext:
-    shared_context = SharedContext(capture_group_references=[])
+    shared_context = SharedContext()
+    shared_context.initialize()
     return shared_context
 
 

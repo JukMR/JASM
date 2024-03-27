@@ -15,7 +15,7 @@ class CaptureGroupIndex(ABC):
 
         assert (
             hasattr(pattern_node.shared_context, "capture_group_references")
-            and pattern_node.shared_context.capture_group_references is not None
+            and pattern_node.shared_context._capture_group_references is not None
         )
 
         self.index = pattern_node.shared_context.get_capture_index(str_index)

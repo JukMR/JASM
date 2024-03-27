@@ -82,7 +82,8 @@ class Yaml2Regex(File2Regex):
         """Generate the rule tree from the patterns"""
 
         # Initialize shared_context with empty capture group references
-        shared_context = SharedContext(capture_group_references=[])
+        shared_context = SharedContext()
+        shared_context.initialize()
 
         # Generate the rule tree with no parents and all nodes untyped (PatternNodeTmpUntyped)
         rule_tree: PatternNode = PatternNodeBuilderNoParents(

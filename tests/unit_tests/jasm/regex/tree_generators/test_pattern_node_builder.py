@@ -8,7 +8,9 @@ from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNo
 
 @pytest.fixture
 def mock_shared_context() -> SharedContext:
-    return SharedContext(capture_group_references=[])
+    shared_context = SharedContext()
+    shared_context.initialize()
+    return shared_context
 
 
 def test_pattern_node_builder_no_parents_with_dict(mock_shared_context):
