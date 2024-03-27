@@ -5,6 +5,10 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
     PatternNodeCaptureGroupOperandCall,
     PattterNodeCaptureGroupOperandReference,
 )
+from jasm.regex.tree_generators.pattern_node_type_builder.common import (
+    add_new_references_to_global_list,
+    has_any_ancester_who_is_capture_group_reference,
+)
 from jasm.regex.tree_generators.shared_context import SharedContext
 
 # Used this to import PatternNodeTypeBuilder type hint avoiding circular import
@@ -30,16 +34,11 @@ class OperandCaptureGroupProcessor:
     def has_any_ancester_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
-        shared_context: SharedContext = self.pattern_node.pattern_node.shared_context
-        pattern_node_name = self.pattern_node.pattern_node.name
-
-        assert isinstance(shared_context, SharedContext)
-        assert isinstance(pattern_node_name, str)
-
-        if not shared_context.is_initialized:
-            return False
-
-        return shared_context.capture_is_registered(pattern_node_name)
+        assert isinstance(self.pattern_node.pattern_node.name, str)
+        return has_any_ancester_who_is_capture_group_reference(
+            shared_context=self.pattern_node.pattern_node.shared_context,
+            pattern_node_name=self.pattern_node.pattern_node.name,
+        )
 
     def _process_operand_call(self) -> PatternNode:
         return PatternNodeCaptureGroupOperandCall(self.pattern_node.pattern_node)
@@ -53,15 +52,8 @@ class OperandCaptureGroupProcessor:
     def add_new_references_to_global_list(self) -> None:
         """Add new references to global list"""
 
-        shared_context: SharedContext = self.pattern_node.pattern_node.shared_context
-        pattern_node_name = self.pattern_node.pattern_node.name
-
-        assert isinstance(shared_context, SharedContext)
-        assert isinstance(pattern_node_name, str)
-
-        if not shared_context.is_initialized():
-            shared_context.initialize()
-
-        if not shared_context.capture_is_registered(pattern_node_name):
-            assert isinstance(pattern_node_name, str)
-            shared_context.add_capture(pattern_node_name)
+        assert isinstance(self.pattern_node.pattern_node.name, str)
+        add_new_references_to_global_list(
+            shared_context=self.pattern_node.pattern_node.shared_context,
+            pattern_node_name=self.pattern_node.pattern_node.name,
+        )

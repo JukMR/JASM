@@ -21,6 +21,10 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
     PatternNodeTimes,
 )
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
+from jasm.regex.tree_generators.pattern_node_type_builder.common import (
+    add_new_references_to_global_list,
+    has_any_ancester_who_is_capture_group_reference,
+)
 from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
     OperandCaptureGroupProcessor,
 )
@@ -201,31 +205,18 @@ class PatternNodeTypeBuilder:
     def has_any_ancester_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
-        shared_context = self.pattern_node.shared_context
-        assert isinstance(shared_context, SharedContext)
-
-        pattern_node_name = self.pattern_node.name
-        assert isinstance(pattern_node_name, str)
-
-        if not shared_context.is_initialized():
-            return False
-
-        return shared_context.capture_is_registered(pattern_node_name)
+        assert isinstance(self.pattern_node.name, str)
+        return has_any_ancester_who_is_capture_group_reference(
+            shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
+        )
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"
 
-        shared_context = self.pattern_node.shared_context
-        assert isinstance(shared_context, SharedContext)
-
-        pattern_node_name = self.pattern_node.name
-        assert isinstance(pattern_node_name, str)
-
-        if not shared_context.is_initialized():
-            shared_context.initialize()
-
-        if not shared_context.capture_is_registered(pattern_node_name):
-            shared_context.add_capture(pattern_node_name)
+        assert isinstance(self.pattern_node.name, str)
+        add_new_references_to_global_list(
+            shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
+        )
 
     def _is_deref_property_capture_group(self) -> bool:
         "Check if the current node is a deref property capture group"
