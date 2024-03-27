@@ -92,11 +92,6 @@ class _BranchProcessor:
             return f"(?:(?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE}){times_regex}"
         return f"(?:(?!{''.join(child_regexes)}){SKIP_TO_END_OF_PATTERN_NODE})"
 
-    # @staticmethod
-    # def process_perm(child_regexes: List[str], times_regex: Optional[str]) -> str:
-    #     # TODO: implement this
-    #     return ""
-
     def process_and_any_order(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
         full_all_against_all_regex: List[List[str]] = self.generate_any_order_permutation(child_regexes)
 
