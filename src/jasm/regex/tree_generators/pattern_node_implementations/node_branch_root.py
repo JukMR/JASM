@@ -55,7 +55,6 @@ class PatternNodeBranch(PatternNodeBranchRoot):
 class PatternNodeRoot(PatternNodeBranchRoot):
     """
     This is the case of the root node $and
-    In here we will be save the state of the capture group references
     """
 
 

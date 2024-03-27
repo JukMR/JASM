@@ -11,6 +11,6 @@ class SharedContext:
     def get_capture_index(self, capture: str) -> int:
         for i, entry in enumerate(self.capture_group_references):
             if entry == capture:
-                return i
+                return i + 1
 
         raise ValueError(f"Capture group {capture} not found in {self.capture_group_references}")

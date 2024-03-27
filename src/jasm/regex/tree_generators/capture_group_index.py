@@ -15,16 +15,7 @@ class CaptureGroupIndex(ABC):
             and pattern_node.shared_context.capture_group_references is not None
         )
 
-        capture_group_references = pattern_node.shared_context.capture_group_references
-        self.index = self._get_capture_group_reference(str_index, capture_group_references)
-
-    @staticmethod
-    def _get_capture_group_reference(str_index: str, capture_group_references: List[str]) -> int:
-        """Get the index of the capture group reference in the list of capture group references."""
-        for elem in capture_group_references:
-            if elem == str_index:
-                return capture_group_references.index(elem) + 1
-        raise ValueError(f"Capture group reference {str_index} not found")
+        self.index = pattern_node.shared_context.get_capture_index(str_index)
 
     @abstractmethod
     def to_regex(self) -> str:

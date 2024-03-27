@@ -90,5 +90,6 @@ class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):
 
     def get_capture_group_call_operand(self) -> str:
         """Capture group call operand"""
+
         capture_group_instance = CaptureGroupIndexOperand(pattern_node=self)
         return CaptureGroupCallRegexBuilder(capture_group_instance).build()
