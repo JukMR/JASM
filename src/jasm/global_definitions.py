@@ -128,8 +128,30 @@ class ValidAddrRange:
 class TimesType:
     """Dataclass for time type."""
 
-    min_times: int
-    max_times: int
+    _min_times: int
+    _max_times: int
+
+    @property
+    def min_times(self) -> int:
+        return self._min_times
+
+    @min_times.setter
+    def min_times(self, value: int) -> None:
+        if value <= self._max_times:
+            self._min_times = value
+        else:
+            raise ValueError("min_times must be less than or equal to max_times")
+
+    @property
+    def max_times(self) -> int:
+        return self._max_times
+
+    @max_times.setter
+    def max_times(self, value: int) -> None:
+        if value >= self._min_times:
+            self._max_times = value
+        else:
+            raise ValueError("max_times must be greater than or equal to min_times")
 
 
 @dataclass
