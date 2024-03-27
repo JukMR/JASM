@@ -32,7 +32,10 @@ from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group
 class PatternNodeTypeBuilder:
     def __init__(self, pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> None:
 
-        assert isinstance(pattern_node, PatternNodeTmpUntyped)
+        # Here we are just checking that the node is a PatternNode because it is useful for testing purposes to inject a
+        # Typed PatternNode
+        assert isinstance(pattern_node, PatternNode)
+
         self.pattern_node = pattern_node
         self.pattern_node.parent = parent
 

@@ -87,7 +87,8 @@ def test_any_ancestor_is_mnemonic():
     grandparent = pattern_node_base_creator(name="mnemonic", children=[parent])
     root = pattern_node_base_creator(name="$and", children=[grandparent])
 
-    root = PatternNodeTypeBuilder(root, parent=None).build()
+    pattern_node_tree_builder = PatternNodeTypeBuilder(root, parent=None)
+    root = pattern_node_tree_builder.build()
     grandparent = root.children[0]
     parent = grandparent.children[0]
     child = parent.children[0]
