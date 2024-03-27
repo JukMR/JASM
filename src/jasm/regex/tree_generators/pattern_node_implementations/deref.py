@@ -11,7 +11,6 @@ class PatternNodeDerefProperty(PatternNode):
 
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
             name=pattern_node.name,
             times=pattern_node.times,
             children=pattern_node.children,
@@ -37,7 +36,6 @@ class PatternNodeDeref(PatternNode):
 
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
             name=pattern_node.name,
             times=pattern_node.times,
             children=pattern_node.children,
@@ -62,7 +60,6 @@ class PatternNodeDeref(PatternNode):
 class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
             name=pattern_node.name,
             times=pattern_node.times,
             children=pattern_node.children,
@@ -81,7 +78,6 @@ class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):
 class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
             name=pattern_node.name,
             times=pattern_node.times,
             children=pattern_node.children,

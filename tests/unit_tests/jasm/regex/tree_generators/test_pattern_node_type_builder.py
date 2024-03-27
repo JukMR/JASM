@@ -20,7 +20,6 @@ def pattern_node_base_creator(
     name: str = "PatternNodeBase",
 ) -> PatternNode:
     return PatternNodeTmpUntyped(
-        pattern_node_dict={},
         name=name,
         times=TimeType(min_times=1, max_times=1),
         children=children,

@@ -8,7 +8,6 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 class PatternNodeCaptureGroupCallOperand(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
             name=pattern_node.name,
             times=pattern_node.times,
             children=pattern_node.children,
@@ -28,7 +27,6 @@ class PatternNodeCaptureGroupCallOperand(PatternNode):
 class PattterNodeCaptureGroupReferenceOperand(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
             name=pattern_node.name,
             times=pattern_node.times,
             children=pattern_node.children,

@@ -84,7 +84,6 @@ class PatternNodeBuilderNoParents:
                 name=name,
                 times=TimeType(min_times=1, max_times=1),
                 children=None,
-                pattern_node_dict=name,
                 parent=None,
                 root_node=None,
             )
@@ -97,7 +96,6 @@ class PatternNodeBuilderNoParents:
             name=self.name,
             times=self.times,
             children=self.children,
-            pattern_node_dict=self.command,
             parent=None,
             root_node=None,
         )

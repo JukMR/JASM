@@ -33,7 +33,6 @@ class _PatternNodeMnemonicOrOperandProcessor(PatternNode):
 
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
-            pattern_node_dict=pattern_node.pattern_node_dict,
             name=pattern_node.name,
             times=pattern_node.times,
             children=pattern_node.children,

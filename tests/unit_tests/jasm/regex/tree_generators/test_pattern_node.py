@@ -46,7 +46,6 @@ def test_get_pattern_node_name_with_string():
 def pattern_node_fixture() -> PatternNodeTmpUntyped:
     # Create a basic pattern_node fixture
     return PatternNodeTmpUntyped(
-        pattern_node_dict={},
         name="test",
         times=TimeType(min_times=1, max_times=1),
         children=[],
@@ -81,7 +80,6 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmpUntyped)
     pattern_node_mnemonic = PatternNodeMnemonic(pattern_node_fixture)
     pattern_node_mnemonic.name = "pattern_node_with_children"
     child_pattern_node_base = PatternNodeTmpUntyped(
-        pattern_node_dict={},
         name="child",
         times=TimeType(min_times=1, max_times=1),
         children=None,
