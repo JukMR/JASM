@@ -1,17 +1,17 @@
 from typing import Optional
 
-from jasm.regex.tree_generators.shared_context import SharedContext
 import pytest
 
 from jasm.global_definitions import TimeType, remove_access_suffix
-from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode, PatternNodeData
 from jasm.regex.tree_generators.pattern_node_implementations.deref import PatternNodeDeref, PatternNodeDerefProperty
 from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operand.mnemonic_and_operand import (
     PatternNodeMnemonic,
 )
 from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root import PatternNodeNode, PatternNodeTimes
+from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 @pytest.fixture
@@ -22,18 +22,22 @@ def mock_shared_context() -> SharedContext:
 
 
 def pattern_node_base_creator(
-    parent: Optional[PatternNode] = None,
+    name: str | int,
+    times: TimeType = TimeType(min_times=1, max_times=1),
     children: Optional[list[PatternNode]] = None,
-    name: str = "PatternNodeBase",
-    mock_shared_context: SharedContext = mock_shared_context,
+    parent: Optional[PatternNode] = None,
+    shared_context: SharedContext = SharedContext(),
 ) -> PatternNode:
-    return PatternNodeTmpUntyped(
+
+    pattern_node_data = PatternNodeData(
         name=name,
-        times=TimeType(min_times=1, max_times=1),
+        times=times,
         children=children,
         parent=parent,
-        shared_context=mock_shared_context,
+        shared_context=shared_context,
     )
+
+    return PatternNodeTmpUntyped(pattern_node_data)
 
 
 @pytest.mark.parametrize(
@@ -66,7 +70,7 @@ def test_is_ancestor_deref() -> None:
 
     root_node = pattern_node_base_creator(name="$and")
 
-    child = pattern_node_base_creator(name="child")
+    child = pattern_node_base_creator(name="child", parent=None)
 
     parent = pattern_node_base_creator(name="$deref", parent=root_node, children=[child])
 

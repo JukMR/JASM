@@ -1,8 +1,9 @@
 from typing import List, Optional
 
-from jasm.global_definitions import TimeType, DictNode
-from jasm.regex.tree_generators.shared_context import SharedContext
+from jasm.global_definitions import DictNode, TimeType
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNodeData
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
+from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 class PatternNodeBuilderNoParents:
@@ -92,23 +93,26 @@ class PatternNodeBuilderNoParents:
 
     @staticmethod
     def _get_simple_child(name: str, shared_context: SharedContext) -> List[PatternNodeTmpUntyped]:
-        return [
-            PatternNodeTmpUntyped(
-                name=name,
-                times=TimeType(min_times=1, max_times=1),
-                children=None,
-                parent=None,
-                shared_context=shared_context,
-            )
-        ]
+
+        pattern_node_data = PatternNodeData(
+            name=name,
+            times=TimeType(min_times=1, max_times=1),
+            children=None,
+            parent=None,
+            shared_context=shared_context,
+        )
+
+        return [PatternNodeTmpUntyped(pattern_node_data)]
 
     def build(self) -> PatternNodeTmpUntyped:
         assert isinstance(self.name, (str, int))
 
-        return PatternNodeTmpUntyped(
+        pattern_node_data = PatternNodeData(
             name=self.name,
             times=self.times,
             children=self.children,
             parent=None,
             shared_context=self.shared_context,
         )
+
+        return PatternNodeTmpUntyped(pattern_node_data)

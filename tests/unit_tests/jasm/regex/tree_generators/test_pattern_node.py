@@ -5,8 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX
-from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode, PatternNodeData
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_register import (
     PatternNodeCaptureGroupRegisterCall,
 )
@@ -18,6 +17,8 @@ from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operan
     get_pattern_node_name,
 )
 from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root import PatternNodeNode, _BranchProcessor
+from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
+from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 def test_get_pattern_node_name_with_string():
@@ -46,11 +47,13 @@ def test_get_pattern_node_name_with_string():
 def pattern_node_fixture() -> PatternNodeTmpUntyped:
     # Create a basic pattern_node fixture
     return PatternNodeTmpUntyped(
-        name="test",
-        times=TimeType(min_times=1, max_times=1),
-        children=[],
-        parent=None,
-        shared_context=None,
+        PatternNodeData(
+            name="test",
+            times=TimeType(min_times=1, max_times=1),
+            children=[],
+            parent=None,
+            shared_context=SharedContext(),
+        )
     )
 
 
@@ -80,11 +83,13 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmpUntyped)
     pattern_node_mnemonic = PatternNodeMnemonic(pattern_node_fixture)
     pattern_node_mnemonic.name = "pattern_node_with_children"
     child_pattern_node_base = PatternNodeTmpUntyped(
-        name="child",
-        times=TimeType(min_times=1, max_times=1),
-        children=None,
-        parent=pattern_node_mnemonic,
-        shared_context=pattern_node_mnemonic,
+        PatternNodeData(
+            name="child",
+            times=TimeType(min_times=1, max_times=1),
+            children=None,
+            parent=pattern_node_mnemonic,
+            shared_context=SharedContext(),
+        )
     )
     child_pattern_node = PatternNodeOperand(child_pattern_node_base)
 

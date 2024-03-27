@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
+from jasm.regex.tree_generators.shared_context import SharedContext
+
 # set this limit to asterisk to reduce backtracking regex explosion
 # WARNING: sometimes setting this value too low would affect negative
 # lookaheads failing to match the existing pattern

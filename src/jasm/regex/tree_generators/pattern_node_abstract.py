@@ -1,21 +1,24 @@
 "PatternNode definition file"
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import List, Optional
 
 from jasm.global_definitions import TimeType
 from jasm.regex.tree_generators.shared_context import SharedContext
 
 
+@dataclass
+class PatternNodeData:
+    name: str | int
+    times: TimeType
+    children: Optional[List["PatternNode"]]
+    parent: Optional["PatternNode"]
+    shared_context: SharedContext
+
+
 class PatternNode(ABC):
-    def __init__(
-        self,
-        name: str | int,
-        times: TimeType,
-        children: Optional[dict | List["PatternNode"]],
-        parent: Optional["PatternNode"],
-        shared_context: SharedContext,
-    ) -> None:
+    def __init__(self, pattern_node_data: PatternNodeData) -> None:
         """
         Initialize a Command object.
 
@@ -25,11 +28,11 @@ class PatternNode(ABC):
         :param parent: The parent pattern_node, if any.
         :param shared_context: Shared context for the pattern_node. This is used for storing capture group references.
         """
-        self.name = name
-        self.times = times
-        self.children = children
-        self.parent = parent
-        self.shared_context = shared_context
+        self.name = pattern_node_data.name
+        self.times = pattern_node_data.times
+        self.children = pattern_node_data.children
+        self.parent = pattern_node_data.parent
+        self.shared_context = pattern_node_data.shared_context
 
     @abstractmethod
     def get_regex(self) -> str:

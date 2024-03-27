@@ -1,36 +1,18 @@
 from itertools import permutations
 from typing import List, Optional
 
-from jasm.global_definitions import (
-    SKIP_TO_END_OF_PATTERN_NODE,
-)
+from jasm.global_definitions import SKIP_TO_END_OF_PATTERN_NODE
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimeTypeBuilder
 
 
 class PatternNodeTimes(PatternNode):
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
 
     def get_regex(self) -> str:
         return ""
 
 
 class PatternNodeBranchRoot(PatternNode):
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
 
     def get_regex(self) -> str:
         return self.process_branch()

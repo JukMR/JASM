@@ -6,15 +6,6 @@ from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder i
 
 class PatternNodeDerefProperty(PatternNode):
 
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
-
     def get_regex(self) -> str:
         return self.process_deref_child()
 
@@ -31,15 +22,6 @@ class PatternNodeDerefProperty(PatternNode):
 
 class PatternNodeDeref(PatternNode):
 
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
-
     def get_regex(self) -> str:
         return self.process_deref()
 
@@ -55,14 +37,6 @@ class PatternNodeDeref(PatternNode):
 
 
 class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
 
     def get_regex(self) -> str:
         return self.get_capture_group_reference_deref()
@@ -73,14 +47,6 @@ class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):
 
 
 class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
 
     def get_regex(self) -> str:
         return self.get_capture_group_call_operand()

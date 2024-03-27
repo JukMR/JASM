@@ -31,7 +31,6 @@ from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_
 from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group_processor import (
     RegisterCaptureGroupProcessor,
 )
-from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 class PatternNodeTypeBuilder:

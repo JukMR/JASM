@@ -31,15 +31,6 @@ def get_pattern_node_name(
 class _PatternNodeMnemonicOrOperandProcessor(PatternNode):
     """This class is used to process PatternNodeMnemonic and PatternNodeOperand classes."""
 
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
-
     def get_regex(self) -> str:
         return self.process_leaf()
 

@@ -4,14 +4,6 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
 class PatternNodeCaptureGroupInstructionCall(PatternNode):
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
 
     def get_regex(self) -> str:
         return self.get_capture_group_call_instruction()
@@ -22,14 +14,6 @@ class PatternNodeCaptureGroupInstructionCall(PatternNode):
 
 
 class PatternNodeCaptureGroupInstructionReference(PatternNode):
-    def __init__(self, pattern_node: PatternNode) -> None:
-        super().__init__(
-            name=pattern_node.name,
-            times=pattern_node.times,
-            children=pattern_node.children,
-            parent=pattern_node.parent,
-            shared_context=pattern_node.shared_context,
-        )
 
     def get_regex(self) -> str:
         return self.get_capture_group_reference()
