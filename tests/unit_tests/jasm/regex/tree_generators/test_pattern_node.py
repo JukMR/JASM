@@ -101,14 +101,14 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmpUntyped)
 def test_sanitize_operand_name_hex(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     hex_name = "A3h"
-    assert pattern_node_operand.sanitize_operand_name(hex_name) == "0xA3"
+    assert pattern_node_operand._sanitize_operand_name(hex_name) == "0xA3"
 
 
 def test_sanitize_operand_name_non_hex(pattern_node_fixture: PatternNodeTmpUntyped) -> None:
     pattern_node_operand = PatternNodeOperand(pattern_node_fixture)
     non_hex_name = "operand"
     assert (
-        pattern_node_operand.sanitize_operand_name(non_hex_name) == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
+        pattern_node_operand._sanitize_operand_name(non_hex_name) == IGNORE_NAME_PREFIX + "operand" + IGNORE_NAME_SUFFIX
     )
 
 

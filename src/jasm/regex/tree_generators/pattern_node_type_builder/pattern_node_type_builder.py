@@ -50,7 +50,7 @@ class PatternNodeTypeBuilder:
         if getattr(self.pattern_node, "name", None) is None:
             raise ValueError("Name is not defined")
 
-        name: str | int = self.pattern_node.name
+        name: PatternNodeName = self.pattern_node.name
 
         # Is root node
         if self.pattern_node.parent is None:

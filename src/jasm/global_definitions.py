@@ -38,6 +38,9 @@ OperandType: TypeAlias = Optional[Dict[str, Any]]
 DictNode: TypeAlias = Dict[str, Any] | str | int
 
 
+PatternNodeName: TypeAlias = str | int
+
+
 # Move this to a global config class
 ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS: Final = True
 

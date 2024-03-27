@@ -7,6 +7,7 @@ from jasm.global_definitions import (
     IGNORE_NAME_PREFIX,
     IGNORE_NAME_SUFFIX,
     SKIP_TO_END_OF_PATTERN_NODE,
+    PatternNodeName,
     TimeType,
 )
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
@@ -42,7 +43,7 @@ class _PatternNodeMnemonicOrOperandProcessor(PatternNode):
         # Leaf is operand
         if not children and isinstance(self, PatternNodeOperand):
             # Is an operand
-            return str(self.sanitize_operand_name(name))
+            return str(self._sanitize_operand_name(name))
         # Is a mnemonic with no operands
         print(f"Found a mnemonic with no operands in yaml rule: {self.name}")
 
@@ -51,8 +52,8 @@ class _PatternNodeMnemonicOrOperandProcessor(PatternNode):
         assert not isinstance(children, dict), "Children must be a list or None"
         return _RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
 
-    def sanitize_operand_name(self, name: str | int) -> str | int:
-        def _is_hex_operand(name: str | int) -> bool:
+    def _sanitize_operand_name(self, name: PatternNodeName) -> PatternNodeName:
+        def _is_hex_operand(name: PatternNodeName) -> bool:
             if isinstance(name, int):
                 return False
             if name.endswith("h"):
@@ -87,7 +88,7 @@ class PatternNodeOperand(_PatternNodeMnemonicOrOperandProcessor):
 
 
 class _RegexWithOperandsCreator:
-    def __init__(self, name: str | int, operands: Optional[List[PatternNode]], times: Optional[TimeType]) -> None:
+    def __init__(self, name: PatternNodeName, operands: Optional[List[PatternNode]], times: Optional[TimeType]) -> None:
         self.name = name
         self.operands = operands
         self.times = times
