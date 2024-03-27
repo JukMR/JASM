@@ -2,8 +2,8 @@ from typing import TYPE_CHECKING
 
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_operand import (
-    PatternNodeCaptureGroupCallOperand,
-    PattterNodeCaptureGroupReferenceOperand,
+    PatternNodeCaptureGroupOperandCall,
+    PattterNodeCaptureGroupOperandReference,
 )
 
 # Used this to import PatternNodeTypeBuilder type hint avoiding circular import
@@ -43,13 +43,13 @@ class OperandCaptureGroupProcessor:
         return False
 
     def _process_operand_call(self) -> PatternNode:
-        return PatternNodeCaptureGroupCallOperand(self.pattern_node.pattern_node)
+        return PatternNodeCaptureGroupOperandCall(self.pattern_node.pattern_node)
 
     def _process_operand_reference(self) -> PatternNode:
         # Return reference
         # Add reference to the list of references
         self.add_new_references_to_global_list()
-        return PattterNodeCaptureGroupReferenceOperand(self.pattern_node.pattern_node)
+        return PattterNodeCaptureGroupOperandReference(self.pattern_node.pattern_node)
 
     def add_new_references_to_global_list(self) -> None:
         """Add new references to global list"""

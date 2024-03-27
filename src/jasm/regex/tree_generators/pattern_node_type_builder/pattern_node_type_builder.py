@@ -2,8 +2,8 @@ from typing import Optional
 
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_instruction import (
-    PatternNodeCaptureGroupCallInstruction,
-    PatternNodeCaptureGroupReferenceInstruction,
+    PatternNodeCaptureGroupInstructionCall,
+    PatternNodeCaptureGroupInstructionReference,
 )
 from jasm.regex.tree_generators.pattern_node_implementations.deref import (
     PatternNodeDeref,
@@ -150,11 +150,11 @@ class PatternNodeTypeBuilder:
         # Check it it should be a new reference or a call to an existing one
         if self.has_any_ancester_who_is_capture_group_reference():
             # Do the call
-            return PatternNodeCaptureGroupCallInstruction(self.pattern_node)
+            return PatternNodeCaptureGroupInstructionCall(self.pattern_node)
 
         # Create the reference
         self.add_new_references_to_global_list()
-        return PatternNodeCaptureGroupReferenceInstruction(self.pattern_node)
+        return PatternNodeCaptureGroupInstructionReference(self.pattern_node)
 
     def get_type_when_int(self) -> PatternNode:
         if self.is_ancestor_deref():
@@ -243,7 +243,6 @@ class PatternNodeTypeBuilder:
         # Add the capture group references to the root node
         if isinstance(new_concrete_instance, PatternNodeRoot):
             setattr(new_concrete_instance, "capture_group_references", [])
-            new_concrete_instance.shared_context = new_concrete_instance
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [

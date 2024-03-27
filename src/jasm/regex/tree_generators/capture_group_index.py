@@ -1,14 +1,17 @@
 from abc import ABC, abstractmethod
-from typing import List
 
 from jasm.global_definitions import IGNORE_INST_ADDR, remove_access_suffix
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
+from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 class CaptureGroupIndex(ABC):
     """Class to represent a capture group index."""
 
     def __init__(self, pattern_node: PatternNode, str_index: str) -> None:
+
+        assert pattern_node.shared_context
+        assert isinstance(pattern_node.shared_context, SharedContext)
 
         assert (
             hasattr(pattern_node.shared_context, "capture_group_references")
@@ -22,7 +25,7 @@ class CaptureGroupIndex(ABC):
         """Return the regex representation of the capture group index."""
 
 
-class CaptureGroupIndexInstruction(CaptureGroupIndex):
+class CaptureGroupIndexInstructionCall(CaptureGroupIndex):
     """Class to represent a capture group index for an instruction."""
 
     def __init__(self, pattern_node: PatternNode) -> None:
@@ -33,7 +36,7 @@ class CaptureGroupIndexInstruction(CaptureGroupIndex):
         return rf"{IGNORE_INST_ADDR}\{self.index},\|"
 
 
-class CaptureGroupIndexOperand(CaptureGroupIndex):
+class CaptureGroupIndexOperandCall(CaptureGroupIndex):
     """Class to represent a capture group index for an operand."""
 
     def __init__(self, pattern_node: PatternNode) -> None:
@@ -44,7 +47,7 @@ class CaptureGroupIndexOperand(CaptureGroupIndex):
         return rf"\{self.index}"
 
 
-class CaptureGroupIndexRegister(CaptureGroupIndex):
+class CaptureGroupIndexRegisterCall(CaptureGroupIndex):
     """Class to represent a capture group index for a register."""
 
     def __init__(self, pattern_node: PatternNode) -> None:

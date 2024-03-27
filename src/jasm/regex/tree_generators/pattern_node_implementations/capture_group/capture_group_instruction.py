@@ -1,12 +1,9 @@
 from jasm.global_definitions import IGNORE_INST_ADDR
-from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_call_common import (
-    CaptureGroupCallRegexBuilder,
-)
-from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexInstruction
+from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexInstructionCall
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
-class PatternNodeCaptureGroupCallInstruction(PatternNode):
+class PatternNodeCaptureGroupInstructionCall(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
             name=pattern_node.name,
@@ -21,11 +18,10 @@ class PatternNodeCaptureGroupCallInstruction(PatternNode):
 
     def get_capture_group_call_instruction(self) -> str:
         """Capture group call"""
-        capture_group_instance = CaptureGroupIndexInstruction(pattern_node=self)
-        return CaptureGroupCallRegexBuilder(capture_group_instance).build()
+        return CaptureGroupIndexInstructionCall(pattern_node=self).to_regex()
 
 
-class PatternNodeCaptureGroupReferenceInstruction(PatternNode):
+class PatternNodeCaptureGroupInstructionReference(PatternNode):
     def __init__(self, pattern_node: PatternNode) -> None:
         super().__init__(
             name=pattern_node.name,

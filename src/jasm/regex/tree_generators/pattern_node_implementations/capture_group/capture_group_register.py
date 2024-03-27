@@ -1,5 +1,5 @@
 from jasm.global_definitions import OPTIONAL_COMMA, OPTIONAL_PERCENTAGE_CHAR, RegisterCaptureSuffixs
-from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexRegister
+from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexRegisterCall
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
@@ -106,8 +106,7 @@ class PatternNodeCaptureGroupRegisterCall(PatternNode):
 
     def get_capture_group_register_call(self) -> str:
 
-        capture_group_instance = CaptureGroupIndexRegister(pattern_node=self)
-        index = capture_group_instance.to_regex()
+        index = CaptureGroupIndexRegisterCall(pattern_node=self).to_regex()
 
         matching_rule = self.process_register_capture_group_name_based_on_register_type(index=index)
 

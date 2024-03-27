@@ -1,9 +1,6 @@
-from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexOperand
+from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexOperandCall
 from jasm.regex.tree_generators.deref_classes import DerefObject, DerefObjectBuilder
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_call_common import (
-    CaptureGroupCallRegexBuilder,
-)
 from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimeTypeBuilder
 
 
@@ -90,6 +87,4 @@ class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):
 
     def get_capture_group_call_operand(self) -> str:
         """Capture group call operand"""
-
-        capture_group_instance = CaptureGroupIndexOperand(pattern_node=self)
-        return CaptureGroupCallRegexBuilder(capture_group_instance).build()
+        return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
