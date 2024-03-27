@@ -39,18 +39,10 @@ class PatternNodeDeref(PatternNode):
 class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):
 
     def get_regex(self) -> str:
-        return self.get_capture_group_reference_deref()
-
-    @staticmethod
-    def get_capture_group_reference_deref() -> str:
         return r"([^,|]+)"
 
 
 class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):
 
     def get_regex(self) -> str:
-        return self.get_capture_group_call_operand()
-
-    def get_capture_group_call_operand(self) -> str:
-        """Capture group call operand"""
         return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
