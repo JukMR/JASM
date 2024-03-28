@@ -9,7 +9,6 @@ from jasm.regex.tree_generators.pattern_node_type_builder.common import (
     add_new_references_to_global_list,
     has_any_ancester_who_is_capture_group_reference,
 )
-from jasm.regex.tree_generators.shared_context import SharedContext
 
 # Used this to import PatternNodeTypeBuilder type hint avoiding circular import
 if TYPE_CHECKING:

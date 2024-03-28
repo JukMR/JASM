@@ -23,7 +23,7 @@ def mock_shared_context() -> SharedContext:
 
 def pattern_node_base_creator(
     name: str | int,
-    times: TimesType = TimesType(min_times=1, max_times=1),
+    times: TimesType = TimesType(_min_times=1, _max_times=1),
     children: Optional[list[PatternNode]] = None,
     parent: Optional[PatternNode] = None,
     shared_context: SharedContext = SharedContext(),
