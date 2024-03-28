@@ -298,7 +298,8 @@ File2Regex <|--  Yaml2Regex
 PatternNodeBuilderNoParents -> PatternNode : builds >
 
 
-PatternNodeTypeBuilder o-- "1" PatternNode : builds >
+' PatternNodeTypeBuilder o- "1" PatternNode : builds >
+PatternNode "1" <- PatternNodeTypeBuilder : builds <
 
 PatternNode .> PatternNodeData : uses >
 PatternNodeData -> SharedContext : uses >
