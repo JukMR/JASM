@@ -13,7 +13,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operan
     PatternNodeMnemonic,
     PatternNodeOperand,
     TimesType,
-    _RegexWithOperandsCreator,
+    _RegexWithOperandsBuilder,
     get_pattern_node_name,
 )
 from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root import PatternNodeNode, _BranchProcessor
@@ -147,15 +147,15 @@ def test_process_branch_and(pattern_node_fixture: PatternNodeTmpUntyped) -> None
 
 
 def test_generate_regex_with_operands() -> None:
-    creator = _RegexWithOperandsCreator(name="pattern_node", operands=[MagicMock()], times=None)
-    assert isinstance(creator.operands, List)
-    creator.operands[0].get_regex = MagicMock(return_value="operand_regex")
-    assert "operand_regex" in creator.generate_regex()
+    builder = _RegexWithOperandsBuilder(name="pattern_node", operands=[MagicMock()], times=None)
+    assert isinstance(builder.operands, List)
+    builder.operands[0].get_regex = MagicMock(return_value="operand_regex")
+    assert "operand_regex" in builder.generate_regex()
 
 
 def test_generate_regex_without_operands() -> None:
-    creator = _RegexWithOperandsCreator(name="pattern_node", operands=None, times=None)
-    assert "pattern_node" in creator.generate_regex()
+    builder = _RegexWithOperandsBuilder(name="pattern_node", operands=None, times=None)
+    assert "pattern_node" in builder.generate_regex()
 
 
 def test_branch_processor_and() -> None:

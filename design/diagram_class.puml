@@ -165,7 +165,7 @@ package Regex {
             +process_children(command: "Command"): List[str]
         }
 
-        class BranchProcessor {
+        class _BranchProcessor {
             +process_command(command_name: str | int, child_regexes: List[str], times_regex: Optional[str]): str
             +process_and(child_regexes: List[str], times_regex: Optional[str]): str
             +process_or(child_regexes: List[str], times_regex: Optional[str]): str
@@ -174,7 +174,7 @@ package Regex {
             +generate_any_order_permutation(child_regexes: List[str]): List[List[str]]
             +join_instructions(inst_list: List[str]): str
         }
-        class RegexWithOperandsCreator {
+        class _RegexWithOperandsBuilder {
             -name: str | int
             -operands: Optional[List[Command]]
             -times: Optional[TimeType]

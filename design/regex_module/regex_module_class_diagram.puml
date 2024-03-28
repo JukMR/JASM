@@ -264,7 +264,7 @@ class _PatternNodeMnemonicOrOperandProcessor extends PatternNode {
     - _sanitize_operand_name(name: PatternNodeName) -> PatternNodeName:
 }
 
-class _RegexWithOperandsCreator {
+class _RegexWithOperandsBuilder {
     + generate_regex() -> str:
     + get_operand_regex() -> Optional[str]:
     + get_min_max_regex() -> Optional[str]:
@@ -291,13 +291,11 @@ class CaptureGroupInterface {
 
 ' Relations
 
-_PatternNodeMnemonicOrOperandProcessor ..> _RegexWithOperandsCreator: uses
-
 
 File2Regex <|--  Yaml2Regex
 PatternNodeTypeBuilder o-- PatternNode
-PatternNodeBuilderNoParents .> PatternNode : creates >
-PatternNodeTypeBuilder .> PatternNode : creates >
+PatternNodeBuilderNoParents .> PatternNode : builds >
+PatternNodeTypeBuilder .> PatternNode : builds >
 
 
 PatternNodeBranchRoot *-- PatternNode : contains
@@ -314,7 +312,7 @@ DerefObjectBuilder .> DerefChildNames : uses >
 
 
 
-_RegexWithOperandsCreator ..> TimesTypeBuilder : uses >
+_RegexWithOperandsBuilder ..> TimesTypeBuilder : uses >
 PatternNodeDeref o-- TimesTypeBuilder : uses >
 PatternNodeBranchRoot ..> TimesTypeBuilder : uses >
 PatternNodeBranchRoot ..> _BranchProcessor : uses >
@@ -341,10 +339,10 @@ PatternNodeDeref  *- DerefObjectBuilder : uses >
 MacroArgsResolver ..> ArgsMappingGenerator : uses >
 MacroExpander ..> MacroArgsResolver : uses >
 
-SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceGenreg: creates >
-SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceIndreg: creates >
-SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceStackreg: creates >
-SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceBasereg: creates >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceGenreg: builds >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceIndreg: builds >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceStackreg: builds >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceBasereg: builds >
 
 PatternNodeCaptureGroupOperandCall o-- CaptureGroupIndexOperandCall: uses >
 PatternNodeDerefPropertyCaptureGroupCall o-- CaptureGroupIndexOperandCall: uses >
@@ -355,4 +353,5 @@ CaptureGroupInterface o-- PatternNodeTypeBuilder: uses >
 CaptureGroupInterface o-- OperandCaptureGroupProcessor: uses >
 CaptureGroupInterface o-- RegisterCaptureGroupProcessor: uses >
 
+_PatternNodeMnemonicOrOperandProcessor o-- _RegexWithOperandsBuilder: uses >
 @enduml

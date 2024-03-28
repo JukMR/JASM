@@ -50,7 +50,7 @@ class _PatternNodeMnemonicOrOperandProcessor(PatternNode):
         assert isinstance(children, List) or (not children), "Children must be a list or None"
         # This line shouldn't be necessary but the linter complains children could be dict
         assert not isinstance(children, dict), "Children must be a list or None"
-        return _RegexWithOperandsCreator(name=name, operands=children, times=times).generate_regex()
+        return _RegexWithOperandsBuilder(name=name, operands=children, times=times).generate_regex()
 
     def _sanitize_operand_name(self, name: PatternNodeName) -> PatternNodeName:
         def _is_hex_operand(name: PatternNodeName) -> bool:
@@ -87,7 +87,7 @@ class PatternNodeOperand(_PatternNodeMnemonicOrOperandProcessor):
     pass
 
 
-class _RegexWithOperandsCreator:
+class _RegexWithOperandsBuilder:
     def __init__(
         self, name: PatternNodeName, operands: Optional[List[PatternNode]], times: Optional[TimesType]
     ) -> None:
