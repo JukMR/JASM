@@ -295,9 +295,7 @@ class CaptureGroupHelper {
 
 
 File2Regex <|--  Yaml2Regex
-PatternNodeTypeBuilder o-- PatternNode
-PatternNodeBuilderNoParents .> PatternNode : builds >
-PatternNodeTypeBuilder .> PatternNode : builds >
+PatternNodeBuilderNoParents -> PatternNode : builds >
 
 
 PatternNodeBranchRoot *-- PatternNode : contains
@@ -309,8 +307,8 @@ PatternNodeData .> SharedContext : uses >
 
 
 DerefObjectBuilder ..> DerefObject : builds >
-DerefObjectBuilder ..> PatternNode : uses >
-DerefObjectBuilder .> DerefChildNames : uses >
+DerefObjectBuilder --> PatternNode : uses >
+DerefObjectBuilder -> DerefChildNames : uses >
 
 
 
@@ -348,11 +346,11 @@ SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterRefer
 PatternNodeCaptureGroupOperandCall o-- CaptureGroupIndexOperandCall: uses >
 PatternNodeDerefPropertyCaptureGroupCall o-- CaptureGroupIndexOperandCall: uses >
 
-PatternNodeCaptureGroupRegisterCall o-- CaptureGroupIndexRegisterCall: uses >
+PatternNodeCaptureGroupRegisterCall --> CaptureGroupIndexRegisterCall: uses >
 
-CaptureGroupHelper <-- PatternNodeTypeBuilder: < uses
-CaptureGroupHelper <-- OperandCaptureGroupProcessor: < uses
-CaptureGroupHelper <-- RegisterCaptureGroupProcessor: < uses
+PatternNodeTypeBuilder -> CaptureGroupHelper :  uses >
+OperandCaptureGroupProcessor -> CaptureGroupHelper :  uses >
+RegisterCaptureGroupProcessor -> CaptureGroupHelper :  uses >
 
 _PatternNodeMnemonicOrOperandProcessor o-- _RegexWithOperandsBuilder: uses >
 @enduml

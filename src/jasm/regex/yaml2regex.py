@@ -11,7 +11,7 @@ from jasm.regex.file2regex import File2Regex
 from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode, PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
-from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTmpUntyped
+from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
 
 
 class Yaml2Regex(File2Regex):
@@ -91,7 +91,7 @@ class Yaml2Regex(File2Regex):
         ).build()
 
         # Transform each node in the rule tree to a typed node
-        rule_tree_typed: PatternNode = PatternNodeTmpUntyped(rule_tree, parent=None).build()
+        rule_tree_typed: PatternNode = PatternNodeTypeBuilder(rule_tree, parent=None).build()
 
         return rule_tree_typed
 

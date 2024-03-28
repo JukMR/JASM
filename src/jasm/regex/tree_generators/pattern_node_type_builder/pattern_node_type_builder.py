@@ -31,7 +31,7 @@ from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group
 )
 
 
-class PatternNodeTmpUntyped:
+class PatternNodeTypeBuilder:
     def __init__(self, pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> None:
 
         # Here we are just checking that the node is a PatternNode because it is useful for testing purposes to inject a
@@ -222,7 +222,7 @@ class PatternNodeTmpUntyped:
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [
-                PatternNodeTmpUntyped(child, parent=new_concrete_instance).build()
+                PatternNodeTypeBuilder(child, parent=new_concrete_instance).build()
                 for child in new_concrete_instance.children
             ]
 
