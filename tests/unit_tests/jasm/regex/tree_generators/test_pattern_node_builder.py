@@ -49,7 +49,7 @@ def test_get_name():
         ({}, TimesType(_min_times=1, _max_times=1)),  # Testing default behavior
     ],
 )
-def test_get_times(input_times, expected, mock_shared_context: SharedContext):
+def test_get_times(input_times, expected, mock_shared_context: SharedContext) -> None:
     command_dict = {"command": {"times": input_times}} if isinstance(input_times, dict) else input_times
     times = PatternNodeBuilderNoParents(command_dict=command_dict, shared_context=mock_shared_context)._get_times(
         command_dict if isinstance(command_dict, dict) else {}
