@@ -2,13 +2,13 @@
 
 from typing import Any, Dict, List, Optional
 
-from jasm.regex.tree_generators.capture_manager import Capture, CapturesManager
 import yaml
 
 from jasm.global_definitions import DisassStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.file2regex import File2Regex
 from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
+from jasm.regex.tree_generators.capture_manager import CapturesManager
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
 from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
@@ -124,5 +124,5 @@ class Yaml2Regex(File2Regex):
             return None
 
         if valid_addr:
-            return ValidAddrRange(min_addr=valid_addr.get("min"), max_addr=(valid_addr.get("max")))
+            return ValidAddrRange(min_addr=valid_addr.get("min"), max_addr=valid_addr.get("max"))
         return None

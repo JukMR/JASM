@@ -4,7 +4,8 @@ from jasm.stringify_asm.implementations.shell_disassembler import ShellDisassemb
 class LLvmObjdumpDisassembler(ShellDisassembler):
     """Disassemble binaries using llvm-objdump from shell"""
 
-    def __init__(self, flags: str) -> None:
-        # TODO: implement this
+    def __init__(self, flags: str) -> None:  # pylint: disable=super-init-not-called
+        """
+          TODO: implement this
         # super().__init__(program="llvm-objdump", flags=flags)
-        pass
+        """

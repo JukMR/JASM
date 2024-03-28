@@ -1,4 +1,3 @@
-from typing import List
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer
 from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 
