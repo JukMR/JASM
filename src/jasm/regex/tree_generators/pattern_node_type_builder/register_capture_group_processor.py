@@ -10,7 +10,7 @@ from jasm.regex.tree_generators.pattern_node_type_builder.special_register_captu
 )
 
 
-class RegisterCaptureGroupProcessor:
+class RegisterCaptureGroupBuilder:
 
     def __init__(self, pattern_node_tmp_untyped: PatternNodeTmpUntyped) -> None:
         self.pattern_node_tmp_untyped = pattern_node_tmp_untyped

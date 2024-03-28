@@ -165,7 +165,7 @@ package Regex {
             +process_children(command: "Command"): List[str]
         }
 
-        class _BranchProcessor {
+        class _BranchBuilder {
             +process_command(command_name: str | int, child_regexes: List[str], times_regex: Optional[str]): str
             +process_and(child_regexes: List[str], times_regex: Optional[str]): str
             +process_or(child_regexes: List[str], times_regex: Optional[str]): str

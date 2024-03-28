@@ -20,9 +20,7 @@ class PatternNodeBranchRoot(PatternNode):
     def process_branch(self) -> str:
         child_regexes = self.process_children()
         times_regex: Optional[str] = TimesTypeBuilder().get_min_max_regex(times=self.times)
-        return _BranchProcessor().process_pattern_node(
-            parent=self, child_regexes=child_regexes, times_regex=times_regex
-        )
+        return _BranchBuilder().process_pattern_node(parent=self, child_regexes=child_regexes, times_regex=times_regex)
 
     def process_children(self) -> List[str]:
         if self.children:
@@ -44,7 +42,7 @@ class PatternNodeNode(PatternNodeBranchRoot):
     pass
 
 
-class _BranchProcessor:
+class _BranchBuilder:
     def process_pattern_node(
         self,
         parent: PatternNode,

@@ -109,11 +109,11 @@ class PatternNodeTmpUntyped  extends PatternNode {
     +get_regex(): str
 }
 
-class PatternNodeMnemonic  extends _PatternNodeMnemonicOrOperandProcessor {
+class PatternNodeMnemonic  extends _PatternNodeMnemonicOrOperandBuilder {
     +get_regex(): str
 }
 
-class PatternNodeOperand  extends _PatternNodeMnemonicOrOperandProcessor {
+class PatternNodeOperand  extends _PatternNodeMnemonicOrOperandBuilder {
     +get_regex(): str
 }
 
@@ -185,7 +185,7 @@ class PatternNodeCaptureGroupRegisterReferenceBasereg  extends PatternNode {
     +get_regex(): str
 }
 
-class OperandCaptureGroupProcessor {
+class OperandCaptureGroupBuilder {
     + pattern_node_tmp_untyped : PatternNodeTmpUntyped
     + process() -> PatternNode:
     + has_any_ancestor_who_is_capture_group_reference() -> bool:
@@ -201,7 +201,7 @@ class PatternNodeCaptureGroupRegisterCall  extends PatternNode {
 
 
 
-class RegisterCaptureGroupProcessor {
+class RegisterCaptureGroupBuilder {
     + pattern_node_tmp_untyped: PatternNodeTmpUntyped
     + process() -> PatternNode:
     - _process_registry_capture_group() -> PatternNode:
@@ -249,7 +249,7 @@ class CaptureGroupIndexRegisterCall extends CaptureGroupIndex {
     + to_regex() -> str:
 }
 
-class _BranchProcessor {
+class _BranchBuilder {
     + process_pattern_node(parent: PatternNode, child_regexes: List[str], times_regex: Optional[str])
     + {static} process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
     + process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
@@ -260,7 +260,7 @@ class _BranchProcessor {
 
 }
 
-class _PatternNodeMnemonicOrOperandProcessor extends PatternNode {
+class _PatternNodeMnemonicOrOperandBuilder extends PatternNode {
     + get_regex() -> str:
     + process_leaf() -> str:
     - _sanitize_operand_name(name: PatternNodeName) -> PatternNodeName:
@@ -315,14 +315,14 @@ DerefObjectBuilder -> DerefChildNames : uses >
 _RegexWithOperandsBuilder ..> TimesTypeBuilder : uses >
 PatternNodeDeref o-- TimesTypeBuilder : uses >
 PatternNodeBranchRoot ..> TimesTypeBuilder : uses >
-PatternNodeBranchRoot o-- _BranchProcessor : uses >
+PatternNodeBranchRoot o-- _BranchBuilder : uses >
 
 
-PatternNodeTypeBuilder --> OperandCaptureGroupProcessor : uses >
-PatternNodeTypeBuilder --> RegisterCaptureGroupProcessor : uses >
+PatternNodeTypeBuilder --> OperandCaptureGroupBuilder : uses >
+PatternNodeTypeBuilder --> RegisterCaptureGroupBuilder : uses >
 
-RegisterCaptureGroupProcessor --> SpecialRegisterCaptureGroupTypeBuilder : uses >
-OperandCaptureGroupProcessor ..> PatternNodeCaptureGroupOperandReference: builds >
+RegisterCaptureGroupBuilder --> SpecialRegisterCaptureGroupTypeBuilder : uses >
+OperandCaptureGroupBuilder ..> PatternNodeCaptureGroupOperandReference: builds >
 
 
 PatternNode -- "1" PatternNode : parent >
@@ -349,8 +349,8 @@ PatternNodeDerefPropertyCaptureGroupCall o-- CaptureGroupIndexOperandCall: uses 
 PatternNodeCaptureGroupRegisterCall --> CaptureGroupIndexRegisterCall: uses >
 
 PatternNodeTypeBuilder -> CaptureGroupHelper :  uses >
-OperandCaptureGroupProcessor -> CaptureGroupHelper :  uses >
-RegisterCaptureGroupProcessor -> CaptureGroupHelper :  uses >
+OperandCaptureGroupBuilder -> CaptureGroupHelper :  uses >
+RegisterCaptureGroupBuilder -> CaptureGroupHelper :  uses >
 
-_PatternNodeMnemonicOrOperandProcessor o-- _RegexWithOperandsBuilder: uses >
+_PatternNodeMnemonicOrOperandBuilder o-- _RegexWithOperandsBuilder: uses >
 @enduml

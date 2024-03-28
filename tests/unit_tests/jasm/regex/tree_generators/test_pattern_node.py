@@ -16,7 +16,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operan
     _RegexWithOperandsBuilder,
     get_pattern_node_name,
 )
-from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root import PatternNodeNode, _BranchProcessor
+from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root import PatternNodeNode, _BranchBuilder
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.shared_context import SharedContext
 
@@ -159,7 +159,7 @@ def test_generate_regex_without_operands() -> None:
 
 
 def test_branch_processor_and() -> None:
-    processor = _BranchProcessor()
+    processor = _BranchBuilder()
     assert processor.process_and(["regex1", "regex2"], None) == "(?:regex1regex2)"
 
 

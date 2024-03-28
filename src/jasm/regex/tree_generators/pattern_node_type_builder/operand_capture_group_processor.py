@@ -9,7 +9,7 @@ from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUn
 from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
 
 
-class OperandCaptureGroupProcessor:
+class OperandCaptureGroupBuilder:
 
     def __init__(self, pattern_node_tmp_untyped: PatternNodeTmpUntyped) -> None:
         self.pattern_node = pattern_node_tmp_untyped

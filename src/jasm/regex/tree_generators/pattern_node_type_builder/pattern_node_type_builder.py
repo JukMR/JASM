@@ -24,10 +24,10 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
 from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
-    OperandCaptureGroupProcessor,
+    OperandCaptureGroupBuilder,
 )
 from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group_processor import (
-    RegisterCaptureGroupProcessor,
+    RegisterCaptureGroupBuilder,
 )
 
 
@@ -84,7 +84,7 @@ class PatternNodeTypeBuilder:
             if self._is_deref_property_capture_group():
 
                 if self._is_registry_capture_group():
-                    return RegisterCaptureGroupProcessor(self.pattern_node).process()
+                    return RegisterCaptureGroupBuilder(self.pattern_node).process()
 
                 if self.has_any_ancestor_who_is_capture_group_reference():
                     return PatternNodeDerefPropertyCaptureGroupCall(self.pattern_node)
@@ -127,10 +127,10 @@ class PatternNodeTypeBuilder:
     def _process_capture_operand_and_register_capture(self) -> PatternNode:
         if self._is_registry_capture_group():
             # Register capture group
-            return RegisterCaptureGroupProcessor(self.pattern_node).process()
+            return RegisterCaptureGroupBuilder(self.pattern_node).process()
 
         # Operand capture group
-        return OperandCaptureGroupProcessor(self.pattern_node).process()
+        return OperandCaptureGroupBuilder(self.pattern_node).process()
 
     def _is_registry_capture_group(self) -> bool:
         "Check if the current node is a registry capture group"
