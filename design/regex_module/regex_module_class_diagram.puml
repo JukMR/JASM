@@ -220,7 +220,7 @@ class SharedContext {
     + capture_is_registered(capture: str): bool
 }
 
-class SpecialRegisterCaptureGroupTypeDecider {
+class SpecialRegisterCaptureGroupTypeBuilder {
 
     + pattern_node_type_builder: PatternNodeTypeBuilder
     + pattern_name: str
@@ -322,9 +322,9 @@ PatternNodeBranchRoot ..> _BranchProcessor : uses >
 
 PatternNodeTypeBuilder *-- OperandCaptureGroupProcessor : uses >
 PatternNodeTypeBuilder *-- RegisterCaptureGroupProcessor : uses >
-PatternNodeTypeBuilder *-- SpecialRegisterCaptureGroupTypeDecider : uses >
+PatternNodeTypeBuilder *-- SpecialRegisterCaptureGroupTypeBuilder : uses >
 
-RegisterCaptureGroupProcessor o-- SpecialRegisterCaptureGroupTypeDecider : uses >
+RegisterCaptureGroupProcessor o-- SpecialRegisterCaptureGroupTypeBuilder : uses >
 OperandCaptureGroupProcessor o-- PatternNodeCaptureGroupOperandReference: uses >
 
 
@@ -341,10 +341,10 @@ PatternNodeDeref  *- DerefObjectBuilder : uses >
 MacroArgsResolver ..> ArgsMappingGenerator : uses >
 MacroExpander ..> MacroArgsResolver : uses >
 
-SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterReferenceGenreg: creates >
-SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterReferenceIndreg: creates >
-SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterReferenceStackreg: creates >
-SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterReferenceBasereg: creates >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceGenreg: creates >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceIndreg: creates >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceStackreg: creates >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceBasereg: creates >
 
 PatternNodeCaptureGroupOperandCall o-- CaptureGroupIndexOperandCall: uses >
 PatternNodeDerefPropertyCaptureGroupCall o-- CaptureGroupIndexOperandCall: uses >

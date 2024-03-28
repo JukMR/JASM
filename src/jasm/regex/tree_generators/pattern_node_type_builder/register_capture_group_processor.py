@@ -7,7 +7,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
 )
 from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupInterface
 from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_decider import (
-    SpecialRegisterCaptureGroupTypeDecider,
+    SpecialRegisterCaptureGroupTypeBuilder,
 )
 
 # Used this to import PatternNodeTypeBuilder type hint avoiding circular import
@@ -30,7 +30,7 @@ class RegisterCaptureGroupProcessor:
         self.add_new_references_to_global_list()
 
         # Decide which type of register capture group it is
-        return SpecialRegisterCaptureGroupTypeDecider(pattern_node=self.pattern_node_type_builder).process()
+        return SpecialRegisterCaptureGroupTypeBuilder(pattern_node=self.pattern_node_type_builder).process()
 
     def has_any_ancestor_who_is_capture_group_reference_register(self) -> bool:
         "Check if any ancestor is a capture group reference"

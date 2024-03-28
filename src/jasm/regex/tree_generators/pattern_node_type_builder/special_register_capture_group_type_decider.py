@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
 
 
-class SpecialRegisterCaptureGroupTypeDecider:
+class SpecialRegisterCaptureGroupTypeBuilder:
 
     def __init__(self, pattern_node: "PatternNodeTypeBuilder") -> None:
         self.pattern_node_type_builder: PatternNodeTypeBuilder = pattern_node
