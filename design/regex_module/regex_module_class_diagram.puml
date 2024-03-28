@@ -51,7 +51,6 @@ class PatternNodeTypeBuilder {
     -parent: Optional[PatternNode]
     +set_type(): PatternNode
     +build(): PatternNode
-
     + get_type_when_str(self, name: str) -> Optional[PatternNode]:
     + is_ancestor_deref() -> bool:
     + has_any_ancestor_who_is_capture_group_reference() -> bool:
@@ -186,7 +185,6 @@ class PatternNodeCaptureGroupRegisterReferenceBasereg  extends PatternNode {
 
 class OperandCaptureGroupProcessor {
     + pattern_node_type_builder : PatternNodeTypeBuilder
-
     + process() -> PatternNode:
     + has_any_ancestor_who_is_capture_group_reference() -> bool:
     + add_new_references_to_global_list() -> None:
@@ -203,7 +201,6 @@ class PatternNodeCaptureGroupRegisterCall  extends PatternNode {
 
 class RegisterCaptureGroupProcessor {
     + pattern_node_type_builder: PatternNodeTypeBuilder
-
     + process() -> PatternNode:
     + process_registry_capture_group() -> PatternNode:
     + has_any_ancestor_who_is_capture_group_reference_register() -> bool:
@@ -227,7 +224,6 @@ class SpecialRegisterCaptureGroupTypeDecider {
 
     + pattern_node_type_builder: PatternNodeTypeBuilder
     + pattern_name: str
-
     +process(): PatternNode
     +is_genreg(): bool
     +is_indreg(): bool
@@ -263,11 +259,9 @@ class _BranchProcessor {
 }
 
 class _PatternNodeMnemonicOrOperandProcessor extends PatternNode {
-
     + get_regex() -> str:
     + process_leaf() -> str:
     - _sanitize_operand_name(name: PatternNodeName) -> PatternNodeName:
-
 }
 
 class _RegexWithOperandsCreator {
