@@ -118,7 +118,9 @@ class PatternNodeOperand  extends _PatternNodeMnemonicOrOperandProcessor {
 }
 
 class PatternNodeBranchRoot  extends PatternNode {
-    +get_regex(): str
+    +get_regex() -> str
+    + process_branch() -> str
+    + process_children() -> List[str]
 }
 
 class PatternNodeRoot  extends PatternNodeBranchRoot {
