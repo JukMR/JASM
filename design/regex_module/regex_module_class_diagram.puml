@@ -356,5 +356,5 @@ Yaml2Regex --> MacroExpander : uses >
 Yaml2Regex --> PatternNodeBuilderNoParents : uses >
 Yaml2Regex --> PatternNodeTypeBuilder : uses >
 
-SharedContext o-- CaptureManager : has a >
+SharedContext *-- CaptureManager : has a >
 @enduml
