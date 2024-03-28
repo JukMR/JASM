@@ -7,15 +7,15 @@ abstract class File2Regex {
 }
 
 class Yaml2Regex {
-    -loaded_file: Any
-    -macros_from_terminal_filepath: Optional[List[str]]
-    {static} +load_file(file: str): Any
     +produce_regex(): str
+    +get_assembly_style(): DisassStyle
+    -macros_from_terminal_filepath: Optional[List[str]]
+    +get_valid_addr_range(): Optional[ValidAddrRange]
+    {static} +load_file(file: str): Any
+    -loaded_file: Any
     -_get_pattern(): PatternTree
     -load_macros_from_args(): List[Dict]
     -_generate_rule_tree(patterns: PatternTree): PatternNode
-    +get_assembly_style(): DisassStyle
-    +get_valid_addr_range(): Optional[ValidAddrRange]
 }
 
 class MacroExpander {
@@ -30,15 +30,15 @@ class MacroExpander {
 }
 
 class PatternNodeBuilderNoParents {
+    +build(): PatternNodeTmpUntyped
     -command: DictNode
     -name: str | int
     -times: TimeType
     -children: Optional[dict | List[PatternNode]]
-    +build(): PatternNodeTmpUntyped
     -_get_name(command_dict: DictNode): str
     -_get_times(command_dict: DictNode): TimeType
     -_get_children(name: str, command: DictNode): List[PatternNode]
-    {static} get_simple_child(name: str): List[PatternNodeTmpUntyped]
+    {static} - _get_simple_child(name: str): List[PatternNodeTmpUntyped]
 }
 
 abstract class PatternNode {
@@ -51,6 +51,24 @@ class PatternNodeTypeBuilder {
     -parent: Optional[PatternNode]
     +set_type(): PatternNode
     +build(): PatternNode
+
+    + get_type_when_str(self, name: str) -> Optional[PatternNode]:
+    + is_ancestor_deref() -> bool:
+    + has_any_ancestor_who_is_capture_group_reference() -> bool:
+    + any_ancestor_is_mnemonic() -> bool:
+    + build() -> PatternNode:
+    + add_new_references_to_global_list() -> None:
+    - _set_type() -> PatternNode:
+    - _get_type() -> PatternNode:
+    - _process_capture_group() -> PatternNode:
+    - _is_capture_group_operand_or_special_register_capture() -> bool:
+    - _process_capture_operand_and_register_capture() -> PatternNode:
+    - _is_registry_capture_group() -> bool:
+    - _process_capture_group_mnemonic() -> PatternNode:
+    - _get_type_when_int() -> PatternNode:
+    - _is_node(name: str) -> bool:
+    - _is_deref_property_capture_group() -> bool:
+
 }
 
 class ArgsMappingGenerator {
@@ -296,16 +314,17 @@ DerefObjectBuilder .> DerefChildNames : uses >
 
 
 _RegexWithOperandsCreator ..> TimesTypeBuilder : uses >
-PatternNodeDeref ..> TimesTypeBuilder : uses >
+PatternNodeDeref o.. TimesTypeBuilder : uses >
 PatternNodeBranchRoot ..> TimesTypeBuilder : uses >
 PatternNodeBranchRoot ..> _BranchProcessor : uses >
 
 
-PatternNodeTypeBuilder ..> OperandCaptureGroupProcessor : uses>
-PatternNodeTypeBuilder ..> RegisterCaptureGroupProcessor : uses>
-RegisterCaptureGroupProcessor ..> SpecialRegisterCaptureGroupTypeDecider : uses >
+PatternNodeTypeBuilder *-- OperandCaptureGroupProcessor : uses >
+PatternNodeTypeBuilder *-- RegisterCaptureGroupProcessor : uses >
+PatternNodeTypeBuilder *-- SpecialRegisterCaptureGroupTypeDecider : uses >
 
-OperandCaptureGroupProcessor ..> PatternNodeCaptureGroupOperandReference: uses >
+RegisterCaptureGroupProcessor o-- SpecialRegisterCaptureGroupTypeDecider : uses >
+OperandCaptureGroupProcessor o-- PatternNodeCaptureGroupOperandReference: uses >
 
 
 PatternNode -- "1" PatternNode : parent >
@@ -314,7 +333,8 @@ PatternNode *-- "0..*" PatternNode : children >
 PatternNode ..> CaptureGroupIndex : uses >
 
 
-PatternNodeDeref  .> DerefObject : uses >
+PatternNodeDeref  *- DerefObject : uses >
+PatternNodeDeref  *- DerefObjectBuilder : uses >
 
 
 MacroArgsResolver ..> ArgsMappingGenerator : uses >
@@ -325,10 +345,9 @@ SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterRefer
 SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterReferenceStackreg: creates >
 SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterReferenceBasereg: creates >
 
-PatternNodeCaptureGroupOperandCall ..> CaptureGroupIndexOperandCall: uses >
-PatternNodeDerefPropertyCaptureGroupCall ..> CaptureGroupIndexOperandCall: uses >
-PatternNodeDerefPropertyCaptureGroupCall ..> CaptureGroupIndexOperandCall: uses >
+PatternNodeCaptureGroupOperandCall o-- CaptureGroupIndexOperandCall: uses >
+PatternNodeDerefPropertyCaptureGroupCall o-- CaptureGroupIndexOperandCall: uses >
 
 
-PatternNodeCaptureGroupRegisterCall ..> CaptureGroupIndexRegisterCall: uses >
+PatternNodeCaptureGroupRegisterCall o-- CaptureGroupIndexRegisterCall: uses >
 @enduml
