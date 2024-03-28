@@ -9,9 +9,9 @@ abstract class File2Regex {
 class Yaml2Regex {
     +produce_regex(): str
     +get_assembly_style(): DisassStyle
-    -macros_from_terminal_filepath: Optional[List[str]]
     +get_valid_addr_range(): Optional[ValidAddrRange]
     {static} +load_file(file: str): Any
+    -macros_from_terminal_filepath: Optional[List[str]]
     -loaded_file: Any
     -_get_pattern(): PatternTree
     -load_macros_from_args(): List[Dict]
