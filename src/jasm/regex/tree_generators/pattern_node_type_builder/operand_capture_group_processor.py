@@ -5,17 +5,14 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
     PatternNodeCaptureGroupOperandCall,
     PatternNodeCaptureGroupOperandReference,
 )
-from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupInterface
-
-# Used this to import PatternNodeTypeBuilder type hint avoiding circular import
-if TYPE_CHECKING:
-    from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
+from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
 
 
 class OperandCaptureGroupProcessor:
 
-    def __init__(self, pattern_node_type_builder: "PatternNodeTypeBuilder") -> None:
-        self.pattern_node = pattern_node_type_builder
+    def __init__(self, pattern_node_tmp_untyped: PatternNodeTmpUntyped) -> None:
+        self.pattern_node = pattern_node_tmp_untyped
 
     def process(self) -> PatternNode:
         return self._process_capture_group_operand()
@@ -30,26 +27,26 @@ class OperandCaptureGroupProcessor:
     def has_any_ancestor_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
-        assert isinstance(self.pattern_node.pattern_node.name, str)
-        return CaptureGroupInterface().has_any_ancestor_who_is_capture_group_reference(
-            shared_context=self.pattern_node.pattern_node.shared_context,
-            pattern_node_name=self.pattern_node.pattern_node.name,
+        assert isinstance(self.pattern_node.name, str)
+        return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
+            shared_context=self.pattern_node.shared_context,
+            pattern_node_name=self.pattern_node.name,
         )
 
     def _process_operand_call(self) -> PatternNode:
-        return PatternNodeCaptureGroupOperandCall(self.pattern_node.pattern_node)
+        return PatternNodeCaptureGroupOperandCall(self.pattern_node)
 
     def _process_operand_reference(self) -> PatternNode:
         # Return reference
         # Add reference to the list of references
         self.add_new_references_to_global_list()
-        return PatternNodeCaptureGroupOperandReference(self.pattern_node.pattern_node)
+        return PatternNodeCaptureGroupOperandReference(self.pattern_node)
 
     def add_new_references_to_global_list(self) -> None:
         """Add new references to global list"""
 
-        assert isinstance(self.pattern_node.pattern_node.name, str)
-        CaptureGroupInterface().add_new_references_to_global_list(
-            shared_context=self.pattern_node.pattern_node.shared_context,
-            pattern_node_name=self.pattern_node.pattern_node.name,
+        assert isinstance(self.pattern_node.name, str)
+        CaptureGroupHelper().add_new_references_to_global_list(
+            shared_context=self.pattern_node.shared_context,
+            pattern_node_name=self.pattern_node.name,
         )

@@ -6,9 +6,6 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):
 
     def get_regex(self) -> str:
-        return self.get_capture_group_reference_register_genreg()
-
-    def get_capture_group_reference_register_genreg(self) -> str:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
@@ -20,9 +17,6 @@ class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):
 class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):
 
     def get_regex(self) -> str:
-        return self.get_capture_group_reference_register_indreg()
-
-    def get_capture_group_reference_register_indreg(self) -> str:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
@@ -34,9 +28,6 @@ class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):
 class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):
 
     def get_regex(self) -> str:
-        return self.get_capture_group_reference_register_stackreg()
-
-    def get_capture_group_reference_register_stackreg(self) -> str:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
@@ -48,9 +39,6 @@ class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):
 class PatternNodeCaptureGroupRegisterReferenceBasereg(PatternNode):
 
     def get_regex(self) -> str:
-        return self.get_capture_group_reference_register_basereg()
-
-    def get_capture_group_reference_register_basereg(self) -> str:
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner

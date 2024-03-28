@@ -1,5 +1,6 @@
 from typing import Optional
 
+from jasm.global_definitions import PatternNodeName
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_instruction import (
     PatternNodeCaptureGroupInstructionCall,
@@ -21,7 +22,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
     PatternNodeTimes,
 )
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
-from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupInterface
+from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
 from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
     OperandCaptureGroupProcessor,
 )
@@ -30,7 +31,7 @@ from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group
 )
 
 
-class PatternNodeTypeBuilder:
+class PatternNodeTmpUntyped:
     def __init__(self, pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> None:
 
         # Here we are just checking that the node is a PatternNode because it is useful for testing purposes to inject a
@@ -83,7 +84,7 @@ class PatternNodeTypeBuilder:
             if self._is_deref_property_capture_group():
 
                 if self._is_registry_capture_group():
-                    return RegisterCaptureGroupProcessor(self).process()
+                    return RegisterCaptureGroupProcessor(self.pattern_node).process()
 
                 if self.has_any_ancestor_who_is_capture_group_reference():
                     return PatternNodeDerefPropertyCaptureGroupCall(self.pattern_node)
@@ -126,10 +127,10 @@ class PatternNodeTypeBuilder:
     def _process_capture_operand_and_register_capture(self) -> PatternNode:
         if self._is_registry_capture_group():
             # Register capture group
-            return RegisterCaptureGroupProcessor(self).process()
+            return RegisterCaptureGroupProcessor(self.pattern_node).process()
 
         # Operand capture group
-        return OperandCaptureGroupProcessor(self).process()
+        return OperandCaptureGroupProcessor(self.pattern_node).process()
 
     def _is_registry_capture_group(self) -> bool:
         "Check if the current node is a registry capture group"
@@ -193,7 +194,7 @@ class PatternNodeTypeBuilder:
         "Check if any ancestor is a capture group reference"
 
         assert isinstance(self.pattern_node.name, str)
-        return CaptureGroupInterface().has_any_ancestor_who_is_capture_group_reference(
+        return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
             shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
         )
 
@@ -201,7 +202,7 @@ class PatternNodeTypeBuilder:
         "Add new references to global list"
 
         assert isinstance(self.pattern_node.name, str)
-        CaptureGroupInterface().add_new_references_to_global_list(
+        CaptureGroupHelper().add_new_references_to_global_list(
             shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
         )
 
@@ -221,7 +222,7 @@ class PatternNodeTypeBuilder:
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [
-                PatternNodeTypeBuilder(child, parent=new_concrete_instance).build()
+                PatternNodeTmpUntyped(child, parent=new_concrete_instance).build()
                 for child in new_concrete_instance.children
             ]
 

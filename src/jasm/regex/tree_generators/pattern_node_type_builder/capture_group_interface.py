@@ -1,7 +1,7 @@
 from jasm.regex.tree_generators.shared_context import SharedContext
 
 
-class CaptureGroupInterface:
+class CaptureGroupHelper:
     @staticmethod
     def has_any_ancestor_who_is_capture_group_reference(shared_context: SharedContext, pattern_node_name: str) -> bool:
         "Check if any ancestor is a capture group reference"
