@@ -32,14 +32,9 @@ from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group
 
 
 class PatternNodeTypeBuilder:
-    def __init__(self, pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> None:
 
-        # Here we are just checking that the node is a PatternNode because it is useful for testing purposes to inject a
-        # Typed PatternNode
-        assert isinstance(pattern_node, PatternNode)
-
-        self.pattern_node = pattern_node
-        self.pattern_node.parent = parent
+    def __init__(self) -> None:
+        self.pattern_node: PatternNodeTmpUntyped
 
     def _set_type(self) -> PatternNode:
         return self._get_type()
@@ -216,13 +211,20 @@ class PatternNodeTypeBuilder:
 
         return False
 
-    def build(self) -> PatternNode:
+    def build(self, pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> PatternNode:
+
+        self.pattern_node = pattern_node
+        self.pattern_node.parent = parent
+
+        # Here we are just checking that the node is a PatternNode because it is useful for testing purposes to inject a
+        # Typed PatternNode
+        assert isinstance(pattern_node, PatternNode)
 
         new_concrete_instance = self._set_type()
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [
-                PatternNodeTypeBuilder(child, parent=new_concrete_instance).build()
+                PatternNodeTypeBuilder().build(pattern_node=child, parent=new_concrete_instance)
                 for child in new_concrete_instance.children
             ]
 
