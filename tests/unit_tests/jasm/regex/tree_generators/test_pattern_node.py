@@ -2,6 +2,7 @@
 from typing import List
 from unittest.mock import MagicMock
 
+from jasm.regex.tree_generators.capture_manager import CapturesManager
 import pytest
 
 from jasm.global_definitions import ASTERISK_WITH_LIMIT, IGNORE_NAME_PREFIX, IGNORE_NAME_SUFFIX
@@ -52,7 +53,7 @@ def pattern_node_fixture() -> PatternNodeTmpUntyped:
             times=TimesType(_min_times=1, _max_times=1),
             children=[],
             parent=None,
-            shared_context=SharedContext(),
+            shared_context=SharedContext(CapturesManager()),
         )
     )
 
@@ -88,7 +89,7 @@ def test_process_leaf_with_children(pattern_node_fixture: PatternNodeTmpUntyped)
             times=TimesType(_min_times=1, _max_times=1),
             children=None,
             parent=pattern_node_mnemonic,
-            shared_context=SharedContext(),
+            shared_context=SharedContext(CapturesManager()),
         )
     )
     child_pattern_node = PatternNodeOperand(child_pattern_node_base)
