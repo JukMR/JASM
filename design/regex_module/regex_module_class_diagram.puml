@@ -314,7 +314,7 @@ DerefObjectBuilder .> DerefChildNames : uses >
 
 
 _RegexWithOperandsCreator ..> TimesTypeBuilder : uses >
-PatternNodeDeref o.. TimesTypeBuilder : uses >
+PatternNodeDeref o-- TimesTypeBuilder : uses >
 PatternNodeBranchRoot ..> TimesTypeBuilder : uses >
 PatternNodeBranchRoot ..> _BranchProcessor : uses >
 
