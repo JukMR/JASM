@@ -5,10 +5,7 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_register import (
     PatternNodeCaptureGroupRegisterCall,
 )
-from jasm.regex.tree_generators.pattern_node_type_builder.common import (
-    add_new_references_to_global_list,
-    has_any_ancestor_who_is_capture_group_reference,
-)
+from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupInterface
 from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_decider import (
     SpecialRegisterCaptureGroupTypeDecider,
 )
@@ -41,7 +38,7 @@ class RegisterCaptureGroupProcessor:
         assert isinstance(self.pattern_node_type_builder.pattern_node.name, str)
         main_reference_name = remove_access_suffix(pattern_name=self.pattern_node_type_builder.pattern_node.name)
 
-        return has_any_ancestor_who_is_capture_group_reference(
+        return CaptureGroupInterface().has_any_ancestor_who_is_capture_group_reference(
             shared_context=self.pattern_node_type_builder.pattern_node.shared_context,
             pattern_node_name=main_reference_name,
         )
@@ -54,7 +51,7 @@ class RegisterCaptureGroupProcessor:
             pattern_name=self.pattern_node_type_builder.pattern_node.name
         )
 
-        add_new_references_to_global_list(
+        CaptureGroupInterface().add_new_references_to_global_list(
             shared_context=self.pattern_node_type_builder.pattern_node.shared_context,
             pattern_node_name=pattern_node_name_without_suffix,
         )

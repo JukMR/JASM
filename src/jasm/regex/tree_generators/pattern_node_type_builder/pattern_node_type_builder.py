@@ -21,10 +21,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
     PatternNodeTimes,
 )
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
-from jasm.regex.tree_generators.pattern_node_type_builder.common import (
-    add_new_references_to_global_list,
-    has_any_ancestor_who_is_capture_group_reference,
-)
+from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupInterface
 from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
     OperandCaptureGroupProcessor,
 )
@@ -196,7 +193,7 @@ class PatternNodeTypeBuilder:
         "Check if any ancestor is a capture group reference"
 
         assert isinstance(self.pattern_node.name, str)
-        return has_any_ancestor_who_is_capture_group_reference(
+        return CaptureGroupInterface().has_any_ancestor_who_is_capture_group_reference(
             shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
         )
 
@@ -204,7 +201,7 @@ class PatternNodeTypeBuilder:
         "Add new references to global list"
 
         assert isinstance(self.pattern_node.name, str)
-        add_new_references_to_global_list(
+        CaptureGroupInterface().add_new_references_to_global_list(
             shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
         )
 

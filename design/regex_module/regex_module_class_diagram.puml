@@ -282,9 +282,16 @@ class PatternNodeData {
     shared_context: SharedContext
 }
 
+class CaptureGroupInterface {
+    + {static} has_any_ancestor_who_is_capture_group_reference(shared_context: SharedContext, pattern_node_name: str) -> bool:
+    + {static} add_new_references_to_global_list(shared_context: SharedContext, pattern_node_name: str) -> None:
+}
+
+
+
+' Relations
 
 _PatternNodeMnemonicOrOperandProcessor ..> _RegexWithOperandsCreator: uses
-
 
 
 File2Regex <|--  Yaml2Regex
@@ -342,6 +349,10 @@ SpecialRegisterCaptureGroupTypeDecider ..>  PatternNodeCaptureGroupRegisterRefer
 PatternNodeCaptureGroupOperandCall o-- CaptureGroupIndexOperandCall: uses >
 PatternNodeDerefPropertyCaptureGroupCall o-- CaptureGroupIndexOperandCall: uses >
 
-
 PatternNodeCaptureGroupRegisterCall o-- CaptureGroupIndexRegisterCall: uses >
+
+CaptureGroupInterface o-- PatternNodeTypeBuilder: uses >
+CaptureGroupInterface o-- OperandCaptureGroupProcessor: uses >
+CaptureGroupInterface o-- RegisterCaptureGroupProcessor: uses >
+
 @enduml
