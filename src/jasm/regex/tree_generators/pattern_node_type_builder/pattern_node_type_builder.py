@@ -67,9 +67,6 @@ class PatternNodeTypeBuilder:
             if result is not None:
                 return result
 
-        if self.is_father_is_mnemonic():
-            return PatternNodeOperand(self.pattern_node)
-
         if self.any_ancestor_is_mnemonic():
             return PatternNodeOperand(self.pattern_node)
 
@@ -174,12 +171,6 @@ class PatternNodeTypeBuilder:
         if name in ["$or", "$and", "$not", "$and_any_order"]:
             return True
         return False
-
-    def is_father_is_mnemonic(self) -> bool:
-        "Check if the parent is a mnemonic"
-        if not self.pattern_node.parent:
-            return False
-        return isinstance(self.pattern_node.parent, PatternNodeMnemonic)
 
     def is_ancestor_deref(self) -> bool:
         "Check if the parent is a deref"
