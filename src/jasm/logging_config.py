@@ -21,6 +21,7 @@ def _get_date_string_for_filename(log_type: str, date: str) -> str:
 
 class LogLevelFilter(Filter):
     def __init__(self, level) -> None:
+        super().__init__()
         self.level = level
 
     def filter(self, record) -> bool:
@@ -45,7 +46,9 @@ class LazyFileHandler(StreamHandler):
 
     def _open_file(self):
         if self._file is None:
-            self._file = open(self.base_filename, self.mode, encoding=self.encoding)
+            self._file = open(  # pylint: disable=consider-using-with
+                self.base_filename, self.mode, encoding=self.encoding
+            )
         return self._file
 
     def emit(self, record):
