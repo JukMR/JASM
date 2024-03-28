@@ -7,7 +7,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
 )
 from jasm.regex.tree_generators.pattern_node_type_builder.common import (
     add_new_references_to_global_list,
-    has_any_ancester_who_is_capture_group_reference,
+    has_any_ancestor_who_is_capture_group_reference,
 )
 
 # Used this to import PatternNodeTypeBuilder type hint avoiding circular import
@@ -25,16 +25,16 @@ class OperandCaptureGroupProcessor:
 
     def _process_capture_group_operand(self) -> PatternNode:
         # Has this capture group been referenced before?
-        if self.has_any_ancester_who_is_capture_group_reference():
+        if self.has_any_ancestor_who_is_capture_group_reference():
             return self._process_operand_call()
 
         return self._process_operand_reference()
 
-    def has_any_ancester_who_is_capture_group_reference(self) -> bool:
+    def has_any_ancestor_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
         assert isinstance(self.pattern_node.pattern_node.name, str)
-        return has_any_ancester_who_is_capture_group_reference(
+        return has_any_ancestor_who_is_capture_group_reference(
             shared_context=self.pattern_node.pattern_node.shared_context,
             pattern_node_name=self.pattern_node.pattern_node.name,
         )

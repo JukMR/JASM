@@ -7,7 +7,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
 )
 from jasm.regex.tree_generators.pattern_node_type_builder.common import (
     add_new_references_to_global_list,
-    has_any_ancester_who_is_capture_group_reference,
+    has_any_ancestor_who_is_capture_group_reference,
 )
 from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_decider import (
     SpecialRegisterCaptureGroupTypeDecider,
@@ -28,7 +28,7 @@ class RegisterCaptureGroupProcessor:
         return self.process_registry_capture_group()
 
     def process_registry_capture_group(self) -> PatternNode:
-        if self.has_any_ancester_who_is_capture_group_reference_register():
+        if self.has_any_ancestor_who_is_capture_group_reference_register():
             return PatternNodeCaptureGroupRegisterCall(self.pattern_node.pattern_node)
 
         self.add_new_references_to_global_list()
@@ -36,13 +36,13 @@ class RegisterCaptureGroupProcessor:
         # Decide which type of register capture group it is
         return SpecialRegisterCaptureGroupTypeDecider(pattern_node=self.pattern_node).process()
 
-    def has_any_ancester_who_is_capture_group_reference_register(self) -> bool:
+    def has_any_ancestor_who_is_capture_group_reference_register(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
         assert isinstance(self.pattern_node.pattern_node.name, str)
         main_reference_name = remove_access_suffix(pattern_name=self.pattern_node.pattern_node.name)
 
-        return has_any_ancester_who_is_capture_group_reference(
+        return has_any_ancestor_who_is_capture_group_reference(
             shared_context=self.pattern_node.pattern_node.shared_context, pattern_node_name=main_reference_name
         )
 

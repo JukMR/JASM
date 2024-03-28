@@ -215,7 +215,6 @@ package Regex {
             +__init__(parent: Command): None
             +_get_type(): CommandTypes
             +set_type(): Command
-            +is_father_is_mnemonic(): bool
             +any_ancestor_is_mnemonic(): bool
             +build(): None
         }

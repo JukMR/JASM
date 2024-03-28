@@ -23,7 +23,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.common import (
     add_new_references_to_global_list,
-    has_any_ancester_who_is_capture_group_reference,
+    has_any_ancestor_who_is_capture_group_reference,
 )
 from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
     OperandCaptureGroupProcessor,
@@ -88,7 +88,7 @@ class PatternNodeTypeBuilder:
                 if self._is_registry_capture_group():
                     return RegisterCaptureGroupProcessor(self).process()
 
-                if self.has_any_ancester_who_is_capture_group_reference():
+                if self.has_any_ancestor_who_is_capture_group_reference():
                     return PatternNodeDerefPropertyCaptureGroupCall(self.pattern_node)
 
                 self.add_new_references_to_global_list()
@@ -152,7 +152,7 @@ class PatternNodeTypeBuilder:
     def _process_capture_group_mnemonic(self) -> PatternNode:
         # Add this macro to refence list
         # Check it it should be a new reference or a call to an existing one
-        if self.has_any_ancester_who_is_capture_group_reference():
+        if self.has_any_ancestor_who_is_capture_group_reference():
             # Do the call
             return PatternNodeCaptureGroupInstructionCall(self.pattern_node)
 
@@ -192,11 +192,11 @@ class PatternNodeTypeBuilder:
             current_node = current_node.parent
         return False
 
-    def has_any_ancester_who_is_capture_group_reference(self) -> bool:
+    def has_any_ancestor_who_is_capture_group_reference(self) -> bool:
         "Check if any ancestor is a capture group reference"
 
         assert isinstance(self.pattern_node.name, str)
-        return has_any_ancester_who_is_capture_group_reference(
+        return has_any_ancestor_who_is_capture_group_reference(
             shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
         )
 
