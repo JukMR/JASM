@@ -53,7 +53,6 @@ class PatternNodeTypeBuilder {
     + is_ancestor_deref() -> bool
     + has_any_ancestor_who_is_capture_group_reference() -> bool
     + any_ancestor_is_mnemonic() -> bool
-    + build() -> PatternNode
     + add_new_references_to_global_list() -> None
     - _set_type() -> PatternNode
     - _get_type() -> PatternNod:
@@ -293,11 +292,11 @@ class CaptureGroupHelper {
 
 
 File2Regex <|--  Yaml2Regex
-PatternNodeBuilderNoParents -> PatternNode : builds >
+PatternNodeBuilderNoParents .> PatternNode : builds >
 
 
 ' PatternNodeTypeBuilder o- "1" PatternNode : builds >
-PatternNode "1" <- PatternNodeTypeBuilder : builds <
+PatternNode "1" <. PatternNodeTypeBuilder : builds <
 
 PatternNode .> PatternNodeData : uses >
 PatternNodeData -> SharedContext : uses >
@@ -351,4 +350,8 @@ OperandCaptureGroupBuilder -> CaptureGroupHelper :  uses >
 RegisterCaptureGroupBuilder -> CaptureGroupHelper :  uses >
 
 _PatternNodeMnemonicOrOperandBuilder --> _RegexWithOperandsBuilder: uses >
+
+Yaml2Regex --> MacroExpander : uses >
+Yaml2Regex --> PatternNodeBuilderNoParents : uses >
+Yaml2Regex --> PatternNodeTypeBuilder : uses >
 @enduml
