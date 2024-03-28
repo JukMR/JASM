@@ -47,26 +47,24 @@ abstract class PatternNode {
 }
 
 class PatternNodeTypeBuilder {
-    -pattern_node: PatternNodeTmpUntyped
-    -parent: Optional[PatternNode]
-    +set_type(): PatternNode
-    +build(): PatternNode
-    + get_type_when_str(self, name: str) -> Optional[PatternNode]:
-    + is_ancestor_deref() -> bool:
-    + has_any_ancestor_who_is_capture_group_reference() -> bool:
-    + any_ancestor_is_mnemonic() -> bool:
-    + build() -> PatternNode:
-    + add_new_references_to_global_list() -> None:
-    - _set_type() -> PatternNode:
-    - _get_type() -> PatternNode:
-    - _process_capture_group() -> PatternNode:
-    - _is_capture_group_operand_or_special_register_capture() -> bool:
-    - _process_capture_operand_and_register_capture() -> PatternNode:
-    - _is_registry_capture_group() -> bool:
-    - _process_capture_group_mnemonic() -> PatternNode:
-    - _get_type_when_int() -> PatternNode:
-    - _is_node(name: str) -> bool:
-    - _is_deref_property_capture_group() -> bool:
+    + set_type() PatternNode
+    + build(pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> PatternNode
+    + get_type_when_str(self, name: str) -> Optional[PatternNode]
+    + is_ancestor_deref() -> bool
+    + has_any_ancestor_who_is_capture_group_reference() -> bool
+    + any_ancestor_is_mnemonic() -> bool
+    + build() -> PatternNode
+    + add_new_references_to_global_list() -> None
+    - _set_type() -> PatternNode
+    - _get_type() -> PatternNod:
+    - _process_capture_group() -> PatternNode
+    - _is_capture_group_operand_or_special_register_capture() -> bool
+    - _process_capture_operand_and_register_capture() -> PatternNode
+    - _is_registry_capture_group() -> bool
+    - _process_capture_group_mnemonic() -> PatternNode
+    - _get_type_when_int() -> PatternNode
+    - _is_node(name: str) -> bool
+    - _is_deref_property_capture_group() -> bool
 
 }
 

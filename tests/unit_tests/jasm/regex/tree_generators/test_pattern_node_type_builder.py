@@ -61,7 +61,7 @@ def test_get_type(name, expected_type):
     root_node.children = [node]
 
     # Add the command_type to each node
-    root_node = PatternNodeTypeBuilder(root_node, parent=None).build()
+    root_node = PatternNodeTypeBuilder().build(root_node, parent=None)
 
     assert isinstance(root_node.children[0], expected_type)
 
@@ -75,7 +75,7 @@ def test_is_ancestor_deref() -> None:
     parent = pattern_node_base_creator(name="$deref", parent=root_node, children=[child])
 
     root_node.children = [parent]
-    root_node = PatternNodeTypeBuilder(root_node, parent=None).build()
+    root_node = PatternNodeTypeBuilder().build(root_node, parent=None)
 
     parent = root_node.children[0]
     child = parent.children[0]
@@ -87,8 +87,8 @@ def test_is_ancestor_deref() -> None:
 
     child2 = pattern_node_base_creator(name="child2", parent=parent)
 
-    child2_builder = PatternNodeTypeBuilder(child2, parent=parent)
-    child2 = child2_builder.build()
+    child2_builder = PatternNodeTypeBuilder()
+    child2 = child2_builder.build(child2, parent=parent)
 
     assert child2_builder.is_ancestor_deref()
 
@@ -99,15 +99,18 @@ def test_any_ancestor_is_mnemonic(mock_shared_context):
     grandparent = pattern_node_base_creator(name="mnemonic", children=[parent])
     root = pattern_node_base_creator(name="$and", children=[grandparent])
 
-    pattern_node_tree_builder = PatternNodeTypeBuilder(root, parent=None)
-    root = pattern_node_tree_builder.build()
+    # pattern_node_tree_builder = PatternNodeTypeBuilder(root, parent=None)
+    pattern_node_tree_builder = PatternNodeTypeBuilder()
+    root = pattern_node_tree_builder.build(pattern_node=root, parent=None)
     grandparent = root.children[0]
     parent = grandparent.children[0]
     child = parent.children[0]
 
-    child_pattern_type = PatternNodeTypeBuilder(child, parent=parent)
+    # child_pattern_type = PatternNodeTypeBuilder(child, parent=parent)
+    child_pattern_builder = PatternNodeTypeBuilder()
+    child_pattern_type = child_pattern_builder.build(child, parent=parent)
 
-    assert child_pattern_type.any_ancestor_is_mnemonic()
+    assert child_pattern_builder.any_ancestor_is_mnemonic()
 
 
 def test_recursive_build():
@@ -116,7 +119,7 @@ def test_recursive_build():
     grandparent = pattern_node_base_creator(name="mnemonic", children=[parent])
     root = pattern_node_base_creator(name="$and", children=[grandparent])
 
-    root = PatternNodeTypeBuilder(root, parent=None).build()
+    root = PatternNodeTypeBuilder().build(pattern_node=root, parent=None)
     grandparent = root.children[0]
     parent = grandparent.children[0]
     child = parent.children[0]

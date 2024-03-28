@@ -36,7 +36,7 @@ class PatternNodeTypeBuilder:
     def __init__(self) -> None:
         self.pattern_node: PatternNodeTmpUntyped
 
-    def _set_type(self) -> PatternNode:
+    def _build_current_node(self) -> PatternNode:
         return self._get_type()
 
     def _get_type(self) -> PatternNode:
@@ -220,12 +220,11 @@ class PatternNodeTypeBuilder:
         # Typed PatternNode
         assert isinstance(pattern_node, PatternNode)
 
-        new_concrete_instance = self._set_type()
+        new_concrete_instance = self._build_current_node()
 
         if new_concrete_instance.children:
             new_concrete_instance.children = [
-                PatternNodeTypeBuilder().build(pattern_node=child, parent=new_concrete_instance)
-                for child in new_concrete_instance.children
+                self.build(pattern_node=child, parent=new_concrete_instance) for child in new_concrete_instance.children
             ]
 
         return new_concrete_instance
