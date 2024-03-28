@@ -7,9 +7,6 @@ from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder i
 class PatternNodeDerefProperty(PatternNode):
 
     def get_regex(self) -> str:
-        return self.process_deref_child()
-
-    def process_deref_child(self) -> str:
         if self.children:
             assert isinstance(self.children, list)
             assert len(self.children) == 1
@@ -23,9 +20,6 @@ class PatternNodeDerefProperty(PatternNode):
 class PatternNodeDeref(PatternNode):
 
     def get_regex(self) -> str:
-        return self.process_deref()
-
-    def process_deref(self) -> str:
         times_regex = TimesTypeBuilder().get_min_max_regex(times=self.times)
 
         deref_object: DerefObject = DerefObjectBuilder(self).build()
