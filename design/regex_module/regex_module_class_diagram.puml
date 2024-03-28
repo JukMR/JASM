@@ -275,11 +275,11 @@ class _RegexWithOperandsBuilder {
 }
 
 class PatternNodeData {
-    name: PatternNodeName
-    times: TimeType
-    children: Optional[dict | List[PatternNode]]
-    parent: Optional[PatternNode]
-    shared_context: SharedContext
+    + name: PatternNodeName
+    + times: TimeType
+    + children: Optional[dict | List[PatternNode]]
+    + parent: Optional[PatternNode]
+    + shared_context: SharedContext
 }
 
 class CaptureGroupInterface {
