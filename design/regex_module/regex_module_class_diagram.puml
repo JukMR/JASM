@@ -126,9 +126,6 @@ class PatternNodeTimes {
     +get_regex(): str
 }
 
-class CaptureGroupCallRegexBuilder {
-    +build(): str
-}
 
 class PatternNodeDerefProperty {
     +get_regex(): str
@@ -145,19 +142,19 @@ class PatternNodeDerefPropertyCaptureGroupCall {
     +get_regex(): str
 }
 
-class PatternNodeCaptureGroupCallInstruction {
+class PatternNodeCaptureGroupInstructionCall {
     +get_regex(): str
 }
 
-class PatternNodeCaptureGroupReferenceInstruction {
+class PatternNodeCaptureGroupInstructionReference {
     +get_regex(): str
 }
 
-class PatternNodeCaptureGroupCallOperand {
+class PatternNodeCaptureGroupOperandCall {
     +get_regex(): str
 }
 
-class PattterNodeCaptureGroupReferenceOperand {
+class PattterNodeCaptureGroupOperandReference {
     +get_regex(): str
 }
 
@@ -177,10 +174,10 @@ class PatternNodeCaptureGroupRegisterReferenceBasereg {
     +get_regex(): str
 }
 
-PatternNode <|-- PatternNodeCaptureGroupCallInstruction
-PatternNode <|-- PatternNodeCaptureGroupReferenceInstruction
-PatternNode <|-- PatternNodeCaptureGroupCallOperand
-PatternNode <|-- PattterNodeCaptureGroupReferenceOperand
+PatternNode <|-- PatternNodeCaptureGroupInstructionCall
+PatternNode <|-- PatternNodeCaptureGroupInstructionReference
+PatternNode <|-- PatternNodeCaptureGroupOperandCall
+PatternNode <|-- PattterNodeCaptureGroupOperandReference
 PatternNode <|-- PatternNodeCaptureGroupRegisterReferenceGenreg
 PatternNode <|-- PatternNodeCaptureGroupRegisterReferenceIndreg
 PatternNode <|-- PatternNodeCaptureGroupRegisterReferenceStackreg
@@ -218,7 +215,6 @@ PatternNode -- "1" PatternNode : parent >
 PatternNode *-- "0..*" PatternNode : children >
 
 PatternNode ..> CaptureGroupIndex : uses >
-CaptureGroupCallRegexBuilder ..> CaptureGroupIndex : uses >
 
 PatternNode <|-- PatternNodeDerefProperty
 PatternNode <|-- PatternNodeDeref
