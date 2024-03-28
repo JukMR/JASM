@@ -8,7 +8,7 @@ class PatternNodeCaptureGroupOperandCall(PatternNode):
         return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
 
 
-class PattterNodeCaptureGroupOperandReference(PatternNode):
+class PatternNodeCaptureGroupOperandReference(PatternNode):
 
     def get_regex(self) -> str:
         return r"([^,|]+),"

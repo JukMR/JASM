@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_operand import (
     PatternNodeCaptureGroupOperandCall,
-    PattterNodeCaptureGroupOperandReference,
+    PatternNodeCaptureGroupOperandReference,
 )
 from jasm.regex.tree_generators.pattern_node_type_builder.common import (
     add_new_references_to_global_list,
@@ -46,7 +46,7 @@ class OperandCaptureGroupProcessor:
         # Return reference
         # Add reference to the list of references
         self.add_new_references_to_global_list()
-        return PattterNodeCaptureGroupOperandReference(self.pattern_node.pattern_node)
+        return PatternNodeCaptureGroupOperandReference(self.pattern_node.pattern_node)
 
     def add_new_references_to_global_list(self) -> None:
         """Add new references to global list"""

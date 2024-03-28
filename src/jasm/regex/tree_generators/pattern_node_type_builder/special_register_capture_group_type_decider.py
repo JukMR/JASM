@@ -22,10 +22,6 @@ class SpecialRegisterCaptureGroupTypeDecider:
         self.pattern_name: str = pattern_node.pattern_node.name
 
     def process(self) -> PatternNode:
-        return self._decide_and_process_capture_group_reference_register_based_on_type()
-
-    def _decide_and_process_capture_group_reference_register_based_on_type(self) -> PatternNode:
-
         if self.is_genreg():
             return PatternNodeCaptureGroupRegisterReferenceGenreg(self.pattern_node_type_builder.pattern_node)
         if self.is_indreg():

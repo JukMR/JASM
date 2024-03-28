@@ -7,6 +7,15 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 OPTIONAL_HEX_CHAR: Final = "(?:0x)?"
 
 
+class DerefChildNames(Enum):
+    """Represents the child names of a deref object."""
+
+    MAIN_REG = "main_reg"
+    CONSTANT_OFFSET = "constant_offset"
+    REGISTER_MULTIPLIER = "register_multiplier"
+    CONSTANT_MULTIPLIER = "constant_multiplier"
+
+
 class DerefObject:
     """Represents a deref object."""
 
@@ -61,15 +70,6 @@ class DerefObject:
             rf"\[{self.main_reg}\+{self.register_multiplier}\*{self.constant_multiplier}\+{self.constant_offset}\]"
         )
         return deref_child_regex
-
-
-class DerefChildNames(Enum):
-    """Represents the child names of a deref object."""
-
-    MAIN_REG = "main_reg"
-    CONSTANT_OFFSET = "constant_offset"
-    REGISTER_MULTIPLIER = "register_multiplier"
-    CONSTANT_MULTIPLIER = "constant_multiplier"
 
 
 class DerefObjectBuilder:
