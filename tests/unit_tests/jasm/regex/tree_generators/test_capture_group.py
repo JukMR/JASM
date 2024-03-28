@@ -1,5 +1,6 @@
 from unittest.mock import Mock
 
+from jasm.regex.tree_generators.capture_manager import CapturesManager
 from jasm.regex.tree_generators.shared_context import SharedContext
 import pytest
 
@@ -13,11 +14,10 @@ from jasm.regex.tree_generators.capture_group_index import (
 # Setup Mock SharedContext
 @pytest.fixture
 def mock_shared_context() -> SharedContext:
-    shared_context = SharedContext()
-    shared_context.initialize()
-    shared_context.add_capture("1")
-    shared_context.add_capture("2")
-    shared_context.add_capture("3")
+    shared_context = SharedContext(CapturesManager())
+    shared_context.capture_manager.add_capture("1")
+    shared_context.capture_manager.add_capture("2")
+    shared_context.capture_manager.add_capture("3")
     return shared_context
 
 
@@ -40,7 +40,7 @@ def test_initialization_with_valid_node(mock_pattern_node) -> None:
 
 
 def test_initialization_without_capture_group_references(mock_pattern_node) -> None:
-    shared_context = SharedContext()
+    shared_context = SharedContext(CapturesManager())
     mock_pattern_node.shared_context = shared_context
 
     with pytest.raises(ValueError):

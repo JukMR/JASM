@@ -190,7 +190,8 @@ class PatternNodeTypeBuilder:
 
         assert isinstance(self.pattern_node.name, str)
         return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
-            shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
+            capture_manager=self.pattern_node.shared_context.capture_manager,
+            pattern_node_name=self.pattern_node.name,
         )
 
     def add_new_references_to_global_list(self) -> None:
@@ -198,7 +199,7 @@ class PatternNodeTypeBuilder:
 
         assert isinstance(self.pattern_node.name, str)
         CaptureGroupHelper().add_new_references_to_global_list(
-            shared_context=self.pattern_node.shared_context, pattern_node_name=self.pattern_node.name
+            capture_manager=self.pattern_node.shared_context.capture_manager, pattern_node_name=self.pattern_node.name
         )
 
     def _is_deref_property_capture_group(self) -> bool:

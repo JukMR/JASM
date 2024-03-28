@@ -208,15 +208,16 @@ class RegisterCaptureGroupBuilder {
 
 }
 
+class CaptureManager {
+    - _capture_group_references: list[Captures]
+    + capture_group_references: list[Captures]
+    + add_capture(entry: Captures): None
+    + get_capture_index(capture: Captures): int
+    + capture_is_registered(capture: Captures): bool
+
+}
 class SharedContext {
-    - _capture_group_references: list[str]
-    - _initialized: bool = False
-    + initialize(): None
-    + is_initialized(): bool
-    + capture_group_references: list[str]
-    + add_capture(entry: str): None
-    + get_capture_index(capture: str): int
-    + capture_is_registered(capture: str): bool
+    capture_manager: CaptureManager
 }
 
 class SpecialRegisterCaptureGroupTypeBuilder {
@@ -299,7 +300,7 @@ PatternNodeBuilderNoParents .> PatternNode : builds >
 PatternNode "1" <. PatternNodeTypeBuilder : builds <
 
 PatternNode .> PatternNodeData : uses >
-PatternNodeData -> SharedContext : uses >
+PatternNodeData o- SharedContext : has a  >
 
 
 
@@ -354,4 +355,6 @@ _PatternNodeMnemonicOrOperandBuilder --> _RegexWithOperandsBuilder: uses >
 Yaml2Regex --> MacroExpander : uses >
 Yaml2Regex --> PatternNodeBuilderNoParents : uses >
 Yaml2Regex --> PatternNodeTypeBuilder : uses >
+
+SharedContext o-- CaptureManager : has a >
 @enduml

@@ -1,5 +1,3 @@
-from typing import TYPE_CHECKING
-
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.capture_group.capture_group_operand import (
     PatternNodeCaptureGroupOperandCall,
@@ -29,7 +27,7 @@ class OperandCaptureGroupBuilder:
 
         assert isinstance(self.pattern_node.name, str)
         return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
-            shared_context=self.pattern_node.shared_context,
+            capture_manager=self.pattern_node.shared_context.capture_manager,
             pattern_node_name=self.pattern_node.name,
         )
 
@@ -47,6 +45,6 @@ class OperandCaptureGroupBuilder:
 
         assert isinstance(self.pattern_node.name, str)
         CaptureGroupHelper().add_new_references_to_global_list(
-            shared_context=self.pattern_node.shared_context,
+            capture_manager=self.pattern_node.shared_context.capture_manager,
             pattern_node_name=self.pattern_node.name,
         )

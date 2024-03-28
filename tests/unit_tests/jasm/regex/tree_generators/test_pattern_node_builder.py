@@ -1,3 +1,4 @@
+from jasm.regex.tree_generators.capture_manager import CapturesManager
 import pytest
 
 from jasm.global_definitions import TimesType
@@ -8,8 +9,7 @@ from jasm.regex.tree_generators.shared_context import SharedContext
 
 @pytest.fixture
 def mock_shared_context() -> SharedContext:
-    shared_context = SharedContext()
-    shared_context.initialize()
+    shared_context = SharedContext(CapturesManager())
     return shared_context
 
 

@@ -1,5 +1,6 @@
 from typing import Optional
 
+from jasm.regex.tree_generators.capture_manager import Capture, CapturesManager
 import pytest
 
 from jasm.global_definitions import TimesType, remove_access_suffix
@@ -16,8 +17,7 @@ from jasm.regex.tree_generators.shared_context import SharedContext
 
 @pytest.fixture
 def mock_shared_context() -> SharedContext:
-    shared_context = SharedContext()
-    shared_context.initialize()
+    shared_context = SharedContext(CapturesManager())
     return shared_context
 
 
@@ -26,7 +26,7 @@ def pattern_node_base_creator(
     times: TimesType = TimesType(_min_times=1, _max_times=1),
     children: Optional[list[PatternNode]] = None,
     parent: Optional[PatternNode] = None,
-    shared_context: SharedContext = SharedContext(),
+    shared_context: SharedContext = SharedContext(CapturesManager()),
 ) -> PatternNode:
 
     pattern_node_data = PatternNodeData(

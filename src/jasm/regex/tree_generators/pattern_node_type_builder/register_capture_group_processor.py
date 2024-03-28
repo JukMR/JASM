@@ -34,7 +34,7 @@ class RegisterCaptureGroupBuilder:
         main_reference_name = remove_access_suffix(pattern_name=self.pattern_node_tmp_untyped.name)
 
         return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
-            shared_context=self.pattern_node_tmp_untyped.shared_context,
+            capture_manager=self.pattern_node_tmp_untyped.shared_context.capture_manager,
             pattern_node_name=main_reference_name,
         )
 
@@ -45,6 +45,6 @@ class RegisterCaptureGroupBuilder:
         pattern_node_name_without_suffix = remove_access_suffix(pattern_name=self.pattern_node_tmp_untyped.name)
 
         CaptureGroupHelper().add_new_references_to_global_list(
-            shared_context=self.pattern_node_tmp_untyped.shared_context,
+            capture_manager=self.pattern_node_tmp_untyped.shared_context.capture_manager,
             pattern_node_name=pattern_node_name_without_suffix,
         )
