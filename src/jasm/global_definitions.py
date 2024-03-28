@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
+
 # set this limit to asterisk to reduce backtracking regex explosion
 # WARNING: sometimes setting this value too low would affect negative
 # lookaheads failing to match the existing pattern
@@ -33,7 +34,10 @@ IncludeExcludeListType: TypeAlias = Optional[List[str]]
 OperandListType: TypeAlias = Optional[List[Any]]
 OperandType: TypeAlias = Optional[Dict[str, Any]]
 
-dict_node: TypeAlias = Dict[str, Any] | str | int
+DictNode: TypeAlias = Dict[str, Any] | str | int
+
+
+PatternNodeName: TypeAlias = str | int
 
 
 # Move this to a global config class
@@ -85,39 +89,6 @@ class MatchingReturnMode(Enum):
     all_instructions_string = auto()  # this enum is used for testing only
 
 
-class CaptureGroupMode(Enum):
-    """Enum for the capture group mode."""
-
-    # TODO: review this in the patterNode Refactor
-    instruction = auto()
-    operand = auto()
-    register = auto()
-
-
-class PatternNodeTypes(Enum):
-    """Enum for the pattern node types. This is used for setting the types of each node in the PatternNode Tree."""
-
-    node = auto()
-    operand = auto()
-    mnemonic = auto()
-    deref = auto()
-    deref_property = auto()
-    deref_property_capture_group_reference = auto()
-    deref_property_capture_group_call = auto()
-    times = auto()
-    capture_group_reference = auto()
-    capture_group_call = auto()
-    capture_group_reference_operand = auto()
-    capture_group_call_operand = auto()
-    capture_group_reference_register_genreg = auto()
-    capture_group_reference_register_indreg = auto()
-    capture_group_reference_register_stackreg = auto()
-    capture_group_reference_register_basereg = auto()
-
-    capture_group_call_register = auto()
-    root = auto()
-
-
 class HexType:
     """Class for hex type."""
 
@@ -153,11 +124,33 @@ class ValidAddrRange:
 
 
 @dataclass
-class TimeType:
+class TimesType:
     """Dataclass for time type."""
 
-    min_times: int
-    max_times: int
+    _min_times: int
+    _max_times: int
+
+    @property
+    def min_times(self) -> int:
+        return self._min_times
+
+    @min_times.setter
+    def min_times(self, value: int) -> None:
+        if value <= self._max_times:
+            self._min_times = value
+        else:
+            raise ValueError("min_times must be less than or equal to max_times")
+
+    @property
+    def max_times(self) -> int:
+        return self._max_times
+
+    @max_times.setter
+    def max_times(self, value: int) -> None:
+        if value >= self._min_times:
+            self._max_times = value
+        else:
+            raise ValueError("max_times must be greater than or equal to min_times")
 
 
 @dataclass

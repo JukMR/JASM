@@ -8,14 +8,15 @@ from jasm.global_definitions import DisassStyle, ValidAddrRange
 from jasm.logging_config import logger
 from jasm.regex.file2regex import File2Regex
 from jasm.regex.macro_expander.macro_expander import MacroExpander, PatternTree
-from jasm.regex.tree_generators.pattern_node import PatternNode
+from jasm.regex.tree_generators.capture_manager import CapturesManager
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
-from jasm.regex.tree_generators.pattern_node_parents_builder import PatternNodeParentsBuilder
-from jasm.regex.tree_generators.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_builder import PatternNodeTypeBuilder
+from jasm.regex.tree_generators.shared_context import SharedContext
 
 
 class Yaml2Regex(File2Regex):
-    "File2Regex class implementation with Yaml"
+    """File2Regex class implementation with Yaml"""
 
     def __init__(self, pattern_pathstr: str, macros_from_terminal: Optional[List[str]] = None) -> None:
         self.loaded_file = self.load_file(file=pattern_pathstr)
@@ -23,19 +24,19 @@ class Yaml2Regex(File2Regex):
 
     @staticmethod
     def load_file(file: str) -> Any:
-        "Read a yaml file and return the parsed content"
+        """Read a yaml file and return the parsed content"""
         with open(file=file, mode="r", encoding="utf-8") as file_descriptor:
             return yaml.load(stream=file_descriptor.read(), Loader=yaml.Loader)
 
     def produce_regex(self) -> str:
-        "Handle all patterns and returns the final regex string"
+        """Handle all patterns and returns the final regex string"""
 
         patterns = self._get_pattern()
 
         rule_tree = self._generate_rule_tree(patterns=patterns)
 
         # Process the rule tree and generate the regex
-        output_regex = rule_tree.get_regex(rule_tree)
+        output_regex = rule_tree.get_regex()
 
         # Log regex results
         logger.debug("The output regex is:\n%s\n", output_regex)
@@ -43,7 +44,7 @@ class Yaml2Regex(File2Regex):
         return output_regex
 
     def _get_pattern(self) -> PatternTree:
-        # Load pattern
+        """Load pattern from file"""
         patterns = self.loaded_file.get("pattern")
 
         pattern_with_top_node = {"$and": patterns}
@@ -66,7 +67,7 @@ class Yaml2Regex(File2Regex):
         return pattern_with_top_node
 
     def load_macros_from_args(self) -> List[Dict]:
-        "Load macros from a list of files"
+        """Load macros from a list of files"""
 
         assert self.macros_from_terminal_filepath, "No macros from args provided"
 
@@ -78,21 +79,29 @@ class Yaml2Regex(File2Regex):
 
         return processed_macros
 
+    def context_initializer(self) -> SharedContext:
+        """Initialize shared_context with empty capture group references"""
+
+        shared_context = SharedContext(capture_manager=CapturesManager())
+        return shared_context
+
     def _generate_rule_tree(self, patterns: PatternTree) -> PatternNode:
-        "Generate the rule tree from the patterns"
-        # Generate the rule tree with no parents and type from root parent node downwards
-        rule_tree: PatternNode = PatternNodeBuilderNoParents(command_dict=patterns).build()
+        """Generate the rule tree from the patterns"""
 
-        # Transform parents of all nodes to commands
-        PatternNodeParentsBuilder(rule_tree).build()
+        shared_context = self.context_initializer()
 
-        # Add the command_type to each node
-        PatternNodeTypeBuilder(rule_tree).build()
+        # Generate the rule tree with no parents and all nodes untyped (PatternNodeTmpUntyped)
+        rule_tree: PatternNode = PatternNodeBuilderNoParents(
+            command_dict=patterns, shared_context=shared_context
+        ).build()
 
-        return rule_tree
+        # Transform each node in the rule tree to a typed node
+        rule_tree_typed: PatternNode = PatternNodeTypeBuilder().build(pattern_node=rule_tree, parent=None)
+
+        return rule_tree_typed
 
     def get_assembly_style(self) -> DisassStyle:
-        "Get the file style from the pattern file or return the default att"
+        """Get the file style from the pattern file or return the default att"""
         config = self.loaded_file.get("config")
         if config:
             style = config.get("style")
@@ -107,7 +116,7 @@ class Yaml2Regex(File2Regex):
         return DisassStyle.att
 
     def get_valid_addr_range(self) -> Optional[ValidAddrRange]:
-        "Get the valid address range from the pattern file"
+        """Get the valid address range from the pattern file"""
         config = self.loaded_file.get("config")
         if config:
             valid_addr = config.get("valid_addr_range")
@@ -115,5 +124,5 @@ class Yaml2Regex(File2Regex):
             return None
 
         if valid_addr:
-            return ValidAddrRange(min_addr=valid_addr.get("min"), max_addr=(valid_addr.get("max")))
+            return ValidAddrRange(min_addr=valid_addr.get("min"), max_addr=valid_addr.get("max"))
         return None

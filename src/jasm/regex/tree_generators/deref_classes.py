@@ -1,8 +1,19 @@
+from enum import Enum
 from typing import Final, Optional
-from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
 
+from jasm.global_definitions import OPTIONAL_PERCENTAGE_CHAR
+from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 OPTIONAL_HEX_CHAR: Final = "(?:0x)?"
+
+
+class DerefChildNames(Enum):
+    """Represents the child names of a deref object."""
+
+    MAIN_REG = "main_reg"
+    CONSTANT_OFFSET = "constant_offset"
+    REGISTER_MULTIPLIER = "register_multiplier"
+    CONSTANT_MULTIPLIER = "constant_multiplier"
 
 
 class DerefObject:
@@ -64,26 +75,25 @@ class DerefObject:
 class DerefObjectBuilder:
     """Builds a deref object from the given command dict."""
 
-    def __init__(self, parent: "PatternNode") -> None:
+    def __init__(self, parent: PatternNode) -> None:
         self.parent = parent
 
-    def build(self):
-        main_reg = self._child_getter(parent=self.parent, child_name="main_reg")
+    def build(self) -> DerefObject:
+        """Builds a deref object from the given command dict."""
+        main_reg = self._child_getter(parent=self.parent, child_name=DerefChildNames.MAIN_REG)
 
         if not main_reg:
             raise ValueError("main_reg is required for deref object")
 
-        constant_offset = self._child_getter(parent=self.parent, child_name="constant_offset")
-        register_multiplier = self._child_getter(parent=self.parent, child_name="register_multiplier")
-        constant_multiplier = self._child_getter(parent=self.parent, child_name="constant_multiplier")
+        constant_offset = self._child_getter(parent=self.parent, child_name=DerefChildNames.CONSTANT_OFFSET)
+        register_multiplier = self._child_getter(parent=self.parent, child_name=DerefChildNames.REGISTER_MULTIPLIER)
+        constant_multiplier = self._child_getter(parent=self.parent, child_name=DerefChildNames.CONSTANT_MULTIPLIER)
 
-        # Transform PatterNode into regexs
-
-        get_regex_function = self.parent.get_regex
-        main_reg_regex = get_regex_function(main_reg)
-        constant_offset_regex = get_regex_function(constant_offset) if constant_offset else None
-        register_multiplier_regex = get_regex_function(register_multiplier) if register_multiplier else None
-        constant_multiplier_regex = get_regex_function(constant_multiplier) if constant_multiplier else None
+        # Get regex for each child
+        main_reg_regex = main_reg.get_regex()
+        constant_offset_regex = constant_offset.get_regex() if constant_offset else None
+        register_multiplier_regex = register_multiplier.get_regex() if register_multiplier else None
+        constant_multiplier_regex = constant_multiplier.get_regex() if constant_multiplier else None
 
         return DerefObject(
             main_reg=main_reg_regex,
@@ -93,9 +103,12 @@ class DerefObjectBuilder:
         )
 
     @staticmethod
-    def _child_getter(parent: "PatternNode", child_name: str) -> Optional["PatternNode"]:
+    def _child_getter(parent: PatternNode, child_name: DerefChildNames) -> Optional[PatternNode]:
         """Get the child of the given parent."""
+        if not parent.children:
+            return None
+
         for child in parent.children:
-            if child.name == child_name:
+            if child.name == child_name.value:
                 return child
         return None

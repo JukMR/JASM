@@ -1,9 +1,10 @@
 from typing import List
+
+import pytest
+from conftest import load_test_configs
+
 from jasm.global_definitions import InputFileType, MatchConfig, MatchingReturnMode, MatchingSearchMode
 from jasm.match import MasterOfPuppets
-
-from conftest import load_test_configs
-import pytest
 
 
 @pytest.mark.parametrize(

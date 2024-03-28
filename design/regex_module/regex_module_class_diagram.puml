@@ -1,0 +1,360 @@
+@startuml regex_module_class_diagram
+
+abstract class File2Regex {
+    {static} +load_file(file): Any
+    +produce_regex()
+    +get_assembly_style(): DisassStyle
+}
+
+class Yaml2Regex {
+    +produce_regex(): str
+    +get_assembly_style(): DisassStyle
+    +get_valid_addr_range(): Optional[ValidAddrRange]
+    {static} +load_file(file: str): Any
+    -macros_from_terminal_filepath: Optional[List[str]]
+    -loaded_file: Any
+    -_get_pattern(): PatternTree
+    -load_macros_from_args(): List[Dict]
+    -_generate_rule_tree(patterns: PatternTree): PatternNode
+}
+
+class MacroExpander {
+    +resolve_all_macros(macros: List[Dict], tree: PatternTree): PatternTree
+    -_resolve_macro(macro: MacroTree, tree: PatternTree): PatternTree
+    -_macro_has_args(macro: MacroTree): bool
+    -_apply_macro_recursively(macro: MacroTree, tree: PatternTree): PatternTree
+    -_process_str_tree(tree: str, macro_name: str, macro: MacroTree): PatternTree
+    -_process_dict_tree(tree: Dict, macro_name: str, macro: MacroTree): PatternTree
+    -_apply_macro_to_tree(node: PatternTree, macro: MacroTree): PatternTree
+    -_apply_macro_to_tree_substring(node: str, macro: MacroTree): str
+}
+
+class PatternNodeBuilderNoParents {
+    +build(): PatternNodeTmpUntyped
+    -command: DictNode
+    -name: str | int
+    -times: TimeType
+    -children: Optional[dict | List[PatternNode]]
+    -_get_name(command_dict: DictNode): str
+    -_get_times(command_dict: DictNode): TimeType
+    -_get_children(name: str, command: DictNode): List[PatternNode]
+    {static} - _get_simple_child(name: str): List[PatternNodeTmpUntyped]
+}
+
+abstract class PatternNode {
+    pattern_node_data: PatternNodeData
+    {abstract} get_regex(): str
+}
+
+class PatternNodeTypeBuilder {
+    + set_type() PatternNode
+    + build(pattern_node: PatternNodeTmpUntyped, parent: Optional[PatternNode]) -> PatternNode
+    + get_type_when_str(self, name: str) -> Optional[PatternNode]
+    + is_ancestor_deref() -> bool
+    + has_any_ancestor_who_is_capture_group_reference() -> bool
+    + any_ancestor_is_mnemonic() -> bool
+    + add_new_references_to_global_list() -> None
+    - _set_type() -> PatternNode
+    - _get_type() -> PatternNod:
+    - _process_capture_group() -> PatternNode
+    - _is_capture_group_operand_or_special_register_capture() -> bool
+    - _process_capture_operand_and_register_capture() -> PatternNode
+    - _is_registry_capture_group() -> bool
+    - _process_capture_group_mnemonic() -> PatternNode
+    - _get_type_when_int() -> PatternNode
+    - _is_node(name: str) -> bool
+    - _is_deref_property_capture_group() -> bool
+
+}
+
+class ArgsMappingGenerator {
+    +get_args_mapping_dict(tree: PatternTree, args: List[str]): Dict
+    -_get_args_mapping(tree: PatternTree, current_arg: str): Generator[Dict, None, None]
+    -_yield_key_value_pairs(data: Union[Dict[Any, Any], List[Any]]): Generator[Tuple[Any, Any], None, None]
+}
+
+class MacroArgsResolver {
+    +resolve(macro: MacroTree, tree: PatternTree): MacroTree
+    -_get_macro_mapping_arg_dict(macro: MacroTree, tree: PatternTree): MappingDict
+    -_evaluate_args_in_macro(macro: MacroTree, mapping_dict: MappingDict): MacroTree
+    -_iter_items_with_path(elems: Union[str, List, Dict], path: Tuple = ()): Generator[Tuple[Tuple, Any], None, None]
+    -_replace_item_in_structure(struct: Union[Dict, List], path: Tuple, new_value: Any): None
+}
+
+class CaptureGroupIndex {
+    +index: int
+    {abstract} to_regex(): str
+}
+
+class CaptureGroupIndexInstructionCall extends CaptureGroupIndex {
+    +to_regex(): str
+}
+
+class CaptureGroupIndexOperandCall extends CaptureGroupIndex {
+    +to_regex(): str
+}
+
+class DerefObject {
+    +get_regex(): str
+}
+
+class DerefObjectBuilder {
+    +build(): DerefObject
+}
+
+class PatternNodeTmpUntyped  extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeMnemonic  extends _PatternNodeMnemonicOrOperandBuilder {
+    +get_regex(): str
+}
+
+class PatternNodeOperand  extends _PatternNodeMnemonicOrOperandBuilder {
+    +get_regex(): str
+}
+
+class PatternNodeBranchRoot  extends PatternNode {
+    +get_regex() -> str
+    + process_branch() -> str
+    + process_children() -> List[str]
+}
+
+class PatternNodeRoot  extends PatternNodeBranchRoot {
+}
+
+class PatternNodeBranch extends PatternNodeBranchRoot {
+}
+
+class PatternNodeNode  extends PatternNodeBranchRoot {
+}
+
+class PatternNodeTimes  extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeDerefProperty  extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeDeref  extends PatternNode {
+    + get_regex(): str
+    + process_deref(): -> str:
+
+}
+
+class PatternNodeDerefPropertyCaptureGroupReference  extends PatternNode {
+    +get_regex(): str
+}
+class PatternNodeDerefPropertyCaptureGroupCall  extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupInstructionCall extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupInstructionReference extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupOperandCall extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupOperandReference extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceGenreg  extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceIndreg  extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceStackreg  extends PatternNode {
+    +get_regex(): str
+}
+
+class PatternNodeCaptureGroupRegisterReferenceBasereg  extends PatternNode {
+    +get_regex(): str
+}
+
+class OperandCaptureGroupBuilder {
+    + pattern_node_tmp_untyped : PatternNodeTmpUntyped
+    + process() -> PatternNode:
+    + has_any_ancestor_who_is_capture_group_reference() -> bool:
+    + add_new_references_to_global_list() -> None:
+    - _process_capture_group_operand() -> PatternNode:
+    - _process_operand_call() -> PatternNode:
+    - _process_operand_reference() -> PatternNode:
+}
+
+class PatternNodeCaptureGroupRegisterCall  extends PatternNode {
+    +get_regex(): str
+}
+
+
+
+class RegisterCaptureGroupBuilder {
+    + pattern_node_tmp_untyped: PatternNodeTmpUntyped
+    + process() -> PatternNode:
+    - _process_registry_capture_group() -> PatternNode:
+    - _has_any_ancestor_who_is_capture_group_reference_register() -> bool:
+    - _add_new_references_to_global_list() -> None:
+
+
+}
+
+class CaptureManager {
+    - _capture_group_references: list[Captures]
+    + capture_group_references: list[Captures]
+    + add_capture(entry: Captures): None
+    + get_capture_index(capture: Captures): int
+    + capture_is_registered(capture: Captures): bool
+
+}
+class SharedContext {
+    capture_manager: CaptureManager
+}
+
+class SpecialRegisterCaptureGroupTypeBuilder {
+
+    + pattern_node_tmp_untyped: PatternNodeTmpUntyped
+    + pattern_name: str
+    +process(): PatternNode
+    +is_genreg(): bool
+    +is_indreg(): bool
+    +is_stackreg(): bool
+    +is_basereg(): bool
+}
+
+class TimesTypeBuilder {
+    + get_min_max_regex(times: TimesType): str
+}
+
+enum DerefChildNames {
+    MAIN_REG
+    CONSTANT_OFFSET
+    REGISTER_MULTIPLIER
+    CONSTANT_MULTIPLIER
+
+}
+
+class CaptureGroupIndexRegisterCall extends CaptureGroupIndex {
+    + to_regex() -> str:
+}
+
+class _BranchBuilder {
+    + process_pattern_node(parent: PatternNode, child_regexes: List[str], times_regex: Optional[str])
+    + {static} process_and(child_regexes: List[str], times_regex: Optional[str]) -> str:
+    + process_or(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
+    + {static} process_not(child_regexes: List[str], times_regex: Optional[str]) -> str:
+    + process_and_any_order(self, child_regexes: List[str], times_regex: Optional[str]) -> str:
+    + {static} generate_any_order_permutation(child_regexes: List[str]) -> List[List[str]]:
+    + {static} join_or_instructions(inst_list: List[str]) -> str:
+
+}
+
+class _PatternNodeMnemonicOrOperandBuilder extends PatternNode {
+    + get_regex() -> str:
+    + process_leaf() -> str:
+    - _sanitize_operand_name(name: PatternNodeName) -> PatternNodeName:
+}
+
+class _RegexWithOperandsBuilder {
+    + generate_regex() -> str:
+    + get_operand_regex() -> Optional[str]:
+    + get_min_max_regex() -> Optional[str]:
+    - _form_regex_with_time() -> str:
+    - _form_regex_without_time() -> str:
+
+
+}
+
+class PatternNodeData {
+    + name: PatternNodeName
+    + times: TimeType
+    + children: Optional[dict | List[PatternNode]]
+    + parent: Optional[PatternNode]
+    + shared_context: SharedContext
+}
+
+class CaptureGroupHelper {
+    + {static} has_any_ancestor_who_is_capture_group_reference(shared_context: SharedContext, pattern_node_name: str) -> bool:
+    + {static} add_new_references_to_global_list(shared_context: SharedContext, pattern_node_name: str) -> None:
+}
+
+
+
+' Relations
+
+
+File2Regex <|--  Yaml2Regex
+PatternNodeBuilderNoParents .> PatternNode : builds >
+
+
+' PatternNodeTypeBuilder o- "1" PatternNode : builds >
+PatternNode "1" <. PatternNodeTypeBuilder : builds <
+
+PatternNode .> PatternNodeData : uses >
+PatternNodeData o- SharedContext : has a  >
+
+
+
+DerefObjectBuilder ..> DerefObject : builds >
+DerefObjectBuilder --> PatternNode : uses >
+DerefObjectBuilder -> DerefChildNames : uses >
+
+
+
+_RegexWithOperandsBuilder --> TimesTypeBuilder : uses >
+PatternNodeDeref --> TimesTypeBuilder : uses >
+PatternNodeBranchRoot --> TimesTypeBuilder : uses >
+PatternNodeBranchRoot --> _BranchBuilder : uses >
+
+
+PatternNodeTypeBuilder --> OperandCaptureGroupBuilder : uses >
+PatternNodeTypeBuilder --> RegisterCaptureGroupBuilder : uses >
+
+RegisterCaptureGroupBuilder --> SpecialRegisterCaptureGroupTypeBuilder : uses >
+OperandCaptureGroupBuilder ..> PatternNodeCaptureGroupOperandReference: builds >
+
+
+PatternNode -- "1" PatternNode : parent >
+PatternNode *-- "0..*" PatternNode : children >
+
+PatternNode ..> CaptureGroupIndex : uses >
+
+
+PatternNodeDeref  -> DerefObject : uses >
+PatternNodeDeref  -> DerefObjectBuilder : uses >
+
+
+MacroArgsResolver --> ArgsMappingGenerator : uses >
+MacroExpander --> MacroArgsResolver : uses >
+
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceGenreg: builds >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceIndreg: builds >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceStackreg: builds >
+SpecialRegisterCaptureGroupTypeBuilder ..>  PatternNodeCaptureGroupRegisterReferenceBasereg: builds >
+
+PatternNodeCaptureGroupOperandCall --> CaptureGroupIndexOperandCall: uses >
+PatternNodeDerefPropertyCaptureGroupCall --> CaptureGroupIndexOperandCall: uses >
+
+PatternNodeCaptureGroupRegisterCall --> CaptureGroupIndexRegisterCall: uses >
+
+PatternNodeTypeBuilder -> CaptureGroupHelper :  uses >
+OperandCaptureGroupBuilder -> CaptureGroupHelper :  uses >
+RegisterCaptureGroupBuilder -> CaptureGroupHelper :  uses >
+
+_PatternNodeMnemonicOrOperandBuilder --> _RegexWithOperandsBuilder: uses >
+
+Yaml2Regex --> MacroExpander : uses >
+Yaml2Regex --> PatternNodeBuilderNoParents : uses >
+Yaml2Regex --> PatternNodeTypeBuilder : uses >
+
+SharedContext *-- CaptureManager : has a >
+@enduml
