@@ -11,8 +11,10 @@ PathTuple: TypeAlias = Tuple[Any, ...]
 
 
 class MacroArgsResolver:
+    """This class is responsible for replacing the macro args with the evaluated values from the pattern."""
 
     def resolve(self, macro: MacroTree, tree: PatternTree) -> MacroTree:
+        """This function will replace the macro getting the args evaluation from the pattern."""
         mapping_dict = self._get_macro_mapping_arg_dict(macro=macro, tree=tree)
 
         macro = self._evaluate_args_in_macro(macro=macro, mapping_dict=mapping_dict)
