@@ -1,9 +1,13 @@
-from typing import Any, List, Optional
+from typing import TypeAlias
+from typing import Any, Dict, List, Optional
 
 from jasm.global_definitions import DictNode, TimesType
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNodeData
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.shared_context import SharedContext
+
+
+CommandDict: TypeAlias = dict[str, list[str] | dict[str, str | int]]
 
 
 class PatternNodeBuilderNoParents:
@@ -43,10 +47,11 @@ class PatternNodeBuilderNoParents:
         name_key: str = list(command_dict.keys())[0]
         return name_key
 
-    def _get_times(self, command_dict: DictNode) -> TimesType:
+    @staticmethod
+    def _get_times(command_dict: DictNode) -> TimesType:
         assert isinstance(command_dict, dict)
 
-        def _get_time_object(command_dict: dict[str, list[str]]) -> Optional[dict[Any, Any] | int]:
+        def _get_time_object(command_dict: Dict[str, Dict[str, int]]) -> Optional[dict[Any, Any] | int]:
             command_name = list(command_dict.keys())[0]
 
             # Command has no operands, only a time
@@ -55,9 +60,15 @@ class PatternNodeBuilderNoParents:
 
             # Command has operands and a time
             if "times" in command_dict[command_name]:
-                times_result: int | dict[str, int] = command_dict[command_name].get("times")
+                assert isinstance(command_dict[command_name], dict)
 
-                assert isinstance(times_result, (int, dict))
+                command_dict_name: dict[str, int] = command_dict[command_name]
+
+                times = command_dict_name.get("times")
+                assert isinstance(times, (int, dict))
+
+                times_result: int | dict[str, int] = times
+
                 return times_result
             return None
 
