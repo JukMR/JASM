@@ -50,7 +50,7 @@ class Yaml2Regex(File2Regex):
         pattern_with_top_node = {"$and": patterns}
 
         # Check if there are any macros setted
-        macros: list[str] = self.loaded_file.get("macros", [])
+        macros: list[dict[str, str]] = self.loaded_file.get("macros", [])
 
         assert isinstance(macros, list), "Invalid macros in the pattern file"
 
@@ -59,7 +59,7 @@ class Yaml2Regex(File2Regex):
 
             if self.macros_from_terminal_filepath:
                 # Add macros from args to the macros from the file
-                processed_macros = self.load_macros_from_args()
+                processed_macros: list[dict[str, str]] = self.load_macros_from_args()
                 macros = processed_macros + macros
 
             pattern_with_top_node = MacroExpander().resolve_all_macros(macros=macros, tree=pattern_with_top_node)

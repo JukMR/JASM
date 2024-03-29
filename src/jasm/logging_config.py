@@ -1,7 +1,7 @@
 from datetime import datetime
 from logging import DEBUG, ERROR, INFO, WARNING, Filter, Formatter, LogRecord, StreamHandler, getLevelName, getLogger
 from pathlib import Path
-from typing import IO, Any
+from typing import Any, Optional
 
 
 def _create_log_folder_if_not_exists(folder_name: str) -> Path:
@@ -44,10 +44,10 @@ class LazyFileHandler(StreamHandler):
         self.base_filename = filename
         self.mode = mode
         self.encoding = encoding
-        self._file = None
+        self._file: Optional[Any] = None
         StreamHandler.__init__(self)
 
-    def _open_file(self) -> IO[Any]:
+    def _open_file(self) -> Optional[Any]:
         if self._file is None:
             self._file = open(  # pylint: disable=consider-using-with
                 self.base_filename, self.mode, encoding=self.encoding
