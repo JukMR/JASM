@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generator, List, Tuple, TypeAlias, Union
+from typing import Any, Dict, Generator, List, Tuple, TypeAlias
 
 from jasm.regex.macro_expander.args_mapping_generator import ArgsMappingGenerator
 
@@ -53,7 +53,7 @@ class MacroArgsResolver:
         return macro
 
     def _iter_items_with_path(
-        self, elems: Union[str, List[Any], Dict[Any, Any]], path: PathTuple = ()
+        self, elems: str | List[Any] | Dict[Any, Any], path: PathTuple = ()
     ) -> Generator[Tuple[Tuple[Any, Any], Any], None, None]:
 
         match elems:
@@ -68,7 +68,7 @@ class MacroArgsResolver:
                     yield from self._iter_items_with_path(v, path + (k,))
 
     def _replace_item_in_structure(
-        self, struct: Union[Dict[Any, Any], List[str | dict[str, Any]]], path: PathTuple, new_value: Any
+        self, struct: Dict[Any, Any] | List[str | Dict[str, Any]] | str, path: PathTuple, new_value: Any
     ) -> None:
         """Navigate struct using path and replace the target item with new_value."""
         for step in path[:-1]:
@@ -76,4 +76,5 @@ class MacroArgsResolver:
         if isinstance(struct, dict):
             struct[path[-1]] = new_value
         else:  # For lists, path[-1] is an index.
+            assert not isinstance(struct, str)
             struct[int(path[-1])] = new_value
