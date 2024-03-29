@@ -40,7 +40,8 @@ class PatternNodeBuilderNoParents:
     @staticmethod
     def _get_name(command_dict: DictNode) -> str:
         assert isinstance(command_dict, dict)
-        return list(command_dict.keys())[0]
+        name_key: str = list(command_dict.keys())[0]
+        return name_key
 
     def _get_times(self, command_dict: DictNode) -> TimesType:
         assert isinstance(command_dict, dict)
@@ -54,7 +55,10 @@ class PatternNodeBuilderNoParents:
 
             # Command has operands and a time
             if "times" in command_dict[command_name]:
-                return command_dict[command_name].get("times")
+                times_result: int | dict[str, int] = command_dict[command_name].get("times")
+
+                assert isinstance(times_result, (int, dict))
+                return times_result
             return None
 
         if isinstance(command_dict, dict):

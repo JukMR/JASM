@@ -21,7 +21,7 @@ class MacroArgsResolver:
         macro_args = macro.get("args")
         assert macro_args, "The macro must have args to replace."
 
-        mapping_dict = ArgsMappingGenerator().get_args_mapping_dict(tree=tree, args=macro_args)
+        mapping_dict: MacroTree = ArgsMappingGenerator().get_args_mapping_dict(tree=tree, args=macro_args)
         return mapping_dict
 
     def _evaluate_args_in_macro(self, macro: MacroTree, mapping_dict: MappingDict) -> MacroTree:

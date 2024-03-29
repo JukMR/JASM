@@ -33,10 +33,11 @@ class RegisterCaptureGroupBuilder:
         assert isinstance(self.pattern_node_tmp_untyped.name, str)
         main_reference_name = remove_access_suffix(pattern_name=self.pattern_node_tmp_untyped.name)
 
-        return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
+        result: bool = CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
             capture_manager=self.pattern_node_tmp_untyped.shared_context.capture_manager,
             pattern_node_name=main_reference_name,
         )
+        return result
 
     def add_new_references_to_global_list(self) -> None:
         "Add new references to global list"

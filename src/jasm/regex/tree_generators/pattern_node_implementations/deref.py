@@ -11,7 +11,7 @@ class PatternNodeDerefProperty(PatternNode):
             assert isinstance(self.children, list)
             assert len(self.children) == 1
 
-            child_regex = self.children[0].get_regex()
+            child_regex: str = self.children[0].get_regex()
             return child_regex
 
         return str(self.name)
@@ -39,4 +39,5 @@ class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):
 class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):
 
     def get_regex(self) -> str:
-        return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
+        result: str = CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
+        return result

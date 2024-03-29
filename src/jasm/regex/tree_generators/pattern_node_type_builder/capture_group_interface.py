@@ -11,7 +11,8 @@ class CaptureGroupHelper:
         assert isinstance(capture_manager, CapturesManager)
         assert isinstance(pattern_node_name, str)
 
-        return capture_manager.capture_is_registered(pattern_node_name)
+        result: bool = capture_manager.capture_is_registered(pattern_node_name)
+        return result
 
     @staticmethod
     def add_new_references_to_global_list(capture_manager: CapturesManager, pattern_node_name: str) -> None:

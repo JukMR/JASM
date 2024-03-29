@@ -26,7 +26,7 @@ class InstructionObserverConsumer(IConsumer):
         return observed_instruction
 
     def finalize(self) -> None:
-        return self._matched_observer.finalize()
+        self._matched_observer.finalize()
 
 
 class CompleteConsumer(InstructionObserverConsumer):
