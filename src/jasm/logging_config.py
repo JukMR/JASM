@@ -1,6 +1,7 @@
 from datetime import datetime
-from logging import DEBUG, ERROR, INFO, WARNING, Filter, Formatter, StreamHandler, getLevelName, getLogger
+from logging import DEBUG, ERROR, INFO, WARNING, Filter, Formatter, LogRecord, StreamHandler, getLevelName, getLogger
 from pathlib import Path
+from typing import IO, Any
 
 
 def _create_log_folder_if_not_exists(folder_name: str) -> Path:
@@ -20,11 +21,11 @@ def _get_date_string_for_filename(log_type: str, date: str) -> str:
 
 
 class LogLevelFilter(Filter):
-    def __init__(self, level) -> None:
+    def __init__(self, level: int) -> None:
         super().__init__()
         self.level = level
 
-    def filter(self, record) -> bool:
+    def filter(self, record: LogRecord) -> bool:
         result: bool = record.levelno == self.level
         return result
 
@@ -38,26 +39,27 @@ class LazyFileHandler(StreamHandler):
     The file is only opened when a log record is emitted, preventing the creation of empty log files.
     """
 
-    def __init__(self, filename, mode="a", encoding=None) -> None:
+    def __init__(self, filename: str, mode: str = "a", encoding: Any = None) -> None:
+
         self.base_filename = filename
         self.mode = mode
         self.encoding = encoding
         self._file = None
         StreamHandler.__init__(self)
 
-    def _open_file(self):
+    def _open_file(self) -> IO[Any]:
         if self._file is None:
             self._file = open(  # pylint: disable=consider-using-with
                 self.base_filename, self.mode, encoding=self.encoding
             )
         return self._file
 
-    def emit(self, record) -> None:
+    def emit(self, record: LogRecord) -> None:
         self.stream = self._open_file()
         StreamHandler.emit(self, record)
 
 
-def _set_log_to_file(log_level) -> None:
+def _set_log_to_file(log_level: int) -> None:
     log_type = getLevelName(log_level)
     date = get_current_date()
     logfile = _get_date_string_for_filename(log_type=log_type, date=date)
@@ -70,7 +72,7 @@ def _set_log_to_file(log_level) -> None:
     logger.addHandler(file_handler)
 
 
-def _set_log_to_terminal(log_level) -> None:
+def _set_log_to_terminal(log_level: int) -> None:
     stream_handler = StreamHandler()
     stream_handler.setLevel(log_level)
     formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -78,7 +80,9 @@ def _set_log_to_terminal(log_level) -> None:
     logger.addHandler(stream_handler)
 
 
-def configure_logger(debug: bool, info: bool, enable_log_to_file=True, enable_log_to_terminal=True) -> None:
+def configure_logger(
+    debug: bool, info: bool, enable_log_to_file: bool = True, enable_log_to_terminal: bool = True
+) -> None:
     if debug:
         logger.setLevel(DEBUG)
     elif info:
