@@ -7,7 +7,7 @@ from jasm.logging_config import LazyFileHandler, _get_date_string_for_filename, 
 
 
 @patch("jasm.logging_config.Path.mkdir")
-def test_log_file_naming(mock_mkdir):
+def test_log_file_naming(mock_mkdir) -> None:
     date = "2023_01_01_12_00_00"
     filename = _get_date_string_for_filename(log_type="DEBUG", date=date)
     expected_filename = "logs/DEBUG/2023_01_01_12_00_00.log"
@@ -16,14 +16,14 @@ def test_log_file_naming(mock_mkdir):
 
 
 @patch("builtins.open", new_callable=mock_open)
-def test_lazy_file_handler(mock_open):
+def test_lazy_file_handler(mock_open: MagicMock) -> None:
     handler = LazyFileHandler("test.log")
     mock_record = MagicMock()
     handler.emit(mock_record)
     mock_open.assert_called_once_with("test.log", "a", encoding=None)
 
 
-def test_logger_configuration():
+def test_logger_configuration() -> None:
     with TemporaryDirectory() as temp_dir:
 
         # Redirect log output to the temporary directory

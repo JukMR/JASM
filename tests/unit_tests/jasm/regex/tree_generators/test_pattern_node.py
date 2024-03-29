@@ -22,7 +22,7 @@ from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUn
 from jasm.regex.tree_generators.shared_context import SharedContext
 
 
-def test_get_pattern_node_name_with_string():
+def test_get_pattern_node_name_with_string() -> None:
     name = f"[^, ]{ASTERISK_WITH_LIMIT}"
 
     result = get_pattern_node_name("pattern_node", allow_matching_substrings=False, name_prefix="", name_suffix="")
@@ -164,7 +164,7 @@ def test_branch_processor_and() -> None:
     assert processor.process_and(["regex1", "regex2"], None) == "(?:regex1regex2)"
 
 
-def test_process_register_capture_group_name():
+def test_process_register_capture_group_name() -> None:
     assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.64", "1") == "r1x"
     assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.32", "2") == "e2x"
     assert PatternNodeCaptureGroupRegisterCall.process_register_capture_group_name_genreg("&genreg.16", "3") == "3x"

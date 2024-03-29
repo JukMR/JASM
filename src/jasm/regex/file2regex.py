@@ -15,7 +15,7 @@ class File2Regex(ABC):
         "Base method to load a file"
 
     @abstractmethod
-    def produce_regex(self):
+    def produce_regex(self) -> None:
         "Main method to produce the regex"
 
     @abstractmethod

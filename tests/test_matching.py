@@ -8,6 +8,12 @@ from jasm.global_definitions import InputFileType, MatchConfig, MatchingReturnMo
 from jasm.match import MasterOfPuppets
 
 
+@pytest.fixture(scope="session")
+def is_benchmark_enabled(request) -> bool:
+    """Determine if benchmarking is enabled."""
+    return request.config.getoption("--enable-benchmark")
+
+
 @pytest.mark.parametrize(
     "config",
     load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
@@ -69,12 +75,6 @@ def config_builder(config) -> Tuple[MatchConfig, Any]:
         ),
         expected_result,
     )
-
-
-@pytest.fixture(scope="session")
-def is_benchmark_enabled(request) -> bool:
-    """Determine if benchmarking is enabled."""
-    return request.config.getoption("--enable-benchmark")
 
 
 def run_match_test(test_config: MatchConfig, expected_result: bool | str | List[str]) -> None:
