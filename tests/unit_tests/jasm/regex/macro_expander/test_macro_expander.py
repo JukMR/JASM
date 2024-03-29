@@ -10,7 +10,7 @@ def macro_expander() -> MacroExpander:
     return MacroExpander()
 
 
-def test_resolve_all_macros(macro_expander: MacroExpander):
+def test_resolve_all_macros(macro_expander: MacroExpander) -> None:
     macros = [
         {"name": "MACRO1", "pattern": "replacement1"},
         {"name": "MACRO2", "pattern": "replacement2"},

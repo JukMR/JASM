@@ -6,13 +6,13 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimesTypeBuilder
 
 
-class PatternNodeTimes(PatternNode):
+class PatternNodeTimes(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         return ""
 
 
-class PatternNodeBranchRoot(PatternNode):
+class PatternNodeBranchRoot(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         return self.process_branch()

@@ -2,7 +2,7 @@ from jasm.global_definitions import DisassStyle
 from jasm.stringify_asm.implementations.shell_disassembler import ShellDisassembler
 
 
-class GNUObjdumpDisassembler(ShellDisassembler):
+class GNUObjdumpDisassembler(ShellDisassembler):  # type: ignore
     """Disassemble binaries using objdump from shell"""
 
     def __init__(self, enum_disas_style: DisassStyle) -> None:

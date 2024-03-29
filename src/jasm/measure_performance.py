@@ -1,7 +1,7 @@
 "Performance measure wrapper module"
 
-from typing import Optional, Callable, Any
 import time
+from typing import Any, Callable, Optional
 
 from jasm.logging_config import logger
 

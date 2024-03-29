@@ -29,7 +29,7 @@ def get_pattern_node_name(
     return name
 
 
-class _PatternNodeMnemonicOrOperandBuilder(PatternNode):
+class _PatternNodeMnemonicOrOperandBuilder(PatternNode):  # type: ignore
     """This class is used to process PatternNodeMnemonic and PatternNodeOperand classes."""
 
     def get_regex(self) -> str:

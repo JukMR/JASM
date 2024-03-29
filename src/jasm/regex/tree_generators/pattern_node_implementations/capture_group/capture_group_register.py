@@ -3,7 +3,7 @@ from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexRegi
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
-class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -14,7 +14,7 @@ class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl]{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -25,7 +25,7 @@ class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?([sd])il?{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -36,7 +36,7 @@ class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterReferenceBasereg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceBasereg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -47,7 +47,7 @@ class PatternNodeCaptureGroupRegisterReferenceBasereg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterCall(PatternNode):
+class PatternNodeCaptureGroupRegisterCall(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         return self.get_capture_group_register_call()

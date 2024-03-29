@@ -9,9 +9,10 @@ from jasm.match import MasterOfPuppets
 
 
 @pytest.fixture(scope="session")
-def is_benchmark_enabled(request) -> bool:
+def is_benchmark_enabled(request: Any) -> bool:
     """Determine if benchmarking is enabled."""
-    return request.config.getoption("--enable-benchmark")
+    benchmark_is_enable: bool = request.config.getoption("--enable-benchmark")
+    return benchmark_is_enable
 
 
 @pytest.mark.parametrize(
@@ -19,7 +20,7 @@ def is_benchmark_enabled(request) -> bool:
     load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
     ids=lambda config: config["title"],
 )
-def test_all_patterns(config: Any, is_benchmark_enabled: bool, benchmark):
+def test_all_patterns(config: Any, is_benchmark_enabled: bool, benchmark: Any) -> None:
     """Unified test function for all configurations in configuration.yaml."""
 
     match_config, expected_result = config_builder(config)
@@ -31,7 +32,7 @@ def test_all_patterns(config: Any, is_benchmark_enabled: bool, benchmark):
         run_match_test(match_config, expected_result)
 
 
-def config_builder(config) -> Tuple[MatchConfig, Any]:
+def config_builder(config: dict[str, Any]) -> Tuple[MatchConfig, Any]:
     """Build a MatchConfig from the test configuration specs."""
 
     config_yaml = config["yaml"]

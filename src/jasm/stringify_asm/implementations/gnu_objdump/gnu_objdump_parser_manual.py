@@ -8,7 +8,7 @@ from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 from jasm.global_definitions import Instruction
 
 
-class ObjdumpParserManual(AsmParser):
+class ObjdumpParserManual(AsmParser):  # type: ignore
     """Implementation for parsing assembly instructions."""
 
     def parse(self, file: str, iConsumer: IConsumer) -> None:

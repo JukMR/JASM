@@ -1,7 +1,7 @@
 from jasm.stringify_asm.implementations.shell_disassembler import ShellDisassembler
 
 
-class LLvmObjdumpDisassembler(ShellDisassembler):
+class LLvmObjdumpDisassembler(ShellDisassembler):  # type: ignore
     """Disassemble binaries using llvm-objdump from shell"""
 
     def __init__(self, flags: str) -> None:  # pylint: disable=super-init-not-called

@@ -15,7 +15,7 @@ from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_buil
 from jasm.regex.tree_generators.shared_context import SharedContext
 
 
-class Yaml2Regex(File2Regex):
+class Yaml2Regex(File2Regex):  # type: ignore
     """File2Regex class implementation with Yaml"""
 
     def __init__(self, pattern_pathstr: str, macros_from_terminal: Optional[List[str]] = None) -> None:

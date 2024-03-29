@@ -7,7 +7,7 @@ from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver
 
 
-class InstructionObserverConsumer(IConsumer):
+class InstructionObserverConsumer(IConsumer):  # type: ignore
     def __init__(self, regex_rule: str, matched_observer: IMatchedObserver) -> None:
         super().__init__(matched_observer=matched_observer)
         self.instruction_observers: List[IInstructionObserver] = []

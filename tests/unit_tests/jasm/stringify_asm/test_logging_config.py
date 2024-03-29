@@ -7,7 +7,7 @@ from jasm.logging_config import LazyFileHandler, _get_date_string_for_filename, 
 
 
 @patch("jasm.logging_config.Path.mkdir")
-def test_log_file_naming(mock_mkdir) -> None:
+def test_log_file_naming(mock_mkdir: MagicMock) -> None:
     date = "2023_01_01_12_00_00"
     filename = _get_date_string_for_filename(log_type="DEBUG", date=date)
     expected_filename = "logs/DEBUG/2023_01_01_12_00_00.log"

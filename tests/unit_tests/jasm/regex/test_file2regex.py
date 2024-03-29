@@ -1,14 +1,15 @@
 # tests/unit_tests/test_file2regex.py
+from pathlib import Path
 from typing import Literal
 from jasm.regex.file2regex import File2Regex
 from jasm.global_definitions import DisassStyle
 
 
-class ConcreteFile2Regex(File2Regex):
+class ConcreteFile2Regex(File2Regex):  # type: ignore
     """Concrete implementation of File2Regex."""
 
     @staticmethod
-    def load_file(file) -> str:
+    def load_file(file: str | Path) -> str:
         return f"Loaded {file}"
 
     def produce_regex(self) -> Literal["RegexPattern"]:

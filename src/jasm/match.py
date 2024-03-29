@@ -182,7 +182,7 @@ class MasterOfPuppets:
         return observer_list
 
 
-class ValidAddrObserver(IInstructionObserver):
+class ValidAddrObserver(IInstructionObserver):  # type: ignore
     """Valid address observer"""
 
     def __init__(self, valid_addr_range: ValidAddrRange) -> None:

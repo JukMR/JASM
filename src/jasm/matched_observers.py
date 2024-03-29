@@ -1,9 +1,10 @@
 from typing import List
+
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IMatchedObserver
 
 
-class MatchedObserver(IMatchedObserver):
+class MatchedObserver(IMatchedObserver):  # type: ignore
     """Observer that logs the matched address"""
 
     def __init__(self) -> None:
