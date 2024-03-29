@@ -23,10 +23,10 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
 )
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
-from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
+from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_builder import (
     OperandCaptureGroupBuilder,
 )
-from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group_processor import (
+from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group_builder import (
     RegisterCaptureGroupBuilder,
 )
 

@@ -5,7 +5,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
 )
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
-from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_decider import (
+from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_builder import (
     SpecialRegisterCaptureGroupTypeBuilder,
 )
 
