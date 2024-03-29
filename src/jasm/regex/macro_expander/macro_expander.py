@@ -1,16 +1,16 @@
-from typing import Dict, List, TypeAlias
+from typing import Any, Dict, List, TypeAlias
 
 from jasm.regex.macro_expander.macro_args_resolver import MacroArgsResolver
 
 # Type aliases
-PatternTree: TypeAlias = Dict | str
-MacroTree: TypeAlias = Dict
+PatternTree: TypeAlias = Dict[Any, Any] | str
+MacroTree: TypeAlias = Dict[Any, Any]
 
 
 class MacroExpander:
     """Expand macros in a tree or pattern rule"""
 
-    def resolve_all_macros(self, macros: List[Dict], tree: PatternTree) -> PatternTree:
+    def resolve_all_macros(self, macros: List[Dict[Any, Any]], tree: PatternTree) -> PatternTree:
         """Expand all macros in the tree in the order they are defined in the macros list"""
         tmp_tree = tree
 
@@ -65,7 +65,7 @@ class MacroExpander:
 
         return tree
 
-    def _process_dict_tree(self, tree: Dict, macro_name: str, macro: MacroTree) -> PatternTree:
+    def _process_dict_tree(self, tree: Dict[Any, Any], macro_name: str, macro: MacroTree) -> PatternTree:
         """
         Process the tree when is a dictionary.
         This is the case when the macro is a subtree replacement

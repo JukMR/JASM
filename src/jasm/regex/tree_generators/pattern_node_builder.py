@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from jasm.global_definitions import DictNode, TimesType
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNodeData
@@ -46,7 +46,7 @@ class PatternNodeBuilderNoParents:
     def _get_times(self, command_dict: DictNode) -> TimesType:
         assert isinstance(command_dict, dict)
 
-        def _get_time_object(command_dict: dict) -> Optional[dict | int]:
+        def _get_time_object(command_dict: dict[str, list[str]]) -> Optional[dict[Any, Any] | int]:
             command_name = list(command_dict.keys())[0]
 
             # Command has no operands, only a time

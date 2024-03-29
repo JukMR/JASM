@@ -3,9 +3,11 @@ from typing import Any, Dict, Generator, List, Tuple, TypeAlias, Union
 from jasm.regex.macro_expander.args_mapping_generator import ArgsMappingGenerator
 
 # Type aliases
-MappingDict: TypeAlias = Dict
-PatternTree: TypeAlias = Dict | str
-MacroTree: TypeAlias = Dict
+MappingDict: TypeAlias = Dict[Any, Any]
+PatternTree: TypeAlias = Dict[Any, Any] | str
+MacroTree: TypeAlias = Dict[Any, Any]
+
+PathTuple: TypeAlias = Tuple[Any, ...]
 
 
 class MacroArgsResolver:
@@ -51,8 +53,9 @@ class MacroArgsResolver:
         return macro
 
     def _iter_items_with_path(
-        self, elems: Union[str, List, Dict], path: Tuple = ()
-    ) -> Generator[Tuple[Tuple, Any], None, None]:
+        self, elems: Union[str, List[Any], Dict[Any, Any]], path: PathTuple = ()
+    ) -> Generator[Tuple[Tuple[Any, Any], Any], None, None]:
+
         match elems:
             case str():
                 yield path, elems
@@ -64,7 +67,9 @@ class MacroArgsResolver:
                     yield path + (k,), (k, v)
                     yield from self._iter_items_with_path(v, path + (k,))
 
-    def _replace_item_in_structure(self, struct: Union[Dict, List], path: Tuple, new_value: Any) -> None:
+    def _replace_item_in_structure(
+        self, struct: Union[Dict[Any, Any], List[str | dict[str, Any]]], path: PathTuple, new_value: Any
+    ) -> None:
         """Navigate struct using path and replace the target item with new_value."""
         for step in path[:-1]:
             struct = struct[step] if isinstance(struct, dict) else struct[int(step)]  # Navigate to the final container.

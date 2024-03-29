@@ -1,21 +1,20 @@
 from typing import Any, Dict, Generator, List, Tuple, TypeAlias, Union
 
-
 # Type aliases
-PatternTree: TypeAlias = Dict | str
+PatternTree: TypeAlias = Dict[Any, Any] | str
 
 
 class ArgsMappingGenerator:
 
-    def get_args_mapping_dict(self, tree: PatternTree, args: List[str]) -> Dict:
-        mapping_dict: Dict[str, Dict | List | str] = {}
+    def get_args_mapping_dict(self, tree: PatternTree, args: List[str]) -> Dict[Any, Any]:
+        mapping_dict: Dict[str, Dict[Any, Any] | List[Any] | str] = {}
 
         for arg in args:
             for item in self._get_args_mapping(tree=tree, current_arg=arg):
                 mapping_dict.update(item)
         return mapping_dict
 
-    def _get_args_mapping(self, tree: PatternTree, current_arg: str) -> Generator[Dict, None, None]:
+    def _get_args_mapping(self, tree: PatternTree, current_arg: str) -> Generator[Dict[Any, Any], None, None]:
         match tree:
             case str():
                 if tree == current_arg:

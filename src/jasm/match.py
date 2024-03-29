@@ -161,7 +161,7 @@ class MasterOfPuppets:
 
             case MatchingReturnMode.matched_addrs_list:
                 # This mode implies that if the list is not empty, then the match was successful
-                return_addr_list: list = matched_observer.addr_list
+                return_addr_list: list[str] = matched_observer.addr_list
                 return return_addr_list
 
             case MatchingReturnMode.all_instructions_string:

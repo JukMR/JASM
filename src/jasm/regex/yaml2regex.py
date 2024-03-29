@@ -66,7 +66,7 @@ class Yaml2Regex(File2Regex):
 
         return pattern_with_top_node
 
-    def load_macros_from_args(self) -> List[Dict]:
+    def load_macros_from_args(self) -> List[Dict[str, str]]:
         """Load macros from a list of files"""
 
         assert self.macros_from_terminal_filepath, "No macros from args provided"

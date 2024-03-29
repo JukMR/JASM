@@ -33,7 +33,7 @@ class LogLevelFilter(Filter):
 logger = getLogger(__name__)
 
 
-class LazyFileHandler(StreamHandler):
+class LazyFileHandler(StreamHandler):  # type: ignore
     """
     Custom logging handler that lazily opens the log file.
     The file is only opened when a log record is emitted, preventing the creation of empty log files.
