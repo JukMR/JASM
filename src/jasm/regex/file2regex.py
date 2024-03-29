@@ -11,7 +11,7 @@ class File2Regex(ABC):
 
     @staticmethod
     @abstractmethod
-    def load_file(file) -> Any:
+    def load_file(file: str) -> Any:
         "Base method to load a file"
 
     @abstractmethod

@@ -217,8 +217,10 @@ class OperandsParser:
         if operand_elem.startswith("%"):
             return operand_elem
 
-        if isinstance(operand_elem, List):
-            return f"{''.join(operand_elem[1])}+{operand_elem[0]}"
+        # This was an old case which should not happen anymore because operand_elem is a str
+        # Anyway leaving it here just in case it is needed in the future
+        # if isinstance(operand_elem, List):
+        #     return f"{''.join(operand_elem[1])}+{operand_elem[0]}"
 
         # Parse operand types with reduced complexity
         result = self.parse_operand_types(operand_elem)
@@ -281,7 +283,7 @@ class OperandsParser:
         return None
 
     @staticmethod
-    def form_full_operand_with_4_elements(operand_elem) -> str:
+    def form_full_operand_with_4_elements(operand_elem: str) -> str:
         """Form a full operand with 4 elements."""
         find_something_with_parenthesis_regex = r"\([^\)]*\)"
         registry = re.search(find_something_with_parenthesis_regex, operand_elem)
@@ -302,7 +304,7 @@ class OperandsParser:
         return f"[{main_reg}+{register_multiplier}*{constant_multiplier}+{constant_offset}]"
 
     @staticmethod
-    def form_full_operand_with_1_element(operand_elem) -> str:
+    def form_full_operand_with_1_element(operand_elem: str) -> str:
         find_something_with_parenthesis_regex = r"\([^\)]*\)"
         registry = re.search(find_something_with_parenthesis_regex, operand_elem)
         if not registry:
@@ -319,7 +321,7 @@ class OperandsParser:
         return f"[{register}+{immediate}]"
 
     @staticmethod
-    def form_full_operand_with_3_elements(operand_elem) -> str:
+    def form_full_operand_with_3_elements(operand_elem: str) -> str:
         """This parse the operand of form (%rax,%rax,1)"""
 
         elements = operand_elem.split(",")

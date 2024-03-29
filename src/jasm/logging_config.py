@@ -37,7 +37,7 @@ class LazyFileHandler(StreamHandler):
     The file is only opened when a log record is emitted, preventing the creation of empty log files.
     """
 
-    def __init__(self, filename, mode="a", encoding=None):
+    def __init__(self, filename, mode="a", encoding=None) -> None:
         self.base_filename = filename
         self.mode = mode
         self.encoding = encoding
@@ -51,12 +51,12 @@ class LazyFileHandler(StreamHandler):
             )
         return self._file
 
-    def emit(self, record):
+    def emit(self, record) -> None:
         self.stream = self._open_file()
         StreamHandler.emit(self, record)
 
 
-def _set_log_to_file(log_level):
+def _set_log_to_file(log_level) -> None:
     log_type = getLevelName(log_level)
     date = get_current_date()
     logfile = _get_date_string_for_filename(log_type=log_type, date=date)
@@ -69,7 +69,7 @@ def _set_log_to_file(log_level):
     logger.addHandler(file_handler)
 
 
-def _set_log_to_terminal(log_level):
+def _set_log_to_terminal(log_level) -> None:
     stream_handler = StreamHandler()
     stream_handler.setLevel(log_level)
     formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")

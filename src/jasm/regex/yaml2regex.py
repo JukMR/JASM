@@ -36,7 +36,7 @@ class Yaml2Regex(File2Regex):
         rule_tree = self._generate_rule_tree(patterns=patterns)
 
         # Process the rule tree and generate the regex
-        output_regex = rule_tree.get_regex()
+        output_regex: str = rule_tree.get_regex()
 
         # Log regex results
         logger.debug("The output regex is:\n%s\n", output_regex)
@@ -50,7 +50,7 @@ class Yaml2Regex(File2Regex):
         pattern_with_top_node = {"$and": patterns}
 
         # Check if there are any macros setted
-        macros: list = self.loaded_file.get("macros", [])
+        macros: list[str] = self.loaded_file.get("macros", [])
 
         assert isinstance(macros, list), "Invalid macros in the pattern file"
 
