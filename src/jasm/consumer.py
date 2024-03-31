@@ -51,8 +51,7 @@ class CompleteConsumer(InstructionObserverConsumer):
 
     @staticmethod
     def get_first_addr_from_regex_result(regex_result: str) -> str:
-        regex_result = regex_result.split("::")[0]
-        return regex_result
+        return regex_result.split("::")[0]
 
     def finalize(self) -> None:
 

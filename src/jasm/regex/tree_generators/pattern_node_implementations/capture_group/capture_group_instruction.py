@@ -6,8 +6,7 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 class PatternNodeCaptureGroupInstructionCall(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
-        result: str = CaptureGroupIndexInstructionCall(pattern_node=self).to_regex()
-        return result
+        return CaptureGroupIndexInstructionCall(pattern_node=self).to_regex()  # type:ignore
 
 
 class PatternNodeCaptureGroupInstructionReference(PatternNode):  # type: ignore

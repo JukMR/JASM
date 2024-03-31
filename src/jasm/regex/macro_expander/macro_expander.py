@@ -113,8 +113,7 @@ class MacroExpander:
 
             case list():
                 assert len(macro_pattern) == 1, f"Macro pattern {macro_pattern} must have only one key"
-                result: PatternTree = macro_pattern[0]
-                return result
+                return macro_pattern[0]  # type: ignore
 
         raise ValueError(f"Macro pattern {macro_pattern} is not a valid type")
 

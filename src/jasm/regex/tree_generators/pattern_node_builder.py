@@ -67,9 +67,7 @@ class PatternNodeBuilderNoParents:
                 times = command_dict_name.get("times")
                 assert isinstance(times, (int, dict))
 
-                times_result: int | dict[str, int] = times
-
-                return times_result
+                return times
             return None
 
         if isinstance(command_dict, dict):

@@ -39,5 +39,4 @@ class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):  # type: ignor
 class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
-        result: str = CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
-        return result
+        return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()  # type: ignore

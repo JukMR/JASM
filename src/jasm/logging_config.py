@@ -26,8 +26,7 @@ class LogLevelFilter(Filter):
         self.level = level
 
     def filter(self, record: LogRecord) -> bool:
-        result: bool = record.levelno == self.level
-        return result
+        return record.levelno == self.level
 
 
 logger = getLogger(__name__)

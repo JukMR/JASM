@@ -63,8 +63,7 @@ class PatternNodeCaptureGroupRegisterCall(PatternNode):  # type: ignore
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
 
-        result: str = OPTIONAL_PERCENTAGE_CHAR + matching_rule + OPTIONAL_COMMA
-        return result
+        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + OPTIONAL_COMMA  # type: ignore
 
     def process_register_capture_group_name_based_on_register_type(self, index: str) -> str:
         """Process the register capture group name based on the register special type."""

@@ -113,8 +113,7 @@ class _RegexWithOperandsBuilder:
         if not self.times:
             return None
 
-        result: Optional[str] = TimesTypeBuilder().get_min_max_regex(times=self.times)
-        return result
+        return TimesTypeBuilder().get_min_max_regex(times=self.times)  # type: ignore
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         # Add prefix and suffix to name to allow matching only substring
