@@ -10,7 +10,7 @@ MacroTree: TypeAlias = Dict[Any, Any]
 class MacroExpander:
     """Expand macros in a tree or pattern rule"""
 
-    def resolve_all_macros(self, macros: List[Dict[Any, Any]], tree: PatternTree) -> PatternTree:
+    def resolve_all_macros(self, macros: List[MacroTree], tree: PatternTree) -> PatternTree:
         """Expand all macros in the tree in the order they are defined in the macros list"""
         tmp_tree = tree
 
