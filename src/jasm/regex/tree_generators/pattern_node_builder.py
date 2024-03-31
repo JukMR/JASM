@@ -51,7 +51,7 @@ class PatternNodeBuilderNoParents:
     def _get_times(command_dict: DictNode) -> TimesType:
         assert isinstance(command_dict, dict)
 
-        def _get_time_object(command_dict: Dict[str, Dict[str, int]]) -> Optional[dict[Any, Any] | int]:
+        def _get_time_object(command_dict: Dict[str, Dict[str, int]]) -> Optional[dict[str, Any] | int]:
             command_name = list(command_dict.keys())[0]
 
             # Command has no operands, only a time

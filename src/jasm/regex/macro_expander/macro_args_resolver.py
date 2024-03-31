@@ -3,9 +3,9 @@ from typing import Any, Dict, Generator, List, Tuple, TypeAlias
 from jasm.regex.macro_expander.args_mapping_generator import ArgsMappingGenerator
 
 # Type aliases
-MappingDict: TypeAlias = Dict[Any, Any]
-PatternTree: TypeAlias = Dict[Any, Any] | str
-MacroTree: TypeAlias = Dict[Any, Any]
+MappingDict: TypeAlias = Dict[str, Any]
+PatternTree: TypeAlias = Dict[str, Any] | str
+MacroTree: TypeAlias = Dict[str, Any]
 
 PathTuple: TypeAlias = Tuple[Any, ...]
 
@@ -55,7 +55,7 @@ class MacroArgsResolver:
         return macro
 
     def _iter_items_with_path(
-        self, elems: str | List[Any] | Dict[Any, Any], path: PathTuple = ()
+        self, elems: str | List[Any] | Dict[str, Any], path: PathTuple = ()
     ) -> Generator[Tuple[Tuple[Any, Any], Any], None, None]:
 
         match elems:
@@ -70,7 +70,7 @@ class MacroArgsResolver:
                     yield from self._iter_items_with_path(v, path + (k,))
 
     def _replace_item_in_structure(
-        self, struct: Dict[Any, Any] | List[str | Dict[str, Any]] | str, path: PathTuple, new_value: Any
+        self, struct: Dict[str, Any] | List[str | Dict[str, Any]] | str, path: PathTuple, new_value: Any
     ) -> None:
         """Navigate struct using path and replace the target item with new_value."""
         for step in path[:-1]:

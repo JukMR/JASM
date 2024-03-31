@@ -3,8 +3,8 @@ from typing import Any, Dict, List, TypeAlias
 from jasm.regex.macro_expander.macro_args_resolver import MacroArgsResolver
 
 # Type aliases
-PatternTree: TypeAlias = Dict[Any, Any] | str
-MacroTree: TypeAlias = Dict[Any, Any]
+PatternTree: TypeAlias = Dict[str, Any] | str
+MacroTree: TypeAlias = Dict[str, Any]
 
 
 class MacroExpander:
@@ -65,7 +65,7 @@ class MacroExpander:
 
         return tree
 
-    def _process_dict_tree(self, tree: Dict[Any, Any], macro_name: str, macro: MacroTree) -> PatternTree:
+    def _process_dict_tree(self, tree: Dict[str, Any], macro_name: str, macro: MacroTree) -> PatternTree:
         """
         Process the tree when is a dictionary.
         This is the case when the macro is a subtree replacement
