@@ -1,7 +1,7 @@
 from typing import Any, Dict, Generator, List, Tuple, TypeAlias, Union
 
 # Type aliases
-PatternTree: TypeAlias = Dict[Any, Any] | str
+PatternTree: TypeAlias = Dict[str, Any] | str
 
 
 class ArgsMappingGenerator:
