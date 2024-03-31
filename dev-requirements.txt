@@ -3,3 +3,4 @@ pytest
 pytest-xdist
 pytest-benchmark
 pytest-fail-slow
+pytest-coverage
