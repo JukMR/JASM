@@ -1,3 +1,4 @@
+import copy
 from typing import Any, Dict, List, TypeAlias
 
 from jasm.regex.macro_expander.macro_args_resolver import MacroArgsResolver
@@ -10,9 +11,12 @@ MacroTree: TypeAlias = Dict[str, Any]
 class MacroExpander:
     """Expand macros in a tree or pattern rule"""
 
-    def resolve_all_macros(self, macros: List[MacroTree], tree: PatternTree) -> PatternTree:
+    def resolve_all_macros(self, macros: List[MacroTree], pattern_tree: PatternTree) -> PatternTree:
         """Expand all macros in the tree in the order they are defined in the macros list"""
-        tmp_tree = tree
+        if isinstance(pattern_tree, dict):
+            tmp_tree = copy.deepcopy(pattern_tree)
+        else:
+            tmp_tree = pattern_tree
 
         for macro in macros:
             tmp_tree = self._resolve_macro(macro=macro, tree=tmp_tree)
