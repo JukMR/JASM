@@ -255,6 +255,11 @@ test_matching:
     assembly: "tests/source_test_files/register_capture_groups/main.s"
     expected: False
 
+  - title: "2 zero_reg rule"
+    yaml: "tests/yamls/2_zero_reg.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule.s"
+    expected: True
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"

@@ -498,5 +498,21 @@
                 "tests/source_test_files/register_capture_groups/main.s",
             ]
         },
+        {
+            "name": "2 zero reg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "--all-matches",
+                "-p",
+                "tests/yamls/2_zero_reg.yaml",
+                "-s",
+                "tests/assembly/2_zero_reg_rule.s",
+            ]
+        },
     ]
 }
