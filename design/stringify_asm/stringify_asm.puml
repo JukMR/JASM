@@ -1,15 +1,15 @@
 @startuml stringify_asm_diagram_class
 
-' skinparam linetype polyline
-' skinparam classFontName Helvetica
-' skinparam ClassFontSize 14
-' skinparam ArrowColor MidnightBlue
-' skinparam groupInheritance 2
+skinparam linetype polyline
+skinparam classFontName Helvetica
+skinparam ClassFontSize 14
+skinparam ArrowColor MidnightBlue
+skinparam groupInheritance 2
 
 
-' skinparam class {
+skinparam class {
 
-' }
+}
 
 class Instruction {
     + addrs: str
