@@ -50,8 +50,10 @@ class MacroExpander:
                 return self._process_dict_tree(tree=tree, macro_name=macro_name, macro=macro)
 
             # Just in case, should never happen
+            # TODO: inspect and fix this
             case _:
-                raise ValueError(f"Tree {tree} is not a valid type")
+                return tree
+                # raise ValueError(f"Tree {tree} is not a valid type")
 
     def _process_str_tree(self, tree: str, macro_name: str, macro: MacroTree) -> PatternTree:
         """

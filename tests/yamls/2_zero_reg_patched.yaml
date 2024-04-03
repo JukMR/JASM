@@ -1,0 +1,46 @@
+---
+config:
+  style: att
+  plugins:
+
+macros:
+  - name: $zero_reg_1
+    pattern:
+      - $or:
+          - xor:
+              - rax
+              - rax
+          - mov:
+              - rax
+              - 0
+
+          - $or:
+              - and:
+                  - rax
+                  - 0
+              - and:
+                  - 0
+                  - rax
+
+  - name: $zero_reg_2
+    pattern:
+      - $or:
+          - xor:
+              - rbx
+              - rbx
+          - mov:
+              - rbx
+              - 0
+
+          - $or:
+              - and:
+                  - rbx
+                  - 0
+              - and:
+                  - 0
+                  - rbx
+
+pattern:
+  - $zero_reg_1
+
+  - $zero_reg_2
