@@ -1,0 +1,14 @@
+@startuml diagrama_contexto
+package "JASM Program" {
+  [JASM] as jasm
+}
+
+[Reglas JASM\n(YAML)] as rules
+[Archivo de Entrada\n(binario o assembly)] as entrada
+[Entorno Externo\n(Usuarios/Sistemas)] as external
+
+rules --> jasm
+entrada --> jasm
+jasm --> external: Patrones\nencontrados
+
+@enduml

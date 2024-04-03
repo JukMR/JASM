@@ -1,0 +1,12 @@
+@startuml diagrama_comunicacion
+
+actor "Usuario" as user
+
+entity "JASM" as jasm
+database "Patrones\nencontrados" as patterns
+
+user -> jasm : Envia Reglas JASM
+user -> jasm : Envia Archivo (Binario o Assembly)
+jasm -> patterns : Emite Patrones
+
+@enduml
