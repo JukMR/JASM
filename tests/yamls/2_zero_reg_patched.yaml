@@ -41,6 +41,6 @@ macros:
                   - rbx
 
 pattern:
-  - $zero_reg_1
-
-  - $zero_reg_2
+  - $and_any_order:
+      - $zero_reg_1
+      - $zero_reg_2
