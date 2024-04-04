@@ -23,10 +23,10 @@ from jasm.regex.tree_generators.pattern_node_implementations.node_branch_root im
 )
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
-from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_processor import (
+from jasm.regex.tree_generators.pattern_node_type_builder.operand_capture_group_builder import (
     OperandCaptureGroupBuilder,
 )
-from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group_processor import (
+from jasm.regex.tree_generators.pattern_node_type_builder.register_capture_group_builder import (
     RegisterCaptureGroupBuilder,
 )
 
@@ -189,7 +189,8 @@ class PatternNodeTypeBuilder:
         "Check if any ancestor is a capture group reference"
 
         assert isinstance(self.pattern_node.name, str)
-        return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
+
+        return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(  # type:ignore
             capture_manager=self.pattern_node.shared_context.capture_manager,
             pattern_node_name=self.pattern_node.name,
         )

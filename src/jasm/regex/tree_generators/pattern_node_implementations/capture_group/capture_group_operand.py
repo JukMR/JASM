@@ -2,13 +2,13 @@ from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexOper
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
-class PatternNodeCaptureGroupOperandCall(PatternNode):
+class PatternNodeCaptureGroupOperandCall(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
-        return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
+        return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()  # type:ignore
 
 
-class PatternNodeCaptureGroupOperandReference(PatternNode):
+class PatternNodeCaptureGroupOperandReference(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         return r"([^,|]+),"

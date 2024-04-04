@@ -25,7 +25,7 @@ def start_configurations() -> Namespace:
     return args
 
 
-@measure_performance(perf_title="Main function")
+@measure_performance(perf_title="Main function")  # type: ignore
 def main() -> None:
     "Main function"
 

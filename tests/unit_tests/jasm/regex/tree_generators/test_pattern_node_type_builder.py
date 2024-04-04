@@ -1,9 +1,9 @@
 from typing import Optional
 
-from jasm.regex.tree_generators.capture_manager import Capture, CapturesManager
 import pytest
 
 from jasm.global_definitions import TimesType, remove_access_suffix
+from jasm.regex.tree_generators.capture_manager import CapturesManager
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode, PatternNodeData
 from jasm.regex.tree_generators.pattern_node_implementations.deref import PatternNodeDeref, PatternNodeDerefProperty
 from jasm.regex.tree_generators.pattern_node_implementations.mnemonic_and_operand.mnemonic_and_operand import (
@@ -49,7 +49,7 @@ def pattern_node_base_creator(
         ("$or", PatternNodeNode),
     ],
 )
-def test_get_type(name, expected_type):
+def test_get_type(name: str, expected_type: PatternNode) -> None:
 
     root_node = pattern_node_base_creator(name="$and")
 
@@ -93,7 +93,7 @@ def test_is_ancestor_deref() -> None:
     assert child2_builder.is_ancestor_deref()
 
 
-def test_any_ancestor_is_mnemonic(mock_shared_context):
+def test_any_ancestor_is_mnemonic(mock_shared_context: SharedContext) -> None:
     child = pattern_node_base_creator(name="child")
     parent = pattern_node_base_creator(name="parent", children=[child])
     grandparent = pattern_node_base_creator(name="mnemonic", children=[parent])
@@ -106,14 +106,13 @@ def test_any_ancestor_is_mnemonic(mock_shared_context):
     parent = grandparent.children[0]
     child = parent.children[0]
 
-    # child_pattern_type = PatternNodeTypeBuilder(child, parent=parent)
     child_pattern_builder = PatternNodeTypeBuilder()
     child_pattern_type = child_pattern_builder.build(child, parent=parent)
 
     assert child_pattern_builder.any_ancestor_is_mnemonic()
 
 
-def test_recursive_build():
+def test_recursive_build() -> None:
     child = pattern_node_base_creator(name="child")
     parent = pattern_node_base_creator(name="$deref", children=[child])
     grandparent = pattern_node_base_creator(name="mnemonic", children=[parent])
@@ -128,7 +127,7 @@ def test_recursive_build():
     assert isinstance(child, PatternNodeDerefProperty)
 
 
-def test_remove_access_suffix():
+def test_remove_access_suffix() -> None:
     assert remove_access_suffix("pattern.32") == "pattern"
     assert remove_access_suffix("pattern.16") == "pattern"
     assert remove_access_suffix("pattern.8l") == "pattern"

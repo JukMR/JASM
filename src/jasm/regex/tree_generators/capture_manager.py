@@ -1,6 +1,5 @@
 from typing import TypeAlias
 
-
 Capture: TypeAlias = str
 
 

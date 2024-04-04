@@ -3,13 +3,13 @@ from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexInst
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
-class PatternNodeCaptureGroupInstructionCall(PatternNode):
+class PatternNodeCaptureGroupInstructionCall(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
-        return CaptureGroupIndexInstructionCall(pattern_node=self).to_regex()
+        return CaptureGroupIndexInstructionCall(pattern_node=self).to_regex()  # type:ignore
 
 
-class PatternNodeCaptureGroupInstructionReference(PatternNode):
+class PatternNodeCaptureGroupInstructionReference(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         return rf"{IGNORE_INST_ADDR}([^|]+),\|"

@@ -48,7 +48,7 @@ from jasm.global_definitions import Instruction
 #         return inst
 
 
-class RemoveEmptyInstructions(IInstructionObserver):
+class RemoveEmptyInstructions(IInstructionObserver):  # type: ignore
     "InstructionObserver implementation that only concatenates instructions"
 
     def observe_instruction(self, inst: Instruction) -> Optional[Instruction]:

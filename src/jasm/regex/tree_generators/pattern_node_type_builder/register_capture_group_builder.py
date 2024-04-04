@@ -5,7 +5,7 @@ from jasm.regex.tree_generators.pattern_node_implementations.capture_group.captu
 )
 from jasm.regex.tree_generators.pattern_node_tmp_untyped import PatternNodeTmpUntyped
 from jasm.regex.tree_generators.pattern_node_type_builder.capture_group_interface import CaptureGroupHelper
-from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_decider import (
+from jasm.regex.tree_generators.pattern_node_type_builder.special_register_capture_group_type_builder import (
     SpecialRegisterCaptureGroupTypeBuilder,
 )
 
@@ -33,7 +33,7 @@ class RegisterCaptureGroupBuilder:
         assert isinstance(self.pattern_node_tmp_untyped.name, str)
         main_reference_name = remove_access_suffix(pattern_name=self.pattern_node_tmp_untyped.name)
 
-        return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(
+        return CaptureGroupHelper().has_any_ancestor_who_is_capture_group_reference(  # type:ignore
             capture_manager=self.pattern_node_tmp_untyped.shared_context.capture_manager,
             pattern_node_name=main_reference_name,
         )

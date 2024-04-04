@@ -3,7 +3,7 @@ from jasm.regex.tree_generators.capture_group_index import CaptureGroupIndexRegi
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 
 
-class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -14,7 +14,7 @@ class PatternNodeCaptureGroupRegisterReferenceGenreg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(.)[xhl]{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -25,7 +25,7 @@ class PatternNodeCaptureGroupRegisterReferenceIndreg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?([sd])il?{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -36,7 +36,7 @@ class PatternNodeCaptureGroupRegisterReferenceStackreg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(sp)l?{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterReferenceBasereg(PatternNode):
+class PatternNodeCaptureGroupRegisterReferenceBasereg(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         # The comma is optional just for when this is under a deref
@@ -47,7 +47,7 @@ class PatternNodeCaptureGroupRegisterReferenceBasereg(PatternNode):
         return f"{OPTIONAL_PERCENTAGE_CHAR}[re]?(bp)l?{OPTIONAL_COMMA}"
 
 
-class PatternNodeCaptureGroupRegisterCall(PatternNode):
+class PatternNodeCaptureGroupRegisterCall(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         return self.get_capture_group_register_call()
@@ -56,14 +56,14 @@ class PatternNodeCaptureGroupRegisterCall(PatternNode):
 
         index = CaptureGroupIndexRegisterCall(pattern_node=self).to_regex()
 
-        matching_rule = self.process_register_capture_group_name_based_on_register_type(index=index)
+        matching_rule: str = self.process_register_capture_group_name_based_on_register_type(index=index)
 
         # return OPTIONAL_PERCENTAGE_CHAR + matching_rule + ","
         # The comma is optional just for when this is under a deref
         # On deref the comma should not be present
         # TODO: find a way to implement this cleaner
 
-        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + OPTIONAL_COMMA
+        return OPTIONAL_PERCENTAGE_CHAR + matching_rule + OPTIONAL_COMMA  # type: ignore
 
     def process_register_capture_group_name_based_on_register_type(self, index: str) -> str:
         """Process the register capture group name based on the register special type."""

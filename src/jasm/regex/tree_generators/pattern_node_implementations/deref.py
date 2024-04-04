@@ -4,20 +4,20 @@ from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimesTypeBuilder
 
 
-class PatternNodeDerefProperty(PatternNode):
+class PatternNodeDerefProperty(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         if self.children:
             assert isinstance(self.children, list)
             assert len(self.children) == 1
 
-            child_regex = self.children[0].get_regex()
+            child_regex: str = self.children[0].get_regex()
             return child_regex
 
         return str(self.name)
 
 
-class PatternNodeDeref(PatternNode):
+class PatternNodeDeref(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         times_regex = TimesTypeBuilder().get_min_max_regex(times=self.times)
@@ -30,13 +30,13 @@ class PatternNodeDeref(PatternNode):
         return f"{deref_regex},"
 
 
-class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):
+class PatternNodeDerefPropertyCaptureGroupReference(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
         return r"([^,|]+)"
 
 
-class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):
+class PatternNodeDerefPropertyCaptureGroupCall(PatternNode):  # type: ignore
 
     def get_regex(self) -> str:
-        return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()
+        return CaptureGroupIndexOperandCall(pattern_node=self).to_regex()  # type: ignore

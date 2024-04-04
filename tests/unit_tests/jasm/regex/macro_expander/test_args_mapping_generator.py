@@ -1,3 +1,4 @@
+from typing import Any
 import pytest
 
 from jasm.regex.macro_expander.args_mapping_generator import ArgsMappingGenerator
@@ -21,7 +22,7 @@ def test_get_args_mapping_dict_simple(args_mapping_generator: ArgsMappingGenerat
 def test_get_args_mapping_dict_no_match(args_mapping_generator: ArgsMappingGenerator) -> None:
     tree = {"arg1": "value1"}
     args = ["arg2"]
-    expected = {}
+    expected: dict[str, Any] = {}
     assert args_mapping_generator.get_args_mapping_dict(tree, args) == expected
 
 

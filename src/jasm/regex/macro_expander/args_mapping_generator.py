@@ -1,21 +1,20 @@
 from typing import Any, Dict, Generator, List, Tuple, TypeAlias, Union
 
-
 # Type aliases
-PatternTree: TypeAlias = Dict | str
+PatternTree: TypeAlias = Dict[str, Any] | str
 
 
 class ArgsMappingGenerator:
 
-    def get_args_mapping_dict(self, tree: PatternTree, args: List[str]) -> Dict:
-        mapping_dict: Dict[str, Dict | List | str] = {}
+    def get_args_mapping_dict(self, tree: PatternTree, args: List[str]) -> Dict[str, Any]:
+        mapping_dict: Dict[str, Dict[str, Any] | List[Any] | str] = {}
 
         for arg in args:
             for item in self._get_args_mapping(tree=tree, current_arg=arg):
                 mapping_dict.update(item)
         return mapping_dict
 
-    def _get_args_mapping(self, tree: PatternTree, current_arg: str) -> Generator[Dict, None, None]:
+    def _get_args_mapping(self, tree: PatternTree, current_arg: str) -> Generator[Dict[str, Any], None, None]:
         match tree:
             case str():
                 if tree == current_arg:
@@ -26,7 +25,9 @@ class ArgsMappingGenerator:
                     if key == current_arg:
                         yield {key: value}
 
-    def _yield_key_value_pairs(self, data: Union[Dict[Any, Any], List[Any]]) -> Generator[Tuple[Any, Any], None, None]:
+    def _yield_key_value_pairs(
+        self, data: Dict[str, Any] | List[str | Dict[str, Any]]
+    ) -> Generator[Tuple[Any, Any], None, None]:
         """
         Recursively yield key-value pairs from all levels of a nested structure
         containing dictionaries and lists.

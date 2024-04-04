@@ -7,7 +7,7 @@ from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
 
 
-class ShellDisassembler(Disassembler):
+class ShellDisassembler(Disassembler):  # type: ignore
     """A class to disassemble binaries using a shell program."""
 
     def __init__(self, program: str, flags: list[str]) -> None:

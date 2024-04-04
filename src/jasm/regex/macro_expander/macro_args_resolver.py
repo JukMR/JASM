@@ -1,16 +1,20 @@
-from typing import Any, Dict, Generator, List, Tuple, TypeAlias, Union
+from typing import Any, Dict, Generator, List, Tuple, TypeAlias
 
 from jasm.regex.macro_expander.args_mapping_generator import ArgsMappingGenerator
 
 # Type aliases
-MappingDict: TypeAlias = Dict
-PatternTree: TypeAlias = Dict | str
-MacroTree: TypeAlias = Dict
+MappingDict: TypeAlias = Dict[str, Any]
+PatternTree: TypeAlias = Dict[str, Any] | str
+MacroTree: TypeAlias = Dict[str, Any]
+
+PathTuple: TypeAlias = Tuple[Any, ...]
 
 
 class MacroArgsResolver:
+    """This class is responsible for replacing the macro args with the evaluated values from the pattern."""
 
     def resolve(self, macro: MacroTree, tree: PatternTree) -> MacroTree:
+        """This function will replace the macro getting the args evaluation from the pattern."""
         mapping_dict = self._get_macro_mapping_arg_dict(macro=macro, tree=tree)
 
         macro = self._evaluate_args_in_macro(macro=macro, mapping_dict=mapping_dict)
@@ -21,7 +25,7 @@ class MacroArgsResolver:
         macro_args = macro.get("args")
         assert macro_args, "The macro must have args to replace."
 
-        mapping_dict = ArgsMappingGenerator().get_args_mapping_dict(tree=tree, args=macro_args)
+        mapping_dict: MacroTree = ArgsMappingGenerator().get_args_mapping_dict(tree=tree, args=macro_args)
         return mapping_dict
 
     def _evaluate_args_in_macro(self, macro: MacroTree, mapping_dict: MappingDict) -> MacroTree:
@@ -51,8 +55,9 @@ class MacroArgsResolver:
         return macro
 
     def _iter_items_with_path(
-        self, elems: Union[str, List, Dict], path: Tuple = ()
-    ) -> Generator[Tuple[Tuple, Any], None, None]:
+        self, elems: str | List[Any] | Dict[str, Any], path: PathTuple = ()
+    ) -> Generator[Tuple[Tuple[Any, Any], Any], None, None]:
+
         match elems:
             case str():
                 yield path, elems
@@ -64,11 +69,14 @@ class MacroArgsResolver:
                     yield path + (k,), (k, v)
                     yield from self._iter_items_with_path(v, path + (k,))
 
-    def _replace_item_in_structure(self, struct: Union[Dict, List], path: Tuple, new_value: Any) -> None:
+    def _replace_item_in_structure(
+        self, struct: Dict[str, Any] | List[str | Dict[str, Any]] | str, path: PathTuple, new_value: Any
+    ) -> None:
         """Navigate struct using path and replace the target item with new_value."""
         for step in path[:-1]:
             struct = struct[step] if isinstance(struct, dict) else struct[int(step)]  # Navigate to the final container.
         if isinstance(struct, dict):
             struct[path[-1]] = new_value
         else:  # For lists, path[-1] is an index.
+            assert not isinstance(struct, str)
             struct[int(path[-1])] = new_value

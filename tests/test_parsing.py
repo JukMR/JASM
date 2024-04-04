@@ -1,4 +1,6 @@
+from pathlib import Path
 import re
+from typing import Any
 
 import pytest
 from conftest import load_test_configs
@@ -13,10 +15,10 @@ from jasm.match import MasterOfPuppets
     load_test_configs(file_path="configuration.yaml", yaml_config_field="test_parsing_lines"),
     ids=lambda config: config["title"],
 )
-def test_correct_number_of_lines_with_regex(config) -> None:
+def test_correct_number_of_lines_with_regex(config: Any) -> None:
     """Parse file and return number of lines"""
 
-    def open_file(file_name) -> str:
+    def open_file(file_name: str | Path) -> str:
         """Open file and return its content"""
         with open(file_name, "r", encoding="utf-8") as file_descriptor:
             return file_descriptor.read()
@@ -34,7 +36,7 @@ def test_correct_number_of_lines_with_regex(config) -> None:
     load_test_configs(file_path="configuration.yaml", yaml_config_field="test_parsing_lines"),
     ids=lambda config: config["title"],
 )
-def test_parsing_number_of_lines(config) -> None:
+def test_parsing_number_of_lines(config: Any) -> None:
     "Test parsing number of lines for all configurations in configuration.yml."
 
     assembly = config.get("assembly")
@@ -65,5 +67,7 @@ def parse_file_and_get_number_of_lines_with_pyparsing(input_file: str, input_fil
 
     if isinstance(all_instructions, bool):
         raise ValueError("Result should not be bool")
+
+    assert isinstance(all_instructions, str)
 
     return all_instructions.count("|")

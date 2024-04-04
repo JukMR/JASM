@@ -1,3 +1,4 @@
+from typing import Any
 from jasm.regex.tree_generators.capture_manager import CapturesManager
 import pytest
 
@@ -36,7 +37,7 @@ def test_pattern_node_builder_no_parents_with_dict(mock_shared_context: SharedCo
 
 
 def test_get_name() -> None:
-    command_dict = {"command_name": {}}
+    command_dict: dict[str, Any] = {"command_name": {}}
     name = PatternNodeBuilderNoParents._get_name(command_dict)
     assert name == "command_name"
 

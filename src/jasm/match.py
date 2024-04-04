@@ -156,14 +156,17 @@ class MasterOfPuppets:
 
         match self.match_config.return_mode:
             case MatchingReturnMode.bool:
-                return matched_observer.matched
+                return_matched: bool = matched_observer.matched
+                return return_matched
 
             case MatchingReturnMode.matched_addrs_list:
                 # This mode implies that if the list is not empty, then the match was successful
-                return matched_observer.addr_list
+                return_addr_list: list[str] = matched_observer.addr_list
+                return return_addr_list
 
             case MatchingReturnMode.all_instructions_string:
-                return matched_observer.stringified_instructions
+                return_all_instructions_string: str = matched_observer.stringified_instructions
+                return return_all_instructions_string
 
         raise ValueError("Invalid return mode")
 
@@ -179,7 +182,7 @@ class MasterOfPuppets:
         return observer_list
 
 
-class ValidAddrObserver(IInstructionObserver):
+class ValidAddrObserver(IInstructionObserver):  # type: ignore
     """Valid address observer"""
 
     def __init__(self, valid_addr_range: ValidAddrRange) -> None:

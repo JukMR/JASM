@@ -15,7 +15,7 @@ from jasm.regex.tree_generators.pattern_node_type_builder.pattern_node_type_buil
 from jasm.regex.tree_generators.shared_context import SharedContext
 
 
-class Yaml2Regex(File2Regex):
+class Yaml2Regex(File2Regex):  # type: ignore
     """File2Regex class implementation with Yaml"""
 
     def __init__(self, pattern_pathstr: str, macros_from_terminal: Optional[List[str]] = None) -> None:
@@ -36,7 +36,7 @@ class Yaml2Regex(File2Regex):
         rule_tree = self._generate_rule_tree(patterns=patterns)
 
         # Process the rule tree and generate the regex
-        output_regex = rule_tree.get_regex()
+        output_regex: str = rule_tree.get_regex()
 
         # Log regex results
         logger.debug("The output regex is:\n%s\n", output_regex)
@@ -50,7 +50,7 @@ class Yaml2Regex(File2Regex):
         pattern_with_top_node = {"$and": patterns}
 
         # Check if there are any macros setted
-        macros: list = self.loaded_file.get("macros", [])
+        macros: list[dict[str, str]] = self.loaded_file.get("macros", [])
 
         assert isinstance(macros, list), "Invalid macros in the pattern file"
 
@@ -59,14 +59,14 @@ class Yaml2Regex(File2Regex):
 
             if self.macros_from_terminal_filepath:
                 # Add macros from args to the macros from the file
-                processed_macros = self.load_macros_from_args()
+                processed_macros: list[dict[str, str]] = self.load_macros_from_args()
                 macros = processed_macros + macros
 
             pattern_with_top_node = MacroExpander().resolve_all_macros(macros=macros, tree=pattern_with_top_node)
 
         return pattern_with_top_node
 
-    def load_macros_from_args(self) -> List[Dict]:
+    def load_macros_from_args(self) -> List[Dict[str, str]]:
         """Load macros from a list of files"""
 
         assert self.macros_from_terminal_filepath, "No macros from args provided"

@@ -10,16 +10,20 @@ macros:
 pattern:
   - movb:
       - "@any"
+
       - $or:
           - $deref:
               main_reg: "%rip"
+
           - $deref:
               main_reg: "%rip"
               constant_offset: "@any"
+
           - $deref:
               main_reg: "%rip"
               constant_offset: "@any"
               register_multiplier: "@any"
+
           - $deref:
               main_reg: "%rip"
               constant_offset: "@any"

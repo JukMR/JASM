@@ -34,7 +34,7 @@ IncludeExcludeListType: TypeAlias = Optional[List[str]]
 OperandListType: TypeAlias = Optional[List[Any]]
 OperandType: TypeAlias = Optional[Dict[str, Any]]
 
-DictNode: TypeAlias = Dict[str, Any] | str | int
+DictNode: TypeAlias = Dict[str, int] | str | int | Dict[str, list[dict[str, Any]] | list[str]]
 
 
 PatternNodeName: TypeAlias = str | int

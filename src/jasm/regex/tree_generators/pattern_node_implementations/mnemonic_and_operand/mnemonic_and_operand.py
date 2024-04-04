@@ -29,7 +29,7 @@ def get_pattern_node_name(
     return name
 
 
-class _PatternNodeMnemonicOrOperandBuilder(PatternNode):
+class _PatternNodeMnemonicOrOperandBuilder(PatternNode):  # type: ignore
     """This class is used to process PatternNodeMnemonic and PatternNodeOperand classes."""
 
     def get_regex(self) -> str:
@@ -112,7 +112,8 @@ class _RegexWithOperandsBuilder:
     def get_min_max_regex(self) -> Optional[str]:
         if not self.times:
             return None
-        return TimesTypeBuilder().get_min_max_regex(times=self.times)
+
+        return TimesTypeBuilder().get_min_max_regex(times=self.times)  # type: ignore
 
     def _form_regex_with_time(self, operands_regex: Optional[str], times_regex: str) -> str:
         # Add prefix and suffix to name to allow matching only substring

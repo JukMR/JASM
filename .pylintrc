@@ -1,5 +1,6 @@
 [FORMAT]
-max-line-length=120
+max-line-length = 120
 
 [MESSAGES CONTROL]
-disable = C0103
+disable = C0103, fixme, too-few-public-methods, missing-function-docstring, missing-module-docstring,
+          missing-class-docstring, line-too-long, import-error, too-many-return-statements

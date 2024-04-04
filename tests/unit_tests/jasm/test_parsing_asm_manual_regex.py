@@ -2,7 +2,7 @@ from jasm.global_definitions import Instruction
 from jasm.stringify_asm.implementations.gnu_objdump.asm_manual_parser_w_regex import LineParser
 
 
-def test_lineparser_parse():
+def test_lineparser_parse() -> None:
     line = "   1231:\t48 89 e5                \tmov    \t%rsp,%rbp  "
     parsed_inst = LineParser(line).parse()
 
@@ -11,7 +11,7 @@ def test_lineparser_parse():
     assert operands == ["%rsp", "%rbp"]
 
 
-def test_get_splitted_operands():
+def test_get_splitted_operands() -> None:
     assert LineParser.get_splitted_operands("%rsp,%rbp") == ["%rsp", "%rbp"]
 
     assert LineParser.get_splitted_operands("%rsp") == ["%rsp"]

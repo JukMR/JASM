@@ -23,7 +23,9 @@ def sample_tree() -> dict[str, str]:
 # Tests for resolve
 
 
-def test_resolve(macro_args_resolver: MacroArgsResolver, sample_macro, sample_tree) -> None:
+def test_resolve(
+    macro_args_resolver: MacroArgsResolver, sample_macro: dict[str, Any], sample_tree: dict[str, str]
+) -> None:
     resolved_macro = macro_args_resolver.resolve(sample_macro, sample_tree)
     assert resolved_macro["pattern"]["key1"] == "value1"
     assert resolved_macro["pattern"]["key2"] == ["value2"]
@@ -32,7 +34,9 @@ def test_resolve(macro_args_resolver: MacroArgsResolver, sample_macro, sample_tr
 # Tests for get_macro_mapping_arg_dict
 
 
-def test_get_macro_mapping_arg_dict(macro_args_resolver: MacroArgsResolver, sample_macro, sample_tree) -> None:
+def test_get_macro_mapping_arg_dict(
+    macro_args_resolver: MacroArgsResolver, sample_macro: dict[str, Any], sample_tree: dict[str, str]
+) -> None:
     mapping_dict = macro_args_resolver._get_macro_mapping_arg_dict(sample_macro, sample_tree)
     expected_dict = {"arg1": "value1", "arg2": "value2"}
     assert mapping_dict == expected_dict
@@ -41,7 +45,7 @@ def test_get_macro_mapping_arg_dict(macro_args_resolver: MacroArgsResolver, samp
 # Test for evaluate_args_in_macro
 
 
-def test_evaluate_args_in_macro(macro_args_resolver: MacroArgsResolver, sample_macro) -> None:
+def test_evaluate_args_in_macro(macro_args_resolver: MacroArgsResolver, sample_macro: dict[str, Any]) -> None:
     mapping_dict = {"arg1": "value1", "arg2": "value2"}
     updated_macro = macro_args_resolver._evaluate_args_in_macro(sample_macro, mapping_dict)
     assert updated_macro["pattern"]["key1"] == "value1"
