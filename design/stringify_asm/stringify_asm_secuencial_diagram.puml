@@ -1,4 +1,10 @@
 @startuml stringify_asm_secuencial_diagram
+
+' legend
+'     Diagram for the stringify_asm module
+'     JASM version v1.0.0
+' end legend
+
 participant MasterOfPuppets
 participant MatchedObserver
 participant ConsumerBuilder

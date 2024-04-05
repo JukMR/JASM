@@ -2,7 +2,7 @@ from typing import Final, List, Optional
 
 import regex
 
-from jasm.global_definitions import MatchingSearchMode, Instruction
+from jasm.global_definitions import Instruction, MatchingSearchMode
 from jasm.logging_config import logger
 from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver
 
