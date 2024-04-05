@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import List, Optional, TypeAlias
 
 from jasm.global_definitions import Instruction
+from jasm.logging_config import logger
 
 
 @dataclass
@@ -95,7 +96,7 @@ class LineParser:
         if self.line_is_title():
             return self.line
 
-        print(f"Found a line that is not an instruction, section or label: '{self.line}'")
+        logger.debug("Found a line that is not an instruction, section or label: %s", self.line)
         return self.line
 
     def line_is_section(self) -> bool:
