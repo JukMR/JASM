@@ -1,0 +1,41 @@
+@startuml stringify_asm_secuencial_diagram
+participant MasterOfPuppets
+participant MatchedObserver
+participant ConsumerBuilder
+participant CompleteConsumer
+participant ProducerBuilder
+participant ComposableProducer
+participant GNUObjdumpDisassembler
+participant ObjdumpParserManual
+participant RemoveEmptyInstructions
+participant ValidAddrObserver
+
+MasterOfPuppets -> MatchedObserver : instantiate
+MasterOfPuppets -> ConsumerBuilder : build(consumer_type=Complete, ...)
+ConsumerBuilder -> CompleteConsumer : instantiate(regex_rule, matched_observer, ...)
+MasterOfPuppets -> ProducerBuilder : build(file_type, assembly_style)
+ProducerBuilder -> ComposableProducer : instantiate(disassembler, parser)
+MasterOfPuppets -> CompleteConsumer : prepare_observers()
+CompleteConsumer -> RemoveEmptyInstructions : add_observer()
+CompleteConsumer -> ValidAddrObserver : add_observer()
+
+MasterOfPuppets -> ComposableProducer : process_file(file, consumer)
+opt file_type == binary
+    ComposableProducer -> GNUObjdumpDisassembler : disassemble(file)
+    GNUObjdumpDisassembler -> ComposableProducer : return assembly
+end
+
+ComposableProducer -> ObjdumpParserManual : parse(assembly, consumer)
+ObjdumpParserManual -> CompleteConsumer : consume_instruction(inst)
+
+loop for each instruction
+    CompleteConsumer -> RemoveEmptyInstructions : observe_instruction(inst)
+    RemoveEmptyInstructions -> ValidAddrObserver : observe_instruction(modified_inst)
+    ValidAddrObserver -> CompleteConsumer : return final_inst
+end
+
+CompleteConsumer -> MatchedObserver : regex_matched(addr)
+CompleteConsumer -> MatchedObserver : finalize()
+MasterOfPuppets -> MatchedObserver : return result
+
+@enduml
