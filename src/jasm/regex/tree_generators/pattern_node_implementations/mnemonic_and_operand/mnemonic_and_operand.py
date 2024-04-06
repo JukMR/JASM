@@ -10,6 +10,7 @@ from jasm.global_definitions import (
     PatternNodeName,
     TimesType,
 )
+from jasm.logging_config import logger
 from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
 from jasm.regex.tree_generators.pattern_node_implementations.time_type_builder import TimesTypeBuilder
 
@@ -45,7 +46,7 @@ class _PatternNodeMnemonicOrOperandBuilder(PatternNode):  # type: ignore
             # Is an operand
             return str(self._sanitize_operand_name(name))
         # Is a mnemonic with no operands
-        print(f"Found a mnemonic with no operands in yaml rule: {self.name}")
+        logger.debug("Found a mnemonic with no operands in yaml rule: %s", self.name)
 
         assert isinstance(children, List) or (not children), "Children must be a list or None"
         # This line shouldn't be necessary but the linter complains children could be dict
