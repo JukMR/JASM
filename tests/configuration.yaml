@@ -253,7 +253,12 @@ test_matching:
   - title: "Register capture group example 4"
     yaml: "tests/yamls/register_capture_group_example_4.yaml"
     assembly: "tests/source_test_files/register_capture_groups/main.s"
-    expected: False
+    expected: false
+    expected-time: 0.0034
+  - title: "2 zero_reg rule"
+    yaml: "tests/yamls/2_zero_reg.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule.s"
+    expected: True
 
   - title: "2 zero_reg rule"
     yaml: "tests/yamls/2_zero_reg.yaml"
