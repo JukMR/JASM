@@ -5,8 +5,8 @@ actor "Usuario" as user
 entity "JASM" as jasm
 database "Patrones\nencontrados" as patterns
 
-user -> jasm : Envia Reglas JASM
-user -> jasm : Envia Archivo (Binario o Assembly)
-jasm -> patterns : Emite Patrones
+user -> jasm : 1: Envia Reglas JASM
+user -> jasm : 2: Envia Archivo (Binario o Assembly)
+jasm -> patterns : 3: Emite Patrones
 
 @enduml
