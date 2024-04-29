@@ -1,0 +1,22 @@
+{
+    "CE": {
+        "jasm": 15
+    },
+    "CA": {
+        "jasm": 1,
+        "typing": 1,
+        "enum": 1,
+        "regex": 1,
+        "pathlib": 1,
+        "datetime": 1,
+        "logging": 1,
+        "time": 1,
+        "dataclasses": 1,
+        "sys": 1,
+        "yaml": 1,
+        "abc": 1,
+        "itertools": 1,
+        "subprocess": 1,
+        "re": 1
+    }
+}
