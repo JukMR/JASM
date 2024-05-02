@@ -50,6 +50,31 @@ def map_dependencies(directory: str) -> Tuple[Dict[str, Set[str]], Dict[str, Set
     return imports_map, referenced_by
 
 
+def get_dependencies_only_for_main_packages(
+    import_map: set, referenced_by: set
+) -> tuple[dict[str, set], dict[str, set]]:
+    clean_import_map = get_main_pkg_per_set(import_map)
+    clean_referenced_by = get_main_pkg_per_set(referenced_by)
+    return clean_import_map, clean_referenced_by
+
+
+def get_main_pkg_per_set(current_set: set) -> dict[str, set]:
+    result_dict = {}
+    main_packages = ["jasm/regex", "jasm/stringify_asm"]
+    for main_pkg in main_packages:
+        new_package_set = get_full_set_only_for_pkg(current_pkg=main_pkg, current_set=current_set)
+        result_dict[main_pkg] = new_package_set
+    return result_dict
+
+
+def get_full_set_only_for_pkg(current_pkg: str, current_set: set[dict]) -> set:
+    new_set = set()
+    for key, value in current_set.items():
+        if (current_pkg in key) or (current_pkg.replace("/", ".") in key):
+            new_set.update(value)
+    return new_set
+
+
 def calculate_coupling(
     imports_map: Dict[str, Set[str]], referenced_by: Dict[str, Set[str]]
 ) -> Tuple[Dict[str, int], Dict[str, int]]:
@@ -63,15 +88,17 @@ def main() -> None:
 
     # Get source folder path to analyze as argument using pyarg
 
-    parser = argparse.ArgumentParser(description="Analyze Python package imports.")
-    parser.add_argument("source_folder", type=str, help="Path to the source folder to analyze")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(description="Analyze Python package imports.")
+    # parser.add_argument("source_folder", type=str, help="Path to the source folder to analyze")
+    # args = parser.parse_args()
 
-    project_directory = args.source_folder
+    # project_directory = args.source_folder
+    project_directory = "src"
 
     # Mapeo y cálculo
     imports, references = map_dependencies(project_directory)
-    CE, CA = calculate_coupling(imports, references)
+    imports_main_pkg, references_main_pkg = get_dependencies_only_for_main_packages(imports, references)
+    CE, CA = calculate_coupling(imports_main_pkg, references_main_pkg)
 
     write_json("results_measure_ca_and_ce.json", {"Acoplamiento Eferente (CE):": CE, "Acoplamiento Aferente (CA):": CA})
 
