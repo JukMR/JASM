@@ -23,7 +23,7 @@ y la otra fue hipotessis luego experimento (appender)
 3. Poner list appending y byte array en el mismo grafico
 
 4. Agregar en la optimizacion los resultados de esta, diciendo la optimizacion elegida, el porque, ie justificacion.
-Agregar que hicimos un `educated guest` en el caso de hipotesis y experimento.
+Agregar que hicimos un `educated guess` en el caso de hipotesis y experimento.
 
 5. Poner las dos iteraciones del parser y como se hizo la mejora e investigación.
 
