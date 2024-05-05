@@ -1,4 +1,5 @@
 import ast
+import json
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Set, Tuple
@@ -56,8 +57,8 @@ def calculate_coupling(
     imports_map: Dict[str, Set[str]], referenced_by: Dict[str, Set[str]]
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """Calcula el acoplamiento eferente (CE) y aferente (CA) para cada paquete."""
-    CE = {key: value for key, value in imports_map.items()}
-    CA = {key: value for key, value in referenced_by.items()}
+    CE = {key: sorted(value) for key, value in imports_map.items()}
+    CA = {key: sorted(value) for key, value in referenced_by.items()}
     return CE, CA
 
 
@@ -67,11 +68,50 @@ def get_project_folder() -> Path:
     return project_folder
 
 
-def save_results(CE: Dict[str, Any], CA: Dict[str, Any]) -> None:
+def save_results(CE: Dict[str, Any], CA: Dict[str, Any], *, filename: str) -> None:
     # Join results as a single JSON
     results = {"acoplamiento_eferente": CE, "acoplamiento_aferente": CA}
-    with open("results.py", "w", encoding="utf-8") as file:
-        file.write(str(results))
+
+    # local function to serialize sets as lists
+    def set_default(obj):
+        if isinstance(obj, set):
+            return list(obj)
+        raise TypeError
+
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(results, file, indent=4, default=set_default)
+
+
+def filter_out_dirs(CE: Dict[str, Any], CA: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    dirs = [".mypy_cache", "__pycache__"]
+    CE_copy = CE.copy()
+    CA_copy = CA.copy()
+
+    for directory in dirs:
+        for key in CE:
+            if directory in key:
+                del CE_copy[key]
+        for key in CA:
+            if directory in key:
+                del CA_copy[key]
+    return CE_copy, CA_copy
+
+
+def clean_empty_values(input_file: str, output_file: str) -> None:
+    with open(input_file, "r", encoding="utf-8") as file:
+        data = json.load(file)
+
+    # Remove empty values
+    for key, value in data.items():
+        data[key] = {k: v for k, v in value.items() if v}
+        for k, v in data[key].items():
+            data[key][k] = [i for i in v if i]
+            for i in data[key][k]:
+                if not i:
+                    data[key][k].remove(i)
+
+    with open(output_file, "w", encoding="utf-8") as file:
+        json.dump(data, file, indent=4)
 
 
 def main() -> None:
@@ -84,12 +124,14 @@ def main() -> None:
     imports, references = map_dependencies(project_directory, specific_packages)
     CE, CA = calculate_coupling(imports, references)
 
-    # Mostrando resultados
-    print("Acoplamiento Eferente (CE) a nivel de paquete:", CE)
-    print("Acoplamiento Aferente (CA) a nivel de paquete:", CA)
+    # Remove .mypy_cache and __pycache__ from the results
+    CE_filtered, CA_filtered = filter_out_dirs(CE, CA)
 
-    # Save files with the results
-    save_results(CE, CA)
+    # Save files to disk: unfiltered and filtered
+    save_results(CE, CA, filename="results.json")
+    save_results(CE_filtered, CA_filtered, filename="results_filtered.json")
+
+    clean_empty_values(input_file="results_filtered.json", output_file="results_no_empty.json")
 
 
 if __name__ == "__main__":
