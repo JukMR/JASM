@@ -1,7 +1,7 @@
 import ast
 import os
-from typing import Any, Dict, List, Set, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, Set, Tuple
 
 
 def extract_imports(path: str) -> List[str]:
