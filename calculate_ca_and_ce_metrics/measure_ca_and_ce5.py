@@ -70,7 +70,7 @@ def get_project_folder() -> Path:
 def save_results(CE: Dict[str, Any], CA: Dict[str, Any]) -> None:
     # Join results as a single JSON
     results = {"acoplamiento_eferente": CE, "acoplamiento_aferente": CA}
-    with open("results.py", "w") as file:
+    with open("results.py", "w", encoding="utf-8") as file:
         file.write(str(results))
 
 
