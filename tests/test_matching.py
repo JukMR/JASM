@@ -5,7 +5,7 @@ import pytest
 from conftest import load_test_configs
 
 from jasm.global_definitions import InputFileType, MatchConfig, MatchingReturnMode, MatchingSearchMode
-from jasm.match import MasterOfPuppets
+from jasm.match.match import MasterOfPuppets
 
 
 @pytest.fixture(scope="session")
