@@ -13,7 +13,7 @@ def write_json(file_name: str, data: Dict) -> None:
 
 def extract_imports(path: str) -> List[str]:
     """Extrae todos los nombres de módulos importados en un archivo Python."""
-    with open(path, "r") as file:
+    with open(path, "r", encoding="utf-8") as file:
         tree = ast.parse(file.read(), filename=path)
 
     imports = []
