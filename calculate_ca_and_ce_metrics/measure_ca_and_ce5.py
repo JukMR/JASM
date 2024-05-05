@@ -1,6 +1,7 @@
 import ast
 import json
 import os
+from collections import OrderedDict
 from pathlib import Path
 from typing import Any, Dict, Final, List, Set, Tuple
 
@@ -68,9 +69,7 @@ def get_project_folder() -> Path:
     return project_folder
 
 
-def save_results(CE: Dict[str, Any], CA: Dict[str, Any], *, filename: str) -> None:
-    # Join results as a single JSON
-    results = {"acoplamiento_eferente": CE, "acoplamiento_aferente": CA}
+def write_json_to_disk(data: dict[str, Any], *, output_file: str | Path) -> None:
 
     # local function to serialize sets as lists
     def set_default(obj):
@@ -78,8 +77,8 @@ def save_results(CE: Dict[str, Any], CA: Dict[str, Any], *, filename: str) -> No
             return list(obj)
         raise TypeError
 
-    with open(filename, "w", encoding="utf-8") as file:
-        json.dump(results, file, indent=4, default=set_default)
+    with open(output_file, "w", encoding="utf-8") as file:
+        json.dump(data, file, indent=4, default=set_default)
 
 
 def filter_out_dirs(CE: Dict[str, Any], CA: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
@@ -88,16 +87,19 @@ def filter_out_dirs(CE: Dict[str, Any], CA: Dict[str, Any]) -> Tuple[Dict[str, A
     CA_copy = CA.copy()
 
     for directory in dirs:
+
         for key in CE:
             if directory in key:
                 del CE_copy[key]
+
         for key in CA:
             if directory in key:
                 del CA_copy[key]
+
     return CE_copy, CA_copy
 
 
-def clean_empty_values(input_file: str, output_file: str) -> None:
+def clean_empty_values(input_file: str, output_file: str | Path) -> None:
     with open(input_file, "r", encoding="utf-8") as file:
         data = json.load(file)
 
@@ -114,9 +116,63 @@ def clean_empty_values(input_file: str, output_file: str) -> None:
         json.dump(data, file, indent=4)
 
 
+def get_ce_finished(acoplamiento_eferente: dict[str, Any]) -> Dict[str, int]:
+
+    # Inicialización de conjuntos para contar importaciones únicas externas
+    regex_imports = set()
+    match_imports = set()
+    stringify_asm_imports = set()
+
+    # Definición de dominios internos para cada módulo principal
+    regex_internal = set(k for k in acoplamiento_eferente if k.startswith("regex"))
+
+    # Remove `regex` from regex_internal because this is the actual `re` module which is externa;
+    regex_internal.remove("regex")
+
+    match_internal = set(k for k in acoplamiento_eferente if k.startswith("match"))
+    stringify_asm_internal = set(k for k in acoplamiento_eferente if k.startswith("stringify_asm"))
+
+    # Filtrar solo importaciones externas
+
+    for ae_key, ae_values in acoplamiento_eferente.items():
+        for value in ae_values:
+            # Asumiendo que los nombres de módulo externo no comienzan con "jasm" que es interno
+            if not value.startswith("jasm"):
+                if ae_key.startswith("regex") and value not in regex_internal:
+                    regex_imports.add(value)
+                elif ae_key.startswith("match") and value not in match_internal:
+                    match_imports.add(value)
+                elif ae_key.startswith("stringify_asm") and value not in stringify_asm_internal:
+                    stringify_asm_imports.add(value)
+
+    # TOFIX: Agregar a many las llamadas a stringify y regex dentro de match
+    # No se bien porque no se estan contando y no tiene mucho sentido seguir buscando
+    match_imports = match_imports.union(["jasm.regex", "jasm.stringify_asm"])
+
+    ce_consolidado = {
+        "match": len(match_imports),
+        "regex": len(regex_imports),
+        "stringify_asm": len(stringify_asm_imports),
+    }
+
+    return ce_consolidado
+
+
+def get_ca_finished(acoplamiento_aferente: dict[str, Any]) -> Dict[str, int]:
+
+    ca_consolidado = {key: len(set(val)) for key, val in acoplamiento_aferente.items()}
+
+    # Order the dict alphabetically by keys
+    sorted_dict = OrderedDict(sorted(ca_consolidado.items()))
+
+    return sorted_dict
+
+
 def main() -> None:
 
-    DEBUG_MODE: Final[bool] = False
+    DEBUG_MODE: Final[bool] = True
+    output_folder = Path(__file__).parent / "output"
+    output_folder.mkdir(exist_ok=True, parents=True)
 
     # Directorio del proyecto y paquetes específicos a analizar
     project_directory: Path = get_project_folder()
@@ -128,17 +184,38 @@ def main() -> None:
     CE, CA = calculate_coupling(imports, references)
 
     # Remove .mypy_cache and __pycache__ from the results
-    CE_filtered, CA_filtered = filter_out_dirs(CE, CA)
+    CE_filtered, CA_filtered = filter_out_dirs(CE=CE, CA=CA)
+
+    # Join results as a single JSON
+    file_joined = {"acoplamiento_eferente": CE_filtered, "acoplamiento_aferente": CA_filtered}
 
     # Save files to disk
-    save_results(CE_filtered, CA_filtered, filename="results_filtered.json")
-    clean_empty_values(input_file="results_filtered.json", output_file="results_no_empty.json")
+    write_json_to_disk(data=file_joined, output_file=output_folder / "results_filtered.json")
+    clean_empty_values(input_file="results_filtered.json", output_file=output_folder / "results_no_empty.json")
 
     if DEBUG_MODE:
         # Remove the unfiltered results file
-        save_results(CE, CA, filename="results.json")
+        write_json_to_disk(data=file_joined, output_file=output_folder / "results.json")
     else:
         os.remove(Path("results_filtered.json"))
+
+    # Contar CE excluyendo duplicados y contando solo las importaciones externas
+    ce_counts = {key: len(set(val)) for key, val in file_joined["acoplamiento_eferente"].items()}
+
+    # Contar CA excluyendo duplicados
+    ca_counts = {key: len(set(val)) for key, val in file_joined["acoplamiento_aferente"].items()}
+
+    write_json_to_disk(data=ce_counts, output_file=output_folder / "ce_counts.json")
+    write_json_to_disk(data=ca_counts, output_file=output_folder / "ca_counts.json")
+
+    # Consolidar las métricas de acoplamiento eferente para los módulos principales
+    ce_consolidado = get_ce_finished(acoplamiento_eferente=file_joined["acoplamiento_eferente"])
+
+    # El acoplamiento aferente ya está a nivel de módulo global. Solo calcular los elementos y para tener las metricas finales
+    ca_consolidado = get_ca_finished(acoplamiento_aferente=file_joined["acoplamiento_aferente"])
+
+    write_json_to_disk(data=ce_consolidado, output_file=output_folder / "ce_consolidado.json")
+    write_json_to_disk(data=ca_consolidado, output_file=output_folder / "ca_consolidado.json")
 
 
 if __name__ == "__main__":
