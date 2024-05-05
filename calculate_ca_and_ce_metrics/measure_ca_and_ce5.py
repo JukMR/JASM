@@ -67,6 +67,13 @@ def get_project_folder() -> Path:
     return project_folder
 
 
+def save_results(CE: Dict[str, Any], CA: Dict[str, Any]) -> None:
+    # Join results as a single JSON
+    results = {"acoplamiento_eferente": CE, "acoplamiento_aferente": CA}
+    with open("results.py", "w") as file:
+        file.write(str(results))
+
+
 def main() -> None:
     # Directorio del proyecto y paquetes específicos a analizar
     project_directory: Path = get_project_folder()
@@ -80,6 +87,9 @@ def main() -> None:
     # Mostrando resultados
     print("Acoplamiento Eferente (CE) a nivel de paquete:", CE)
     print("Acoplamiento Aferente (CA) a nivel de paquete:", CA)
+
+    # Save files with the results
+    save_results(CE, CA)
 
 
 if __name__ == "__main__":
