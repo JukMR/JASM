@@ -51,6 +51,10 @@ def map_dependencies(directory: str | Path, packages: List[str]) -> Tuple[Dict[s
 
                     imports_map[package_name].update(imports)
 
+    # TOFIX: Agregar manualmente las importaciones de los módulos principales en el modulo regex
+    # De nuevo no se porque no esta andando bien pero prefiero agregarlo a mano
+    referenced_by["regex"].add("jasm.match")
+    referenced_by["stringify_asm"].add("jasm.match")
     return imports_map, referenced_by
 
 
@@ -99,7 +103,7 @@ def filter_out_dirs(CE: Dict[str, Any], CA: Dict[str, Any]) -> Tuple[Dict[str, A
     return CE_copy, CA_copy
 
 
-def clean_empty_values(input_file: str, output_file: str | Path) -> None:
+def clean_empty_values(input_file: str | Path, output_file: str | Path) -> None:
     with open(input_file, "r", encoding="utf-8") as file:
         data = json.load(file)
 
@@ -158,7 +162,7 @@ def get_ce_finished(acoplamiento_eferente: dict[str, Any]) -> Dict[str, int]:
     return ce_consolidado
 
 
-def get_ca_finished(acoplamiento_aferente: dict[str, Any]) -> Dict[str, int]:
+def sort_ca_dict(acoplamiento_aferente: dict[str, Any]) -> Dict[str, int]:
 
     ca_consolidado = {key: len(set(val)) for key, val in acoplamiento_aferente.items()}
 
@@ -191,12 +195,14 @@ def main() -> None:
 
     # Save files to disk
     write_json_to_disk(data=file_joined, output_file=output_folder / "results_filtered.json")
-    clean_empty_values(input_file="results_filtered.json", output_file=output_folder / "results_no_empty.json")
+    clean_empty_values(
+        input_file=output_folder / "results_filtered.json", output_file=output_folder / "results_no_empty.json"
+    )
 
     if DEBUG_MODE:
-        # Remove the unfiltered results file
-        write_json_to_disk(data=file_joined, output_file=output_folder / "results.json")
+        write_json_to_disk(data=file_joined, output_file=output_folder / "results_no_empty.json")
     else:
+        # Remove the unfiltered results file
         os.remove(Path("results_filtered.json"))
 
     # Contar CE excluyendo duplicados y contando solo las importaciones externas
@@ -205,17 +211,17 @@ def main() -> None:
     # Contar CA excluyendo duplicados
     ca_counts = {key: len(set(val)) for key, val in file_joined["acoplamiento_aferente"].items()}
 
-    write_json_to_disk(data=ce_counts, output_file=output_folder / "ce_counts.json")
-    write_json_to_disk(data=ca_counts, output_file=output_folder / "ca_counts.json")
+    counts = {"ce_counts": ce_counts, "ca_counts": ca_counts}
+    write_json_to_disk(data=counts, output_file=output_folder / "counts.json")
 
     # Consolidar las métricas de acoplamiento eferente para los módulos principales
     ce_consolidado = get_ce_finished(acoplamiento_eferente=file_joined["acoplamiento_eferente"])
 
     # El acoplamiento aferente ya está a nivel de módulo global. Solo calcular los elementos y para tener las metricas finales
-    ca_consolidado = get_ca_finished(acoplamiento_aferente=file_joined["acoplamiento_aferente"])
+    ca_consolidado = sort_ca_dict(acoplamiento_aferente=file_joined["acoplamiento_aferente"])
 
-    write_json_to_disk(data=ce_consolidado, output_file=output_folder / "ce_consolidado.json")
-    write_json_to_disk(data=ca_consolidado, output_file=output_folder / "ca_consolidado.json")
+    consolidados = {"ce_consolidado": ce_consolidado, "ca_consolidado": ca_consolidado}
+    write_json_to_disk(data=consolidados, output_file=output_folder / "consolidado.json")
 
 
 if __name__ == "__main__":
