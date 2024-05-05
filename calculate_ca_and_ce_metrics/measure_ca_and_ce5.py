@@ -2,7 +2,7 @@ import ast
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any, Dict, Final, List, Set, Tuple
 
 
 def extract_imports(path: str) -> List[str]:
@@ -115,6 +115,9 @@ def clean_empty_values(input_file: str, output_file: str) -> None:
 
 
 def main() -> None:
+
+    DEBUG_MODE: Final[bool] = False
+
     # Directorio del proyecto y paquetes específicos a analizar
     project_directory: Path = get_project_folder()
 
@@ -127,11 +130,15 @@ def main() -> None:
     # Remove .mypy_cache and __pycache__ from the results
     CE_filtered, CA_filtered = filter_out_dirs(CE, CA)
 
-    # Save files to disk: unfiltered and filtered
-    save_results(CE, CA, filename="results.json")
+    # Save files to disk
     save_results(CE_filtered, CA_filtered, filename="results_filtered.json")
-
     clean_empty_values(input_file="results_filtered.json", output_file="results_no_empty.json")
+
+    if DEBUG_MODE:
+        # Remove the unfiltered results file
+        save_results(CE, CA, filename="results.json")
+    else:
+        os.remove(Path("results_filtered.json"))
 
 
 if __name__ == "__main__":
