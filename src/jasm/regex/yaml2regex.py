@@ -62,7 +62,9 @@ class Yaml2Regex(File2Regex):  # type: ignore
                 processed_macros: list[dict[str, str]] = self.load_macros_from_args()
                 macros = processed_macros + macros
 
-            pattern_with_top_node = MacroExpander().resolve_all_macros(macros=macros, tree=pattern_with_top_node)
+            pattern_with_top_node = MacroExpander().resolve_all_macros(
+                macros=macros, pattern_tree=pattern_with_top_node
+            )
 
         return pattern_with_top_node
 
