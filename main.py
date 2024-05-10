@@ -3,7 +3,7 @@ from argparse import Namespace
 
 from jasm.global_definitions import InputFileType, MatchConfig, MatchingSearchMode
 from jasm.logging_config import configure_logger, logger
-from jasm.match import MasterOfPuppets
+from jasm.match.match import MasterOfPuppets
 from jasm.measure_performance import measure_performance
 from parse_arguments import parse_args_from_console
 

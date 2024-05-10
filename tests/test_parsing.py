@@ -1,5 +1,5 @@
-from pathlib import Path
 import re
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -7,7 +7,7 @@ from conftest import load_test_configs
 
 from jasm.global_definitions import DisassStyle, InputFileType, MatchConfig, MatchingReturnMode, MatchingSearchMode
 from jasm.logging_config import logger
-from jasm.match import MasterOfPuppets
+from jasm.match.match import MasterOfPuppets
 
 
 @pytest.mark.parametrize(

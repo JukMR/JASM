@@ -5,7 +5,6 @@ Main match module
 from enum import Enum, auto
 from typing import List, Optional
 
-from jasm.consumer import CompleteConsumer, InstructionObserverConsumer
 from jasm.global_definitions import (
     DisassStyle,
     InputFileType,
@@ -15,14 +14,15 @@ from jasm.global_definitions import (
     MatchingSearchMode,
     ValidAddrRange,
 )
-from jasm.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
 from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
 from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 from jasm.stringify_asm.abstracts.disassembler import Disassembler
 from jasm.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer
+from jasm.stringify_asm.implementations.consumer import CompleteConsumer, InstructionObserverConsumer
 from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_disassembler import GNUObjdumpDisassembler
 from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser_manual import ObjdumpParserManual
+from jasm.stringify_asm.implementations.matched_observers import MatchedObserver
 from jasm.stringify_asm.implementations.null_disassembler import NullDisassembler
 from jasm.stringify_asm.implementations.observers import RemoveEmptyInstructions
 
