@@ -25,9 +25,6 @@ class MacroExpander:
     def _resolve_macro(self, macro: MacroTree, tree: PatternTree) -> PatternTree:
         """Expand a macro in the tree"""
 
-        if self._macro_has_args(macro=macro):
-            macro = MacroArgsResolver().resolve(macro=macro, tree=tree)
-
         return self._apply_macro_recursively(macro=macro, tree=tree)
 
     def _macro_has_args(self, macro: MacroTree) -> bool:
@@ -95,13 +92,22 @@ class MacroExpander:
                         tree[key] = self._apply_macro_to_tree(node=value, macro=macro)
         return tree
 
+    def _resolve_local_macro(self, node: PatternTree, macro: MacroTree) -> MacroTree:
+        """Copy the macro and resolve its arguments"""
+        macro_copy = macro
+        if self._macro_has_args(macro=macro):
+            macro_copy = copy.deepcopy(macro)
+            macro_copy = MacroArgsResolver().resolve(macro=macro_copy, tree=node)
+        return macro_copy
+
     def _apply_macro_to_tree(self, node: PatternTree, macro: MacroTree) -> PatternTree:
         """Apply the macro to the node"""
 
-        macro_pattern = macro.get("pattern")
-        assert macro_pattern, f"Macro pattern {macro_pattern} not found in the macro {macro}"
+        local_macro = self._resolve_local_macro(node=node, macro=macro)
+        macro_pattern = local_macro.get("pattern")
+        assert macro_pattern, f"Macro pattern {macro_pattern} not found in the macro {local_macro}"
 
-        macro_name = macro.get("name")
+        macro_name = local_macro.get("name")
 
         match node:
             case str():
@@ -124,7 +130,11 @@ class MacroExpander:
         raise ValueError(f"Macro pattern {macro_pattern} is not a valid type")
 
     def _apply_macro_to_tree_substring(self, node: str, macro: MacroTree) -> str:
-        macro_name, macro_pattern = macro.get("name"), macro.get("pattern")
+        local_macro = self._resolve_local_macro(node=node, macro=macro)
+        macro_pattern = local_macro.get("pattern")
+        assert macro_pattern, f"Macro pattern {macro_pattern} not found in the macro {local_macro}"
+
+        macro_name, macro_pattern = local_macro.get("name"), local_macro.get("pattern")
         assert (
             macro_name and macro_pattern
         ), f"Macro name {macro_name} and pattern {macro_pattern} not found in the macro"
