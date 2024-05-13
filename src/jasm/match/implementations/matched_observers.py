@@ -1,7 +1,7 @@
 from typing import List
 
 from jasm.logging_config import logger
-from jasm.stringify_asm.abstracts.abs_observer import IMatchedObserver
+from src.jasm.match.abstracts.i_matched_observer import IMatchedObserver
 
 
 class MatchedObserver(IMatchedObserver):  # type: ignore

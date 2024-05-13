@@ -2,9 +2,8 @@
 
 from typing import Optional
 
-from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver
 from jasm.global_definitions import Instruction
-
+from src.jasm.stringify_asm.abstracts.i_instruction_observer import IInstructionObserver
 
 # TODO: Implement this observer
 # class TagOutofAddrsRangeJumps(IConsumer):
