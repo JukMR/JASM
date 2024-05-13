@@ -1,88 +1,71 @@
 @startuml sequence_diagram_whole_match_module
-actor "main module" as Main
+participant "MasterOfPuppets" as MasterOfPuppets
 participant "perform_matching()" as PerformMatching
-participant "get_regex_rule()" as GetRegexRule
 participant "Yaml2Regex" as Yaml2Regex
 participant "do_matching_and_get_result()" as DoMatching
 participant "MatchedObserver" as MatchedObs
-participant "create_consumer()" as CreateConsumer
 participant "CompleteConsumer" as CompleteCons
-participant "StreamConsumer" as StreamCons
 participant "get_instruction_observers()" as GetObservers
-participant "Consumer" as Consumer
 participant "Producer" as Producer
 participant "create_producer()" as CreateProducer
 participant "ComposableProducer" as Producer
 
-Main -> PerformMatching: call(pattern_pathstr, input_file, input_file_type)
+MasterOfPuppets -> PerformMatching: call(pattern_pathstr, input_file, input_file_type)
 activate PerformMatching
-PerformMatching -> GetRegexRule: get_regex_rule(pattern_pathstr)
-activate GetRegexRule
+        PerformMatching -> Yaml2Regex: get_regex_rule(input_file_pathstr)
 
-GetRegexRule -> Yaml2Regex: pattern_pathstr
-activate Yaml2Regex
-Yaml2Regex -> GetRegexRule: return regex_rule
-deactivate Yaml2Regex
+    activate Yaml2Regex
 
-GetRegexRule -> PerformMatching: return regex_rule
-deactivate GetRegexRule
+        Yaml2Regex -> Yaml2Regex: input_file_pathstr
+        Yaml2Regex -> Yaml2Regex: return regex_rule
 
-PerformMatching -> DoMatching: do_matching_and_get_result(regex_rule, input_file, input_file_type, True)
-activate DoMatching
+        Yaml2Regex -> PerformMatching: return regex_rule
+    deactivate Yaml2Regex
 
-DoMatching -> MatchedObs: create new instance
-activate MatchedObs
-MatchedObs -> DoMatching: return instance
-deactivate MatchedObs
+    PerformMatching -> DoMatching: do_matching_and_get_result(regex_rule, input_file, input_file_type, True)
+    activate DoMatching
 
-DoMatching -> CreateConsumer: create_consumer(regex_rule, MatchedObs, ConsumerType)
-activate CreateConsumer
+            DoMatching -> MatchedObs: create new instance
+            activate MatchedObs
+                MatchedObs -> DoMatching: return instance
+            deactivate MatchedObs
 
-alt Consumer Type is Complete
-    CreateConsumer -> CompleteCons: create new instance
-    activate CompleteCons
-    CompleteCons -> CreateConsumer: return instance
-    deactivate CompleteCons
-else Consumer Type is Stream
-    CreateConsumer -> StreamCons: create new instance
-    activate StreamCons
-    StreamCons -> CreateConsumer: return instance
-    deactivate StreamCons
-end
+        DoMatching -> CompleteCons: create_consumer(regex_rule, MatchedObs, ConsumerType)
 
-CreateConsumer -> DoMatching: return Consumer
-deactivate CreateConsumer
+        activate CompleteCons
+            CompleteCons -> DoMatching: return Consumer
+        deactivate CompleteCons
 
-DoMatching -> GetObservers: get_instruction_observers()
-activate GetObservers
-GetObservers -> DoMatching: return observer_list
-deactivate GetObservers
+        DoMatching -> GetObservers: get_instruction_observers()
+        activate GetObservers
+            GetObservers -> DoMatching: return observer_list
+        deactivate GetObservers
 
-loop for observer in observer_list
-    DoMatching -> Consumer: add_observer(observer)
-end
+        loop for observer in observer_list
+            DoMatching -> CompleteCons: add_observer(observer)
+        end
 
-DoMatching -> CreateProducer: create_producer(input_file_type)
-activate CreateProducer
-CreateProducer -> Producer: create new instance
-activate Producer
-Producer -> CreateProducer: return instance
-deactivate Producer
-CreateProducer -> DoMatching: return Producer
-deactivate CreateProducer
+        DoMatching -> CreateProducer: create_producer(input_file_type)
+        activate CreateProducer
+            CreateProducer -> Producer: create new instance
+            activate Producer
+                Producer -> CreateProducer: return instance
+            deactivate Producer
+            CreateProducer -> DoMatching: return Producer
+        deactivate CreateProducer
 
-DoMatching -> Producer: process_file(input_file, Consumer)
-activate Producer
-Producer -> Producer: parser.parse()
-loop for insn in assembly_file
-    Producer -> Consumer: consume()
-end
-Producer -> Consumer: finalize()
-deactivate Producer
-Consumer -> MatchedObs: finalize()
-MatchedObs -> DoMatching: finalize()
-DoMatching -> PerformMatching: return result
-deactivate DoMatching
-PerformMatching -> Main: return final result
+        DoMatching -> Producer: process_file(input_file, CompleteCons)
+        activate Producer
+            Producer -> Producer: parser.parse()
+            loop for insn in assembly_file
+                Producer -> CompleteCons: consume()
+            end
+            Producer -> CompleteCons: finalize()
+        deactivate Producer
+        CompleteCons -> MatchedObs: finalize()
+        MatchedObs -> DoMatching: finalize()
+        DoMatching -> PerformMatching: return result
+    deactivate DoMatching
+    PerformMatching -> MasterOfPuppets: return final result
 deactivate PerformMatching
 @enduml
