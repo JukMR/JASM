@@ -217,3 +217,10 @@ def remove_access_suffix(pattern_name: str) -> str:
         return ".".join(parts[:-1])
 
     return pattern_name
+
+
+class ConsumerType(Enum):
+    """Enum for the consumer type."""
+
+    complete = auto()
+    stream = auto()
