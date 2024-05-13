@@ -1,4 +1,4 @@
-@startuml stringify_asm_secuencial_diagram
+@startuml sequence_diagram_stringify_asm
 
 ' legend
 '     Diagram for the stringify_asm module
