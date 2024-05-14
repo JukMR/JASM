@@ -2,107 +2,22 @@
 Main match module
 """
 
-from enum import Enum, auto
 from typing import List, Optional
 
 from jasm.global_definitions import (
+    ConsumerType,
     DisassStyle,
-    InputFileType,
     Instruction,
     MatchConfig,
     MatchingReturnMode,
-    MatchingSearchMode,
     ValidAddrRange,
 )
+from jasm.match.implementations.consumer_builder import ConsumerBuilder
+from jasm.match.implementations.matched_observers import MatchedObserver
 from jasm.regex.yaml2regex import Yaml2Regex
-from jasm.stringify_asm.abstracts.abs_observer import IInstructionObserver, IMatchedObserver
-from jasm.stringify_asm.abstracts.asm_parser import AsmParser
-from jasm.stringify_asm.abstracts.disassembler import Disassembler
-from jasm.stringify_asm.implementations.composable_producer import ComposableProducer, IInstructionProducer
-from jasm.stringify_asm.implementations.consumer import CompleteConsumer, InstructionObserverConsumer
-from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_disassembler import GNUObjdumpDisassembler
-from jasm.stringify_asm.implementations.gnu_objdump.gnu_objdump_parser_manual import ObjdumpParserManual
-from jasm.stringify_asm.implementations.matched_observers import MatchedObserver
-from jasm.stringify_asm.implementations.null_disassembler import NullDisassembler
+from jasm.stringify_asm.abstracts.i_instruction_observer import IInstructionObserver
 from jasm.stringify_asm.implementations.observers import RemoveEmptyInstructions
-
-
-class ConsumerType(Enum):
-    """Enum for the consumer type."""
-
-    complete = auto()
-    stream = auto()
-
-
-class ObserverBuilder:
-    """Observers retriever."""
-
-    @staticmethod
-    def get_user_observer() -> List[IInstructionObserver]:
-        """Retrieve a list of user defined observers."""
-        return []
-
-    def get_instruction_observers(self) -> List[IInstructionObserver]:
-        """Retrieve a list of instruction observers."""
-
-        observers: List[IInstructionObserver] = [RemoveEmptyInstructions()]
-        observers.extend(self.get_user_observer())
-
-        return observers
-
-
-class ConsumerBuilder:
-    """Builder for the consumer."""
-
-    @staticmethod
-    def build(
-        regex_rule: str,
-        iMatchedObserver: IMatchedObserver,
-        consumer_type: ConsumerType,
-        matching_mode: MatchingSearchMode,
-        return_only_address: bool,
-    ) -> InstructionObserverConsumer:
-        """Decide which consumer to create"""
-
-        match consumer_type:
-            case ConsumerType.complete:
-                return CompleteConsumer(
-                    regex_rule=regex_rule,
-                    matched_observer=iMatchedObserver,
-                    matching_mode=matching_mode,
-                    return_only_address=return_only_address,
-                )
-            # TODO: implement this consumer
-            # case ConsumerType.stream:
-            #     return StreamConsumer(regex_rule=regex_rule, matched_observer=iMatchedObserver)
-
-            case _:
-                raise ValueError("Invalid consumer type")
-
-
-class ProducerBuilder:
-    """Builder for the producer."""
-
-    @staticmethod
-    def build(file_type: InputFileType, assembly_style: DisassStyle = DisassStyle.att) -> IInstructionProducer:
-        """Create a producer based on the file type."""
-
-        # Logic for choosing diferent type of parser should be here
-
-        parser: AsmParser = ObjdumpParserManual()
-        disassembler: Disassembler
-
-        # Logic for choosing diferent type of disassembler should be here
-        match file_type:
-            case InputFileType.binary:
-                disassembler = GNUObjdumpDisassembler(enum_disas_style=assembly_style)
-            case InputFileType.assembly:
-                disassembler = NullDisassembler()
-
-            case _:
-                raise ValueError("Either assembly or binary must be provided")
-
-        return ComposableProducer(disassembler=disassembler, parser=parser)
+from jasm.stringify_asm.implementations.producer_builder import ProducerBuilder
 
 
 class MasterOfPuppets:
@@ -180,6 +95,23 @@ class MasterOfPuppets:
             observer_list.append(valid_addr_observer)
 
         return observer_list
+
+
+class ObserverBuilder:
+    """Observers retriever."""
+
+    @staticmethod
+    def get_user_observer() -> List[IInstructionObserver]:
+        """Retrieve a list of user defined observers."""
+        return []
+
+    def get_instruction_observers(self) -> List[IInstructionObserver]:
+        """Retrieve a list of instruction observers."""
+
+        observers: List[IInstructionObserver] = [RemoveEmptyInstructions()]
+        observers.extend(self.get_user_observer())
+
+        return observers
 
 
 class ValidAddrObserver(IInstructionObserver):  # type: ignore

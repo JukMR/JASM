@@ -1,4 +1,4 @@
-@startuml stringify_asm_secuencial_diagram
+@startuml sequence_diagram_stringify_asm
 
 ' legend
 '     Diagram for the stringify_asm module
@@ -15,6 +15,7 @@ participant GNUObjdumpDisassembler
 participant ObjdumpParserManual
 participant RemoveEmptyInstructions
 participant ValidAddrObserver
+participant Observer
 
 MasterOfPuppets -> MatchedObserver : instantiate
 MasterOfPuppets -> ConsumerBuilder : build(consumer_type=Complete, ...)
@@ -36,12 +37,16 @@ ObjdumpParserManual -> CompleteConsumer : consume_instruction(inst)
 
 loop for each instruction
     CompleteConsumer -> RemoveEmptyInstructions : observe_instruction(inst)
-    RemoveEmptyInstructions -> ValidAddrObserver : observe_instruction(modified_inst)
-    ValidAddrObserver -> CompleteConsumer : return final_inst
+    RemoveEmptyInstructions -> CompleteConsumer : return observed_instruction
+
+    CompleteConsumer -> ValidAddrObserver : observe_instruction(modified_inst)
+    ValidAddrObserver -> CompleteConsumer : return observed_instruction
+    loop for each Observer
+        CompleteConsumer -> Observer : observe_instruction(modified_inst)
+        Observer -> CompleteConsumer : return modified_inst
+    end
 end
 
-CompleteConsumer -> MatchedObserver : regex_matched(addr)
-CompleteConsumer -> MatchedObserver : finalize()
-MasterOfPuppets -> MatchedObserver : return result
+CompleteConsumer -> MasterOfPuppets : return final_instruccion
 
 @enduml

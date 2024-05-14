@@ -1,32 +1,14 @@
-from typing import Final, List, Optional
+from typing import Final, List
 
 import regex
 
-from jasm.global_definitions import Instruction, MatchingSearchMode
+from jasm.global_definitions import (
+    Instruction,
+    MatchingSearchMode,
+)
 from jasm.logging_config import logger
-from jasm.stringify_asm.abstracts.abs_observer import IConsumer, IInstructionObserver, IMatchedObserver
-
-
-class InstructionObserverConsumer(IConsumer):  # type: ignore
-    def __init__(self, regex_rule: str, matched_observer: IMatchedObserver) -> None:
-        super().__init__(matched_observer=matched_observer)
-        self.instruction_observers: List[IInstructionObserver] = []
-        self.inst_list: List[Instruction]
-        self._regex_rule: Final = regex_rule
-
-    def add_observer(self, instruction_observer: IInstructionObserver) -> None:
-        self.instruction_observers.append(instruction_observer)
-
-    def _process_instruction(self, inst: Instruction) -> Optional[Instruction]:
-        observed_instruction: Optional[Instruction] = inst
-        for observer in self.instruction_observers:
-            observed_instruction = observer.observe_instruction(inst)
-            if not observed_instruction:
-                break
-        return observed_instruction
-
-    def finalize(self) -> None:
-        self._matched_observer.finalize()
+from src.jasm.match.abstracts.i_matched_observer import IMatchedObserver
+from src.jasm.match.implementations.instruction_observer_consumer import InstructionObserverConsumer
 
 
 class CompleteConsumer(InstructionObserverConsumer):
@@ -115,17 +97,3 @@ class CompleteConsumer(InstructionObserverConsumer):
                     else:
                         # Return addresses and instructions
                         self._matched_observer.regex_matched(match_result.group(0))
-
-
-# TODO: Implement this Consumer
-# class StreamConsumer(InstructionObserverConsumer):
-
-#     def consume_instruction_normal(self, inst: Instruction) -> None:
-#         processed_inst = self._process_instruction(inst)
-#         if processed_inst:
-#             # Evaluate the instruction in the streaming regex engine
-#             # TODO: implement this
-#             # regex_engine.process(processed_inst)
-#             # if regex_engine.matched:
-#             #     self._matched_observer.regex_matched(processed_inst.addrs)
-#             pass

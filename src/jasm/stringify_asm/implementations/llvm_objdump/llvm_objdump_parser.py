@@ -1,4 +1,4 @@
-from jasm.stringify_asm.abstracts.abs_observer import IConsumer
+from src.jasm.match.abstracts.i_consumer import IConsumer
 from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 
 

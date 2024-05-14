@@ -1,4 +1,4 @@
-@startuml regex_module_class_diagram
+@startuml class_diagram_regex_module
 
 abstract class File2Regex {
     {static} +load_file(file): Any
