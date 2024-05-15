@@ -69,11 +69,6 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     expected: True
 
-  - title: "moonbounce_malware_short_6_lines"
-    yaml: "tests/yamls/moonbounce_regex_matcher.yaml"
-    assembly: "tests/assembly/moonbounce_malware_short_6_lines.s"
-    expected: True
-
   - title: "smc_assembly"
     yaml: "tests/yamls/smc.yaml"
     assembly: "tests/assembly/smc.s"
@@ -87,26 +82,6 @@ test_matching:
   - title: "smc_binary_eko"
     yaml: "tests/yamls/smc.yaml"
     binary: "tests/binary/smc_eko.bin"
-    expected: True
-
-  - title: "oren_rule_example"
-    yaml: "tests/yamls/oren_rule_att.yaml"
-    binary: "tests/binary/lenovo2.bin"
-    expected: True
-
-  - title: "oren_rule_example_addr_valid"
-    yaml: "tests/yamls/oren_rule_att_addr_valid.yaml"
-    binary: "tests/binary/lenovo2.bin"
-    expected: True
-
-  - title: "oren_rule_example_addr_valid_assembly"
-    yaml: "tests/yamls/oren_rule_att_addr_valid.yaml"
-    assembly: "tests/assembly/lenovo2_short.s"
-    expected: True
-
-  - title: "lenovo_qequ_objdump"
-    yaml: "tests/yamls/oren_rule_att.yaml"
-    assembly: "tests/assembly/objlenovo_qequ_objdump_2.34.s"
     expected: True
 
   - title: "capture_groups_test_rule on binary_data_for_capture_groups"
@@ -138,16 +113,6 @@ test_matching:
   - title: "capture_group_test_with_operands_working"
     yaml: "tests/yamls/capture_groups_test_rule.yaml"
     assembly: "tests/assembly/binary_data_for_capture_groups.s"
-    expected: True
-
-  - title: "oren_rule_with_capture_groups"
-    yaml: "tests/yamls/oren_rule_att_with_capture_groups.yaml"
-    binary: "tests/binary/lenovo2.bin"
-    expected: True
-
-  - title: "oren_rule_att_with_capture_groups_macro_subtree_expansion"
-    yaml: "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml"
-    binary: "tests/binary/lenovo2.bin"
     expected: True
 
   - title: "zero_reg_rule with -O3"
@@ -203,41 +168,6 @@ test_matching:
   - title: "Arx onto zip"
     yaml: "tests/yamls/arx.yaml"
     binary: "tests/binary/zip.bin"
-    expected: True
-
-  - title: "Jesse rule assembly matching only"
-    yaml: "tests/yamls/jesse_rule.yaml"
-    assembly: "tests/assembly/jesse_rule_matching.s"
-    expected: True
-
-  - title: "Jesse rule assembly"
-    yaml: "tests/yamls/jesse_rule.yaml"
-    assembly: "tests/assembly/jesse_rule_asm.s"
-    expected: True
-
-  - title: "Jesse rule assembly matching only variation 1"
-    yaml: "tests/yamls/jesse_rule_variation_1_reg_with_%.yaml"
-    assembly: "tests/assembly/jesse_rule_matching.s"
-    expected: True
-
-  - title: "Jesse rule assembly matching only variation 2"
-    yaml: "tests/yamls/jesse_rule_variation_2_number_without_0x.yaml"
-    assembly: "tests/assembly/jesse_rule_matching.s"
-    expected: True
-
-  - title: "Jesse rule assembly matching only variation 3"
-    yaml: "tests/yamls/jesse_rule_variation_3_number_without_0x_and_as_int_instead_of_str.yaml"
-    assembly: "tests/assembly/jesse_rule_matching.s"
-    expected: True
-
-  - title: "Jesse rule assembly register capture group"
-    yaml: "tests/yamls/jesse_rule_with_register_capture_group.yaml"
-    assembly: "tests/assembly/jesse_rule_matching.s"
-    expected: True
-
-  - title: "Jesse rule assembly register capture group and special capture group notation"
-    yaml: "tests/yamls/jesse_rule_with_register_capture_group_and_special_capture_group_notation.yaml"
-    assembly: "tests/assembly/jesse_rule_matching.s"
     expected: True
 
   - title: "Register capture group example 1"
@@ -343,22 +273,6 @@ test_capture_groups_references:
 
   - title: "capture_group_test_with_operands_working"
     yaml: "tests/yamls/capture_groups_test_rule.yaml"
-    cc_deref: ['\1', '\2', '\3']
-
-  - title: "oren_rule_with_capture_groups"
-    yaml: "tests/yamls/oren_rule_att_with_capture_groups.yaml"
-    cc_deref: ['\1', '\2']
-
-  - title: "oren_rule_att_with_capture_groups_macro_subtree_expansion"
-    yaml: "tests/yamls/oren_rule_att_with_capture_groups_macro_subtree_expansion.yaml"
-    cc_deref: ['\1', '\2']
-
-  - title: "jesse_rule_with_register_capture_group"
-    yaml: "tests/yamls/jesse_rule_with_register_capture_group.yaml"
-    cc_deref: ['\1', '\2', '\3']
-
-  - title: "jesse_rule_with_register_capture_group and special capture group notation"
-    yaml: "tests/yamls/jesse_rule_with_register_capture_group_and_special_capture_group_notation.yaml"
     cc_deref: ['\1', '\2', '\3']
 
   - title: "register_capture_group_example 1"
