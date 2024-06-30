@@ -260,6 +260,36 @@ test_matching:
     assembly: "tests/assembly/2_zero_reg_rule.s"
     expected: True
 
+  - title: "2 zero_reg rule inverted_mov"
+    yaml: "tests/yamls/2_zero_reg.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule_inverted_mov.s"
+    expected: True
+
+  - title: "2 zero_reg rule inverted_xor"
+    yaml: "tests/yamls/2_zero_reg.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule_inverted_xor.s"
+    expected: True
+
+  - title: "2 zero_reg rule inverted_and"
+    yaml: "tests/yamls/2_zero_reg.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule_inverted_and.s"
+    expected: True
+
+  - title: "2 zero_reg rule no_any_order_mov"
+    yaml: "tests/yamls/2_zero_reg_old_no_any_order.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule_inverted_mov.s"
+    expected: False
+
+  - title: "2 zero_reg rule no_any_order_xor"
+    yaml: "tests/yamls/2_zero_reg_old_no_any_order.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule_inverted_xor.s"
+    expected: False
+
+  - title: "2 zero_reg rule no_any_order_and"
+    yaml: "tests/yamls/2_zero_reg_old_no_any_order.yaml"
+    assembly: "tests/assembly/2_zero_reg_rule_inverted_and.s"
+    expected: False
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"

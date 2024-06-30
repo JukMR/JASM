@@ -25,9 +25,8 @@ macros:
                   - macro-arg1
 
 pattern:
-  - $and_any_order:
-      - $zero_reg:
-        macro-arg1: rax
+  - $zero_reg:
+    macro-arg1: rax
 
-      - $zero_reg:
-        macro-arg1: rbx
+  - $zero_reg:
+    macro-arg1: rbx
