@@ -1,0 +1,8 @@
+---
+pattern:
+  - nopw:
+      - $deref:
+          main_reg: "%rax"
+          constant_offset: "0x0"
+          register_multiplier: "%rbx"
+          constant_multiplier: 1

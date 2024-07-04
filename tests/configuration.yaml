@@ -39,6 +39,11 @@ test_matching:
     assembly: "tests/assembly/binary_data.s"
     expected: True
 
+  - title: "deref simple example"
+    yaml: "tests/yamls/deref_simple_example.yaml"
+    assembly: "tests/assembly/deref_simple_example.s"
+    expected: True
+
   - title: "moonbounce_malware_truncated_11518_lines"
     yaml: "tests/yamls/moonbounce_regex_matcher.yaml"
     assembly: "tests/assembly/moonbounce_malware_truncated_11518_lines.s"
