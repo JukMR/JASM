@@ -46,7 +46,7 @@ NOTE: the `$deref` commands require the following syntax, using the example belo
     - $deref:
         main_reg: "%rax"
         constant_offset: "0x0"
-        register_multiplier: "%rax"
+        register_multiplier: "%rbx"
         constant_multiplier: 1
 
 
@@ -67,7 +67,7 @@ where:
 
 * `constant_offset: k`
 
-So the example would match a command like `nopw 0x0(%rax,%rax,1)` turning it to `[%rax+%rax*1+0x0]`
+So the example would match a command like `nopw 0x0(%rax,%rbx,1)` turning it to `[%rax+%rbx*1+0x0]`
 
 ## Special registry capture groups
 
