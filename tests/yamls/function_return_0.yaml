@@ -13,8 +13,8 @@ macros:
               - macro-arg1
               - macro-arg1
           - mov:
-              - macro-arg1
               - 0
+              - macro-arg1
 
           - $or:
               - and:
