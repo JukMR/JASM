@@ -2,9 +2,13 @@
 
 ## Run
 
-To run the project it is recommended to do `poetry shell` and execute the files from there.
+To run the project it is recommended to do:
 
-Also should do `poetry install` for installing jasm dependencies and after that do `pip install -r dev-requirements.txt` to be able to run_tests.
+- `poetry shell` 
+- `poetry install`
+- `pip install -r dev-requirements.txt`
+
+This should allow to run `run_tests.sh`.
 
 ## Parse an assembly file
 
