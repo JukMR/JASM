@@ -4,6 +4,8 @@
 
 To run the project it is recommended to do `poetry shell` and execute the files from there.
 
+Also should do `poetry install` for installing jasm dependencies and after that do `pip install -r dev-requirements.txt` to be able to run_tests.
+
 ## Parse an assembly file
 
 python3 main.py -p <pattern.yaml> -s <assembly_file.s>
