@@ -6,7 +6,7 @@ To run the project it is recommended to do:
 
 - `poetry shell`
 - `poetry install`
-- `pip install -r djjuujev-requirements.txt`
+- `pip install -r dev-requirements.txt`
 
 This should allow to run `run_tests.sh`.
 
