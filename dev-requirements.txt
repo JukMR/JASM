@@ -1,6 +1,0 @@
-# Extra development packages needed
-pytest
-pytest-xdist
-pytest-benchmark
-pytest-fail-slow
-pytest-coverage
