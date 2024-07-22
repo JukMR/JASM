@@ -22,21 +22,23 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install dependencies
+      - name: Install poetry
         run: |
-          echo "Installing dependencies..."
           python -m pip install --upgrade pip
-          pip install pytest pytest-xdist poetry pyyaml pytest-benchmark pytest-fail-slow
+          pip install poetry
 
-      - name: Install dependencies with poetry
+
+      - name: Install dependencies
         run: |
           echo "Installing dependencies with poetry ..."
           poetry install
 
-      - name: Install project
+      - name: Pull files from git lfs
         run: |
-          echo "Installing project..."
-          pip install -e .
+          echo "Pulling files from git lfs"
+          git lfs fetch --all
+          git lfs pull
+
       - name: Run tests
         run: |
           echo "Running tests..."
