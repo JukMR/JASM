@@ -33,10 +33,15 @@ jobs:
           echo "Installing dependencies with poetry ..."
           poetry install
 
+      - name: Pull files from git lfs
+        run: |
+          echo "Pulling files from git lfs"
+          git lfs fetch --all
+          git lfs pull
+
       - name: Run tests
         run: |
           echo "Running tests..."
-          git lfs fetch
           poetry run sh ./run_tests.sh
 
   build:
