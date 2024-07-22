@@ -24,12 +24,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "Installing dependencies..."
-          python -m pip install --upgrade pip
-          pip install pytest pytest-xdist poetry pyyaml pytest-benchmark pytest-fail-slow
-
-      - name: Install dependencies with poetry
-        run: |
           echo "Installing dependencies with poetry ..."
           poetry install
 
@@ -37,6 +31,7 @@ jobs:
         run: |
           echo "Installing project..."
           pip install -e .
+
       - name: Run tests
         run: |
           echo "Running tests..."
