@@ -36,6 +36,7 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
+          git lfs fetch
           poetry run sh ./run_tests.sh
 
   build:
