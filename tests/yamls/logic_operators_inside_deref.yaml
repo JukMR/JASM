@@ -1,0 +1,10 @@
+pattern:
+  - mov:
+      - $deref:
+          main_reg:
+            - $or:
+                - rsp
+                - rbp
+          constant_offset: "&pe-offset-8"
+
+      - "&pereg-8"

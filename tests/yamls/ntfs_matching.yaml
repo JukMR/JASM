@@ -1,7 +1,7 @@
 # Indexes start at 1 following the regex capturing group convention. Only full instructions supported for now
 ---
 macros:
-  - name: $any_jmp
+  - name: "@any_jmp"
     pattern:
       - $or:
           - jmp
@@ -27,6 +27,9 @@ macros:
           - jnz
           - jz
 
+  - name: "@any"
+    pattern: "[^, ]{0,1000}"
+
 pattern:
   - cmp:
       - $or:
@@ -37,7 +40,7 @@ pattern:
             main_reg: "@any"
       - "0x"
 
-  - $any_jmp
+  - "@any_jmp"
 
   - cmp:
       - $deref:
@@ -45,7 +48,7 @@ pattern:
         constant_offset: "0x1"
       - "0x"
 
-  - $any_jmp
+  - "@any_jmp"
 
   - cmp:
       - $deref:
@@ -53,7 +56,7 @@ pattern:
         constant_offset: "0x2"
       - "0x"
 
-  - $any_jmp
+  - "@any_jmp"
 
   - cmp:
       - $deref:

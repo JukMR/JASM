@@ -1,0 +1,10 @@
+pattern:
+  - mov:
+      - $deref:
+          main_reg:
+            - $or:
+                - rsp
+                - rbp
+          constant_offset: rbx
+
+      - rax

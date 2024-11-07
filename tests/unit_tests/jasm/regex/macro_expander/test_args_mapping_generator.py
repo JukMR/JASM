@@ -1,7 +1,7 @@
 from typing import Any
 import pytest
 
-from jasm.regex.macro_expander.args_mapping_generator import ArgsMappingGenerator
+from jasm.jasm_regex.macro_expander.args_mapping_generator import ArgsMappingGenerator
 
 
 @pytest.fixture

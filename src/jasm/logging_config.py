@@ -30,6 +30,7 @@ class LogLevelFilter(Filter):
 
 
 logger = getLogger(__name__)
+logger.setLevel(WARNING)
 
 
 class LazyFileHandler(StreamHandler):  # type: ignore

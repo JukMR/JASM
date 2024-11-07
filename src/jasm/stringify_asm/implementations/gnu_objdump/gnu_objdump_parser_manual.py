@@ -2,10 +2,10 @@
 Parser Implementation module
 """
 
-from jasm.global_definitions import Instruction
-from src.jasm.match.abstracts.i_consumer import IConsumer
-from jasm.stringify_asm.abstracts.asm_parser import AsmParser
 from jasm.stringify_asm.implementations.gnu_objdump.asm_manual_parser_w_regex import parse_file_lines
+from jasm.stringify_asm.abstracts.abs_observer import IConsumer
+from jasm.stringify_asm.abstracts.asm_parser import AsmParser
+from jasm.global_definitions import Instruction
 
 
 class ObjdumpParserManual(AsmParser):  # type: ignore

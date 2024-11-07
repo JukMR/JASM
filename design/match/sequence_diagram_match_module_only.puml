@@ -1,0 +1,44 @@
+@startuml sequence_diagram_match_module_only
+participant MasterOfPuppets
+participant MatchedObserver
+participant ConsumerBuilder
+participant ConsumerType
+participant Consumer
+participant ObserverBuilder
+participant Observer
+participant ProducerBuilder
+participant Producer
+
+MasterOfPuppets -> MasterOfPuppets : perform_matching()
+MasterOfPuppets -> MasterOfPuppets : _get_regex_rule()
+MasterOfPuppets -> MasterOfPuppets : _do_matching_and_get_result()
+
+create MatchedObserver
+MasterOfPuppets -> MatchedObserver : New Instance
+
+MasterOfPuppets -> ConsumerBuilder : build()
+ConsumerBuilder -> ConsumerType : Use Enum
+
+create Consumer
+ConsumerBuilder -> Consumer : New Instance
+
+MasterOfPuppets -> ObserverBuilder : get_instruction_observers()
+create Observer
+ObserverBuilder -> Observer : New Instance(RemoveEmptyInstructions)
+ObserverBuilder --> MasterOfPuppets : return observers
+
+MasterOfPuppets -> ProducerBuilder : build()
+create Producer
+ProducerBuilder -> Producer : New Instance
+
+MasterOfPuppets -> Consumer : add_observer(Observer)
+MasterOfPuppets -> Producer : process_file()
+
+alt return_bool_result == True:
+    MasterOfPuppets -> MatchedObserver : get_matched()
+    MatchedObserver -> MasterOfPuppets: matched
+else return_bool_result == False:
+    MasterOfPuppets -> MatchedObserver : get_stringify_instructions()
+    MatchedObserver -> MasterOfPuppets: stringified_instructions
+end
+@enduml

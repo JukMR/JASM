@@ -1,25 +1,35 @@
 [tool.poetry]
 name = "JASM"
-version = "1.0.15"
+version = "1.5.1"
 description = "JASM - Assembly Regex Generator"
 authors = ["Julian Merida <julianmr97@gmail.com>"]
 readme = "README.md"
 packages = [{ include = "jasm", from = "src" }]
 
+[tool.poetry.scripts]
+jasm = "jasm.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 pyyaml = "^6.0.1"
 regex = "^2023.12.25"
 argcomplete = "^3.2.2"
+ruamel-yaml = "^0.18.6"
 
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.1"
-pytest-xdist = "^3.6.1"
-pytest-benchmark = "^4.0.0"
-pytest-fail-slow = "^0.6.0"
-pytest-coverage = "^0.0"
+
+[tool.yapf]
+allow_multiline_dictionary_keys = true
+allow_split_before_dict_value = false
+blank_line_before_nested_class_or_def = true
+column_limit = 100
+dedent_closing_brackets = true
+split_arguments_when_comma_terminated = true
+split_before_arithmetic_operator = false
+split_before_bitwise_operator = false
+split_before_dot = true
+split_before_logical_operator = false
+split_before_named_assigns = false
 
 [build-system]
 requires = ["poetry-core"]

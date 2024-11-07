@@ -1,4 +1,5 @@
-from jasm.global_definitions import DisassStyle
+from typing import List
+from jasm.global_definitions import DisassStyle, JASMConfig
 from jasm.stringify_asm.implementations.shell_disassembler import ShellDisassembler
 
 
@@ -22,4 +23,16 @@ class GNUObjdumpDisassembler(ShellDisassembler):  # type: ignore
             case DisassStyle.att:
                 flags.extend(["-M", "att"])
 
+        # Add section flags if provided
+        sections = JASMConfig().get_info("sections")
+        if sections:
+            flags.extend(self._form_section_flags(sections))
         super().__init__(program="objdump", flags=flags)
+
+    @staticmethod
+    def _form_section_flags(sections: List[str]) -> List[str]:
+        """Form section flags for objdump command."""
+        section_flags = []
+        for section in sections:
+            section_flags.extend(["-j", section])
+        return section_flags

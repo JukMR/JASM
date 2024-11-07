@@ -1,0 +1,11 @@
+---
+config:
+      style: att
+      mnemonics-full-match: true
+      operands-full-match: false
+      plugins:
+
+pattern:
+      - movl:
+              - "1b2"
+              - "@any"

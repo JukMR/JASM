@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Final, List, Optional, TypeAlias
 
+from jasm.logging_config import logger
 
 # set this limit to asterisk to reduce backtracking regex explosion
 # WARNING: sometimes setting this value too low would affect negative
@@ -36,9 +37,7 @@ OperandType: TypeAlias = Optional[Dict[str, Any]]
 
 DictNode: TypeAlias = Dict[str, int] | str | int | Dict[str, list[dict[str, Any]] | list[str]]
 
-
 PatternNodeName: TypeAlias = str | int
-
 
 # Move this to a global config class
 ALLOW_MATCHING_SUBSTRINGS_IN_NAMES_AND_OPERANDS: Final = True
@@ -219,8 +218,81 @@ def remove_access_suffix(pattern_name: str) -> str:
     return pattern_name
 
 
-class ConsumerType(Enum):
-    """Enum for the consumer type."""
+class PartialMatchingConfig(Enum):
+    MnemonicsFullMatch = auto()
+    OperandsFullMatch = auto()
 
-    complete = auto()
-    stream = auto()
+
+class JASMConfig:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(JASMConfig, cls).__new__(cls)
+            cls.global_info = {}
+        return cls._instance
+
+    @staticmethod
+    def get_instance():
+        if JASMConfig._instance is None:
+            JASMConfig()
+        return JASMConfig._instance
+
+    def _set_info(self, key, value):
+        self.global_info[key] = value
+
+    def get_info(self, key):
+        return self.global_info.get(key)
+
+    def load_config(self, config: Dict[str, Any]) -> None:
+        """Load configuration into the singleton if they are present and valid."""
+        self._load_full_match_options(config)
+        self._load_assembly_style(config)
+        self._load_valid_addr_range(config)
+        self._load_sections(config)
+
+    def _load_full_match_options(self, config: Dict[str, Any]) -> None:
+        """Load and validate mnemonics-full-match and operands-full-match options."""
+        mnemonics = config.get("mnemonics-full-match", False)
+        operands = config.get("operands-full-match", False)
+
+        # Ensure mnemonics and operands are booleans
+        if not isinstance(mnemonics, bool) or not isinstance(operands, bool):
+            raise ValueError("mnemonics and operands must be booleans")
+
+        self._set_info(PartialMatchingConfig.MnemonicsFullMatch, mnemonics)
+        self._set_info(PartialMatchingConfig.OperandsFullMatch, operands)
+
+    def _load_assembly_style(self, config: Dict[str, Any]) -> None:
+        """Load assembly style into the singleton."""
+        style = config.get("style")
+        assembly_style = DisassStyle.att  # Default to att if not specified
+        if style:
+            if style == "intel":
+                assembly_style = DisassStyle.intel
+            elif style == "att":
+                assembly_style = DisassStyle.att
+            else:
+                logger.error("Invalid or unsupported style: '%s' in the pattern file", style)
+
+        self._set_info("assembly_style", assembly_style)
+
+    def _load_valid_addr_range(self, config: Dict[str, Any]) -> None:
+        """Load valid address range into the singleton."""
+        valid_addr = config.get("valid_addr_range")
+        if valid_addr:
+            valid_addr_range = ValidAddrRange(
+                min_addr=valid_addr.get("min"), max_addr=valid_addr.get("max")
+            )
+            self._set_info("valid_addr_range", valid_addr_range)
+        else:
+            self._set_info("valid_addr_range", None)
+
+    def _load_sections(self, config: Dict[str, Any]) -> None:
+        """Load sections into the singleton."""
+        sections = config.get("sections", [])
+        if not isinstance(sections,
+                          list) or not all(isinstance(section, str) for section in sections):
+            raise ValueError("sections must be a list of strings")
+
+        self._set_info("sections", sections)

@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 
-from jasm.regex.macro_expander.macro_args_resolver import MacroArgsResolver
+from jasm.jasm_regex.macro_expander.macro_args_resolver import MacroArgsResolver
 
 
 @pytest.fixture

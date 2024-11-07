@@ -1,0 +1,26 @@
+---
+config:
+  style: att
+  valid_addr_range:
+    min: "0x000400000"
+    max: "0x180FFFFFF"
+
+pattern:
+  - ret
+  - $or:
+      - int3
+      - nop
+    times:
+      min: 0
+      max: 3
+
+  - call:
+      - valid_addr
+  - $not:
+      - ret
+    times:
+      max: 8
+
+  - sub:
+      - "@any"
+      - rsp

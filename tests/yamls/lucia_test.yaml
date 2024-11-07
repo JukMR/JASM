@@ -1,0 +1,6 @@
+pattern:
+  - add:
+      - $deref:
+          main_reg: "@any" # _reg" # nothing matches with @any
+
+      - "@any"

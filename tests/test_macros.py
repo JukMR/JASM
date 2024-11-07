@@ -1,7 +1,8 @@
+import pytest
 from pathlib import Path
 
-from jasm.regex.macro_expander.macro_expander import PatternTree
-from jasm.regex.yaml2regex import Yaml2Regex
+from jasm.jasm_regex.macro_expander.macro_expander import PatternTree
+from jasm.jasm_regex.yaml2regex import Yaml2Regex
 
 
 def load_regex_rule_no_macro(yamls_directory: Path) -> PatternTree:
@@ -33,15 +34,25 @@ def test_macro_from_args() -> None:
     yamls_directory = test_directory / "yamls"
     yaml_file = yamls_directory / "macros_from_terminal.yaml"
 
+    unknown_macro_filepath = yamls_directory / "macros_from_terminal2.yaml"
+
     macros_directory = test_directory / "macros"
     macro_1_filepath = macros_directory / "macro_1.yaml"
     macro_2_filepath = macros_directory / "macro_2.yaml"
 
     regex = Yaml2Regex(
-        pattern_pathstr=str(yaml_file), macros_from_terminal=[str(macro_1_filepath), str(macro_2_filepath)]
+        pattern_pathstr=str(yaml_file),
+        macros_from_terminal=[str(macro_1_filepath), str(macro_2_filepath)]
     ).produce_regex()  # pylint: disable=protected-access
 
     assert (
-        regex
-        == r"(?:[\dabcedf]+::(?:[^,|]{0,1000}replace_1[^,|]{0,1000},[^|]{0,1000}\|)[\dabcedf]+::(?:[^,|]{0,1000}replace_2[^,|]{0,1000},[^|]{0,1000}\|)[\dabcedf]+::(?:[^,|]{0,1000}replace_3[^,|]{0,1000},[^|]{0,1000}\|)[\dabcedf]+::(?:[^,|]{0,1000}replace_4[^,|]{0,1000},[^|]{0,1000}\|))"
+        regex ==
+        r"(?:[\dabcedf]+::(?:[^,|]{0,1000}replace_1[^,|]{0,1000},[^|]{0,1000}\|)[\dabcedf]+::(?:[^,|]{0,1000}replace_2[^,|]{0,1000},[^|]{0,1000}\|)[\dabcedf]+::(?:[^,|]{0,1000}replace_3[^,|]{0,1000},[^|]{0,1000}\|)[\dabcedf]+::(?:[^,|]{0,1000}replace_4[^,|]{0,1000},[^|]{0,1000}\|))"
     )
+
+    with pytest.raises(ValueError, match="The following macros are not defined: {'@macro_unknown'}"):
+        Yaml2Regex(
+            pattern_pathstr=str(unknown_macro_filepath),
+            macros_from_terminal=[str(macro_1_filepath),
+                                  str(macro_2_filepath)]
+        ).produce_regex()  # pylint: disable=protected-access

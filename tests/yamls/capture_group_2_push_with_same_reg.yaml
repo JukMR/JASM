@@ -2,7 +2,7 @@
 ---
 pattern:
   - push:
-      - "&cc-1"
+      - "&cc-2"
 
   - push:
-      - "&cc-1"
+      - "&cc-2"

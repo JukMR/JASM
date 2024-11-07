@@ -1,0 +1,34 @@
+---
+config:
+  style: att
+  sections:
+    - ".plt"
+    - ".plt.got"
+  plugins:
+
+macros:
+  - name: "@any"
+    pattern: "[^, ]{1,100}"
+
+pattern:
+  - movb:
+      - "@any"
+
+      - $or:
+          - $deref:
+              main_reg: "%rip"
+
+          - $deref:
+              main_reg: "%rip"
+              constant_offset: "@any"
+
+          - $deref:
+              main_reg: "%rip"
+              constant_offset: "@any"
+              register_multiplier: "@any"
+
+          - $deref:
+              main_reg: "%rip"
+              constant_offset: "@any"
+              register_multiplier: "@any"
+              constant_multiplier: "@any"

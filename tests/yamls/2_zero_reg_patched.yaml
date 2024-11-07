@@ -4,7 +4,7 @@ config:
   plugins:
 
 macros:
-  - name: $zero_reg_1
+  - name: "@zero_reg_1"
     pattern:
       - $or:
           - xor:
@@ -22,7 +22,7 @@ macros:
                   - 0
                   - rax
 
-  - name: $zero_reg_2
+  - name: "@zero_reg_2"
     pattern:
       - $or:
           - xor:
@@ -42,5 +42,5 @@ macros:
 
 pattern:
   - $and_any_order:
-      - $zero_reg_1
-      - $zero_reg_2
+      - "@zero_reg_1"
+      - "@zero_reg_2"

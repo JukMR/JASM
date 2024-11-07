@@ -1,10 +1,10 @@
 ---
 macros:
-  - name: macro_4
+  - name: "@macro_4"
     pattern: replace_4
 
 pattern:
-  - "macro_1"
-  - "macro_2"
-  - "macro_3"
-  - "macro_4"
+  - "@macro_1"
+  - "@macro_2"
+  - "@macro_3"
+  - "@macro_4"

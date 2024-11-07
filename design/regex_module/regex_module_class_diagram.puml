@@ -1,0 +1,223 @@
+@startuml regex_module_class_diagram
+
+abstract class File2Regex {
+    {static} +load_file(file): Any
+    +produce_regex()
+    +get_assembly_style(): DisassStyle
+}
+
+class Yaml2Regex {
+    +produce_regex(): str
+    +get_assembly_style(): DisassStyle
+    +get_valid_addr_range(): Optional[ValidAddrRange]
+    {static} +load_file(file: str): Any
+    -macros_from_terminal_filepath: Optional[List[str]]
+    -loaded_file: Any
+    -_get_pattern(): PatternTree
+    -load_macros_from_args(): List[Dict]
+    -_generate_rule_tree(patterns: PatternTree): PatternNode
+}
+
+class MacroExpander {
+    +resolve_all_macros(macros: List[Dict], tree: PatternTree): PatternTree
+    -_resolve_macro(macro: MacroTree, tree: PatternTree): PatternTree
+    -_macro_has_args(macro: MacroTree): bool
+    -_apply_macro_recursively(macro: MacroTree, tree: PatternTree): PatternTree
+    -_process_str_tree(tree: str, macro_name: str, macro: MacroTree): PatternTree
+    -_process_dict_tree(tree: Dict, macro_name: str, macro: MacroTree): PatternTree
+    -_apply_macro_to_tree(node: PatternTree, macro: MacroTree): PatternTree
+    -_apply_macro_to_tree_substring(node: str, macro: MacroTree): str
+}
+
+class PatternNodeBuilderNoParents {
+    +build(): PatternNodeTmpUntyped
+    -command: DictNode
+    -name: str | int
+    -times: TimeType
+    -children: Optional[dict | List[PatternNode]]
+    -_get_name(command_dict: DictNode): str
+    -_get_times(command_dict: DictNode): TimeType
+    -_get_children(name: str, command: DictNode): List[PatternNode]
+    {static} - _get_simple_child(name: str): List[PatternNodeTmpUntyped]
+}
+
+abstract class PatternNode {
+    pattern_node_data: PatternNodeData
+    {abstract} get_regex(): str
+}
+
+abstract class NodeBuilder {
+    +build(pattern_node: PatternNodeTmpUntyped, build_context: Optional[BuildContext]): PatternNode
+    {abstract} +build_handler_chain(): NodeHandler
+}
+
+class GeneralPatternNodeBuilder extends NodeBuilder {
+    +build(pattern_node: PatternNodeTmpUntyped, build_context: Optional[BuildContext]): PatternNode
+    +build_handler_chain(): NodeHandler
+}
+
+class OperandBuilder extends NodeBuilder {
+    +build(pattern_node: PatternNodeTmpUntyped, build_context: Optional[BuildContext]): PatternNode
+    +build_handler_chain(): NodeHandler
+}
+
+class DerefChildrenBuilder extends NodeBuilder {
+    +build(pattern_node: PatternNodeTmpUntyped, build_context: Optional[BuildContext]): PatternNode
+    +build_handler_chain(): NodeHandler
+}
+
+abstract class NodeHandler {
+    +__init__(next_handler: Optional[NodeHandler] = None)
+    {abstract} +handle(node: PatternNode, build_context: Optional[BuildContext]): PatternNode | None
+}
+
+class NaryOperatorHandler extends NodeHandler {
+    wanted_name: str
+    +_handle_children(node: PatternNodeTmpUntyped, build_context: Optional[BuildContext]): None
+    {abstract} +_build_node(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class AndHandler extends NaryOperatorHandler {
+    wanted_name = "$and"
+    +_build_node(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class OrHandler extends NaryOperatorHandler {
+    wanted_name = "$or"
+    +_build_node(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class NotHandler extends NodeHandler {
+    wanted_name = "$not"
+    +handle(node: PatternNode, build_context: Optional[BuildContext]): PatternNode | None
+}
+
+class AndAnyOrderHandler extends NaryOperatorHandler {
+    wanted_name = "$and_any_order"
+    +_build_node(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class MnemonicHandler extends NodeHandler {
+    +_handle_children(node: PatternNodeTmpUntyped): None
+    +handle(node: PatternNode, build_context: Optional[BuildContext]): PatternNode | None
+}
+
+class DerefPropertyHandler extends NodeHandler {
+    +handle(node: PatternNode, build_context: Optional[BuildContext]): PatternNode | None
+}
+
+class OperandHandler extends NodeHandler {
+    +handle(node: PatternNode, build_context: Optional[BuildContext]): PatternNode | None
+}
+
+class TimesHandler extends NodeHandler {
+    +handle(node: PatternNode, build_context: Optional[BuildContext]): PatternNode | None
+}
+
+class DerefHandler extends NodeHandler {
+    +_build_grandchildren(node: PatternNodeTmpUntyped): None
+    +_handle_children(node: PatternNodeTmpUntyped): None
+    +handle(node: PatternNode, build_context: Optional[BuildContext]): PatternNode | None
+}
+
+abstract class CaptureGroupHandler extends NodeHandler {
+    +_is_capture_group(node_name: PatternNodeName): bool
+    {abstract} +_construct_capture_group(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class InstructionCaptureGroupHandler extends CaptureGroupHandler {
+    +_construct_capture_group(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class OperandCaptureGroupHandler extends CaptureGroupHandler {
+    +_construct_capture_group(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class DerefOperandCaptureGroupHandler extends CaptureGroupHandler {
+    +_construct_capture_group(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class SpecialRegisterCaptureGroupHandler extends CaptureGroupHandler {
+    +_is_capture_group(node_name: PatternNodeName): bool
+    +_construct_capture_group(node: PatternNodeTmpUntyped): PatternNode
+}
+
+class LeafHandler extends NodeHandler {
+    +handle(node: PatternNodeTmpUntyped, build_context: Optional[BuildContext]): PatternNode
+}
+
+class ArgsMappingGenerator {
+    +get_args_mapping_dict(tree: PatternTree, args: List[str]): Dict
+    -_get_args_mapping(tree: PatternTree, current_arg: str): Generator[Dict, None, None]
+    -_yield_key_value_pairs(data: Union[Dict[Any, Any], List[Any]]): Generator[Tuple[Any, Any], None, None]
+}
+
+class MacroArgsResolver {
+    +resolve(macro: MacroTree, tree: PatternTree): MacroTree
+    -_get_macro_mapping_arg_dict(macro: MacroTree, tree: PatternTree): MappingDict
+    -_evaluate_args_in_macro(macro: MacroTree, mapping_dict: MappingDict): MacroTree
+    -_iter_items_with_path(elems: Union[str, List, Dict], path: Tuple = ()): Generator[Tuple[Tuple, Any], None, None]
+    -_replace_item_in_structure(struct: Union[Dict, List], path: Tuple, new_value: Any): None
+}
+
+class SharedContext {
+    capture_manager: CaptureManager
+}
+
+class TimesTypeBuilder {
+    +get_min_max_regex(times: TimesType): str
+}
+
+enum DerefChildNames {
+    MAIN_REG
+    CONSTANT_OFFSET
+    REGISTER_MULTIPLIER
+    CONSTANT_MULTIPLIER
+}
+
+
+class PatternNodeData {
+    +name: PatternNodeName
+    +times: TimeType
+    +children: Optional[Dict | List[PatternNode]]
+    +parent: Optional[PatternNode]
+    +shared_context: SharedContext
+}
+
+enum FatherType {
+    MNEMONIC
+    DEREF
+}
+
+class BuildContext {
+    ancestor_type: FatherType
+}
+
+' Relations
+
+File2Regex <|-- Yaml2Regex
+PatternNodeBuilderNoParents .> PatternNode: builds >
+
+GeneralPatternNodeBuilder o- "1" PatternNode: builds >
+OperandBuilder o- "1" PatternNode: builds >
+DerefChildrenBuilder o- "1" PatternNode: builds >
+
+
+Yaml2Regex --> MacroExpander: uses >
+Yaml2Regex --> PatternNodeBuilderNoParents: uses >
+Yaml2Regex --> GeneralPatternNodeBuilder: uses >
+
+NodeBuilder .> NodeHandler: uses >
+GeneralPatternNodeBuilder --> NaryOperatorHandler: uses >
+GeneralPatternNodeBuilder --> AndHandler: uses >
+GeneralPatternNodeBuilder --> OrHandler: uses >
+GeneralPatternNodeBuilder --> NotHandler: uses >
+GeneralPatternNodeBuilder --> AndAnyOrderHandler: uses >
+
+DerefChildrenBuilder --> DerefHandler: uses >
+OperandBuilder --> OperandHandler: uses >
+
+NodeHandler o- NodeHandler: has a next_handler >
+
+SharedContext *-- CaptureManager: has a >
+@enduml

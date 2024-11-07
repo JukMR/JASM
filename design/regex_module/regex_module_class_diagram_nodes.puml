@@ -1,0 +1,139 @@
+@startuml
+
+abstract class PatternNode {
+    +PatternNodeData pattern_node_data
+    +__init__(pattern_node_data: PatternNodeData): None
+    '' @abstractmethod in italic
+    //+get_regex() -> str//
+}
+
+abstract class LogicalOperationBaseNode extends PatternNode {
+    +get_regex() -> str
+    '' @abstractmethod in italic
+    //+_make_main_regex(child_regexes: List[str], times_regex: Optional[str]) -> str//
+    +process_children() -> List[str
+}
+
+class NodeAnd extends LogicalOperationBaseNode {
+    +_make_main_regex(child_regexes: List[str], times_regex: Optional[str]) -> str
+}
+
+class NodeOr extends LogicalOperationBaseNode {
+    +_make_main_regex(child_regexes: List[str], times_regex: Optional[str]) -> str
+}
+
+class NodeNot extends LogicalOperationBaseNode {
+    +_make_main_regex(child_regexes: List[str], times_regex: Optional[str]) -> str
+}
+
+class NodeAndAnyOrder extends NodeAnd {
+    +_make_main_regex(child_regexes: List[str], times_regex: Optional[str]) -> str
+}
+
+class PatternNodeDerefProperty extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeDeref extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeDerefPropertyCaptureGroupReference extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeDerefPropertyCaptureGroupCall extends PatternNode {
+    +get_regex() -> str
+}
+
+PatternNodeDeref "1" -- "many" PatternNodeDerefProperty : contains
+PatternNodeDeref "1" -- "many" PatternNodeDerefPropertyCaptureGroupReference : contains
+PatternNodeDeref "1" -- "many" PatternNodeDerefPropertyCaptureGroupCall : contains
+
+' Capture Group Builder hierarchy
+
+interface CaptureGroupBaseBuilder {
+    +_capture_is_registered(capture_manager: CapturesManager, pattern_node_name: str) -> bool
+    +add_new_references_to_global_list(capture_manager: CapturesManager, pattern_node_name: str) -> None
+    +build(untyped_node: PatternNode) -> PatternNode
+    '' @abstractmethod in italic
+    //+_process_call(untyped_node: PatternNode) -> PatternNode//
+    //+_process_register(untyped_node: PatternNode) -> PatternNode//
+}
+
+class IntructionCaptureGroupBuilder extends CaptureGroupBaseBuilder {
+    +_process_call(untyped_node: PatternNodeTmpUntyped) -> PatternNodeCaptureGroupInstructionCall
+    +_process_register(untyped_node: PatternNodeTmpUntyped) -> PatternNodeCaptureGroupInstructionReference
+}
+
+class OperandCaptureGroupBuilder extends CaptureGroupBaseBuilder {
+    +_process_call(untyped_node: PatternNodeTmpUntyped) -> PatternNodeCaptureGroupOperandCall
+    +_process_register(untyped_node: PatternNodeTmpUntyped) -> PatternNodeCaptureGroupOperandReference
+}
+
+class SpecialRegisterCaptureGroupBuilder extends CaptureGroupBaseBuilder {
+    +_capture_is_registered(capture_manager: CapturesManager, pattern_node_name: str) -> bool
+    +add_new_references_to_global_list(capture_manager: CapturesManager, pattern_node_name: str) -> None
+    +_process_call(untyped_node: PatternNodeTmpUntyped) -> PatternNodeCaptureGroupRegisterCall
+    +_process_register(untyped_node: PatternNodeTmpUntyped) -> PatternNodeCaptureGroupRegisterCall
+}
+
+class DerefCaptureGroupBuilder extends CaptureGroupBaseBuilder {
+    +_process_call(untyped_node: PatternNodeTmpUntyped)
+    +_process_register(untyped_node: PatternNodeTmpUntyped) -> PatternNodeDerefPropertyCaptureGroupReference
+}
+
+class SpecialRegisterCaptureGroupTypeBuilder {
+    +process() -> PatternNodeCaptureGroupSpecialRegisterReference
+}
+
+' Pattern Node Classes
+
+class PatternNodeCaptureGroupInstructionCall extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeCaptureGroupInstructionReference extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeCaptureGroupOperandCall extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeCaptureGroupOperandReference extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeCaptureGroupSpecialRegisterReference extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeCaptureGroupRegisterCall extends PatternNode {
+    +get_regex() -> str
+}
+
+' Newly added Pattern Nodes
+class PatternNodeOperand extends PatternNode {
+    +get_regex() -> str
+}
+
+class PatternNodeMnemonic extends PatternNode {
+    +get_regex() -> str
+}
+
+' Relations between Builders and PatternNodes
+
+IntructionCaptureGroupBuilder "1" --> "1" PatternNodeCaptureGroupInstructionCall
+IntructionCaptureGroupBuilder "1" --> "1" PatternNodeCaptureGroupInstructionReference
+
+OperandCaptureGroupBuilder "1" --> "1" PatternNodeCaptureGroupOperandCall
+OperandCaptureGroupBuilder "1" --> "1" PatternNodeCaptureGroupOperandReference
+
+SpecialRegisterCaptureGroupBuilder "1" --> "1" PatternNodeCaptureGroupRegisterCall
+
+DerefCaptureGroupBuilder "1" --> "1" PatternNodeDerefPropertyCaptureGroupReference
+
+SpecialRegisterCaptureGroupTypeBuilder "1" --> "1" PatternNodeCaptureGroupSpecialRegisterReference
+
+@enduml
