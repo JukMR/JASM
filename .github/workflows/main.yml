@@ -62,7 +62,7 @@ jobs:
         # This generates wheel files in the dist/ directory
 
       - name: Upload wheel file as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: wheel-file
           path: dist/*.whl
