@@ -18,7 +18,7 @@ test:
     - echo "Installing project..."
     - pip install -e .
     - echo "Running tests..."
-    - poetry run pytest
+    - pytest
 
 upload-package:
   stage: publish
