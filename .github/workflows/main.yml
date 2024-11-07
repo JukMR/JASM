@@ -40,7 +40,7 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          poetry run sh pytest
+          poetry run pytest
 
   build:
     needs: test
