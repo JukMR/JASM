@@ -15,12 +15,10 @@ test:
     - pip install poetry
     - echo "Installing dependencies with poetry ..."
     - poetry install
-    - echo "Instaling development dependencies..."
-    - pip install -r dev-requirements.txt
     - echo "Installing project..."
     - pip install -e .
     - echo "Running tests..."
-    - poetry run sh ./run_tests.sh
+    - poetry run pytest
 
 upload-package:
   stage: publish

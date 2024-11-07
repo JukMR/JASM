@@ -23,20 +23,6 @@ def test_all_patterns(config: dict):
     assert result == expected_result
 
 
-def update_config(config: dict):
-    rtyaml = yaml.YAML()
-    rtyaml.indent(mapping=2, sequence=4, offset=2)
-    rtyaml.preserve_quotes = True
-    with open("tests/configuration.yaml", "r") as f:
-        data = rtyaml.load(f)
-    for test in data["test_matching"]:
-        if test["title"] == config["title"]:
-            test["expected-time"] = round(config["expected-time"], 4)
-            test["tolerance"] = config["tolerance"]
-    with open("tests/configuration.yaml", "w") as f:
-        rtyaml.dump(data, f)
-
-
 def config_builder(config: dict[str, Any]) -> Tuple[MatchConfig, Any]:
     """Build a MatchConfig from the test configuration specs."""
 

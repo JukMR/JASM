@@ -2,6 +2,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "test deref recursive resolution",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "-p",
+                "tests/yamls/logic_operators_inside_deref.yaml",
+                "-s",
+                "tests/assembly/test_deref_recursive_building.s"
+            ]
+        },
+        {
             "name": "moonbounce_binarly_bad_small_19_lines",
             "type": "debugpy",
             "request": "launch",
@@ -515,7 +530,7 @@
             ]
         },
         {
-            "name": "2 zero reg patched",
+            "name": "any_macro",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -525,9 +540,9 @@
                 "--debug",
                 "--all-matches",
                 "-p",
-                "tests/yamls/2_zero_reg_patched.yaml",
+                "tests/yamls/any_macro.yaml",
                 "-s",
-                "tests/assembly/2_zero_reg_rule.s",
+                "tests/assembly/binary_data.s",
             ]
         },
     ]
