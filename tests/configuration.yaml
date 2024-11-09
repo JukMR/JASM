@@ -220,6 +220,11 @@ test_matching:
     assembly: "tests/assembly/2_zero_reg_rule_inverted_and.s"
     expected: False
 
+  - title: "Not case working"
+    yaml: "tests/yamls/not_rule.yaml"
+    assembly: "tests/assembly/not_case.s"
+    expected: False
+
 test_parsing_lines:
   - title: "binary_data.s"
     assembly: "tests/assembly/binary_data.s"
