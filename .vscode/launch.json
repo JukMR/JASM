@@ -530,5 +530,22 @@
                 "tests/assembly/2_zero_reg_rule.s",
             ]
         },
+        {
+            "name": "Not case",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--debug",
+                "--all-matches",
+                "-p",
+                "tests/yamls/not_rule.yaml",
+                "-s",
+                "tests/assembly/not_case.s"
+            ]
+        }
     ]
 }
+
