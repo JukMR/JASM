@@ -113,7 +113,7 @@ So the example would match a command like `nopw 0x0(%rax,%rbx,1)` turning it to 
 
 The x86 registers are the following:
 
-![x86 registers](x86_registers.png)
+![x86 registers](images/x86_registers.png)
 
 we support the following convention for using special register captures.
 
