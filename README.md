@@ -166,16 +166,3 @@ config:
     - ".plt"
     - ".plt.got"
 ```
-
-## Troubleshooting
-
-### Cannot install profiler-measure
-
-If poetry is failing to install this dependency, it may be because it cannot access gitlab credentials correctly.
-Create a `.netrc` file under your home directory with the following content:
-
-```
-machine gitlab.com login <eclypsium_email> password <gitlab_user_token>
-```
-
-This should allow poetry to access gitlab repositories and look for this package.
