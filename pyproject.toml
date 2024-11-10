@@ -2,7 +2,11 @@
 name = "JASM"
 version = "1.5.1"
 description = "JASM - Assembly Regex Generator"
-authors = ["Julian Merida <julianmr97@gmail.com>"]
+authors = [
+    "Julian Merida <julianmr97@gmail.com>",
+    "Alvaro Frias alvaro.frias@eclypsium.com",
+    "Lucia Martinez lucia@martinezgavier.com.ar"
+]
 readme = "README.md"
 packages = [{ include = "jasm", from = "src" }]
 
