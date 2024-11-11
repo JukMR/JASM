@@ -1,19 +1,9 @@
 ---
 config:
   style: att
-  plugins:
-
-macros:
-  - name: "@any"
-    pattern: "[^, ]{1,100}"
 
 pattern:
   - $not:
       - cmp
   - $or:
-      - jg
       - jl
-      - jge
-      - jle
-      - jz
-      - jne
