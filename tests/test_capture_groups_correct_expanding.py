@@ -4,7 +4,7 @@ import pytest
 from conftest import load_test_configs
 
 from jasm.global_definitions import InputFileType, MatchConfig, MatchingReturnMode, MatchingSearchMode
-from jasm.match.match import MasterOfPuppets
+from jasm.match import MasterOfPuppets
 
 
 @pytest.mark.parametrize(

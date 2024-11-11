@@ -4,7 +4,7 @@ config:
   plugins:
 
 macros:
-  - name: $zero_reg
+  - name: "@zero_reg"
     args:
       - macro-arg1
     pattern:
@@ -17,5 +17,5 @@ macros:
               - macro-arg1
 
 pattern:
-  - $zero_reg:
+  - "@zero_reg":
     macro-arg1: eax

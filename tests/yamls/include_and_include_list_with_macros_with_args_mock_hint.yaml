@@ -1,6 +1,6 @@
 ---
 macros:
-  - name: $anyreg_rx_rd_rax
+  - name: "@anyreg_rx_rd_rax"
     args:
       - macro-arg1
     pattern:
@@ -9,7 +9,7 @@ macros:
           - rd
           - macro-arg1
 
-  - name: $not_commands
+  - name: "@not_commands"
     pattern:
       - $or:
           - not
@@ -22,22 +22,22 @@ pattern:
   - call
   - $or:
       - jmp:
-          - $anyreg_rx_rd_rax:
+          - "@anyreg_rx_rd_rax":
             macro-arg1: rax
 
       - nopw:
-          - $anyreg_rx_rd_rax:
+          - "@anyreg_rx_rd_rax":
             macro-arg1: rax
 
       - endbr64:
-          - $anyreg_rx_rd_rax:
+          - "@anyreg_rx_rd_rax":
             macro-arg1: rax
 
     times:
       min: 1
       max: 1
   - $not:
-      - $not_commands
+      - "@not_commands"
 
   - push:
       times: 6

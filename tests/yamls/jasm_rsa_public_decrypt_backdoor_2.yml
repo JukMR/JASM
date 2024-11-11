@@ -1,0 +1,51 @@
+---
+config:
+  style: att
+
+
+pattern:
+  - mov:
+      - $deref:
+          main_reg: "%rsp"
+          constant_offset: "@any"
+      - "&r1"
+  - mov:
+      - "&r1.32"
+      - $deref:
+          main_reg: "%rsp"
+          constant_offset: "@any"
+  - mov:
+      - $deref:
+          main_reg: "%rsp"
+          constant_offset: "@any"
+      - "&r1.8"
+  - mov:
+      - "&r1.8"
+      - $deref:
+          main_reg: "%rsp"
+          constant_offset: "@any"
+  - mov:
+      - $deref:
+          main_reg: "%rsp"
+          constant_offset: "@any"
+      - "&r1.64"
+  - sub:
+      - "0x87"
+      - "&r1.64"
+  - mov:
+      - "&r1.64"
+      - $deref:
+          main_reg: "%rsp"
+  - cmp:
+      - "0x2"
+      - "@any"
+
+
+#8B84249F030000                  MOV EAX,DWORD PTR [RSP+0000039F]
+#89842418030000                  MOV DWORD PTR [RSP+00000318],EAX
+#8A8424A3030000                  MOV AL,BYTE PTR [RSP+000003A3]
+#8884241C030000                  MOV BYTE PTR [RSP+0000031C],AL
+#488B442410                      MOV RAX,QWORD PTR [RSP+10]
+#482D87000000                    SUB RAX,0000000000000087
+#48890424                        MOV QWORD PTR [RSP],RAX
+#4883FD02                        CMP RBP,0000000000000002

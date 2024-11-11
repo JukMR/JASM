@@ -1,6 +1,6 @@
 ---
 macros:
-  - name: $anyreg_rx_rd_rax
+  - name: "@anyreg_rx_rd_rax"
     pattern:
       - $or:
           - rx

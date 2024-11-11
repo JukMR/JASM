@@ -1,18 +1,13 @@
 # test_matching.py
-from typing import Any, List, Tuple
+from typing import Any, Tuple
 
 import pytest
 from conftest import load_test_configs
+from ruamel import yaml
 
-from jasm.global_definitions import InputFileType, MatchConfig, MatchingReturnMode, MatchingSearchMode
-from jasm.match.match import MasterOfPuppets
-
-
-@pytest.fixture(scope="session")
-def is_benchmark_enabled(request: Any) -> bool:
-    """Determine if benchmarking is enabled."""
-    benchmark_is_enable: bool = request.config.getoption("--enable-benchmark")
-    return benchmark_is_enable
+from jasm.global_definitions import (InputFileType, MatchConfig,
+                                     MatchingReturnMode, MatchingSearchMode)
+from jasm.match import MasterOfPuppets
 
 
 @pytest.mark.parametrize(
@@ -20,22 +15,19 @@ def is_benchmark_enabled(request: Any) -> bool:
     load_test_configs(file_path="configuration.yaml", yaml_config_field="test_matching"),
     ids=lambda config: config["title"],
 )
-def test_all_patterns(config: Any, is_benchmark_enabled: bool, benchmark: Any) -> None:
+def test_all_patterns(config: dict):
     """Unified test function for all configurations in configuration.yaml."""
-
     match_config, expected_result = config_builder(config)
-
-    # Direct approach without checking if benchmark is callable
-    if is_benchmark_enabled:
-        benchmark(run_match_test, match_config, expected_result)
-    else:
-        run_match_test(match_config, expected_result)
+    mop = MasterOfPuppets(match_config=match_config)
+    result = mop.perform_matching()
+    assert result == expected_result
 
 
 def config_builder(config: dict[str, Any]) -> Tuple[MatchConfig, Any]:
     """Build a MatchConfig from the test configuration specs."""
 
     config_yaml = config["yaml"]
+    macros = config.get("macros", None)
     expected_result = config["expected"]
     assembly = config.get("assembly", None)
     binary = config.get("binary", None)
@@ -73,13 +65,7 @@ def config_builder(config: dict[str, Any]) -> Tuple[MatchConfig, Any]:
             return_mode=return_mode,
             matching_mode=matching_mode,
             return_only_address=return_only_address,
+            macros=macros,
         ),
         expected_result,
     )
-
-
-def run_match_test(test_config: MatchConfig, expected_result: bool | str | List[str]) -> None:
-    """Run a single match test."""
-
-    result = MasterOfPuppets(match_config=test_config).perform_matching()
-    assert result == expected_result

@@ -1,0 +1,12 @@
+---
+config:
+  style: att
+  sections:
+    - ".plt"
+    - ".plt.got"
+  plugins:
+
+pattern:
+  - nop
+  - endbr64
+  - push

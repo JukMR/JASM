@@ -2,223 +2,313 @@ test_matching:
   - title: "9_calls"
     yaml: "tests/yamls/9_calls.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0063
 
   - title: "10_calls"
     yaml: "tests/yamls/10_calls.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: False
+    expected: false
+    expected-time: 0.0061
 
   - title: "exclude_list"
     yaml: "tests/yamls/exclude_list.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0055
 
   - title: "not_call"
     yaml: "tests/yamls/not_call.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0057
 
   - title: "include_and_include_list"
     yaml: "tests/yamls/include_and_include_list.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0066
 
   - title: "include_and_include_list_with_macros"
     yaml: "tests/yamls/include_and_include_list_with_macros.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.006
 
   - title: "include_and_include_list_with_macros_with_args"
     yaml: "tests/yamls/include_and_include_list_with_macros_with_args_mock_hint.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0054
 
   - title: "call_between_3_and_9"
     yaml: "tests/yamls/call_between_3_and_9.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0059
 
-  - title: "deref simple example"
-    yaml: "tests/yamls/deref_simple_example.yaml"
-    assembly: "tests/assembly/deref_simple_example.s"
-    expected: True
+  - title: "moonbounce_malware_truncated_11518_lines"
+    yaml: "tests/yamls/moonbounce_regex_matcher.yaml"
+    assembly: "tests/assembly/moonbounce_malware_truncated_11518_lines.s"
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 1.2545
 
   - title: "moonbounce_malware_full_111826_lines_binarly.s"
     yaml: "tests/yamls/moonbounce_from_binarly.yaml"
     assembly: "tests/assembly/moonbounce_malware_full_111826_lines.s"
-    expected: True
+    expected: true
+    expected-time: 7.1694
 
   - title: "Moonbounce binarly core.s"
     yaml: "tests/yamls/moonbounce_from_binarly.yaml"
     assembly: "tests/assembly/moonbounce_binarly_core.s"
-    expected: True
+    expected: true
+    expected-time: 0.0041
 
   - title: "1_call"
     yaml: "tests/yamls/1_call.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0056
 
   - title: "@any macro"
     yaml: "tests/yamls/any_macro.yaml"
     assembly: "tests/assembly/binary_data.s"
-    expected: True
+    expected: true
+    expected-time: 0.0062
+
+  - title: "moonbounce_malware_short_6_lines"
+    yaml: "tests/yamls/moonbounce_regex_matcher.yaml"
+    assembly: "tests/assembly/moonbounce_malware_short_6_lines.s"
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 0.0042
 
   - title: "smc_assembly"
     yaml: "tests/yamls/smc.yaml"
     assembly: "tests/assembly/smc.s"
-    expected: True
+    expected: true
+    expected-time: 0.0158
 
   - title: "smc_binary"
     yaml: "tests/yamls/smc.yaml"
     binary: "tests/binary/smc.bin"
-    expected: True
+    expected: true
+    expected-time: 0.0152
+
+  - title: "smc_binary_sections"
+    yaml: "tests/yamls/smc_sections.yaml"
+    binary: "tests/binary/smc.bin"
+    expected: false
+    expected-time: 0.0152
+
+  - title: "smc_binary_sections"
+    yaml: "tests/yamls/smc_sections2.yaml"
+    binary: "tests/binary/smc.bin"
+    expected: true
+    expected-time: 0.0152
 
   - title: "smc_binary_eko"
     yaml: "tests/yamls/smc.yaml"
     binary: "tests/binary/smc_eko.bin"
-    expected: True
+    expected: true
+    expected-time: 0.0104
+
 
   - title: "capture_groups_test_rule on binary_data_for_capture_groups"
     yaml: "tests/yamls/capture_groups_test_rule.yaml"
     assembly: "tests/assembly/binary_data_for_capture_groups.s"
-    expected: True
+    expected: true
+    expected-time: 0.0043
 
   - title: "1_call_plain_with_multiple_findings"
     yaml: "tests/yamls/1_call_plain.yaml"
     assembly: "tests/assembly/binary_data.s"
     return_mode: "list"
     matching_mode: "all"
-    return_only_address: True
-    expected: ["4014", "4021", "4027", "402d", "4033", "4039", "403f", "4045", "404b", "4051"]
+    return_only_address: true
+    expected:
+      [
+        "4014",
+        "4021",
+        "4027",
+        "402d",
+        "4033",
+        "4039",
+        "403f",
+        "4045",
+        "404b",
+        "4051",
+      ]
+    expected-time: 0.0096
 
   - title: "1_call_plain_with_single_finding"
     yaml: "tests/yamls/1_call_plain.yaml"
     assembly: "tests/assembly/binary_data.s"
     return_mode: "list"
     matching_mode: "single"
-    return_only_address: True
+    return_only_address: true
     expected: ["4014"]
+    expected-time: 0.0054
 
   - title: "capture_group_two_push_with_same_reg"
     yaml: "tests/yamls/capture_group_2_push_with_same_reg.yaml"
     assembly: "tests/assembly/binary_data_for_capture_groups.s"
-    expected: True
+    expected: true
+    expected-time: 0.0041
 
   - title: "capture_group_test_with_operands_working"
     yaml: "tests/yamls/capture_groups_test_rule.yaml"
     assembly: "tests/assembly/binary_data_for_capture_groups.s"
-    expected: True
+    expected: true
+    expected-time: 0.0044
 
   - title: "zero_reg_rule with -O3"
     yaml: "tests/yamls/zero_reg.yaml"
     assembly: "tests/source_test_files/zero_reg/main_O3.s"
-    expected: True
+    expected: true
+    expected-time: 0.0037
 
   - title: "zero_reg_rule with -O0"
     yaml: "tests/yamls/zero_reg.yaml"
     assembly: "tests/source_test_files/zero_reg/main_O0.s"
-    expected: True
+    expected: true
+    expected-time: 0.0037
 
   - title: "function return 0 with zero_reg -O0"
     yaml: "tests/yamls/function_return_0.yaml"
     assembly: "tests/source_test_files/zero_reg/main_O0.s"
-    expected: True
+    expected: true
+    expected-time: 0.0037
 
   - title: "function return 0 with zero_reg -O3"
     yaml: "tests/yamls/function_return_0.yaml"
     assembly: "tests/source_test_files/zero_reg/main_O3.s"
-    expected: True
+    expected: true
+    expected-time: 0.0033
 
   - title: "Salsa20 asm"
     yaml: "tests/yamls/arx.yaml"
     assembly: "tests/source_test_files/arx_detection/salsa20/salsa20.s"
-    expected: True
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 0.0056
 
   - title: "Salsa20 bin"
     yaml: "tests/yamls/arx.yaml"
     binary: "tests/source_test_files/arx_detection/salsa20/salsa20.o"
-    expected: True
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 0.0047
 
   - title: "Chacha20 asm"
     yaml: "tests/yamls/arx.yaml"
     assembly: "tests/source_test_files/arx_detection/chacha20/chacha20.s"
-    expected: True
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 0.026
 
   - title: "Chacha20 bin"
     yaml: "tests/yamls/arx.yaml"
     binary: "tests/source_test_files/arx_detection/chacha20/chacha20.o"
-    expected: True
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 0.0239
 
   - title: "AesCore rule asm"
     yaml: "tests/yamls/arx.yaml"
     assembly: "tests/assembly/AesCore.s"
-    expected: True
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 0.06
 
   - title: "AesCore rule bin"
     yaml: "tests/yamls/arx.yaml"
     binary: "tests/binary/AesCore.bin"
-    expected: True
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 0.058
 
   - title: "Arx onto zip"
     yaml: "tests/yamls/arx.yaml"
     binary: "tests/binary/zip.bin"
-    expected: True
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    expected: true
+    expected-time: 1.9306
+
 
   - title: "Register capture group example 1"
     yaml: "tests/yamls/register_capture_group_example_1.yaml"
     assembly: "tests/source_test_files/register_capture_groups/main.s"
-    expected: True
+    expected: true
+    expected-time: 0.0033
 
   - title: "Register capture group example 2"
     yaml: "tests/yamls/register_capture_group_example_2.yaml"
     assembly: "tests/source_test_files/register_capture_groups/main.s"
-    expected: False
+    expected: false
+    expected-time: 0.0032
 
   - title: "Register capture group example 3"
     yaml: "tests/yamls/register_capture_group_example_3.yaml"
     assembly: "tests/source_test_files/register_capture_groups/main.s"
-    expected: False
+    expected: false
+    expected-time: 0.0028
 
   - title: "Register capture group example 4"
     yaml: "tests/yamls/register_capture_group_example_4.yaml"
     assembly: "tests/source_test_files/register_capture_groups/main.s"
     expected: false
+    expected-time: 0.0034
 
   - title: "2 zero_reg rule"
     yaml: "tests/yamls/2_zero_reg.yaml"
     assembly: "tests/assembly/2_zero_reg_rule.s"
     expected: True
 
-  - title: "2 zero_reg rule inverted_mov"
-    yaml: "tests/yamls/2_zero_reg.yaml"
-    assembly: "tests/assembly/2_zero_reg_rule_inverted_mov.s"
+  - title: "liblzma"
+    yaml: "tests/yamls/jasm_rsa_public_decrypt_backdoor_2.yml"
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    binary: "tests/binary/liblzma.so.5.6.0"
+    expected: true
+
+  - title: "lucia_test with macros"
+    yaml: "tests/yamls/lucia_test.yaml"
+    macros:
+      - "tests/macros/jasm_macros.yaml"
+    assembly: "tests/assembly/lucia_test.s"
+    expected: true
+
+  - title: "lucia_test no macros"
+    yaml: "tests/yamls/lucia_test.yaml"
+    assembly: "tests/assembly/lucia_test.s"
+    expected: false
+
+  - title: "Test deref tree under arguments"
+    yaml: "tests/yamls/logic_operators_inside_deref.yaml"
+    assembly: "tests/assembly/test_deref_recursive_building.s"
     expected: True
 
-  - title: "2 zero_reg rule inverted_xor"
-    yaml: "tests/yamls/2_zero_reg.yaml"
-    assembly: "tests/assembly/2_zero_reg_rule_inverted_xor.s"
+  - title: "Test deref tree under arguments 2"
+    yaml: "tests/yamls/logic_operators_inside_deref2.yaml"
+    assembly: "tests/assembly/test_deref_recursive_building2.s"
     expected: True
 
-  - title: "2 zero_reg rule inverted_and"
-    yaml: "tests/yamls/2_zero_reg.yaml"
-    assembly: "tests/assembly/2_zero_reg_rule_inverted_and.s"
-    expected: True
-
-  - title: "2 zero_reg rule no_any_order_mov"
-    yaml: "tests/yamls/2_zero_reg_old_no_any_order.yaml"
-    assembly: "tests/assembly/2_zero_reg_rule_inverted_mov.s"
-    expected: False
-
-  - title: "2 zero_reg rule no_any_order_xor"
-    yaml: "tests/yamls/2_zero_reg_old_no_any_order.yaml"
-    assembly: "tests/assembly/2_zero_reg_rule_inverted_xor.s"
-    expected: False
-
-  - title: "2 zero_reg rule no_any_order_and"
-    yaml: "tests/yamls/2_zero_reg_old_no_any_order.yaml"
-    assembly: "tests/assembly/2_zero_reg_rule_inverted_and.s"
-    expected: False
+  - title: "Test deref tree under arguments 3"
+    yaml: "tests/yamls/logic_operators_inside_deref2.yaml"
+    assembly: "tests/assembly/test_deref_recursive_building3.s"
+    expected: false
 
 test_parsing_lines:
   - title: "binary_data.s"

@@ -1,19 +1,4 @@
 ---
-macros:
-  - name: "@any_shift"
-    pattern:
-      - $or:
-          - shr
-          - shl
-          - sal
-          - sar
-
-  - name: "@any_rot"
-    pattern:
-      - $or:
-          - rol
-          - ror
-
 pattern:
   - $and_any_order:
       - add

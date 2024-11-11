@@ -1,11 +1,11 @@
 from typing import Any
-from jasm.regex.tree_generators.capture_manager import CapturesManager
+from jasm.jasm_regex.tree_generators.capture_manager import CapturesManager
 import pytest
 
 from jasm.global_definitions import TimesType
-from jasm.regex.tree_generators.pattern_node_abstract import PatternNode
-from jasm.regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
-from jasm.regex.tree_generators.shared_context import SharedContext
+from jasm.jasm_regex.tree_generators.pattern_node_abstract import PatternNode
+from jasm.jasm_regex.tree_generators.pattern_node_builder import PatternNodeBuilderNoParents
+from jasm.jasm_regex.tree_generators.shared_context import SharedContext
 
 
 @pytest.fixture
@@ -30,7 +30,8 @@ def test_pattern_node_builder_no_parents_with_dict(mock_shared_context: SharedCo
     assert builder.children[1].times == TimesType(_min_times=1, _max_times=1)
 
     assert builder.children[1].children
-    assert ["op1", "op2"] == builder.children[1].children[0].name
+    assert "op1" == builder.children[1].children[0].name
+    assert "op2" == builder.children[1].children[1].name
 
 
 # Additional tests would cover other initialization paths: int, str, tuple, and edge cases.

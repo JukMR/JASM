@@ -1,0 +1,36 @@
+macros:
+  - name: "@any_shift"
+    pattern:
+      - $or:
+          - shr
+          - shl
+          - sal
+          - sar
+
+  - name: "@any_rot"
+    pattern:
+      - $or:
+          - rol
+          - ror
+
+  - name: "@any"
+    pattern: "[^, ]{1,1000}"
+
+  - name: "@zero_reg"
+    args:
+      - reg
+    pattern:
+      - $or:
+          - xor:
+              - reg
+              - reg
+          - mov:
+              - reg
+              - 0
+          - $or:
+              - and:
+                  - reg
+                  - 0
+              - and:
+                  - 0
+                  - reg

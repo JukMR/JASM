@@ -1,8 +1,9 @@
 # tests/unit_tests/test_file2regex.py
 from pathlib import Path
 from typing import Literal
-from jasm.regex.file2regex import File2Regex
+from jasm.jasm_regex.file2regex import File2Regex
 from jasm.global_definitions import DisassStyle
+from jasm.global_definitions import JASMConfig
 
 
 class ConcreteFile2Regex(File2Regex):  # type: ignore
@@ -15,8 +16,8 @@ class ConcreteFile2Regex(File2Regex):  # type: ignore
     def produce_regex(self) -> Literal["RegexPattern"]:
         return "RegexPattern"
 
-    def get_assembly_style(self) -> DisassStyle:
-        return DisassStyle.att
+    def load_config(self) -> None:
+        JASMConfig.get_instance().load_config({"style": "att"})
 
 
 def test_load_file() -> None:
@@ -33,4 +34,5 @@ def test_produce_regex() -> None:
 def test_get_assembly_style() -> None:
     """Test get_assembly_style method."""
     concrete_instance = ConcreteFile2Regex()
-    assert concrete_instance.get_assembly_style() == DisassStyle.att
+    concrete_instance.load_config()
+    assert JASMConfig.get_instance().get_info("assembly_style") == DisassStyle.att

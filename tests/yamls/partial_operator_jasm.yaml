@@ -1,0 +1,11 @@
+---
+config:
+      style: att
+      mnemonics-full-match: false
+      operands-full-match: true
+      plugins:
+
+pattern:
+      - mov:
+              - "0xa1b2"
+              - "@any"

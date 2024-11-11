@@ -22,27 +22,25 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install poetry
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
-
-
       - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          python -m pip install --upgrade pip
+          pip install pytest pytest-xdist poetry pyyaml pytest-benchmark pytest-fail-slow
+
+      - name: Install dependencies with poetry
         run: |
           echo "Installing dependencies with poetry ..."
           poetry install
 
-      - name: Pull files from git lfs
+      - name: Install project
         run: |
-          echo "Pulling files from git lfs"
-          git lfs fetch --all
-          git lfs pull
-
+          echo "Installing project..."
+          pip install -e .
       - name: Run tests
         run: |
           echo "Running tests..."
-          poetry run sh ./run_tests.sh
+          poetry run pytest
 
   build:
     needs: test
@@ -64,7 +62,7 @@ jobs:
         # This generates wheel files in the dist/ directory
 
       - name: Upload wheel file as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: wheel-file
           path: dist/*.whl

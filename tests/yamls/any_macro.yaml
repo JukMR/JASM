@@ -1,7 +1,13 @@
 ---
+macros:
+  - name: "@any"
+    pattern: "[^, ]{0,1000}"
+
 pattern:
   - call:
       times: 9
+
   - "@any":
       times: 8
+
   - sub
